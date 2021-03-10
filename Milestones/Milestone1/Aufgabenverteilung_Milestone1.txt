@@ -10,9 +10,9 @@ Process: at least one entry in the diary (Ruben)
 
 Presentation Mockup (Gregor & Johanna)
 
-Presentation: Networking (Tamer - dafür: gemeinsam besprechen mit Johanna)
+Presentation: Networking (Johanna)
 
-Presentation: Requirement Analysis (Tamer)
+Presentation: Requirement Analysis (Johanna & Gregor)
 
 Process: Name of the Game : "Java Dogs"
 
