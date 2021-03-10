@@ -3,7 +3,7 @@ Milestone1-- Aufgabenverteilung
 Presentation: About a Game(Gregor & Johanna)
 Presentation: About a Game(Gregor & Johanna)
 
-Product: Ahead of Schedule and Under Budget (Gregor & Johanna fangen an Code zu produzieren für das Brett des Spiels)
+Product: Ahead of Schedule and Under Budget (Gregor & Johanna fangen an Code zu produzieren fÃ¼r das Brett des Spiels)
 
 Process:Dear Diary..(Ruben)
 Process: at least one entry in the diary (Ruben)
@@ -14,7 +14,7 @@ Presentation: Networking (Johanna)
 
 Presentation: Requirement Analysis (Johanna & Gregor)
 
-Process: Name of the Game : "Java Dogs"
+Process: Name of the Game : "JDogs"
 
 Presentation: Who? What? When?: Project timeline and responsibilities (Ruben provisorisch bis Milestone 5 mit Gantproject)
 
