@@ -1,0 +1,41 @@
+Protokoll 10.03.21 11.40
+
+Thema waren die Punkte von Milestones1
+
+Tagebuch: 
+-Ruben kümmert sich um Markdown file
+-jeder Abschnitt für einen Tag(auch wenn mehrere Sitzungen an diesem Tag)
+
+Spielpräsentation:
+-Gregor und Johanna kümmern sich darum.
+-Mechanik des Spiels:
+	Spieler: 2-6
+
+	2 Spielbretter: 1. für 4 Spielparteien
+			2. für 6 Spielparteien
+
+Ahead of schedule: Code schreiben: 
+-Gregor und Johanna beginnen mit Code für das Spielbrett
+
+Presentation Mockup:
+-Gregor und Johanna präsentieren ein Mockup
+
+Presentation: Networking Funktionalität Client & Server
+-Tamer bereitet es vor
+-Tamer spricht sich mit Johanna und Gregor ab(für spezifischen Ablauf des Protokolls)
+
+Presentation: Requirement Analysis
+-d.h. was für Features braucht das Spiel?
+	Was brauchen wir speziell für Dogs?
+	Was wird in den weiteren Milestones verlangt?
+	z.B. Chat, viele Benutzer müssen sich gleichzeitig anmelden können 	etc.	(vgl. 	https://p9.dmi.unibas.ch/cs108/2021/#summary)
+-Tamer kennt sich aus und macht das
+
+Project Timelines mit Gantproject: 
+-Ruben macht das
+
+
+
+
+
+
