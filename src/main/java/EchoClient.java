@@ -4,7 +4,20 @@ import java.io.*;
 public class EchoClient {
     public static void main(String[] args) {
         try {
-            Socket sock = new Socket(args[0], Integer.parseInt(args[1]));
+            String host = "localhost";
+            int port = 8090;
+
+            //check if server is available
+            while (!isOnline(host, port)) {
+                System.out.println("wait for connection to server...");
+                try{
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Socket sock = new Socket(host, port);
             InputStream in = sock.getInputStream();
             OutputStream out= sock.getOutputStream();
             // create server reading thread
@@ -29,5 +42,18 @@ public class EchoClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    static boolean isOnline(String host, int port) {
+        boolean online = true;
+        try {
+            InetSocketAddress sa = new InetSocketAddress(host, port);
+            Socket ss = new Socket();
+            ss.connect(sa, 1);
+            ss.close();
+        } catch (IOException e) {
+            online = false;
+        }
+        return online;
     }
 }
