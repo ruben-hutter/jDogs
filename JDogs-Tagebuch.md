@@ -13,6 +13,7 @@ Spiel | Stimmen
 Brändi Dog | 3
 Das verrückte Labyrint | 4
 Jet Fighter | 3
+
 (Jeder hatte 2 Stimmen zur verfügung)
 
 Nach einer Analyse der möglichen Probleme der verschiedenen Spiele (z.B. Unterschiede zwischen Echtzeit- und rundenbasiertem Spiel) haben wir uns für BrändiDog entschieden.
