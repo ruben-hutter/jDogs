@@ -1,3 +1,5 @@
+package JDogs.ServerClient;
+
 import java.net.*;
 import java.io.*;
 

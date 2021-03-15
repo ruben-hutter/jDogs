@@ -1,3 +1,5 @@
+package JDogs.ServerClient;
+
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.InputStream;
