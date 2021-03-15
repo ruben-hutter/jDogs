@@ -62,3 +62,13 @@ Unser nächstes Meeting findet am Dienstag statt, bei dem wir eine Generalprobe 
 
 ---
 
+*15.März.2021 21:00, Ruben*
+
+### Bericht#02 - Umsetzung Korrekturen
+
+Gregor hat das Mockup fertiggestellt und ein Grundkonzept für das Spielfeld erstellt.
+Ich habe weiter an der Planung gearbeitet. Die größte Schwierigkeit ist im Moment die Struktur des gesamten Projekts. Da wir noch nie ein so großes Projekt durchgeführt haben und vor allem gerade erst einige grundlegende Konzepte gelernt haben, wie z.B. die Client-Server-Beziehung, ist es selbst mit den Milestones als Referenz schwierig, das zeitliche Verhältnis der verschiedenen Punkte zu erkennen und auch die Zeit für eine bestimmte Aufgabe zu schätzen.
+
+---
+
+
