@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-03-17" view-index="0" gantt-divider-location="528" resource-divider-location="300" version="3.0.3004" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-05-17" view-index="0" gantt-divider-location="528" resource-divider-location="300" version="2.8.11" locale="en_CH">
     <description/>
-    <view zooming-state="default:1" id="gantt-chart">
-        <field id="tpd3" name="Name" width="261" order="0"/>
-        <field id="tpd8" name="Coordinator" width="131" order="1"/>
+    <view zooming-state="default:0" id="gantt-chart">
+        <field id="tpd3" name="Name" width="260" order="0"/>
+        <field id="tpd8" name="Coordinator" width="130" order="1"/>
         <field id="tpd4" name="Begin date" width="58" order="2"/>
         <field id="tpd5" name="End date" width="59" order="3"/>
         <option id="color.recent">
-            <![CDATA[#3399ff #ffcc00 #ff99ff #0000ff #ff0000 #eeeeee #00cc00]]>
+            <![CDATA[#ff99ff #ffcc00 #3399ff #0000ff #ff0000 #eeeeee #00cc00]]>
         </option>
     </view>
     <view id="resource-table">
-        <field id="0" name="Name" width="266" order="0"/>
+        <field id="0" name="Name" width="264" order="0"/>
         <field id="1" name="Default role" width="30" order="1"/>
     </view>
     <!-- -->
@@ -384,26 +384,26 @@ Gibt es ungelöste Probleme?
             </notes>
         </task>
         <task id="749" name="Milestone 3 Presentation" color="#ff0000" meeting="true" start="2021-04-22" duration="0" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true"/>
-        <task id="748" name="Product: Referee" color="#8cb6ce" meeting="false" start="2021-04-23" duration="5" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="748" name="Product: Referee" color="#ff99ff" meeting="false" start="2021-04-23" duration="5" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The rules of the game are checked and enforced correctly. ]]>
             </notes>
         </task>
-        <task id="744" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-19" duration="19" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+        <task id="744" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-19" duration="19" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="false">
             <notes>
                 <![CDATA[The game is represented graphically.
 
 The game is fully playable from the UI. Text input is only used where absolutely necessary.]]>
             </notes>
-            <task id="745" name="Lobby GUI" color="#8cb6ce" meeting="false" start="2021-04-19" duration="9" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+            <task id="745" name="Lobby GUI" color="#ffcc00" meeting="false" start="2021-04-19" duration="9" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
                 <notes>
                     <![CDATA[The Lobby is represented graphically.
 In der Lobby können die Spieler die Spieleranzahl, das Spielbrett sowie den Teampartner wählen, indem sie die entsprechenden Menupunkte aufrufen. 
 ]]>
                 </notes>
             </task>
-            <task id="746" name="Menu GUI" color="#8cb6ce" meeting="false" start="2021-04-20" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true"/>
-            <task id="747" name="Game GUI" color="#8cb6ce" meeting="false" start="2021-04-26" duration="12" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+            <task id="746" name="Menu GUI" color="#ff99ff" meeting="false" start="2021-04-20" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true"/>
+            <task id="747" name="Game GUI" color="#3399ff" meeting="false" start="2021-04-26" duration="12" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
                 <notes>
                     <![CDATA[Es gibt zwei verschiedene Spielbretter (für 4 und für 6 Spieler). 
 Murmeln und Karten werden bei beiden Varianten gleich dargestellt. 
@@ -412,88 +412,88 @@ Nice to have: Animierte Bewegung der Murmeln.
                 </notes>
             </task>
         </task>
-        <task id="288" name="Process: 5 out of 7" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
-            <task id="643" name="Game 1" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
-            <task id="644" name="Game 2" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+        <task id="288" name="Process: 5 out of 7" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" expand="false" cost-manual-value="0.0" cost-calculated="true">
+            <task id="643" name="Game 1" color="#ff99ff" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            <task id="644" name="Game 2" color="#ffcc00" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
         </task>
-        <task id="291" name="Product: High Score" color="#8cb6ce" meeting="false" start="2021-04-21" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="291" name="Product: High Score" color="#ff99ff" meeting="false" start="2021-04-21" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[There is a high score list which is stored persistently, updated when needed and availble for clients.
 In the high score, there are listed the individual players as well as the teams. 
 ]]>
             </notes>
         </task>
-        <task id="300" name="Product: Unit-Test" color="#8cb6ce" meeting="false" start="2021-04-28" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="300" name="Product: Unit-Test" color="#ff99ff" meeting="false" start="2021-04-28" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[All relevant features of a core component of your game are tested.
 
 Unit-Tests are sufficient and meaningful.]]>
             </notes>
         </task>
-        <task id="304" name="Product: Victory!" color="#8cb6ce" meeting="false" start="2021-04-23" duration="1" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="304" name="Product: Victory!" color="#ff99ff" meeting="false" start="2021-04-23" duration="1" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The winner(team) and the win state is correctly determined.]]>
             </notes>
         </task>
-        <task id="334" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="334" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="false" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The GUI works without any errors and all client functionality is accessible by it.]]>
             </notes>
-            <task id="721" name="GUI Lobby" color="#8cb6ce" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
+            <task id="721" name="GUI Lobby" color="#ff99ff" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
                 <notes>
                     <![CDATA[Die folgenden Funktionen können über GUI aufgerufen werden:
 Spielbrett, Anzahl Spieler, Teampartner wählen, Spielstatistik aufrufen
 ]]>
                 </notes>
             </task>
-            <task id="724" name="GUI Game" color="#8cb6ce" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
+            <task id="724" name="GUI Game" color="#3399ff" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
                 <notes>
                     <![CDATA[Das Spielbrett wird entsprechend dargestellt (4 oder 6 Spieler). Der Spieler sieht nur seine eigenen Karten, die Karten der anderen Spieler werden verdeckt dargestellt. 
 Über entsprechende Buttons können folgende Funktionen ausgelöst werden: Eigene Karten ordnen, Karte ausspielen, Murmel bewegen, Public Chat, Spielanleitung aufrufen, Spiel (vorzeitig) beenden]]>
                 </notes>
             </task>
         </task>
-        <task id="336" name="Product: Game Logic" color="#8cb6ce" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="336" name="Product: Game Logic" color="#ffcc00" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The entire logic of the game as well as all its mechanics are present and the game is fully playable.]]>
             </notes>
         </task>
-        <task id="294" name="Process: Peer Precision" color="#8cb6ce" meeting="true" start="2021-04-29" duration="0" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="294" name="Process: Peer Precision" color="#ff99ff" meeting="true" start="2021-04-29" duration="0" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Your assessment of the other games matches our assessment with a deviation of at most one achievement.]]>
             </notes>
         </task>
-        <task id="285" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-04-29" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="285" name="Process: /**...*/ - Check" color="#3399ff" meeting="true" start="2021-04-29" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Source code is sufficiently documented.]]>
             </notes>
         </task>
-        <task id="310" name="Process: /**...*/ - Last check" color="#8cb6ce" meeting="true" start="2021-05-07" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="310" name="Process: /**...*/ - Last check" color="#ff99ff" meeting="true" start="2021-05-07" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Source code is sufficiently documented.]]>
             </notes>
         </task>
-        <task id="254" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="254" name="Process: Dear Diary" color="#3399ff" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="259" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-21" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="259" name="Process: Dear Diary" color="#ffcc00" meeting="false" start="2021-04-21" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="263" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-28" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="263" name="Process: Dear Diary" color="#ff99ff" meeting="false" start="2021-04-28" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="267" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-05" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="267" name="Process: Dear Diary" color="#3399ff" meeting="false" start="2021-05-05" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="298" name="Presentation: Shall We Play JDogs" color="#8cb6ce" meeting="false" start="2021-05-10" duration="1" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="298" name="Presentation: Shall We Play JDogs" color="#ff99ff" meeting="false" start="2021-05-10" duration="1" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Present the working game in the excercise slot by playing the game.]]>
             </notes>
@@ -507,134 +507,134 @@ Ziel ist es, ein erstes lauffähiges Client/Server Spiel mit GUI-Unterstützung 
             </notes>
         </task>
         <task id="752" name="Milestone 4 Presentation" color="#ff0000" meeting="true" start="2021-05-12" duration="0" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true"/>
-        <task id="326" name="Product: Architecture" color="#8cb6ce" meeting="false" start="2021-05-10" duration="3" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="326" name="Product: Architecture" color="#ff99ff" meeting="false" start="2021-05-10" duration="3" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Have documentation outlining the overall program architecture.]]>
             </notes>
         </task>
-        <task id="338" name="Product: High Score" color="#8cb6ce" meeting="false" start="2021-05-13" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="338" name="Product: High Score" color="#ff99ff" meeting="false" start="2021-05-13" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[There is a high score list which is stored persistently, updated when needed and shown when requested.]]>
             </notes>
         </task>
-        <task id="344" name="Product: Manual" color="#8cb6ce" meeting="false" start="2021-05-13" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="344" name="Product: Manual" color="#ffcc00" meeting="false" start="2021-05-13" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[There is a manual which describes how the game is to be played.]]>
             </notes>
         </task>
-        <task id="348" name="Product: Picturesque" color="#8cb6ce" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="348" name="Product: Picturesque" color="#ffcc00" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Have a representative screenshot of the game.]]>
             </notes>
         </task>
-        <task id="346" name="Product: Pachydermatous Librarian" color="#8cb6ce" meeting="false" start="2021-05-17" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="346" name="Product: Pachydermatous Librarian" color="#3399ff" meeting="false" start="2021-05-17" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[All external libraries in your project are managed by gradle via maven central.]]>
             </notes>
         </task>
-        <task id="350" name="Product: Protocol Code" color="#8cb6ce" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="350" name="Product: Protocol Code" color="#ff99ff" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Final version of network protocol is completely defined and documented in source code.]]>
             </notes>
             <depend id="352" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="352" name="Product: Protocol Document" color="#8cb6ce" meeting="false" start="2021-05-18" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="352" name="Product: Protocol Document" color="#ff99ff" meeting="false" start="2021-05-18" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The final version of the network protocol is current in external documentation.]]>
             </notes>
         </task>
-        <task id="356" name="Product: QA Report" color="#8cb6ce" meeting="false" start="2021-05-17" duration="4" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="356" name="Product: QA Report" color="#3399ff" meeting="false" start="2021-05-17" duration="4" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[QA report with goals, methods and results.
 
 Detailed and relevant analysis of QA measures over time, discussion of results, well-written report.]]>
             </notes>
         </task>
-        <task id="366" name="Product: Unit-Test" color="#8cb6ce" meeting="false" start="2021-05-17" duration="4" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="366" name="Product: Unit-Test" color="#ffcc00" meeting="false" start="2021-05-17" duration="4" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[All unit-tests are meaningful and 'green'.]]>
             </notes>
         </task>
-        <task id="340" name="Product: Login" color="#8cb6ce" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="340" name="Product: Login" color="#ff99ff" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Arbitrarily many clients can still log on to the server.]]>
             </notes>
         </task>
-        <task id="330" name="Product: Command Line" color="#8cb6ce" meeting="false" start="2021-05-18" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="330" name="Product: Command Line" color="#ff99ff" meeting="false" start="2021-05-18" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Command line parameters are still parsed correctly.]]>
             </notes>
         </task>
-        <task id="332" name="Presentation: Demo!" color="#8cb6ce" meeting="false" start="2021-05-19" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="332" name="Presentation: Demo!" color="#ff99ff" meeting="false" start="2021-05-19" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Have a bugfree demo of the game in the final presentation.]]>
             </notes>
         </task>
-        <task id="364" name="Product: Twitchy" color="#8cb6ce" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="364" name="Product: Twitchy" color="#ffcc00" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Have a representative video showing somewhere between 20 seconds and 2 minutes of gameplay.]]>
             </notes>
         </task>
-        <task id="342" name="Presentation: Logo" color="#8cb6ce" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="342" name="Presentation: Logo" color="#3399ff" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The game and/or team has a proper Logo.]]>
             </notes>
         </task>
-        <task id="354" name="Presentation: QA" color="#8cb6ce" meeting="false" start="2021-05-21" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="354" name="Presentation: QA" color="#ff99ff" meeting="false" start="2021-05-21" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Results of Quality Assurance measures and lessons learned from them.]]>
             </notes>
         </task>
-        <task id="361" name="Presentation: Technology!" color="#8cb6ce" meeting="false" start="2021-05-21" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="361" name="Presentation: Technology!" color="#3399ff" meeting="false" start="2021-05-21" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Describe tools, libraries and processes which you use that are not introduced in the lecture and why you use them.
 
 Use at least two libraries besides JUnit actively for a significant / impactful task in your project. JavaFX does not count.]]>
             </notes>
         </task>
-        <task id="323" name="Presentation: About JDogs" color="#8cb6ce" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-03-11" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="323" name="Presentation: About JDogs" color="#ffcc00" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-03-11" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Outline of the game with its goals, rules and mechanics.
 
 Have a clear introduction to your game explaining its fundamentals in such a way that a first-time listener can understand it.]]>
             </notes>
         </task>
-        <task id="368" name="Presentation: We Are Smarter Now" color="#8cb6ce" meeting="false" start="2021-05-24" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="368" name="Presentation: We Are Smarter Now" color="#ffcc00" meeting="false" start="2021-05-24" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Lessons Learned.]]>
             </notes>
         </task>
-        <task id="307" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-05-17" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="307" name="Process: /**...*/ - Check" color="#ffcc00" meeting="true" start="2021-05-17" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Source code is sufficiently documented.]]>
             </notes>
         </task>
-        <task id="328" name="Process: Archiving" color="#8cb6ce" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="328" name="Process: Archiving" color="#ffcc00" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Your repository contains an outreach/ folder with the specified content.]]>
             </notes>
         </task>
-        <task id="316" name="Process: /**...*/ - Last check" color="#8cb6ce" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="316" name="Process: /**...*/ - Last check" color="#3399ff" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Source code is sufficiently documented.]]>
             </notes>
         </task>
-        <task id="271" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-10" duration="2" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="271" name="Process: Dear Diary" color="#3399ff" meeting="false" start="2021-05-10" duration="2" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="274" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-12" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="274" name="Process: Dear Diary" color="#ffcc00" meeting="false" start="2021-05-12" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="278" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-19" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="278" name="Process: Dear Diary" color="#ff99ff" meeting="false" start="2021-05-19" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="359" name="Presentation: Shall We Play JDogs" color="#8cb6ce" meeting="false" start="2021-05-24" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="359" name="Presentation: Shall We Play JDogs" color="#ff99ff" meeting="false" start="2021-05-24" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Present the working final game in the excercise slot by playing the game.]]>
             </notes>
