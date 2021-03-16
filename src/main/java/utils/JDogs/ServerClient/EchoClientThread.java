@@ -1,4 +1,4 @@
-package JDogs.ServerClient;
+package utils.JDogs.ServerClient;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;

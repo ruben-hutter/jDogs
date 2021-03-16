@@ -1,4 +1,4 @@
-package JDogs.ServerClient;
+package utils.JDogs.ServerClient;
 
 import java.net.*;
 import java.io.*;
