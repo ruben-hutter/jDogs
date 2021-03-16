@@ -1,5 +1,5 @@
 package utils.JDogs.Player;
-//will display the player
+//player entity
 
 public class Player {
 }
