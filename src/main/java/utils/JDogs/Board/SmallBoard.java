@@ -1,6 +1,6 @@
 package utils.JDogs.Board;
 //this file represents the small board
-public class SmallBoard implements BoardAPI {
+public class SmallBoard extends Board {
 
     public static final int BOARD_LENGTH = 0;
     public static final int BOARD_WIDTH = 0;
@@ -12,12 +12,8 @@ public class SmallBoard implements BoardAPI {
     }
 
     @Override
-    public boolean isOccupied() {
-        return false;
+    public Tile[] getGameArray() {
+        return new Tile[0];
     }
 
-    @Override
-    public void update() {
-
-    }
 }

@@ -1,7 +1,7 @@
 package utils.JDogs.Board;
 //one of 64/96 normal Indentations
 
-public class NormIndentation extends Indentation {
+public class TrackTile extends Tile {
 
 
 
