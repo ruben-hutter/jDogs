@@ -1,13 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="JDogs" company="UNI Basel" webLink="http://" view-date="2021-03-29" view-index="0" gantt-divider-location="528" resource-divider-location="300" version="3.0.3004" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-03-10" view-index="0" gantt-divider-location="528" resource-divider-location="300" version="2.8.11" locale="en_CH">
     <description/>
-    <view zooming-state="default:1" id="gantt-chart">
-        <field id="tpd3" name="Name" width="262" order="0"/>
-        <field id="tpd8" name="Coordinator" width="131" order="1"/>
+    <view zooming-state="default:2" id="gantt-chart">
+        <field id="tpd3" name="Name" width="261" order="0"/>
+        <field id="tpd8" name="Coordinator" width="130" order="1"/>
         <field id="tpd4" name="Begin date" width="57" order="2"/>
         <field id="tpd5" name="End date" width="59" order="3"/>
+        <option id="color.recent">
+            <![CDATA[#ff0000 #eeeeee #00cc00]]>
+        </option>
     </view>
     <view id="resource-table">
-        <field id="0" name="Name" width="274" order="0"/>
+        <field id="0" name="Name" width="272" order="0"/>
         <field id="1" name="Default role" width="22" order="1"/>
     </view>
     <!-- -->
@@ -16,7 +19,7 @@
             <day-type id="0"/>
             <day-type id="1"/>
             <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
-            <only-show-weekends value="true"/>
+            <only-show-weekends value="false"/>
             <overriden-day-types/>
             <days/>
         </day-types>
@@ -34,44 +37,44 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" name="Presentation: About JDogs" color="#8cb6ce" meeting="false" start="2021-03-10" duration="3" complete="0" thirdDate="2021-03-11" thirdDate-constraint="0" expand="true">
+        <task id="0" name="Presentation: About JDogs" color="#8cb6ce" meeting="false" start="2021-03-10" duration="3" complete="0" thirdDate="2021-03-11" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Outline of the game with its goals, rules and mechanics.
 Have a very clear and well thought out concept of your game.]]>
             </notes>
         </task>
-        <task id="37" name="Presentation: Who? What? When?" color="#8cb6ce" meeting="false" start="2021-03-10" duration="5" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true">
+        <task id="37" name="Presentation: Who? What? When?" color="#8cb6ce" meeting="false" start="2021-03-10" duration="5" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project timeline and responsibilities.]]>
             </notes>
         </task>
-        <task id="29" name="Presentation: Networking" color="#8cb6ce" meeting="false" start="2021-03-10" duration="3" complete="0" thirdDate="2021-03-08" thirdDate-constraint="0" expand="true">
+        <task id="29" name="Presentation: Networking" color="#8cb6ce" meeting="false" start="2021-03-10" duration="3" complete="0" thirdDate="2021-03-08" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Overview of the functionality of client and server.]]>
             </notes>
         </task>
-        <task id="33" name="Presentation: Requirement Analysis" color="#8cb6ce" meeting="false" start="2021-03-13" duration="2" complete="0" thirdDate="2021-03-12" thirdDate-constraint="0" expand="true">
+        <task id="33" name="Presentation: Requirement Analysis" color="#8cb6ce" meeting="false" start="2021-03-15" duration="2" complete="0" thirdDate="2021-03-12" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Overview of the software requirements (not required software).]]>
             </notes>
         </task>
-        <task id="26" name="Presentation: Mockup" color="#8cb6ce" meeting="false" start="2021-03-13" duration="2" complete="0" thirdDate="2021-03-08" thirdDate-constraint="0" expand="true">
+        <task id="26" name="Presentation: Mockup" color="#8cb6ce" meeting="false" start="2021-03-15" duration="2" complete="0" thirdDate="2021-03-08" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Show a self made mockup of your game during the presentation.]]>
             </notes>
         </task>
-        <task id="16" name="Product: Ahead of Schedule and Under Budget!" color="#8cb6ce" meeting="false" start="2021-03-15" duration="2" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
+        <task id="16" name="Product: Ahead of Schedule and Under Budget!" color="#8cb6ce" meeting="false" start="2021-03-15" duration="2" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.00000000000000" cost-calculated="true">
             <notes>
                 <![CDATA[You have already started producing relevant code for your project.]]>
             </notes>
         </task>
-        <task id="18" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-10" duration="7" complete="0" thirdDate="2021-03-09" thirdDate-constraint="0" expand="true">
+        <task id="18" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-10" duration="7" complete="0" thirdDate="2021-03-09" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary exists and is readable.
 The diary has at least one meaningful entry.]]>
             </notes>
         </task>
-        <task id="2" name="Milestone 1" color="#8cb6ce" meeting="true" start="2021-03-17" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
+        <task id="2" name="Milestone 1 Check-In" color="#00cc00" meeting="true" start="2021-03-17" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Präsentation von 10 – 15 min pro Gruppe
 
@@ -84,30 +87,58 @@ des Protokolls
 – Projektorganisation: Arbeitsplan/Balkendiagramm, Zuständigkeiten]]>
             </notes>
         </task>
-        <task id="76" name="Product: Login" color="#8cb6ce" meeting="false" start="2021-03-17" duration="3" complete="0" thirdDate="2021-03-09" thirdDate-constraint="0" expand="true">
+        <task id="735" name="Milestone 1 Presentation" color="#ff0000" meeting="true" start="2021-03-18" duration="0" complete="0" thirdDate="2021-05-19" thirdDate-constraint="0" expand="true"/>
+        <task id="76" name="Product: Login" color="#8cb6ce" meeting="false" start="2021-03-17" duration="3" complete="0" thirdDate="2021-03-09" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Arbitrarily many clients can log on to the server.]]>
             </notes>
         </task>
-        <task id="82" name="Product: Logout" color="#8cb6ce" meeting="false" start="2021-03-17" duration="3" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true">
+        <task id="82" name="Product: Logout" color="#8cb6ce" meeting="false" start="2021-03-17" duration="3" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[The server handles a client logout in a meaningful way.]]>
+                <![CDATA[The server handles a client logout in a meaningful way. 
+
+]]>
             </notes>
         </task>
-        <task id="93" name="Product: Protocol Code" color="#8cb6ce" meeting="false" start="2021-03-17" duration="4" complete="0" thirdDate="2021-03-14" thirdDate-constraint="0" expand="true">
+        <task id="93" name="Product: Protocol Code" color="#8cb6ce" meeting="false" start="2021-03-17" duration="4" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[The human-readable network protocol is defined and documented in the source code.]]>
+                <![CDATA[The human-readable network protocol is defined and documented in the source code.
+Vergleiche die Folien zur Netzwerk-Übersicht. 
+]]>
             </notes>
             <depend id="89" type="2" difference="0" hardness="Strong"/>
             <depend id="90" type="2" difference="0" hardness="Strong"/>
             <depend id="135" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="65" name="Product: Chat" color="#8cb6ce" meeting="false" start="2021-03-17" duration="4" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true">
+        <task id="65" name="Product: Chat" color="#8cb6ce" meeting="false" start="2021-03-17" duration="4" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.00000000000000" cost-calculated="true">
             <notes>
-                <![CDATA[Client to client chat is working.]]>
+                <![CDATA[Client to client chat is working. Public chat is available during the whole game (including before and after the "real" game)]]>
             </notes>
         </task>
-        <task id="61" name="Product: Call Me Bob" color="#8cb6ce" meeting="false" start="2021-03-20" duration="2" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true">
+        <task id="657" name="Process: QA-Concept" color="#8cb6ce" meeting="false" start="2021-03-22" duration="3" complete="0" thirdDate="2021-04-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Reasonable Software Quality concept
+]]>
+            </notes>
+        </task>
+        <task id="135" name="Product: Protocol Document" color="#8cb6ce" meeting="false" start="2021-03-23" duration="3" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[The human-readable network protocol is defined in a dedicated document.]]>
+            </notes>
+        </task>
+        <task id="89" name="Product: Ping" color="#8cb6ce" meeting="false" start="2021-03-23" duration="2" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[A ping message is regularly sent from server to client and processed meaningfully (connection losses are detected and handled).]]>
+            </notes>
+            <depend id="59" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="90" name="Product: Pong" color="#8cb6ce" meeting="false" start="2021-03-23" duration="2" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[A ping message is regularly sent from client to server and processed meaningfully (connection losses are detected and handled).]]>
+            </notes>
+            <depend id="59" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="61" name="Product: Call Me Bob" color="#8cb6ce" meeting="false" start="2021-03-22" duration="2" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.00000000000000" cost-calculated="true">
             <notes>
                 <![CDATA[Players can change their nicknames.
 
@@ -116,54 +147,42 @@ The server assures that player nicknames are unique and changes duplicates in a 
 The client suggests a nickname based on the system username.]]>
             </notes>
         </task>
-        <task id="135" name="Product: Protocol Document" color="#8cb6ce" meeting="false" start="2021-03-21" duration="3" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true">
+        <task id="49" name="Product: .gitignore - Check" color="#8cb6ce" meeting="true" start="2021-03-22" duration="0" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[The human-readable network protocol is defined in a dedicated document.]]>
+                <![CDATA[There is a gitignore file containing entries relevant for major operating systems and the used tools.]]>
             </notes>
         </task>
-        <task id="89" name="Product: Ping" color="#8cb6ce" meeting="false" start="2021-03-21" duration="2" complete="0" thirdDate="2021-03-14" thirdDate-constraint="0" expand="true">
+        <task id="55" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-03-22" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[A ping message is regularly sent from server to client and processed meaningfully (connection losses are detected and handled).]]>
+                <![CDATA[Source code is sufficiently documented.]]>
             </notes>
-            <depend id="59" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="90" name="Product: Pong" color="#8cb6ce" meeting="false" start="2021-03-21" duration="2" complete="0" thirdDate="2021-03-14" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[A ping message is regularly sent from client to server and processed meaningfully (connection losses are detected and handled).]]>
-            </notes>
-            <depend id="59" type="2" difference="0" hardness="Strong"/>
-        </task>
-        <task id="59" name="Product: Encoding Error" color="#8cb6ce" meeting="false" start="2021-03-23" duration="3" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true">
+        <task id="59" name="Product: Encoding Error" color="#8cb6ce" meeting="false" start="2021-03-25" duration="3" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Protocol and content is properly encoded, decoded and validated.]]>
             </notes>
         </task>
-        <task id="49" name="Product: .gitignore - Check" color="#8cb6ce" meeting="true" start="2021-03-21" duration="0" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true">
+        <task id="38" name="Product: .gitignore - Last check" color="#8cb6ce" meeting="true" start="2021-03-26" duration="0" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[There is a gitignore file containing entries relevant for major operating systems and the used tools.]]>
             </notes>
         </task>
-        <task id="55" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-03-21" duration="0" complete="0" thirdDate="2021-03-20" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="45" name="Process: /**...*/ - Last check" color="#8cb6ce" meeting="true" start="2021-03-26" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Source code is sufficiently documented.]]>
             </notes>
         </task>
-        <task id="38" name="Product: .gitignore - Last check" color="#8cb6ce" meeting="true" start="2021-03-26" duration="0" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[There is a gitignore file containing entries relevant for major operating systems and the used tools.]]>
-            </notes>
-        </task>
-        <task id="45" name="Process: /**...*/ - Last check" color="#8cb6ce" meeting="true" start="2021-03-26" duration="0" complete="0" thirdDate="2021-03-20" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[Source code is sufficiently documented.]]>
-            </notes>
-        </task>
-        <task id="68" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-17" duration="12" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true">
+        <task id="68" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-17" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="4" name="Milestone 2" color="#8cb6ce" meeting="true" start="2021-03-29" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
+        <task id="236" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-24" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="4" name="Milestone 2 Check-In" color="#00cc00" meeting="true" start="2021-03-29" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Dieser Meilenstein besteht aus dem Vorzeigen des Projekts in den
 Übungsstunden der Woche vom 29.03.2021.
@@ -173,134 +192,177 @@ Die Anforderung für diesen Projektmeilenstein ist die Implementierung eines Jav
 implementiert (via Socket-Verbindungen, z.B. java.net.*).]]>
             </notes>
         </task>
-        <task id="158" name="Product: Broadcast" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[Broadcast to all clients across all games and lobbies is working and has a dedicated command.]]>
-            </notes>
-        </task>
-        <task id="163" name="Product: Build Script" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="739" name="Milestone 2 Presentation" color="#ff0000" meeting="true" start="2021-03-31" duration="0" complete="0" thirdDate="2021-03-09" thirdDate-constraint="0" expand="true"/>
+        <task id="163" name="Product: Build Script" color="#8cb6ce" meeting="false" start="2021-03-29" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The build script succeeds and produces an executable jar & javadoc for the task "build-cs108".]]>
             </notes>
         </task>
-        <task id="166" name="Product: Command Line" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="166" name="Product: Command Line" color="#8cb6ce" meeting="false" start="2021-03-29" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Command line parameters are parsed correctly: (client <hostadress>:<port> [<username>] | server <port>).]]>
             </notes>
+            <depend id="158" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="155" name="Presentation: About JDogs" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-11" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="158" name="Product: Broadcast" color="#8cb6ce" meeting="false" start="2021-04-01" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[Outline of the game with its goals, rules and mechanics.]]>
+                <![CDATA[Broadcast to all clients across all games and lobbies is working and has a dedicated command.]]>
             </notes>
         </task>
-        <task id="177" name="Presentation: Demo!" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="220" name="Product: Whisper" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[Present a working prototype (Terminal or GUI) of the game in the presentation.]]>
+                <![CDATA[Whisper-chat between two clients is working. Whisper-Chat is deactivated during the game, only active prior to the game.
+]]>
             </notes>
+            <depend id="185" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="185" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="185" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-03-30" duration="5" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The chat is available via a basic GUI.]]>
             </notes>
         </task>
-        <task id="187" name="Product: Game List" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="187" name="Product: Game List" color="#8cb6ce" meeting="false" start="2021-04-01" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[There is a way to list open, ongoing as well as finished games. Their status is indicated.]]>
+                <![CDATA[There is a way to list open, ongoing as well as finished games. Their status is indicated.
+]]>
             </notes>
         </task>
-        <task id="189" name="Product: Game Logic" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="189" name="Product: Game Logic" color="#8cb6ce" meeting="false" start="2021-04-05" duration="6" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The main logic of the game as well as its fundamental mechanics are present and the game is playable.]]>
             </notes>
+            <task id="384" name="Cards" color="#8cb6ce" meeting="false" start="2021-04-05" duration="6" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+                <notes>
+                    <![CDATA[Implement the required Cards for JDogs.
+They should be distributed evenly according to the rules. 
+The cards are only visible for the player, not for the others.
+]]>
+                </notes>
+            </task>
+            <task id="385" name="Marbles" color="#8cb6ce" meeting="false" start="2021-04-05" duration="6" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+                <notes>
+                    <![CDATA[The marbles can be moved according to the rules (e.g. blocking, sending home, etc.)
+
+]]>
+                </notes>
+            </task>
         </task>
-        <task id="191" name="Product: Game State" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="191" name="Product: Game State" color="#8cb6ce" meeting="false" start="2021-04-05" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[Game state is kept on server.]]>
+                <![CDATA[Game state is kept on server: Wo sind die Murmeln der Spieler, wer hat welche Karten? 
+]]>
             </notes>
         </task>
-        <task id="194" name="Product: Librarian" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="194" name="Product: Librarian" color="#8cb6ce" meeting="false" start="2021-04-07" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Use at least one external library besides JUnit. JavaFX does not count as an external library.]]>
             </notes>
         </task>
-        <task id="196" name="Product: Lounging" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="196" name="Product: Lounging" color="#8cb6ce" meeting="false" start="2021-04-12" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Have support for multiple lobbies (one per game) with their respective internal chats.]]>
             </notes>
+            <depend id="198" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="198" name="Product: Lounging List" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="198" name="Product: Lounging List" color="#8cb6ce" meeting="false" start="2021-04-14" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[There is a way to list players in lobbies.]]>
             </notes>
         </task>
-        <task id="201" name="Product: Manual" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="201" name="Product: Manual" color="#8cb6ce" meeting="false" start="2021-04-12" duration="4" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
-                <![CDATA[There is a manual which describes how the game is to be played.]]>
+                <![CDATA[There is a manual which describes how JDogs is to be played.]]>
             </notes>
         </task>
-        <task id="203" name="Product: Player List" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="203" name="Product: Player List" color="#8cb6ce" meeting="false" start="2021-04-12" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[There is a way to list all players currently connected to the server.]]>
             </notes>
         </task>
-        <task id="205" name="Presentation: Progress Report" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[How things are going - project timeline and responsibilities, changes and problems.]]>
-            </notes>
-        </task>
-        <task id="207" name="Product: Protocol Code" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="207" name="Product: Protocol Code" color="#8cb6ce" meeting="false" start="2021-04-12" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Network protocol is completely defined and documented in source code.]]>
             </notes>
+            <depend id="209" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="209" name="Product: Protocol Document" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="209" name="Product: Protocol Document" color="#8cb6ce" meeting="false" start="2021-04-14" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The definition of the network protocol in the external document is up to date.]]>
             </notes>
         </task>
-        <task id="211" name="Presentation: QA" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="205" name="Presentation: Progress Report" color="#8cb6ce" meeting="false" start="2021-04-14" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[How things are going - project timeline and responsibilities, changes and problems.]]>
+            </notes>
+        </task>
+        <task id="214" name="Presentation: Rules to Code" color="#8cb6ce" meeting="false" start="2021-04-16" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[How is the gamestate and game logic represented in the code.]]>
+            </notes>
+        </task>
+        <task id="218" name="Presentation: Technology!" color="#8cb6ce" meeting="false" start="2021-04-14" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Describe tools, libraries and processes which you use that are not introduced in the lecture and why you use them.]]>
+            </notes>
+        </task>
+        <task id="211" name="Presentation: QA" color="#8cb6ce" meeting="false" start="2021-04-16" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Present your QA measures which can also be found in the updated document.
 
 Have a well thought out and detailed written QA concept and a solid and realistic plan on how to implement it. If possible, have a first result of your metrics.]]>
             </notes>
         </task>
-        <task id="214" name="Presentation: Rules to Code" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[How is the gamestate and game logic represented in the code.]]>
-            </notes>
-        </task>
-        <task id="216" name="Product: Shall We Play a Game" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[Present a working prototype of the game logic in the exercise slot by playing the game (Terminal or GUI).]]>
-            </notes>
-        </task>
-        <task id="218" name="Presentation: Technology!" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[Describe tools, libraries and processes which you use that are not introduced in the lecture and why you use them.]]>
-            </notes>
-        </task>
-        <task id="220" name="Product: Whisper" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[Whisper-chat between two clients is working.]]>
-            </notes>
-        </task>
-        <task id="222" name="Process: Who? What? When?" color="#8cb6ce" meeting="false" start="2021-03-29" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true">
+        <task id="222" name="Process: Who? What? When?" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Update and adjust your project plan for milestones 4 and 5.]]>
             </notes>
         </task>
-        <task id="151" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-04-08" duration="0" complete="0" thirdDate="2021-03-20" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="155" name="Presentation: About JDogs" color="#8cb6ce" meeting="false" start="2021-04-15" duration="2" complete="0" thirdDate="2021-03-11" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Outline of the game with its goals, rules and mechanics.]]>
+            </notes>
+        </task>
+        <task id="177" name="Presentation: Demo!" color="#8cb6ce" meeting="false" start="2021-04-15" duration="2" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Present a working prototype (Terminal or GUI) of the game in the presentation.]]>
+            </notes>
+        </task>
+        <task id="151" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-04-08" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Source code is sufficiently documented.]]>
             </notes>
         </task>
-        <task id="170" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-29" duration="21" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="578" name="Process: /**...*/ - Last check" color="#8cb6ce" meeting="true" start="2021-04-16" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Source code is sufficiently documented.]]>
+            </notes>
+        </task>
+        <task id="170" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-29" duration="2" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
             </notes>
         </task>
-        <task id="7" name="Milestone 3" color="#8cb6ce" meeting="true" start="2021-04-19" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
+        <task id="242" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-03-31" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="246" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-07" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="250" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-14" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="216" name="Product: Shall We Play JDogs" color="#8cb6ce" meeting="false" start="2021-04-19" duration="1" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Present a working prototype of the game logic in the exercise slot by playing the game (Terminal or GUI).]]>
+            </notes>
+        </task>
+        <task id="7" name="Milestone 3 Check-In" color="#00cc00" meeting="true" start="2021-04-23" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Präsentation im Plenum, alle Gruppen.
 
@@ -322,7 +384,99 @@ Gibt es ungelöste Probleme?
 ]]>
             </notes>
         </task>
-        <task id="10" name="Milestone 4" color="#8cb6ce" meeting="true" start="2021-05-10" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
+        <task id="749" name="Milestone 3 Presentation" color="#ff0000" meeting="true" start="2021-04-22" duration="0" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true"/>
+        <task id="748" name="Product: Referee" color="#8cb6ce" meeting="false" start="2021-04-23" duration="5" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[The rules of the game are checked and enforced correctly. ]]>
+            </notes>
+        </task>
+        <task id="744" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-19" duration="17" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+            <notes>
+                <![CDATA[The game is represented graphically.
+
+The game is fully playable from the UI. Text input is only used where absolutely necessary.]]>
+            </notes>
+            <task id="745" name="Lobby GUI" color="#8cb6ce" meeting="false" start="2021-04-19" duration="9" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+                <notes>
+                    <![CDATA[The Lobby is represented graphically.
+In der Lobby können die Spieler die Spieleranzahl, das Spielbrett sowie den Teampartner wählen, indem sie die entsprechenden Menupunkte aufrufen. 
+]]>
+                </notes>
+            </task>
+            <task id="746" name="Menu GUI" color="#8cb6ce" meeting="false" start="2021-04-20" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true"/>
+            <task id="747" name="Game GUI" color="#8cb6ce" meeting="false" start="2021-04-26" duration="12" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+                <notes>
+                    <![CDATA[Es gibt zwei verschiedene Spielbretter (für 4 und für 6 Spieler). 
+Murmeln und Karten werden bei beiden Varianten gleich dargestellt. 
+Nice to have: Animierte Bewegung der Murmeln. 
+]]>
+                </notes>
+            </task>
+        </task>
+        <task id="288" name="Process: 5 out of 7" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <task id="643" name="Game 1" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            <task id="644" name="Game 2" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+        </task>
+        <task id="291" name="Product: High Score" color="#8cb6ce" meeting="false" start="2021-04-21" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[There is a high score list which is stored persistently, updated when needed and availble for clients.
+In the high score, there are listed the individual players as well as the teams. 
+]]>
+            </notes>
+        </task>
+        <task id="300" name="Product: Unit-Test" color="#8cb6ce" meeting="false" start="2021-04-28" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[All relevant features of a core component of your game are tested.
+
+Unit-Tests are sufficient and meaningful.]]>
+            </notes>
+        </task>
+        <task id="304" name="Product: Victory!" color="#8cb6ce" meeting="false" start="2021-03-10" duration="1" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[The winner(team) and the win state is correctly determined.]]>
+            </notes>
+        </task>
+        <task id="294" name="Process: Peer Precision" color="#8cb6ce" meeting="true" start="2021-04-29" duration="0" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Your assessment of the other games matches our assessment with a deviation of at most one achievement.]]>
+            </notes>
+        </task>
+        <task id="285" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-04-29" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Source code is sufficiently documented.]]>
+            </notes>
+        </task>
+        <task id="310" name="Process: /**...*/ - Last check" color="#8cb6ce" meeting="true" start="2021-05-07" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Source code is sufficiently documented.]]>
+            </notes>
+        </task>
+        <task id="254" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="259" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-21" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="263" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-04-28" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="267" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-05" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="298" name="Presentation: Shall We Play JDogs" color="#8cb6ce" meeting="false" start="2021-05-10" duration="1" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Present the working game in the excercise slot by playing the game.]]>
+            </notes>
+        </task>
+        <task id="10" name="Milestone 4 Check-In" color="#00cc00" meeting="true" start="2021-05-10" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Anforderung für Meilenstein 4:
 – Es ist eine erste Version der GUI für das Spiel vorhanden
@@ -330,52 +484,288 @@ Gibt es ungelöste Probleme?
 Ziel ist es, ein erstes lauffähiges Client/Server Spiel mit GUI-Unterstützung verfügbar zu haben.]]>
             </notes>
         </task>
-        <task id="14" name="Milestone 5" color="#8cb6ce" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
+        <task id="752" name="Milestone 4 Presentation" color="#ff0000" meeting="false" start="2021-05-12" duration="1" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true"/>
+        <task id="326" name="Product: Architecture" color="#8cb6ce" meeting="false" start="2021-05-10" duration="3" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Have documentation outlining the overall program architecture.]]>
+            </notes>
+        </task>
+        <task id="334" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-09" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[The GUI works without any errors and all client functionality is accessible by it.]]>
+            </notes>
+            <task id="721" name="GUI Lobby" color="#8cb6ce" meeting="false" start="2021-04-09" duration="1" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
+                <notes>
+                    <![CDATA[Die folgenden Funktionen können über GUI aufgerufen werden:
+Spielbrett, Anzahl Spieler, Teampartner wählen, Spielstatistik aufrufen
+]]>
+                </notes>
+            </task>
+            <task id="724" name="GUI Game" color="#8cb6ce" meeting="false" start="2021-04-09" duration="1" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
+                <notes>
+                    <![CDATA[Das Spielbrett wird entsprechend dargestellt (4 oder 6 Spieler). Der Spieler sieht nur seine eigenen Karten, die Karten der anderen Spieler werden verdeckt dargestellt. 
+Über entsprechende Buttons können folgende Funktionen ausgelöst werden: Eigene Karten ordnen, Karte ausspielen, Murmel bewegen, Public Chat, Spielanleitung aufrufen, Spiel (vorzeitig) beenden]]>
+                </notes>
+            </task>
+        </task>
+        <task id="336" name="Product: Game Logic" color="#8cb6ce" meeting="false" start="2021-04-09" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[The entire logic of the game as well as all its mechanics are present and the game is fully playable.]]>
+            </notes>
+        </task>
+        <task id="338" name="Product: High Score" color="#8cb6ce" meeting="false" start="2021-05-13" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[There is a high score list which is stored persistently, updated when needed and shown when requested.]]>
+            </notes>
+        </task>
+        <task id="344" name="Product: Manual" color="#8cb6ce" meeting="false" start="2021-05-13" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[There is a manual which describes how the game is to be played.]]>
+            </notes>
+        </task>
+        <task id="348" name="Product: Picturesque" color="#8cb6ce" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Have a representative screenshot of the game.]]>
+            </notes>
+        </task>
+        <task id="346" name="Product: Pachydermatous Librarian" color="#8cb6ce" meeting="false" start="2021-05-17" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[All external libraries in your project are managed by gradle via maven central.]]>
+            </notes>
+        </task>
+        <task id="350" name="Product: Protocol Code" color="#8cb6ce" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Final version of network protocol is completely defined and documented in source code.]]>
+            </notes>
+            <depend id="352" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="352" name="Product: Protocol Document" color="#8cb6ce" meeting="false" start="2021-05-18" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[The final version of the network protocol is current in external documentation.]]>
+            </notes>
+        </task>
+        <task id="356" name="Product: QA Report" color="#8cb6ce" meeting="false" start="2021-05-17" duration="4" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[QA report with goals, methods and results.
+
+Detailed and relevant analysis of QA measures over time, discussion of results, well-written report.]]>
+            </notes>
+        </task>
+        <task id="366" name="Product: Unit-Test" color="#8cb6ce" meeting="false" start="2021-05-17" duration="4" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[All unit-tests are meaningful and 'green'.]]>
+            </notes>
+        </task>
+        <task id="340" name="Product: Login" color="#8cb6ce" meeting="false" start="2021-05-17" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Arbitrarily many clients can still log on to the server.]]>
+            </notes>
+        </task>
+        <task id="330" name="Product: Command Line" color="#8cb6ce" meeting="false" start="2021-05-18" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Command line parameters are still parsed correctly.]]>
+            </notes>
+        </task>
+        <task id="332" name="Presentation: Demo!" color="#8cb6ce" meeting="false" start="2021-05-19" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Have a bugfree demo of the game in the final presentation.]]>
+            </notes>
+        </task>
+        <task id="364" name="Product: Twitchy" color="#8cb6ce" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Have a representative video showing somewhere between 20 seconds and 2 minutes of gameplay.]]>
+            </notes>
+        </task>
+        <task id="342" name="Presentation: Logo" color="#8cb6ce" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[The game and/or team has a proper Logo.]]>
+            </notes>
+        </task>
+        <task id="354" name="Presentation: QA" color="#8cb6ce" meeting="false" start="2021-05-21" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Results of Quality Assurance measures and lessons learned from them.]]>
+            </notes>
+        </task>
+        <task id="361" name="Presentation: Technology!" color="#8cb6ce" meeting="false" start="2021-05-21" duration="2" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Describe tools, libraries and processes which you use that are not introduced in the lecture and why you use them.
+
+Use at least two libraries besides JUnit actively for a significant / impactful task in your project. JavaFX does not count.]]>
+            </notes>
+        </task>
+        <task id="323" name="Presentation: About JDogs" color="#8cb6ce" meeting="false" start="2021-05-21" duration="1" complete="0" thirdDate="2021-03-11" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Outline of the game with its goals, rules and mechanics.
+
+Have a clear introduction to your game explaining its fundamentals in such a way that a first-time listener can understand it.]]>
+            </notes>
+        </task>
+        <task id="368" name="Presentation: We Are Smarter Now" color="#8cb6ce" meeting="false" start="2021-05-24" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Lessons Learned.]]>
+            </notes>
+        </task>
+        <task id="307" name="Process: /**...*/ - Check" color="#8cb6ce" meeting="true" start="2021-05-17" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Source code is sufficiently documented.]]>
+            </notes>
+        </task>
+        <task id="328" name="Process: Archiving" color="#8cb6ce" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Your repository contains an outreach/ folder with the specified content.]]>
+            </notes>
+        </task>
+        <task id="316" name="Process: /**...*/ - Last check" color="#8cb6ce" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Source code is sufficiently documented.]]>
+            </notes>
+        </task>
+        <task id="271" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-10" duration="2" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="274" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-12" duration="7" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="278" name="Process: Dear Diary" color="#8cb6ce" meeting="false" start="2021-05-19" duration="5" complete="0" thirdDate="2021-03-17" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Project diary is up to date and filled with meaningful entries.]]>
+            </notes>
+        </task>
+        <task id="359" name="Presentation: Shall We Play JDogs" color="#8cb6ce" meeting="false" start="2021-05-24" duration="1" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <notes>
+                <![CDATA[Present the working final game in the excercise slot by playing the game.]]>
+            </notes>
+        </task>
+        <task id="14" name="Milestone 5 Check-In" color="#00cc00" meeting="true" start="2021-05-24" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Ziel dieses Meilensteins ist die Abschlusspräsentation des gesamten Projekts im Plenum.
+TODO:
 – Präsentation des gesamten Projekts (inklusive einer Live-Demonstration)
-– Bitte Live-Demonstration und insbesondere die Netzwerk-Kommunikation im WLAN im Hörsaal (Netzwerk: DMI PROGRAMMING) oder in Ihrem Gruppen-VPN (Hamachi) vorher testen
+–  Live-Demonstration und insbesondere die Netzwerk-Kommunikation im WLAN im Hörsaal (Netzwerk: DMI PROGRAMMING) oder in Ihrem Gruppen-VPN (Hamachi) vorher testen
 – Charakteristischer Screenshot des Spiels
 – Präsentation der Details zu den durchgeführten Qualitätssicherungs-
-massnahmen (dies soll in der Übungsgruppe vorgeführt werden)
+massnahmen (in der Übungsstunde)
 – Lessons Learned: was haben Sie in diesem Projekt gelernt, was würden Sie wieder so machen, was würden Sie beim nächsten Projekt verändern?]]>
             </notes>
         </task>
+        <task id="756" name="Milestone 5 Presentation" color="#ff0000" meeting="true" start="2021-05-27" duration="0" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources>
-        <resource id="2" name="Johanna Meyer" function="Default:0" contacts="" phone=""/>
-        <resource id="0" name="Gregor Bachmann" function="Default:0" contacts="" phone=""/>
-        <resource id="1" name="Ruben Hutter" function="Default:0" contacts="" phone=""/>
+        <resource id="0" name="Johanna Meyer" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="Gregor Bachmann" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="Ruben Hutter" function="Default:0" contacts="" phone=""/>
     </resources>
     <allocations>
-        <allocation task-id="29" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="33" resource-id="2" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="26" resource-id="2" function="Default:0" responsible="false" load="50.0"/>
-        <allocation task-id="16" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="55" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="61" resource-id="2" function="Default:0" responsible="true" load="33.3"/>
-        <allocation task-id="68" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
-        <allocation task-id="65" resource-id="2" function="Default:0" responsible="true" load="33.3"/>
-        <allocation task-id="135" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="0" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
-        <allocation task-id="33" resource-id="0" function="Default:0" responsible="false" load="50.0"/>
-        <allocation task-id="26" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="16" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="45" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="49" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="76" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="59" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="82" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="170" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
-        <allocation task-id="18" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
-        <allocation task-id="37" resource-id="1" function="Default:0" responsible="true" load="80.0"/>
-        <allocation task-id="16" resource-id="1" function="Default:0" responsible="false" load="33.3"/>
-        <allocation task-id="38" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="59" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="93" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="151" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="89" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="90" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="29" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="33" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="26" resource-id="0" function="Default:0" responsible="false" load="50.0"/>
+        <allocation task-id="16" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="65" resource-id="0" function="Default:0" responsible="true" load="33.3"/>
+        <allocation task-id="657" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="135" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="61" resource-id="0" function="Default:0" responsible="true" load="33.3"/>
+        <allocation task-id="55" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="68" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="163" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="187" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="385" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="196" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="198" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="205" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="214" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="222" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="246" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="216" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="643" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="291" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="300" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="304" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="294" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="310" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="263" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="298" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="326" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="338" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="350" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="352" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="340" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="330" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="332" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="364" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="354" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="278" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="359" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="748" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="33" resource-id="1" function="Default:0" responsible="false" load="50.0"/>
+        <allocation task-id="26" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="16" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="76" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="82" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="49" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="59" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="45" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="236" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="166" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="158" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="191" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="194" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="203" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="207" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="209" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="211" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="578" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="170" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="250" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="216" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="285" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="254" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="267" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="298" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="334" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="346" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="356" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="342" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="361" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="316" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="271" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="359" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="37" resource-id="2" function="Default:0" responsible="true" load="80.0"/>
+        <allocation task-id="16" resource-id="2" function="Default:0" responsible="false" load="33.3"/>
+        <allocation task-id="18" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="93" resource-id="2" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="89" resource-id="2" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="90" resource-id="2" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="59" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="38" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="220" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="185" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="384" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="201" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="218" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="155" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="177" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="151" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="242" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="216" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="644" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="259" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="298" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="336" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="344" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="348" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="366" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="364" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="323" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="368" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="307" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="328" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="274" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="359" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
     </allocations>
     <vacations/>
     <previous/>
