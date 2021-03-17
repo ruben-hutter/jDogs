@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-05-17" view-index="0" gantt-divider-location="528" resource-divider-location="300" version="2.8.11" locale="en_CH">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-04-11" view-index="0" gantt-divider-location="527" resource-divider-location="300" version="3.0.3004" locale="en_US">
     <description/>
-    <view zooming-state="default:0" id="gantt-chart">
-        <field id="tpd3" name="Name" width="260" order="0"/>
-        <field id="tpd8" name="Coordinator" width="130" order="1"/>
-        <field id="tpd4" name="Begin date" width="58" order="2"/>
+    <view zooming-state="default:3" id="gantt-chart">
+        <field id="tpd3" name="Name" width="259" order="0"/>
+        <field id="tpd8" name="Coordinator" width="131" order="1"/>
+        <field id="tpd4" name="Begin date" width="59" order="2"/>
         <field id="tpd5" name="End date" width="59" order="3"/>
         <option id="color.recent">
-            <![CDATA[#ff99ff #ffcc00 #3399ff #0000ff #ff0000 #eeeeee #00cc00]]>
+            <![CDATA[#ff99ff #3399ff #ffcc00 #0000ff #ff0000 #eeeeee #00cc00]]>
         </option>
     </view>
     <view id="resource-table">
-        <field id="0" name="Name" width="264" order="0"/>
-        <field id="1" name="Default role" width="30" order="1"/>
+        <field id="0" name="Name" width="265" order="0"/>
+        <field id="1" name="Default role" width="31" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -215,7 +215,7 @@ implementiert (via Socket-Verbindungen, z.B. java.net.*).]]>
             </notes>
             <depend id="185" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="185" name="Product: GUI" color="#ffcc00" meeting="false" start="2021-03-30" duration="5" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="185" name="Product: GUI - Chat" color="#ffcc00" meeting="false" start="2021-03-30" duration="5" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The chat is available via a basic GUI.]]>
             </notes>
@@ -230,7 +230,7 @@ implementiert (via Socket-Verbindungen, z.B. java.net.*).]]>
             <notes>
                 <![CDATA[The main logic of the game as well as its fundamental mechanics are present and the game is playable.]]>
             </notes>
-            <task id="384" name="Cards" color="#ffcc00" meeting="false" start="2021-04-05" duration="6" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <task id="384" name="Cards" color="#ffcc00" meeting="false" start="2021-04-05" duration="4" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
                 <notes>
                     <![CDATA[Implement the required Cards for JDogs.
 They should be distributed evenly according to the rules. 
@@ -238,13 +238,21 @@ The cards are only visible for the player, not for the others.
 ]]>
                 </notes>
             </task>
-            <task id="385" name="Marbles" color="#ff99ff" meeting="false" start="2021-04-05" duration="6" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+            <task id="855" name="Score-board / Leaderboard" color="#ff99ff" meeting="false" start="2021-04-05" duration="3" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true"/>
+            <task id="385" name="Marbles" color="#ff99ff" meeting="false" start="2021-04-08" duration="3" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
                 <notes>
                     <![CDATA[The marbles can be moved according to the rules (e.g. blocking, sending home, etc.)
 
 ]]>
                 </notes>
             </task>
+            <task id="762" name="Cube" color="#3399ff" meeting="false" start="2021-04-05" duration="3" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true"/>
+            <task id="767" name="Board" color="#3399ff" meeting="false" start="2021-04-08" duration="3" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true"/>
+            <task id="856" name="Help button" color="#ffcc00" meeting="false" start="2021-04-09" duration="2" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true"/>
+            <task id="857" name="Volume control" color="#ffcc00" meeting="false" start="2021-04-09" duration="2" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true"/>
+            <task id="858" name="Round counter" color="#3399ff" meeting="false" start="2021-04-09" duration="2" complete="0" thirdDate="2021-04-10" thirdDate-constraint="0" expand="true"/>
+            <task id="768" name="Tile" color="#ff99ff" meeting="false" start="2021-04-05" duration="6" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true"/>
+            <task id="769" name="Mode - Random card number?" color="#ffcc00" meeting="false" start="2021-04-05" duration="6" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true"/>
         </task>
         <task id="191" name="Product: Game State" color="#3399ff" meeting="false" start="2021-04-05" duration="3" complete="0" thirdDate="2021-03-29" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
@@ -384,26 +392,26 @@ Gibt es ungelöste Probleme?
             </notes>
         </task>
         <task id="749" name="Milestone 3 Presentation" color="#ff0000" meeting="true" start="2021-04-22" duration="0" complete="0" thirdDate="2021-03-10" thirdDate-constraint="0" expand="true"/>
-        <task id="748" name="Product: Referee" color="#ff99ff" meeting="false" start="2021-04-23" duration="5" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="748" name="Product: Referee" color="#ff99ff" meeting="false" start="2021-04-19" duration="17" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The rules of the game are checked and enforced correctly. ]]>
             </notes>
         </task>
-        <task id="744" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-19" duration="19" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="false">
+        <task id="744" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-19" duration="16" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The game is represented graphically.
 
 The game is fully playable from the UI. Text input is only used where absolutely necessary.]]>
             </notes>
-            <task id="745" name="Lobby GUI" color="#ffcc00" meeting="false" start="2021-04-19" duration="9" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+            <task id="745" name="Lobby GUI" color="#ffcc00" meeting="false" start="2021-04-19" duration="9" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
                 <notes>
                     <![CDATA[The Lobby is represented graphically.
 In der Lobby können die Spieler die Spieleranzahl, das Spielbrett sowie den Teampartner wählen, indem sie die entsprechenden Menupunkte aufrufen. 
 ]]>
                 </notes>
             </task>
-            <task id="746" name="Menu GUI" color="#ff99ff" meeting="false" start="2021-04-20" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true"/>
-            <task id="747" name="Game GUI" color="#3399ff" meeting="false" start="2021-04-26" duration="12" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true">
+            <task id="746" name="Menu GUI" color="#ff99ff" meeting="false" start="2021-04-19" duration="6" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            <task id="747" name="Game GUI" color="#3399ff" meeting="false" start="2021-04-20" duration="12" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
                 <notes>
                     <![CDATA[Es gibt zwei verschiedene Spielbretter (für 4 und für 6 Spieler). 
 Murmeln und Karten werden bei beiden Varianten gleich dargestellt. 
@@ -411,8 +419,28 @@ Nice to have: Animierte Bewegung der Murmeln.
 ]]>
                 </notes>
             </task>
+            <task id="783" name="Cards" color="#ffcc00" meeting="false" start="2021-04-30" duration="5" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+                <notes>
+                    <![CDATA[Implement the required Cards for JDogs.
+They should be distributed evenly according to the rules. 
+The cards are only visible for the player, not for the others.
+]]>
+                </notes>
+            </task>
+            <task id="785" name="Marbles" color="#ff99ff" meeting="false" start="2021-04-28" duration="6" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+                <notes>
+                    <![CDATA[The marbles can be moved according to the rules (e.g. blocking, sending home, etc.)
+
+]]>
+                </notes>
+            </task>
+            <task id="787" name="Cube" color="#ff99ff" meeting="false" start="2021-04-25" duration="3" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            <task id="789" name="Board" color="#3399ff" meeting="false" start="2021-04-19" duration="6" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            <task id="902" name="Help button" color="#ffcc00" meeting="false" start="2021-04-28" duration="3" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            <task id="904" name="Volume control" color="#ffcc00" meeting="false" start="2021-04-28" duration="3" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
+            <task id="906" name="Round counter" color="#3399ff" meeting="false" start="2021-04-25" duration="3" complete="0" thirdDate="2021-04-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
         </task>
-        <task id="288" name="Process: 5 out of 7" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" expand="false" cost-manual-value="0.0" cost-calculated="true">
+        <task id="288" name="Process: 5 out of 7" color="#8cb6ce" meeting="false" start="2021-04-19" duration="2" complete="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <task id="643" name="Game 1" color="#ff99ff" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
             <task id="644" name="Game 2" color="#ffcc00" meeting="false" start="2021-04-19" duration="2" complete="0" thirdDate="2021-04-19" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true"/>
         </task>
@@ -435,25 +463,25 @@ Unit-Tests are sufficient and meaningful.]]>
                 <![CDATA[The winner(team) and the win state is correctly determined.]]>
             </notes>
         </task>
-        <task id="334" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="false" cost-manual-value="0.0" cost-calculated="true">
+        <task id="334" name="Product: GUI" color="#8cb6ce" meeting="false" start="2021-04-26" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The GUI works without any errors and all client functionality is accessible by it.]]>
             </notes>
-            <task id="721" name="GUI Lobby" color="#ff99ff" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
+            <task id="721" name="GUI Lobby" color="#ff99ff" meeting="false" start="2021-04-26" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
                 <notes>
                     <![CDATA[Die folgenden Funktionen können über GUI aufgerufen werden:
 Spielbrett, Anzahl Spieler, Teampartner wählen, Spielstatistik aufrufen
 ]]>
                 </notes>
             </task>
-            <task id="724" name="GUI Game" color="#3399ff" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true">
+            <task id="724" name="GUI Game" color="#3399ff" meeting="false" start="2021-04-26" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
                 <notes>
                     <![CDATA[Das Spielbrett wird entsprechend dargestellt (4 oder 6 Spieler). Der Spieler sieht nur seine eigenen Karten, die Karten der anderen Spieler werden verdeckt dargestellt. 
 Über entsprechende Buttons können folgende Funktionen ausgelöst werden: Eigene Karten ordnen, Karte ausspielen, Murmel bewegen, Public Chat, Spielanleitung aufrufen, Spiel (vorzeitig) beenden]]>
                 </notes>
             </task>
         </task>
-        <task id="336" name="Product: Game Logic" color="#ffcc00" meeting="false" start="2021-04-25" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
+        <task id="336" name="Product: Game Logic" color="#ffcc00" meeting="false" start="2021-04-26" duration="5" complete="0" thirdDate="2021-05-10" thirdDate-constraint="0" expand="true" cost-manual-value="0.0" cost-calculated="true">
             <notes>
                 <![CDATA[The entire logic of the game as well as all its mechanics are present and the game is fully playable.]]>
             </notes>
@@ -664,9 +692,9 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="26" resource-id="0" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="16" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="65" resource-id="0" function="Default:0" responsible="true" load="33.3"/>
-        <allocation task-id="657" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="61" resource-id="0" function="Default:0" responsible="true" load="33.3"/>
         <allocation task-id="55" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="61" resource-id="0" function="Default:0" responsible="true" load="33.3"/>
+        <allocation task-id="657" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="68" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="163" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="187" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
@@ -679,10 +707,12 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="246" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="216" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="748" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="746" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="643" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="291" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="300" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="304" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="721" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="294" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="310" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="263" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
@@ -698,8 +728,10 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="354" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="278" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="359" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="721" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="746" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="768" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="785" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="855" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="787" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="0" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="33" resource-id="1" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="26" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
@@ -707,8 +739,10 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="76" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="82" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="49" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="59" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="89" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="90" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="45" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="59" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="236" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="166" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="158" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
@@ -722,6 +756,8 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="170" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="250" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="216" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="747" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="724" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="285" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="254" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="267" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
@@ -733,16 +769,18 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="316" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="271" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="359" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="724" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="747" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="89" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="90" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="762" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="767" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="789" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="858" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="906" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="37" resource-id="2" function="Default:0" responsible="true" load="80.0"/>
         <allocation task-id="16" resource-id="2" function="Default:0" responsible="false" load="33.3"/>
         <allocation task-id="18" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="93" resource-id="2" function="Default:0" responsible="true" load="50.0"/>
-        <allocation task-id="59" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="135" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="38" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="59" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="220" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="185" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="384" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
@@ -753,10 +791,11 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="151" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="242" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="216" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="745" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="644" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="336" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="259" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="298" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="336" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="344" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="348" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="366" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
@@ -767,8 +806,12 @@ massnahmen (in der Übungsstunde)
         <allocation task-id="328" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="274" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="359" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="745" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="135" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="769" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="783" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="856" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="857" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="902" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="904" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
     </allocations>
     <vacations/>
     <previous/>
