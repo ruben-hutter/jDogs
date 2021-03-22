@@ -5,6 +5,11 @@ import java.net.Socket;
 
 public class Client {
 
+    private ReceiveFromServer receiveFromServer;
+    private KeyboardInput keyboardInput;
+    private ConnectionToServerMonitor connectionToServerMonitor;
+    private SendFromClient sendFromClient;
+
     public static void main(String[] args) {
         new Client();
     }
@@ -22,24 +27,24 @@ public class Client {
 
         //monitoring thread
 
-        ConnectionToServerMonitor connectionMonitor = new ConnectionToServerMonitor(sendQueue);
-        Thread monitorThread = new Thread(connectionMonitor);
+        connectionToServerMonitor = new ConnectionToServerMonitor(sendQueue);
+        Thread monitorThread = new Thread(connectionToServerMonitor);
         monitorThread.start();
 
         //receives messages from server
         assert socket != null;
-        ReceiveFromServer receiveFromServer = new ReceiveFromServer(socket, sendQueue);
+        receiveFromServer = new ReceiveFromServer(socket, sendQueue, connectionToServerMonitor);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 
 
         //sends messages to server
-        SendFromClient sendFromClient = new SendFromClient(socket, sendQueue);
+        sendFromClient = new SendFromClient(socket, sendQueue);
         Thread toServerThread = new Thread(sendFromClient);
         toServerThread.start();
 
         //processes keyboard input
-        KeyboardInput keyboardInput = new KeyboardInput(this, sendQueue);
+        keyboardInput = new KeyboardInput(this, sendQueue);
         Thread keyboard = new Thread(keyboardInput);
         keyboard.start();
 
@@ -50,7 +55,7 @@ public class Client {
 
         receiveFromServer.kill();
         sendFromClient.kill();
-        connectionMonitor.kill();
+        connectionToServerMonitor.kill();
         keyboardInput.kill();
 
 
