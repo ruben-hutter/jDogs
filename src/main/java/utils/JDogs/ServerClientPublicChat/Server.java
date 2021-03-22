@@ -1,3 +1,5 @@
+package utils.JDogs.ServerClientPublicChat;
+
 import java.io.*;
 
 import java.net.InetAddress;
