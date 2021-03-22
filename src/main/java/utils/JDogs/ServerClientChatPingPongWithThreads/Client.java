@@ -5,19 +5,13 @@ import java.net.Socket;
 
 public class Client {
 
-    private Queue sendQueue;
-
-    private ReceiveFromServer receiveFromServer;
-    private SendFromClient sendFromClient;
-    private KeyboardInput keyboardInput;
-
     public static void main(String[] args) {
         new Client();
     }
 
     public Client() {
 
-        this.sendQueue = new Queue();
+        Queue sendQueue = new Queue();
 
         Socket socket = null;
         try {
@@ -28,18 +22,19 @@ public class Client {
 
 
         //receives messages from server
-        this.receiveFromServer = new ReceiveFromServer(socket, sendQueue);
+        assert socket != null;
+        ReceiveFromServer receiveFromServer = new ReceiveFromServer(socket, sendQueue);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 
 
         //sends messages to server
-        this.sendFromClient = new SendFromClient(socket,sendQueue);
+        SendFromClient sendFromClient = new SendFromClient(socket, sendQueue);
         Thread toServerThread = new Thread(sendFromClient);
         toServerThread.start();
 
         //processes keyboard input
-        this.keyboardInput = new KeyboardInput(this, sendQueue);
+        KeyboardInput keyboardInput = new KeyboardInput(this, sendQueue);
         Thread keyboard = new Thread(keyboardInput);
         keyboard.start();
 

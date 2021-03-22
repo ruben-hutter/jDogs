@@ -13,10 +13,7 @@ public class InThread implements Runnable {
         int len;
         byte[] b = new byte[100];
         try {
-            while (true) {
-                if ((len = in.read(b)) == -1) {
-                    break;
-                }
+            while ((len = in.read(b)) != -1) {
                 System.out.write(b, 0, len);
             }
         } catch (IOException e) {
