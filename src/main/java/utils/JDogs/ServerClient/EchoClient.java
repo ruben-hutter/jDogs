@@ -1,7 +1,12 @@
 package utils.JDogs.ServerClient;
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 public class EchoClient {
     
@@ -28,7 +33,7 @@ public class EchoClient {
             Thread iT = new Thread(th); iT.start();
             // stream input
             BufferedReader conin = new BufferedReader(new InputStreamReader(System.in));
-            String line = " ";
+            String line;
             while (true) {
                 // reading input stream
                 line = conin.readLine();
