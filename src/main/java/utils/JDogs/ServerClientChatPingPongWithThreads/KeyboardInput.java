@@ -1,4 +1,4 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
 import java.util.Scanner;
 
@@ -39,5 +39,9 @@ public class KeyboardInput implements Runnable {
             }
         }
 
+    }
+
+    public void kill() {
+        running = false;
     }
 }

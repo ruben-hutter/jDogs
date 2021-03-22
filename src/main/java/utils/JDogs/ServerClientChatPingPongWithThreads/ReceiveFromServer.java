@@ -1,4 +1,4 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -9,11 +9,13 @@ public class ReceiveFromServer implements Runnable {
     private Queue sendQueue;
     private boolean running;
     private DataInputStream din;
+    private ConnectionToServerMonitor connectionToServerMonitor;
 
-    public ReceiveFromServer(Socket socket, Queue sendQueue) {
+    public ReceiveFromServer(Socket socket, Queue sendQueue, ConnectionToServerMonitor connectionToServerMonitor) {
         this.socket = socket;
         this.sendQueue = sendQueue;
         this.running = true;
+        this.connectionToServerMonitor = connectionToServerMonitor;
         try {
             this.din = new DataInputStream(socket.getInputStream());
         } catch (IOException e) {
@@ -22,29 +24,38 @@ public class ReceiveFromServer implements Runnable {
     }
 
     @Override
-    public void run() {
+   synchronized public void run() {
         String message;
-        //monitoring thread
 
-        ConnectionToServerMonitor connectionMonitor = new ConnectionToServerMonitor(sendQueue);
-        Thread monitorThread = new Thread(connectionMonitor);
 
         try {
             while(running) {
                 if ((message = din.readUTF()) != null) {
-                    connectionMonitor.message(System.currentTimeMillis());
+                    connectionToServerMonitor.message(System.currentTimeMillis());
                     if(message.equalsIgnoreCase("ping")) {
-                        connectionMonitor.sendSignal();
+                        connectionToServerMonitor.sendSignal();
                     } else {
 
                         System.out.println("from server  " + message);
                     }
 
+                } else {
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        System.out.println(this.toString() + " stops now");
+
+    }
+
+    public void kill() {
+        running = false;
     }
 }

@@ -1,4 +1,4 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,17 +11,17 @@ public class ListeningToClients implements Runnable {
     private DataInputStream din;
     private Queue sendToThisClient;
     private Queue sendToAllClients;
+    private Queue receivedFromThisClient;
     private ServerConnection serverConnection;
     private ConnectionToClientMonitor connectionToClientMonitor;
 
-    public ListeningToClients(Socket socket, Queue sendToThisClient,Queue sendToAllClients, ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
+    public ListeningToClients(Socket socket, Queue sendToThisClient, Queue receivedFromThisClient, ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
         this.socket = socket;
         this.sendToThisClient = sendToThisClient;
         this.serverConnection = serverConnection;
-        this.sendToAllClients = sendToAllClients;
         this.connectionToClientMonitor = connectionToClientMonitor;
         this.running = true;
-
+        this.receivedFromThisClient = receivedFromThisClient;
 
     }
 
@@ -38,7 +38,6 @@ public class ListeningToClients implements Runnable {
          */
 
 
-
         try {
             din = new DataInputStream(socket.getInputStream());
         } catch (IOException e) {
@@ -46,25 +45,24 @@ public class ListeningToClients implements Runnable {
         }
 
 
-
         String textIn;
+
 
         try {
 
-            while(running) {
+
+            while (running) {
 
 
                 if (din.available() != 0) {
                     textIn = din.readUTF();
                     connectionToClientMonitor.message(System.currentTimeMillis());
-
+                    //heartbeat-signal
                     if (textIn.equals("pong")) {
                         connectionToClientMonitor.sendSignal();
                     } else {
-                        //messageHandler(textIn);
-
-                        System.out.println("from client:  " + textIn);
-                        sendToAllClients.enqueue(textIn);
+                        //write to receiver-queue
+                        receivedFromThisClient.enqueue(textIn);
                     }
                 } else {
                     try {
@@ -79,6 +77,7 @@ public class ListeningToClients implements Runnable {
         }
         System.out.println(this.toString() + "  stops now...");
     }
+
 
     public void kill() {
         this.connectionToClientMonitor.kill();

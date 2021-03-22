@@ -1,14 +1,17 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server {
 
     ServerSocket serverSocket;
     ArrayList<SendFromServer> connections = new ArrayList<SendFromServer>();
+    Map<String, User> UserPasswordMap = new HashMap<String, User>();
 
 
     boolean running = true;

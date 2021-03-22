@@ -1,4 +1,4 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
 import java.util.NoSuchElementException;
 

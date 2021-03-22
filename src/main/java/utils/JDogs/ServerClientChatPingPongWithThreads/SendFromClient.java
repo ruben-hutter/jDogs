@@ -1,4 +1,4 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -37,17 +37,23 @@ public class SendFromClient implements Runnable {
 
                 }
             }
+
+            System.out.println(this.toString() + " stops now");
     }
 
-    public void sendStringToServer(String text) {
+     public void sendStringToServer(String text) {
 
         try {
             dout.writeUTF(text);
             dout.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("problem sending...exiting");
+            System.out.println("problem sending...");
             running = false;
         }
+    }
+
+    public void kill() {
+        running = false;
     }
 }

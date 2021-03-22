@@ -1,4 +1,4 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -41,24 +41,26 @@ public class SendFromServer implements Runnable {
         while (running) {
 
 
-            if (!sendToThisClient.isEmpty()) {
+                if (running && !sendToThisClient.isEmpty()) {
 
-                sendStringToClient(sendToThisClient.dequeue());
-            }
+                    sendStringToClient(sendToThisClient.dequeue());
+                }
 
-            if (!sendToAll.isEmpty()) {
+                if (running && !sendToAll.isEmpty()) {
 
-                sendStringToAllClients(sendToAll.dequeue());
-            }
+                    sendStringToAllClients(sendToAll.dequeue());
+                }
 
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.out.println("thread sleep fehler");
+                }
+
+
 
         }
-
         System.out.println(this.toString() + "  stops now...");
 
 
@@ -92,6 +94,7 @@ public class SendFromServer implements Runnable {
     }
 
     public void kill() {
+        System.out.println(this.toString() + "  should kill itself");
         running = false;
     }
 }

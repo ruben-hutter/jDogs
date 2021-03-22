@@ -1,14 +1,15 @@
-package utils.JDogs.ServerClientChatPingPongWithThreads;
+package ServerClientExtended;
 
-public class ConnectionToServerMonitor implements Runnable {
+    public class ConnectionToServerMonitor implements Runnable {
 
-        private long newTime = 0;
         private long oldTime = -1;
         private boolean running = true;
         private Queue sendQueue;
+        private int tryToReachServer;
 
         public ConnectionToServerMonitor(Queue sendQueue) {
             this.sendQueue = sendQueue;
+            this.tryToReachServer = 0;
 
         }
 
@@ -17,22 +18,32 @@ public class ConnectionToServerMonitor implements Runnable {
 
             while (running) {
 
-                if (newTime - oldTime > 100000) {
+                if (System.currentTimeMillis() - oldTime >= 10000) {
+
+                    if (tryToReachServer >= 5) {
+                        System.out.println("problem handling...exit");
+                        this.kill();
+                    }
                     sendSignal();
-                    System.out.println("connectionMonitor: message sent");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    tryToReach();
+                } else {
+                    tryToReachServer = 0;
                 }
 
+
             }
+
+            System.out.println(this.toString() + " stops now...");
 
         }
-
-        public void message(long timeInMilliSec) {
-            if (oldTime < 0) {
-                oldTime = timeInMilliSec;
-            } else {
-                oldTime = newTime;
-                newTime = timeInMilliSec;
-            }
+        //update time of last incoming message
+       synchronized public void message(long timeInMilliSec) {
+            oldTime = timeInMilliSec;
 
         }
 
@@ -40,6 +51,14 @@ public class ConnectionToServerMonitor implements Runnable {
             String pong = "pong";
             sendQueue.enqueue(pong);
 
+        }
+
+        public void tryToReach() {
+            tryToReachServer++;
+        }
+
+        public void kill() {
+            running = false;
         }
 
 
