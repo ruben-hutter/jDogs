@@ -20,6 +20,11 @@ public class Client {
             e.printStackTrace();
         }
 
+        //monitoring thread
+
+        ConnectionToServerMonitor connectionMonitor = new ConnectionToServerMonitor(sendQueue);
+        Thread monitorThread = new Thread(connectionMonitor);
+        monitorThread.start();
 
         //receives messages from server
         assert socket != null;
@@ -43,7 +48,11 @@ public class Client {
 
     public void killClient() {
 
-        System.exit(-1);
+        receiveFromServer.kill();
+        sendFromClient.kill();
+        connectionMonitor.kill();
+        keyboardInput.kill();
+
 
     }
 }
