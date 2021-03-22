@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ReceiveFromServer implements Runnable {
-    private Socket socket;
-    private Queue sendQueue;
-    private boolean running;
+
+    private final Queue sendQueue;
+    private final boolean running;
     private DataInputStream din;
 
     public ReceiveFromServer(Socket socket, Queue sendQueue) {
-        this.socket = socket;
         this.sendQueue = sendQueue;
         this.running = true;
         try {
@@ -39,12 +38,10 @@ public class ReceiveFromServer implements Runnable {
 
                         System.out.println("from server  " + message);
                     }
-
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

@@ -49,7 +49,7 @@ public class ServerConnection implements Runnable {
         conMoThread.start();
 
         //start receivefromClient
-        listeningToClient = new ListeningToClients(socket, sendToThisClient,sendToAll,this, connectionToClientMonitor);
+        listeningToClient = new ListeningToClients(socket, sendToAll, connectionToClientMonitor);
         Thread listener = new Thread(listeningToClient);
         listener.start();
         System.out.println("thread listener name: " + listener.toString());

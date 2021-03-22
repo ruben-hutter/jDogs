@@ -10,7 +10,6 @@ public class Server {
     ServerSocket serverSocket;
     ArrayList<SendFromServer> connections = new ArrayList<SendFromServer>();
 
-
     boolean running = true;
 
     public static void main(String[] args) {
@@ -44,13 +43,7 @@ public class Server {
         }
     }
 
-
-
-
-
     public void kill() {
         System.exit(-1);
     }
-
-
 }

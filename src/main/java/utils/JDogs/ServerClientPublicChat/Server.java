@@ -45,10 +45,7 @@ public class Server {
                         System.err.println("not reachable  " + inetAddress.getHostAddress() + " " + inetAddress.getHostName());
                     }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                catch (InterruptedException e) {
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
