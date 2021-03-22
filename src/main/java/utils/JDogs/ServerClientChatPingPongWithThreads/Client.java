@@ -12,8 +12,8 @@ public class Client {
     public Client() {
 
         Queue sendQueue = new Queue();
-        Socket socket = null;
 
+        Socket socket = null;
         try {
             socket = new Socket("localhost", 8090);
         } catch (IOException e) {
@@ -37,9 +37,13 @@ public class Client {
         KeyboardInput keyboardInput = new KeyboardInput(this, sendQueue);
         Thread keyboard = new Thread(keyboardInput);
         keyboard.start();
+
+
     }
 
     public void killClient() {
+
         System.exit(-1);
+
     }
 }

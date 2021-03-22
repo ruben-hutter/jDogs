@@ -22,7 +22,7 @@ public class ConnectionToClientMonitor implements Runnable {
                     e.printStackTrace();
                 }
 
-                System.out.println("connectionMonitor" + this.toString() + ": message sent");
+                System.out.println(this.toString() + ": message sent");
 
             }
         }

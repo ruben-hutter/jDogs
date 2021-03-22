@@ -6,15 +6,16 @@ import java.net.Socket;
 
 public class SendFromClient implements Runnable {
 
-    private final Socket socket;
-    private final Queue sendQueue;
-    private DataOutputStream dout;
-    private boolean running;
+    private Socket socket;
+   private Queue sendQueue;
+   private DataOutputStream dout;
+   private boolean running;
 
     public SendFromClient(Socket socket, Queue sendQueue) {
         this.socket = socket;
         this.sendQueue = sendQueue;
         this.running = true;
+
     }
 
     @Override
@@ -24,25 +25,35 @@ public class SendFromClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         String reply;
 
-        while(running) {
-            if(!sendQueue.isEmpty()) {
-                reply = sendQueue.dequeue();
-                sendStringToServer(reply);
+
+            while(running) {
+
+                if(!sendQueue.isEmpty()) {
+                    reply = sendQueue.dequeue();
+
+                    sendStringToServer(reply);
+
+                }
             }
-        }
+
+            System.out.println(this.toString() + " stops now");
     }
 
-    public void sendStringToServer(String text) {
+     public void sendStringToServer(String text) {
+
         try {
             dout.writeUTF(text);
             dout.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("problem sending...exiting");
+            System.out.println("problem sending...");
             running = false;
         }
+    }
+
+    public void kill() {
+        running = false;
     }
 }

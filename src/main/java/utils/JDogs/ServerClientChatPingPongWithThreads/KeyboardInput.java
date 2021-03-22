@@ -38,4 +38,8 @@ public class KeyboardInput implements Runnable {
             }
         }
     }
+
+    public void kill() {
+        running = false;
+    }
 }

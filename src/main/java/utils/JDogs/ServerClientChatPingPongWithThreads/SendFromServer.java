@@ -1,5 +1,6 @@
 package utils.JDogs.ServerClientChatPingPongWithThreads;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -8,11 +9,11 @@ public class SendFromServer implements Runnable {
 
     private boolean running;
     private DataOutputStream dout;
-    private final Socket socket;
-    private final Server server;
-    private final Queue sendToAll;
-    private final Queue sendToThisClient;
-    private final ServerConnection serverConnection;
+    private Socket socket;
+    private Server server;
+    private Queue sendToAll;
+    private Queue sendToThisClient;
+    private ServerConnection serverConnection;
 
     public SendFromServer(Socket socket, Server server, Queue sendToAll, Queue sendToThisClient,ServerConnection serverConnection) {
         this.socket = socket;
@@ -21,10 +22,12 @@ public class SendFromServer implements Runnable {
         this.sendToThisClient = sendToThisClient;
         this.running = true;
         this.serverConnection = serverConnection;
+
     }
 
     @Override
     public void run() {
+
 
         try {
             dout = new DataOutputStream(socket.getOutputStream());
@@ -34,20 +37,33 @@ public class SendFromServer implements Runnable {
 
         String text;
 
+
         while (running) {
-            if (!sendToThisClient.isEmpty()) {
-                sendStringToClient(sendToThisClient.dequeue());
-            }
-            if (!sendToAll.isEmpty()) {
-                sendStringToAllClients(sendToAll.dequeue());
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+
+                if (running && !sendToThisClient.isEmpty()) {
+
+                    sendStringToClient(sendToThisClient.dequeue());
+                }
+
+                if (running && !sendToAll.isEmpty()) {
+
+                    sendStringToAllClients(sendToAll.dequeue());
+                }
+
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.out.println("thread sleep fehler");
+                }
+
+
+
         }
         System.out.println(this.toString() + "  stops now...");
+
+
     }
 
     synchronized public void sendStringToClient(String text) {
@@ -63,8 +79,11 @@ public class SendFromServer implements Runnable {
             serverConnection.kill();
 
             //here: error handling needed, when Server can t be reached, program gets stuck here
+
         }
+
     }
+
 
     synchronized public void sendStringToAllClients(String text) {
         for (int index = 0; index < server.connections.size(); index++) {
@@ -75,6 +94,7 @@ public class SendFromServer implements Runnable {
     }
 
     public void kill() {
+        System.out.println(this.toString() + "  should kill itself");
         running = false;
     }
 }
