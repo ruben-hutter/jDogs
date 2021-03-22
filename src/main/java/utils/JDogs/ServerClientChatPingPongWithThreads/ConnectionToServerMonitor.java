@@ -1,6 +1,6 @@
-package ServerClientExtended;
+package utils.JDogs.ServerClientChatPingPongWithThreads;
 
-    public class ConnectionToServerMonitor implements Runnable {
+public class ConnectionToServerMonitor implements Runnable {
 
         private long oldTime = -1;
         private boolean running = true;

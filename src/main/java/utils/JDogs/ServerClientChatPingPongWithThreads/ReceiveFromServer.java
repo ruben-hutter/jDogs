@@ -1,4 +1,4 @@
-package ServerClientExtended;
+package utils.JDogs.ServerClientChatPingPongWithThreads;
 
 import java.io.DataInputStream;
 import java.io.IOException;

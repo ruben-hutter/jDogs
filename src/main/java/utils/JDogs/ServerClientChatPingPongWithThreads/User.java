@@ -1,4 +1,4 @@
-package ServerClientExtended;
+package utils.JDogs.ServerClientChatPingPongWithThreads;
 
 
 //this class will save the password and if a user is currently logged in or not
