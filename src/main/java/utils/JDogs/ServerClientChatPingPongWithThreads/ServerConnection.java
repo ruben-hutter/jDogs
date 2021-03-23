@@ -15,8 +15,7 @@ public class ServerConnection implements Runnable {
    private SendFromServer sender;
    private ListeningToClients listeningToClient;
    private ConnectionToClientMonitor connectionToClientMonitor;
-    private DataInputStream din;
-    private DataOutputStream dout;
+
 
     private int stopNumber;
 

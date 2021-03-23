@@ -37,8 +37,12 @@ public class SendFromClient implements Runnable {
 
                 }
             }
-
-            System.out.println(this.toString() + " stops now");
+        try {
+            dout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(this.toString() + " stops now");
     }
 
      public void sendStringToServer(String text) {

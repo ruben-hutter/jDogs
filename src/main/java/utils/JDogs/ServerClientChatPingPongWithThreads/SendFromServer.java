@@ -62,6 +62,11 @@ public class SendFromServer implements Runnable {
 
         }
         System.out.println(this.toString() + "  stops now...");
+        try {
+            dout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
