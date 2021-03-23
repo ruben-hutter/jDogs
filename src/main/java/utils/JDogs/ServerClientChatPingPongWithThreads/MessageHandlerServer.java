@@ -24,11 +24,12 @@ public class MessageHandlerServer implements Runnable {
 
     @Override
     public void run() {
-    //if client is already logged in and didn`t logout
-
+    //login
     getLoggedIn();
 
+    //receive default nickname
     getNickname();
+
         //after login:
 
         String text;
@@ -43,7 +44,7 @@ public class MessageHandlerServer implements Runnable {
                 if(text.length() >= 4 && text.substring(0,3).equals("jd ")) {
                     messageHandling(text);
                 } else {
-                    sendToAll.enqueue(userName + ": " + text);
+                    sendToAll.enqueue(nickName + ": " + text);
                 }
             }
         }
@@ -152,7 +153,7 @@ public class MessageHandlerServer implements Runnable {
                 break;
             case "nickna":
 
-                nickName = command.substring(9, command.length());
+                nickName = command.substring(10, command.length());
                 sendToThisClient.enqueue("your new nickname is: " + nickName);
                 break;
 

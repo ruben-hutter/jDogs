@@ -50,6 +50,7 @@ public class MessageHandlerClient implements Runnable{
                         e.printStackTrace();
                     }
                     sendQueue.enqueue("jd nickna "+ defaultNickname);
+                    break;
 
                 default:
                     System.out.println("from server:  " + reply);

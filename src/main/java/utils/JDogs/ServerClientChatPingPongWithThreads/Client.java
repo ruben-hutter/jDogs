@@ -23,6 +23,7 @@ public class Client {
         Queue sendQueue = new Queue();
 
         Socket socket = null;
+
         try {
             socket = new Socket("localhost", 8090);
         } catch (IOException e) {
@@ -37,7 +38,7 @@ public class Client {
 
         //receives messages from server
         assert socket != null;
-        receiveFromServer = new ReceiveFromServer(socket, sendQueue, connectionToServerMonitor);
+        receiveFromServer = new ReceiveFromServer(socket, sendQueue, receiveQueue, connectionToServerMonitor);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 

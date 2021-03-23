@@ -7,13 +7,15 @@ import java.net.Socket;
 public class ReceiveFromServer implements Runnable {
     private Socket socket;
     private Queue sendQueue;
+    private Queue receiveQueue;
     private boolean running;
     private DataInputStream din;
     private ConnectionToServerMonitor connectionToServerMonitor;
 
-    public ReceiveFromServer(Socket socket, Queue sendQueue, ConnectionToServerMonitor connectionToServerMonitor) {
+    public ReceiveFromServer(Socket socket, Queue sendQueue,Queue receiveQueue, ConnectionToServerMonitor connectionToServerMonitor) {
         this.socket = socket;
         this.sendQueue = sendQueue;
+        this.receiveQueue = receiveQueue;
         this.running = true;
         this.connectionToServerMonitor = connectionToServerMonitor;
         try {
@@ -35,8 +37,7 @@ public class ReceiveFromServer implements Runnable {
                     if(message.equalsIgnoreCase("ping")) {
                         connectionToServerMonitor.sendSignal();
                     } else {
-
-                        //System.out.println("from server  " + message);
+                        receiveQueue.enqueue(message);
                     }
 
                 } else {
