@@ -152,10 +152,14 @@ public class MessageHandlerServer implements Runnable {
                 sendToThisClient.enqueue("whisperChat is not implemented");
                 break;
             case "nickna":
+                if (command.length() < 10) {
+                    sendToThisClient.enqueue("no nickname entered");
+                } else {
+                    nickName = command.substring(10, command.length());
+                    sendToThisClient.enqueue("your new nickname is: " + nickName);
+                }
+                    break;
 
-                nickName = command.substring(10, command.length());
-                sendToThisClient.enqueue("your new nickname is: " + nickName);
-                break;
 
 
             default:
