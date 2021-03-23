@@ -26,7 +26,7 @@ public class ReceiveFromServer implements Runnable {
     }
 
     @Override
-   synchronized public void run() {
+   public void run() {
         String message;
 
 
@@ -42,7 +42,7 @@ public class ReceiveFromServer implements Runnable {
 
                 } else {
                     try {
-                        Thread.sleep(1);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

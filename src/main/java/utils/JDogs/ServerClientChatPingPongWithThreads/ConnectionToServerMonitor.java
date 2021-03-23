@@ -42,7 +42,7 @@ public class ConnectionToServerMonitor implements Runnable {
 
         }
         //update time of last incoming message
-       synchronized public void message(long timeInMilliSec) {
+        public void message(long timeInMilliSec) {
             oldTime = timeInMilliSec;
 
         }

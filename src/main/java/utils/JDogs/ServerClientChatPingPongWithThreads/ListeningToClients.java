@@ -27,7 +27,7 @@ public class ListeningToClients implements Runnable {
 
 
     @Override
-    synchronized public void run() {
+     public void run() {
 
         try {
             din = new DataInputStream(socket.getInputStream());

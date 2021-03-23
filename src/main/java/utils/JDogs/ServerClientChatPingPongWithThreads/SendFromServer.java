@@ -41,12 +41,12 @@ public class SendFromServer implements Runnable {
         while (running) {
 
 
-                if (running && !sendToThisClient.isEmpty()) {
+                if (!sendToThisClient.isEmpty()) {
 
                     sendStringToClient(sendToThisClient.dequeue());
                 }
 
-                if (running && !sendToAll.isEmpty()) {
+                if (!sendToAll.isEmpty()) {
 
                     sendStringToAllClients(sendToAll.dequeue());
                 }

@@ -86,7 +86,7 @@ public class ServerConnection implements Runnable {
         return sender;
     }
 
-    synchronized public void kill() {
+     public void kill() {
         System.out.println("stop ServerConnection...");
         server.connections.remove(stopNumber);
 

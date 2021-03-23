@@ -19,7 +19,7 @@ public class SendFromClient implements Runnable {
     }
 
     @Override
-    public void run() {
+     public void run() {
         try {
             this.dout = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -34,7 +34,11 @@ public class SendFromClient implements Runnable {
                     reply = sendQueue.dequeue();
 
                     sendStringToServer(reply);
-
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         try {

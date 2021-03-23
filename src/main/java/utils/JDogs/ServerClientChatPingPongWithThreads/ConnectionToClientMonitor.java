@@ -36,7 +36,7 @@ public class ConnectionToClientMonitor implements Runnable {
 
     }
 
-    synchronized public void message(long timeInMilliSec) {
+     public void message(long timeInMilliSec) {
        oldTime = timeInMilliSec;
 
     }
