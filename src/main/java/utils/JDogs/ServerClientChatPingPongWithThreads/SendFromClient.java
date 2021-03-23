@@ -10,16 +10,18 @@ public class SendFromClient implements Runnable {
    private Queue sendQueue;
    private DataOutputStream dout;
    private boolean running;
+   private Client client;
 
-    public SendFromClient(Socket socket, Queue sendQueue) {
+    public SendFromClient(Socket socket,Client client, Queue sendQueue) {
         this.socket = socket;
         this.sendQueue = sendQueue;
         this.running = true;
+        this.client = client;
 
     }
 
     @Override
-    public void run() {
+     public void run() {
         try {
             this.dout = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -34,11 +36,19 @@ public class SendFromClient implements Runnable {
                     reply = sendQueue.dequeue();
 
                     sendStringToServer(reply);
-
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-
-            System.out.println(this.toString() + " stops now");
+        try {
+            dout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(this.toString() + " stops now");
     }
 
      public void sendStringToServer(String text) {
@@ -49,8 +59,25 @@ public class SendFromClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("problem sending...");
-            running = false;
+            HandlingConnectionLoss();
         }
+    }
+
+    public void HandlingConnectionLoss() {
+
+        while (true) {
+            try {
+                dout.close();
+                dout = new DataOutputStream(socket.getOutputStream());
+                break;
+            } catch (IOException e) {
+                //e.printStackTrace();
+                //if connection fails:
+                System.out.println(this.toString() + " cannot reconnect OutputStream to Server");
+                client.newSetUp();
+            }
+        }
+
     }
 
     public void kill() {

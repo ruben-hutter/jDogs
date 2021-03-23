@@ -1,6 +1,6 @@
 package utils.JDogs.ServerClientChatPingPongWithThreads;
 
-public class MessageHandler implements Runnable {
+public class MessageHandlerServer implements Runnable {
     private Queue sendToAll;
     private Queue sendToThisClient;
     private Queue receivedFromClient;
@@ -9,8 +9,10 @@ public class MessageHandler implements Runnable {
     private Server server;
     private ServerConnection serverConnection;
     private String userName;
+    private String nickName;
 
-    public MessageHandler(Server server,ServerConnection serverConnection, Queue sendToThisClient, Queue sendToAll, Queue receivedFromClient) {
+
+    public MessageHandlerServer(Server server,ServerConnection serverConnection, Queue sendToThisClient, Queue sendToAll, Queue receivedFromClient) {
         this.sendToAll = sendToAll;
         this.sendToThisClient = sendToThisClient;
         this.receivedFromClient = receivedFromClient;
@@ -23,7 +25,38 @@ public class MessageHandler implements Runnable {
 
     @Override
     public void run() {
-    //if client is already logged in and didn`t logout
+    //login
+    getLoggedIn();
+
+    //receive default nickname
+    getNickname();
+
+        //after login:
+
+        String text;
+        while (running) {
+
+
+            if (!receivedFromClient.isEmpty()) {
+                text = receivedFromClient.dequeue();
+                System.out.println(text);
+
+                //internal commands begin with "jd "
+                if(text.length() >= 9 && text.substring(0,3).equals("jd ")) {
+                    messageHandling(text);
+                } else {
+                    if (text.substring(0,3).equals("jd ")) {
+                        sendToThisClient.enqueue("unknown command");
+                    } else {
+                        sendToAll.enqueue(nickName + ": " + text);
+                    }
+                }
+            }
+        }
+        System.out.println(this.toString() + "  stops now");
+    }
+
+    public void getLoggedIn() {
 
         while (incompleteLogin) {
 
@@ -39,28 +72,33 @@ public class MessageHandler implements Runnable {
             }
 
             if (server.UserPasswordMap.containsKey(userName)) {
+                //you were already logged in and did not log out
+                if (server.UserPasswordMap.get(userName).isLoggedIn()) {
+                    sendToThisClient.enqueue("already logged in");
+                    incompleteLogin = false;
+                    break;
+                } else {
+                    //userName is taken but person logged out
+                    //ask for password
+                    sendToThisClient.enqueue("userName taken...enter password");
 
-                //ask for password
-                sendToThisClient.enqueue("userName taken...enter password");
-
-                while (true) {
+                    while (true) {
 
 
-                    if (!receivedFromClient.isEmpty()) {
-                        password = receivedFromClient.dequeue();
-                        if (server.UserPasswordMap.get(userName).getPassword().equals(password)) {
-                            sendToThisClient.enqueue("logged in");
-                            incompleteLogin = false;
-                            System.out.println("login done..");
+                        if (!receivedFromClient.isEmpty()) {
+                            password = receivedFromClient.dequeue();
+                            if (server.UserPasswordMap.get(userName).getPassword().equals(password)) {
+                                sendToThisClient.enqueue("logged in");
+                                incompleteLogin = false;
+                                System.out.println("login done..");
 
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
-
-
-
             } else {
+                //userName is unknown
                 sendToThisClient.enqueue("enter password phrase");
                 while (true) {
 
@@ -91,48 +129,46 @@ public class MessageHandler implements Runnable {
                 }
             }
         }
-        //after login:
+    }
 
-        String text;
-        while (running) {
+    public void getNickname() {
 
-
-            if (!receivedFromClient.isEmpty()) {
-                text = receivedFromClient.dequeue();
-                System.out.println(text);
-
-                //internal commands begin with "jd "
-                if(text.length() >= 4 && text.substring(0,3).equals("jd ")) {
-                    messageHandling(text);
-                } else {
-                    sendToAll.enqueue(userName + ": " + text);
-                }
-            }
+        if (nickName == null) {
+            sendToThisClient.enqueue("jd nickna");
         }
-
-        System.out.println(this.toString() + "  stops now");
 
 
     }
 
 
     public void messageHandling(String command) {
-        System.out.println(command);
-
-        System.out.println(command.substring(3,9));
-
 
         switch (command.substring(3,9)) {
 
             case "logout":
                 sendToThisClient.enqueue("logout now");
+                server.UserPasswordMap.get(userName).setLoggedOut();
+
                 serverConnection.kill();
                 running = false;
                 break;
 
             case "whispe":
                 sendToThisClient.enqueue("whisperChat is not implemented");
+
                 break;
+            case "nickna":
+                if (command.length() < 10) {
+                    sendToThisClient.enqueue("no nickname entered");
+                } else {
+                    nickName = command.substring(10, command.length());
+                    sendToThisClient.enqueue("hi, user "+ userName + "! your new nickname is: " + nickName);
+                }
+                    break;
+            case "users":
+                sendToThisClient.enqueue("list of active users not implemented");
+                break;
+
 
             default:
                 sendToThisClient.enqueue("unknown command");

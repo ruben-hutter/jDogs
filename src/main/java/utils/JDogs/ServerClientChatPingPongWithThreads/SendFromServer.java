@@ -41,12 +41,12 @@ public class SendFromServer implements Runnable {
         while (running) {
 
 
-                if (running && !sendToThisClient.isEmpty()) {
+                if (!sendToThisClient.isEmpty()) {
 
                     sendStringToClient(sendToThisClient.dequeue());
                 }
 
-                if (running && !sendToAll.isEmpty()) {
+                if (!sendToAll.isEmpty()) {
 
                     sendStringToAllClients(sendToAll.dequeue());
                 }
@@ -62,6 +62,11 @@ public class SendFromServer implements Runnable {
 
         }
         System.out.println(this.toString() + "  stops now...");
+        try {
+            dout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -94,7 +99,6 @@ public class SendFromServer implements Runnable {
     }
 
     public void kill() {
-        System.out.println(this.toString() + "  should kill itself");
         running = false;
     }
 }

@@ -17,4 +17,15 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn () {
+        isLoggedIn = true;
+    }
+    public void setLoggedOut () {
+        isLoggedIn = false;
+    }
 }

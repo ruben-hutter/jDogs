@@ -27,16 +27,7 @@ public class ListeningToClients implements Runnable {
 
 
     @Override
-    synchronized public void run() {
-
-
-        //start thread to detect connection problems
-        /*this.connectionToClientMonitor = new ConnectionToClientMonitor(sendToThisClient, clientConnection);
-        Thread conMoThread = new Thread(connectionToClientMonitor);
-        conMoThread.start();
-
-         */
-
+     public void run() {
 
         try {
             din = new DataInputStream(socket.getInputStream());
@@ -72,6 +63,12 @@ public class ListeningToClients implements Runnable {
                     }
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            din.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

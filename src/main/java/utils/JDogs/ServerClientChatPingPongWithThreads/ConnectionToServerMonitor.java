@@ -6,9 +6,11 @@ public class ConnectionToServerMonitor implements Runnable {
         private boolean running = true;
         private Queue sendQueue;
         private int tryToReachServer;
+        private Client client;
 
-        public ConnectionToServerMonitor(Queue sendQueue) {
+        public ConnectionToServerMonitor(Client client, Queue sendQueue) {
             this.sendQueue = sendQueue;
+            this.client = client;
             this.tryToReachServer = 0;
 
         }
@@ -20,21 +22,23 @@ public class ConnectionToServerMonitor implements Runnable {
 
                 if (System.currentTimeMillis() - oldTime >= 10000) {
 
-                    if (tryToReachServer >= 5) {
-                        System.out.println("problem handling...exit");
-                        this.kill();
+                    if (tryToReachServer >= 20) {
+                        System.out.println("problem handling...exit" + tryToReachServer);
+                        client.newSetUp();
+                    } else {
+                        sendSignal();
+                        tryToReach();
+
                     }
-                    sendSignal();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    tryToReach();
                 } else {
                     tryToReachServer = 0;
                 }
 
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -42,7 +46,7 @@ public class ConnectionToServerMonitor implements Runnable {
 
         }
         //update time of last incoming message
-       synchronized public void message(long timeInMilliSec) {
+        public void message(long timeInMilliSec) {
             oldTime = timeInMilliSec;
 
         }

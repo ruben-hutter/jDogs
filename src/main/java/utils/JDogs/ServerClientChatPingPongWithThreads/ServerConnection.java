@@ -15,8 +15,8 @@ public class ServerConnection implements Runnable {
    private SendFromServer sender;
    private ListeningToClients listeningToClient;
    private ConnectionToClientMonitor connectionToClientMonitor;
-    private DataInputStream din;
-    private DataOutputStream dout;
+   private MessageHandlerServer messageHandlerServer;
+
 
     private int stopNumber;
 
@@ -40,6 +40,7 @@ public class ServerConnection implements Runnable {
         stopNumber = server.connections.size();
 
         server.connections.add(sender);
+
         Thread senderThread = new Thread(sender);
         senderThread.start();
         System.out.println("thread sender name: " + senderThread.toString());
@@ -55,9 +56,9 @@ public class ServerConnection implements Runnable {
         listener.start();
         System.out.println("thread listener name: " + listener.toString());
 
-        //messageHandler Thread
-        MessageHandler messageHandler = new MessageHandler(server, this, sendToThisClient, sendToAll, receivedFromClient);
-        Thread messenger = new Thread(messageHandler);
+        //messageHandlerServer Thread
+        messageHandlerServer = new MessageHandlerServer(server, this, sendToThisClient, sendToAll, receivedFromClient);
+        Thread messenger = new Thread(messageHandlerServer);
         messenger.start();
 
 
@@ -72,31 +73,22 @@ public class ServerConnection implements Runnable {
             }
 
         }
-
-        System.out.println("ending");
-    this.listeningToClient.kill();
-    this.connectionToClientMonitor.kill();
-    this.sender.kill();
-
-
-
-
     }
 
     public SendFromServer getSender () {
         return sender;
     }
 
-    synchronized public void kill() {
+     synchronized public void kill() {
         System.out.println("stop ServerConnection...");
         server.connections.remove(stopNumber);
+        this.listeningToClient.kill();
+        this.connectionToClientMonitor.kill();
+        this.sender.kill();
+        this.messageHandlerServer.kill();
 
         running = false;
 
-    }
-
-    public void print(long print) {
-        System.out.println(print);
     }
 
 

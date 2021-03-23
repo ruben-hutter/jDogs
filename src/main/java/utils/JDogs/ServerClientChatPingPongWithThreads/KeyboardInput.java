@@ -31,7 +31,6 @@ public class KeyboardInput implements Runnable {
                 input = console.nextLine();
                 if (input.equalsIgnoreCase("quit")) {
                     running = false;
-                    client.killClient();
                 }
                 System.out.println("from keyboard:  " + input);
                 sendQueue.enqueue(input);
