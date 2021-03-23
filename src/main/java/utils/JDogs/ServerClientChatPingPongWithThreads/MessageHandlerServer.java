@@ -36,7 +36,6 @@ public class MessageHandlerServer implements Runnable {
         String text;
         while (running) {
 
-
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
                 System.out.println(text);
@@ -163,7 +162,26 @@ public class MessageHandlerServer implements Runnable {
                     sendToThisClient.enqueue("no nickname entered");
                 } else {
                     nickName = command.substring(10, command.length());
-                    sendToThisClient.enqueue("hi, user "+ userName + "! your new nickname is: " + nickName);
+                    if (server.isValidNickName(nickName)) {
+                        server.UserPasswordMap.get(userName).changeNickname(nickName);
+                        server.allNickNames.add(nickName);
+                        sendToThisClient.enqueue("hi, user "+ userName + "! your new nickname is: " + nickName);
+                    } else {
+                        int number = 2;
+                        while (true) {
+                            if(server.isValidNickName(nickName + " " + Integer.toString(number))) {
+                                nickName = nickName + " " + Integer.toString(number);
+                                server.UserPasswordMap.get(userName).changeNickname(nickName);
+                                server.allNickNames.add(nickName);
+                                sendToThisClient.enqueue("hi, user "+ userName + "! your new nickname is: " + nickName);
+
+                                break;
+                            } else {
+                                number++;
+                            }
+                        }
+
+                    }
                 }
                     break;
             case "users":
