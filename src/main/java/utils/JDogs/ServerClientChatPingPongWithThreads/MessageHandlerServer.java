@@ -1,6 +1,6 @@
 package utils.JDogs.ServerClientChatPingPongWithThreads;
 
-public class MessageHandler implements Runnable {
+public class MessageHandlerServer implements Runnable {
     private Queue sendToAll;
     private Queue sendToThisClient;
     private Queue receivedFromClient;
@@ -9,8 +9,9 @@ public class MessageHandler implements Runnable {
     private Server server;
     private ServerConnection serverConnection;
     private String userName;
+    private String nickName;
 
-    public MessageHandler(Server server,ServerConnection serverConnection, Queue sendToThisClient, Queue sendToAll, Queue receivedFromClient) {
+    public MessageHandlerServer(Server server,ServerConnection serverConnection, Queue sendToThisClient, Queue sendToAll, Queue receivedFromClient) {
         this.sendToAll = sendToAll;
         this.sendToThisClient = sendToThisClient;
         this.receivedFromClient = receivedFromClient;
@@ -24,6 +25,35 @@ public class MessageHandler implements Runnable {
     @Override
     public void run() {
     //if client is already logged in and didn`t logout
+
+    getLoggedIn();
+
+    getNickname();
+        //after login:
+
+        String text;
+        while (running) {
+
+
+            if (!receivedFromClient.isEmpty()) {
+                text = receivedFromClient.dequeue();
+                System.out.println(text);
+
+                //internal commands begin with "jd "
+                if(text.length() >= 4 && text.substring(0,3).equals("jd ")) {
+                    messageHandling(text);
+                } else {
+                    sendToAll.enqueue(userName + ": " + text);
+                }
+            }
+        }
+
+        System.out.println(this.toString() + "  stops now");
+
+
+    }
+
+    public void getLoggedIn() {
 
         while (incompleteLogin) {
 
@@ -91,26 +121,13 @@ public class MessageHandler implements Runnable {
                 }
             }
         }
-        //after login:
+    }
 
-        String text;
-        while (running) {
+    public void getNickname() {
 
-
-            if (!receivedFromClient.isEmpty()) {
-                text = receivedFromClient.dequeue();
-                System.out.println(text);
-
-                //internal commands begin with "jd "
-                if(text.length() >= 4 && text.substring(0,3).equals("jd ")) {
-                    messageHandling(text);
-                } else {
-                    sendToAll.enqueue(userName + ": " + text);
-                }
-            }
+        if (nickName == null) {
+            sendToThisClient.enqueue("jd nickna");
         }
-
-        System.out.println(this.toString() + "  stops now");
 
 
     }
@@ -133,6 +150,12 @@ public class MessageHandler implements Runnable {
             case "whispe":
                 sendToThisClient.enqueue("whisperChat is not implemented");
                 break;
+            case "nickna":
+
+                nickName = command.substring(9, command.length());
+                sendToThisClient.enqueue("your new nickname is: " + nickName);
+                break;
+
 
             default:
                 sendToThisClient.enqueue("unknown command");

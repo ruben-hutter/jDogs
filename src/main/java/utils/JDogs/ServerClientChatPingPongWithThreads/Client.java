@@ -1,7 +1,9 @@
 package utils.JDogs.ServerClientChatPingPongWithThreads;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Client {
 
@@ -9,6 +11,7 @@ public class Client {
     private KeyboardInput keyboardInput;
     private ConnectionToServerMonitor connectionToServerMonitor;
     private SendFromClient sendFromClient;
+    private String nickname;
 
     public static void main(String[] args) {
         new Client();
@@ -24,6 +27,8 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        suggestNickname();
 
         //monitoring thread
 
@@ -49,6 +54,20 @@ public class Client {
         keyboard.start();
 
 
+    }
+
+    public void suggestNickname() {
+        try {
+            nickname = InetAddress.getLocalHost().getHostName();
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public void killClient() {

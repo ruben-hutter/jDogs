@@ -54,9 +54,9 @@ public class ServerConnection implements Runnable {
         listener.start();
         System.out.println("thread listener name: " + listener.toString());
 
-        //messageHandler Thread
-        MessageHandler messageHandler = new MessageHandler(server, this, sendToThisClient, sendToAll, receivedFromClient);
-        Thread messenger = new Thread(messageHandler);
+        //messageHandlerServer Thread
+        MessageHandlerServer messageHandlerServer = new MessageHandlerServer(server, this, sendToThisClient, sendToAll, receivedFromClient);
+        Thread messenger = new Thread(messageHandlerServer);
         messenger.start();
 
 
