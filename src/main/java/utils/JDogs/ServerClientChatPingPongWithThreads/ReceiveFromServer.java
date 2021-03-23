@@ -36,7 +36,7 @@ public class ReceiveFromServer implements Runnable {
                         connectionToServerMonitor.sendSignal();
                     } else {
 
-                        System.out.println("from server  " + message);
+                        //System.out.println("from server  " + message);
                     }
 
                 } else {

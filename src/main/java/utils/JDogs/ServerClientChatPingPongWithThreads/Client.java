@@ -11,6 +11,7 @@ public class Client {
     private KeyboardInput keyboardInput;
     private ConnectionToServerMonitor connectionToServerMonitor;
     private SendFromClient sendFromClient;
+    private MessageHandlerClient messageHandlerClient;
     private String nickname;
 
     public static void main(String[] args) {
@@ -18,7 +19,7 @@ public class Client {
     }
 
     public Client() {
-
+        Queue receiveQueue = new Queue();
         Queue sendQueue = new Queue();
 
         Socket socket = null;
@@ -27,8 +28,6 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        suggestNickname();
 
         //monitoring thread
 
@@ -42,7 +41,6 @@ public class Client {
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 
-
         //sends messages to server
         sendFromClient = new SendFromClient(socket, sendQueue);
         Thread toServerThread = new Thread(sendFromClient);
@@ -53,22 +51,13 @@ public class Client {
         Thread keyboard = new Thread(keyboardInput);
         keyboard.start();
 
+        //handles received messages meaningfully
+        messageHandlerClient = new MessageHandlerClient(receiveQueue,sendQueue);
+        Thread messageHandleThread = new Thread(messageHandlerClient);
+        messageHandleThread.start();
 
     }
 
-    public void suggestNickname() {
-        try {
-            nickname = InetAddress.getLocalHost().getHostName();
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
 
     public void killClient() {
 
@@ -76,6 +65,7 @@ public class Client {
         sendFromClient.kill();
         connectionToServerMonitor.kill();
         keyboardInput.kill();
+        messageHandlerClient.kill();
 
 
     }
