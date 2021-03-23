@@ -41,17 +41,18 @@ public class MessageHandlerServer implements Runnable {
                 System.out.println(text);
 
                 //internal commands begin with "jd "
-                if(text.length() >= 4 && text.substring(0,3).equals("jd ")) {
+                if(text.length() >= 9 && text.substring(0,3).equals("jd ")) {
                     messageHandling(text);
                 } else {
-                    sendToAll.enqueue(nickName + ": " + text);
+                    if (text.substring(0,3).equals("jd ")) {
+                        sendToThisClient.enqueue("unknown command");
+                    } else {
+                        sendToAll.enqueue(nickName + ": " + text);
+                    }
                 }
             }
         }
-
         System.out.println(this.toString() + "  stops now");
-
-
     }
 
     public void getLoggedIn() {
@@ -135,10 +136,6 @@ public class MessageHandlerServer implements Runnable {
 
 
     public void messageHandling(String command) {
-        System.out.println(command);
-
-        System.out.println(command.substring(3,9));
-
 
         switch (command.substring(3,9)) {
 

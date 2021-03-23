@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
+    private Queue receiveQueue;
+    private Queue sendQueue;
 
     private ReceiveFromServer receiveFromServer;
     private KeyboardInput keyboardInput;
@@ -19,8 +21,16 @@ public class Client {
     }
 
     public Client() {
-        Queue receiveQueue = new Queue();
+        /*Queue receiveQueue = new Queue();
         Queue sendQueue = new Queue();
+
+         */
+        setUp();
+    }
+
+    public void setUp() {
+        receiveQueue = new Queue();
+        sendQueue = new Queue();
 
         Socket socket = null;
 
@@ -32,18 +42,18 @@ public class Client {
 
         //monitoring thread
 
-        connectionToServerMonitor = new ConnectionToServerMonitor(sendQueue);
+        connectionToServerMonitor = new ConnectionToServerMonitor(this, sendQueue);
         Thread monitorThread = new Thread(connectionToServerMonitor);
         monitorThread.start();
 
         //receives messages from server
         assert socket != null;
-        receiveFromServer = new ReceiveFromServer(socket, sendQueue, receiveQueue, connectionToServerMonitor);
+        receiveFromServer = new ReceiveFromServer(socket,this, sendQueue, receiveQueue, connectionToServerMonitor);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 
         //sends messages to server
-        sendFromClient = new SendFromClient(socket, sendQueue);
+        sendFromClient = new SendFromClient(socket,this,sendQueue);
         Thread toServerThread = new Thread(sendFromClient);
         toServerThread.start();
 
@@ -60,14 +70,15 @@ public class Client {
     }
 
 
-    public void killClient() {
+    synchronized public void newSetUp() {
 
         receiveFromServer.kill();
         sendFromClient.kill();
         connectionToServerMonitor.kill();
         keyboardInput.kill();
         messageHandlerClient.kill();
+        System.out.println("trying to reset connection to server..");
 
-
+        setUp();
     }
 }

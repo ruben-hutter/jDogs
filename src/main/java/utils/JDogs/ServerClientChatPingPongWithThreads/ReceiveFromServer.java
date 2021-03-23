@@ -6,16 +6,18 @@ import java.net.Socket;
 
 public class ReceiveFromServer implements Runnable {
     private Socket socket;
+    private Client client;
     private Queue sendQueue;
     private Queue receiveQueue;
     private boolean running;
     private DataInputStream din;
     private ConnectionToServerMonitor connectionToServerMonitor;
 
-    public ReceiveFromServer(Socket socket, Queue sendQueue,Queue receiveQueue, ConnectionToServerMonitor connectionToServerMonitor) {
+    public ReceiveFromServer(Socket socket,Client client, Queue sendQueue,Queue receiveQueue, ConnectionToServerMonitor connectionToServerMonitor) {
         this.socket = socket;
         this.sendQueue = sendQueue;
         this.receiveQueue = receiveQueue;
+        this.client = client;
         this.running = true;
         this.connectionToServerMonitor = connectionToServerMonitor;
         try {
@@ -49,7 +51,7 @@ public class ReceiveFromServer implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            client.newSetUp();
         }
 
         System.out.println(this.toString() + " stops now");

@@ -4,6 +4,7 @@ public class ConnectionToClientMonitor implements Runnable {
 
     private long oldTime = -1;
     private boolean running = true;
+    private int tryToReachClient = 0;
     private Queue sendToThisClient;
     private ServerConnection serverConnection;
 
@@ -19,15 +20,24 @@ public class ConnectionToClientMonitor implements Runnable {
         while (running) {
 
             if (System.currentTimeMillis() - oldTime >= 10000) {
-                sendSignal();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                //kill connection
+                if (tryToReachClient > 20) {
+                    serverConnection.kill();
+                } else {
+                    //send signal
+                    sendSignal();
+                    tryToReach();
+                    System.out.println(this.toString() + ": message sent");
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-
-                System.out.println(this.toString() + ": message sent");
-
+            } else {
+                //set to zero
+                tryToReachClient = 0;
             }
 
         }
@@ -44,7 +54,10 @@ public class ConnectionToClientMonitor implements Runnable {
     public void sendSignal() {
         String ping = "ping";
         sendToThisClient.enqueue(ping);
+    }
 
+    public void tryToReach() {
+        tryToReachClient++;
     }
 
     public void kill() {

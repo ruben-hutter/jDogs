@@ -99,7 +99,6 @@ public class SendFromServer implements Runnable {
     }
 
     public void kill() {
-        System.out.println(this.toString() + "  should kill itself");
         running = false;
     }
 }

@@ -10,11 +10,13 @@ public class SendFromClient implements Runnable {
    private Queue sendQueue;
    private DataOutputStream dout;
    private boolean running;
+   private Client client;
 
-    public SendFromClient(Socket socket, Queue sendQueue) {
+    public SendFromClient(Socket socket,Client client, Queue sendQueue) {
         this.socket = socket;
         this.sendQueue = sendQueue;
         this.running = true;
+        this.client = client;
 
     }
 
@@ -57,8 +59,25 @@ public class SendFromClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("problem sending...");
-            running = false;
+            HandlingConnectionLoss();
         }
+    }
+
+    public void HandlingConnectionLoss() {
+
+        while (true) {
+            try {
+                dout.close();
+                dout = new DataOutputStream(socket.getOutputStream());
+                break;
+            } catch (IOException e) {
+                //e.printStackTrace();
+                //if connection fails:
+                System.out.println(this.toString() + " cannot reconnect OutputStream to Server");
+                client.newSetUp();
+            }
+        }
+
     }
 
     public void kill() {
