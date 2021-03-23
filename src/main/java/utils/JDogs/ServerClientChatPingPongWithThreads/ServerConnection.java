@@ -49,6 +49,8 @@ public class ServerConnection implements Runnable {
         this.connectionToClientMonitor = new ConnectionToClientMonitor(sendToThisClient, this);
         Thread conMoThread = new Thread(connectionToClientMonitor);
         conMoThread.start();
+        System.out.println("conMo thread: " + conMoThread.toString());
+
 
         //receivefromClient thread
         listeningToClient = new ListeningToClients(socket, sendToThisClient,receivedFromClient,this, connectionToClientMonitor);

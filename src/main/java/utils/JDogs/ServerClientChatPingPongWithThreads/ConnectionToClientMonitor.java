@@ -25,12 +25,12 @@ public class ConnectionToClientMonitor implements Runnable {
                     serverConnection.kill();
                 } else {
                     //send signal
+
                     sendSignal();
                     tryToReach();
                     System.out.println(this.toString() + ": message sent");
-
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -38,7 +38,10 @@ public class ConnectionToClientMonitor implements Runnable {
             } else {
                 //set to zero
                 tryToReachClient = 0;
+
             }
+
+
 
         }
 

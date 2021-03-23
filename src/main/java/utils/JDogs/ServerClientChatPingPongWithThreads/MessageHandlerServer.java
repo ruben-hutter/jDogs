@@ -45,7 +45,8 @@ public class MessageHandlerServer implements Runnable {
                 if(text.length() >= 9 && text.substring(0,3).equals("jd ")) {
                     messageHandling(text);
                 } else {
-                    if (text.substring(0,3).equals("jd ")) {
+
+                    if (text.length() >= 3 && text.substring(0,3).equals("jd ")) {
                         sendToThisClient.enqueue("unknown command");
                     } else {
                         sendToAll.enqueue(nickName + ": " + text);
