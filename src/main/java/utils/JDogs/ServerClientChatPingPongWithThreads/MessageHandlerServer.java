@@ -11,6 +11,7 @@ public class MessageHandlerServer implements Runnable {
     private String userName;
     private String nickName;
 
+
     public MessageHandlerServer(Server server,ServerConnection serverConnection, Queue sendToThisClient, Queue sendToAll, Queue receivedFromClient) {
         this.sendToAll = sendToAll;
         this.sendToThisClient = sendToThisClient;
@@ -71,28 +72,33 @@ public class MessageHandlerServer implements Runnable {
             }
 
             if (server.UserPasswordMap.containsKey(userName)) {
+                //you were already logged in and did not log out
+                if (server.UserPasswordMap.get(userName).isLoggedIn()) {
+                    sendToThisClient.enqueue("already logged in");
+                    incompleteLogin = false;
+                    break;
+                } else {
+                    //userName is taken but person logged out
+                    //ask for password
+                    sendToThisClient.enqueue("userName taken...enter password");
 
-                //ask for password
-                sendToThisClient.enqueue("userName taken...enter password");
-
-                while (true) {
+                    while (true) {
 
 
-                    if (!receivedFromClient.isEmpty()) {
-                        password = receivedFromClient.dequeue();
-                        if (server.UserPasswordMap.get(userName).getPassword().equals(password)) {
-                            sendToThisClient.enqueue("logged in");
-                            incompleteLogin = false;
-                            System.out.println("login done..");
+                        if (!receivedFromClient.isEmpty()) {
+                            password = receivedFromClient.dequeue();
+                            if (server.UserPasswordMap.get(userName).getPassword().equals(password)) {
+                                sendToThisClient.enqueue("logged in");
+                                incompleteLogin = false;
+                                System.out.println("login done..");
 
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
-
-
-
             } else {
+                //userName is unknown
                 sendToThisClient.enqueue("enter password phrase");
                 while (true) {
 
@@ -141,22 +147,27 @@ public class MessageHandlerServer implements Runnable {
 
             case "logout":
                 sendToThisClient.enqueue("logout now");
+                server.UserPasswordMap.get(userName).setLoggedOut();
+
                 serverConnection.kill();
                 running = false;
                 break;
 
             case "whispe":
                 sendToThisClient.enqueue("whisperChat is not implemented");
+
                 break;
             case "nickna":
                 if (command.length() < 10) {
                     sendToThisClient.enqueue("no nickname entered");
                 } else {
                     nickName = command.substring(10, command.length());
-                    sendToThisClient.enqueue("your new nickname is: " + nickName);
+                    sendToThisClient.enqueue("hi, user "+ userName + "! your new nickname is: " + nickName);
                 }
                     break;
-
+            case "users":
+                sendToThisClient.enqueue("list of active users not implemented");
+                break;
 
 
             default:
