@@ -5,13 +5,15 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ReceiveFromServer implements Runnable {
+
     private final Client client;
     private final Queue receiveQueue;
     private boolean running;
     private DataInputStream din;
     private final ConnectionToServerMonitor connectionToServerMonitor;
 
-    public ReceiveFromServer(Socket socket,Client client, Queue sendQueue,Queue receiveQueue, ConnectionToServerMonitor connectionToServerMonitor) {
+    public ReceiveFromServer(Socket socket, Client client, Queue sendQueue, Queue receiveQueue,
+                             ConnectionToServerMonitor connectionToServerMonitor) {
         this.receiveQueue = receiveQueue;
         this.client = client;
         this.running = true;
@@ -24,7 +26,7 @@ public class ReceiveFromServer implements Runnable {
     }
 
     @Override
-   public void run() {
+    public void run() {
         String message;
 
 
