@@ -1,23 +1,20 @@
 package utils.JDogs.ServerClientChatPingPongWithThreads;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class ListeningToClients implements Runnable {
-    private Socket socket;
+    private final Socket socket;
     private boolean running;
     private DataInputStream din;
-    private Queue sendToThisClient;
     private Queue sendToAllClients;
-    private Queue receivedFromThisClient;
+    private final Queue receivedFromThisClient;
     private ServerConnection serverConnection;
-    private ConnectionToClientMonitor connectionToClientMonitor;
+    private final ConnectionToClientMonitor connectionToClientMonitor;
 
     public ListeningToClients(Socket socket, Queue sendToThisClient, Queue receivedFromThisClient, ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
         this.socket = socket;
-        this.sendToThisClient = sendToThisClient;
         this.serverConnection = serverConnection;
         this.connectionToClientMonitor = connectionToClientMonitor;
         this.running = true;

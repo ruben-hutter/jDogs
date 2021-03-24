@@ -6,8 +6,8 @@ import java.net.UnknownHostException;
 public class MessageHandlerClient implements Runnable{
 
     private boolean running;
-    private Queue receiveQueue;
-    private Queue sendQueue;
+    private final Queue receiveQueue;
+    private final Queue sendQueue;
 
     public MessageHandlerClient(Queue receiveQueue, Queue sendQueue) {
         this.running = true;
@@ -40,21 +40,16 @@ public class MessageHandlerClient implements Runnable{
 
         if(reply.substring(0,3).equals("jd ")) {
 
-            switch (reply.substring(3,9)) {
-
-                case "nickna":
-                    String defaultNickname = null;
-                    try {
-                        defaultNickname = InetAddress.getLocalHost().getHostName();
-                    } catch (UnknownHostException e) {
-                        e.printStackTrace();
-                    }
-                    sendQueue.enqueue("jd nickna "+ defaultNickname);
-                    break;
-
-                default:
-                    System.out.println("from server:  " + reply);
-
+            if ("nickna".equals(reply.substring(3, 9))) {
+                String defaultNickname = null;
+                try {
+                    defaultNickname = InetAddress.getLocalHost().getHostName();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                sendQueue.enqueue("jd nickna " + defaultNickname);
+            } else {
+                System.out.println("from server:  " + reply);
             }
 
 

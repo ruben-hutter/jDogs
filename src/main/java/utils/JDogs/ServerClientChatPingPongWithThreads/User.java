@@ -9,7 +9,7 @@ if a user is currently logged in or not.
 
 public class User {
     private boolean isLoggedIn;
-    private String password;
+    private final String password;
     private String nickName;
 
     public User(String password, boolean isLoggedIn) {
