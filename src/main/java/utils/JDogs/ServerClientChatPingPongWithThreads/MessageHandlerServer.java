@@ -31,12 +31,18 @@ public class MessageHandlerServer implements Runnable {
     //receive default nickname
     getNickname();
 
-        //after login:
 
-        String text;
-        while (running) {
+    /*
+        after login
+        antiSpam Object
+        */
 
-            if (!receivedFromClient.isEmpty()) {
+    oldodl antiSpam = new oldodl();
+
+    String text;
+
+    while (running) {
+        if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
                 System.out.println(text);
 
@@ -48,11 +54,17 @@ public class MessageHandlerServer implements Runnable {
                     if (text.length() >= 3 && text.substring(0,3).equals("jd ")) {
                         sendToThisClient.enqueue("unknown command");
                     } else {
-                        sendToAll.enqueue(nickName + ": " + text);
+                        if (antiSpam.isBlocked(System.currentTimeMillis())) {
+                            System.out.println("is blocked");
+                            System.out.println(antiSpam.getCount());
+                        } else {
+                            antiSpam.received(text.length(), System.currentTimeMillis());
+                            sendToAll.enqueue(nickName + ": " + text);
+                            }
+                        }
                     }
                 }
             }
-        }
         System.out.println(this.toString() + "  stops now");
     }
 

@@ -47,7 +47,7 @@ public class Client {
         monitorThread.start();
 
         //receives messages from server
-        assert socket != null;
+        //assert socket != null;
         receiveFromServer = new ReceiveFromServer(socket,this, sendQueue, receiveQueue, connectionToServerMonitor);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
