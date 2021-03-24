@@ -56,12 +56,6 @@ public class ReceiveFromClient implements Runnable {
                         //write to receiver-queue
                         receivedFromThisClient.enqueue(textIn);
                     }
-                } else {
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         } catch (IOException e) {

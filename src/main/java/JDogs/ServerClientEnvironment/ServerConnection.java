@@ -66,11 +66,6 @@ public class ServerConnection implements Runnable {
 
 
         while (running) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
         }
     }

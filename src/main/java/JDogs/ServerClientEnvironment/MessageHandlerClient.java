@@ -17,20 +17,14 @@ public class MessageHandlerClient implements Runnable{
 
     @Override
     public void run() {
-        String reply;
+        String reply = null;
         while(running) {
 
-            if (receiveQueue.isEmpty()) {
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else {
+            if (!receiveQueue.isEmpty())
                 reply = receiveQueue.dequeue();
                 messageHandling(reply);
                 }
-            }
+
 
         System.out.println(this.toString() + " stops now");
 

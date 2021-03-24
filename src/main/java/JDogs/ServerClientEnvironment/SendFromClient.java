@@ -37,12 +37,8 @@ public class SendFromClient implements Runnable {
 
                     sendStringToServer(reply);
                 }
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
+            //dout.close() closes DataOutputStream
         try {
             dout.close();
         } catch (IOException e) {
