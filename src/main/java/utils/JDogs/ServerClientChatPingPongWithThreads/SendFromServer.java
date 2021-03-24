@@ -9,11 +9,11 @@ public class SendFromServer implements Runnable {
 
     private boolean running;
     private DataOutputStream dout;
-    private Socket socket;
-    private Server server;
-    private Queue sendToAll;
-    private Queue sendToThisClient;
-    private ServerConnection serverConnection;
+    private final Socket socket;
+    private final Server server;
+    private final Queue sendToAll;
+    private final Queue sendToThisClient;
+    private final ServerConnection serverConnection;
 
     public SendFromServer(Socket socket, Server server, Queue sendToAll, Queue sendToThisClient,ServerConnection serverConnection) {
         this.socket = socket;

@@ -51,7 +51,7 @@ In den kommenden Tagen werde ich den Arbeitsplan noch etwas anpassen und, anhand
 
 ### Protokoll#02 - Update Milestone 1
 
-Heute haben wir uns die Presentation zusammen angeschaut und entschieden, welche Punkte wir bis Dienstag verbessern müssen. Dann haben wir das Mockup und das GanttProjekt besprochen; was uns anfangs einige Schwierigkeiten bereitet hat, da wir es nicht auf Git hochladen konnten. Nach mehreren Versuchen haben wir es dann geschafft, es auch als .xml und nicht nur als .csv hochzuladen.
+Heute haben wir uns die Präsentation zusammen angeschaut und entschieden, welche Punkte wir bis Dienstag verbessern müssen. Dann haben wir das Mockup und das GanttProjekt besprochen; was uns anfangs einige Schwierigkeiten bereitet hat, da wir es nicht auf Git hochladen konnten. Nach mehreren Versuchen haben wir es dann geschafft, es auch als .xml und nicht nur als .csv hochzuladen.
 Unser nächstes Meeting findet am Dienstag statt, bei dem wir eine Generalprobe der Präsentation machen werden. Bis dahin stellt Gregor das Mockup fertig und korrigiert die besprochenen Punkte der Präsentation. Johanna und ich bearbeiten das GanttProjekt.
 
 > Fragen für Übungsstunde:
@@ -70,5 +70,43 @@ Gregor hat das Mockup fertiggestellt und ein Grundkonzept für das Spielfeld ers
 Ich habe weiter an der Planung gearbeitet. Die größte Schwierigkeit ist im Moment die Struktur des gesamten Projekts. Da wir noch nie ein so großes Projekt durchgeführt haben und vor allem gerade erst einige grundlegende Konzepte gelernt haben, wie z.B. die Client-Server-Beziehung, ist es selbst mit den Milestones als Referenz schwierig, das zeitliche Verhältnis der verschiedenen Punkte zu erkennen und auch die Zeit für eine bestimmte Aufgabe zu schätzen.
 
 ---
+
+*23.März.2021 15:30, Johanna*
+
+### Protokoll#3 - Update Milestone 2
+
+Gregor hat seit unserem letzten Treffen bereits ein Grundgerüst für den Chat, Login und Ping/Pong erstellt. Ruben hat sich Gedanken zum Protokoll gemacht, ich zur Qualitätssicherung. Zu Beginn der heutigen Sitzung erklärte Gregor den anderen Teammitgliedern seinen Code. Gemeinsam schauten wir uns den Code an, klärten Fragen und brachten Verbesserungsvorschläge ein. Wir testeten den Chat unter Zuhilfenahme von Hamachi. Danach gingen wir die Achievements für Milestone 2 durch und notierten uns, was wir noch in der Übungsstunde fragen möchten. Zuletzt überlegten wir uns gemeinsam einige Befehle für das Netzwerkprotokoll, welche Ruben in einem Dokument festhielt. Wir einigten uns darauf, für die Befehle vorerst 4 Buchstaben zu verwenden. 
+
+> Fragen für die Übungsstunde:
+>
+> 1) Wie würde eine ideale projektspezifische Planung aussehen (konkretes Beispiel)?
+> 2) Wie können wir den Malus "Human modem" vermeiden? 
+> 3) Wie soll das Protokoll dokumentiert, im Code implementiert und validiert werden? 
+> 4) Wie soll das Software-Qualitätssicherungskonzept konkret aussehen? 
+> 5) Was ist genau mit "Garbage" gemeint? 
+
+---
+
+*24.März.2021 10:15, Johanna*
+
+### Protokoll#4 - Übungsstunde am 24.03.2021
+
+Antworten auf unsere Fragen:
+> 1) Der Tutor stellt uns einen Screenshot eines guten Projektplans zur Verfügung. Aus dem Projektplan sollte ersichtlich sein, um was für ein Spiel es sich genau handelt, etc. 
+> 2) Auf der Kommandozeile sollten nicht die exakten Befehle eingegeben werden, stattdessen sollte ein Frage-Antwort-Spiel gestartet werden, z.B. "Willst du deinen Nickname ändern?" "Gewünschter neuer Nickname", etc. 
+> 3) Dokumentation in einem PDF-Dokument. Implementation als enum, siehe Vorlesungsfolien. Validierung: Es sollen nur die definierten Befehle akzeptiert werden. Bei ungültigen Befehlen sollen entsprechende Handlungen eingeleitet werden. 
+> 4) Beschreibung, wie wir sicherstellen wollen, dass unsere Software das macht, was wir wollen. Auflistung der Tools und Hilfsmittel.
+> 5) Der Server soll damit umgehen können, wenn nicht definierte Befehle gesendet werden. 
+
+Wir verteilten die anstehenden Aufgaben wie folgt: 
+> - Gregor: Ping/Pong so abändern, dass das Ping regelmässig gesendet wird. 
+> - Ruben: Implementiert die gestern festgelegten Befehle des Protokolls.
+> - Johanna: Qualitätssicherungskonzept erstellen. Frage-Antwort-Spiel bei einigen Befehlen einbauen. 
+
+**Nächstes Treffen:** Freitag, 26.03.2021, 20 Uhr. Bis dann sollten die Aufgaben mehrheitlich erledigt sein. Kleinere Korrekturen können am Samstag erfolgen. 
+
+
+
+
 
 

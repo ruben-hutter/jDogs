@@ -3,17 +3,17 @@ package utils.JDogs.ServerClientChatPingPongWithThreads;
 import java.util.Scanner;
 
 public class KeyboardInput implements Runnable {
-    private Queue sendQueue;
-    private Scanner console;
+
+    private final Queue sendQueue;
+    private final Scanner console;
     private boolean running;
-    private Client client;
+    private final Client client;
 
     public KeyboardInput(Client client, Queue sendQueue) {
         this.sendQueue = sendQueue;
         this.console = new Scanner(System.in);
         this.client = client;
         this.running = true;
-
     }
 
     @Override
@@ -21,7 +21,6 @@ public class KeyboardInput implements Runnable {
         String input;
         while (running) {
             while(!console.hasNextLine()) {
-
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -37,7 +36,6 @@ public class KeyboardInput implements Runnable {
                 sendQueue.enqueue(input);
             }
         }
-
     }
 
     public void kill() {

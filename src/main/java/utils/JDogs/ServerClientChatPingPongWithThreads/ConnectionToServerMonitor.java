@@ -4,9 +4,9 @@ public class ConnectionToServerMonitor implements Runnable {
 
         private long oldTime = -1;
         private boolean running = true;
-        private Queue sendQueue;
+        private final Queue sendQueue;
         private int tryToReachServer;
-        private Client client;
+        private final Client client;
 
         public ConnectionToServerMonitor(Client client, Queue sendQueue) {
             this.sendQueue = sendQueue;

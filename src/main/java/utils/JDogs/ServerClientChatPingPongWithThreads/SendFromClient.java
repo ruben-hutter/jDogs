@@ -6,11 +6,11 @@ import java.net.Socket;
 
 public class SendFromClient implements Runnable {
 
-    private Socket socket;
-   private Queue sendQueue;
-   private DataOutputStream dout;
-   private boolean running;
-   private Client client;
+    private final Socket socket;
+    private final Queue sendQueue;
+    private DataOutputStream dout;
+    private boolean running;
+    private final Client client;
 
     public SendFromClient(Socket socket,Client client, Queue sendQueue) {
         this.socket = socket;

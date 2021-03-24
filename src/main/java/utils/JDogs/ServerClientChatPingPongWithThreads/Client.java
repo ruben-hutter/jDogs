@@ -1,13 +1,9 @@
 package utils.JDogs.ServerClientChatPingPongWithThreads;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Client {
-    private Queue receiveQueue;
-    private Queue sendQueue;
 
     private ReceiveFromServer receiveFromServer;
     private KeyboardInput keyboardInput;
@@ -29,8 +25,9 @@ public class Client {
     }
 
     public void setUp() {
-        receiveQueue = new Queue();
-        sendQueue = new Queue();
+
+        Queue receiveQueue = new Queue();
+        Queue sendQueue = new Queue();
 
         Socket socket = null;
 
@@ -53,7 +50,7 @@ public class Client {
         receiverThread.start();
 
         //sends messages to server
-        sendFromClient = new SendFromClient(socket,this,sendQueue);
+        sendFromClient = new SendFromClient(socket,this, sendQueue);
         Thread toServerThread = new Thread(sendFromClient);
         toServerThread.start();
 
@@ -63,7 +60,7 @@ public class Client {
         keyboard.start();
 
         //handles received messages meaningfully
-        messageHandlerClient = new MessageHandlerClient(receiveQueue,sendQueue);
+        messageHandlerClient = new MessageHandlerClient(receiveQueue, sendQueue);
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
 

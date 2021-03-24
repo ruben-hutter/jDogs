@@ -5,8 +5,8 @@ public class ConnectionToClientMonitor implements Runnable {
     private long oldTime = -1;
     private boolean running = true;
     private int tryToReachClient = 0;
-    private Queue sendToThisClient;
-    private ServerConnection serverConnection;
+    private final Queue sendToThisClient;
+    private final ServerConnection serverConnection;
 
 
     /*

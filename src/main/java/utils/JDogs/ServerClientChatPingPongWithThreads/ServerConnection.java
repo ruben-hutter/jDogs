@@ -6,12 +6,12 @@ import java.net.Socket;
 
 public class ServerConnection implements Runnable {
 
-    private Server server;
-    private Socket socket;
+    private final Server server;
+    private final Socket socket;
     //Queues: used to store messages, which should be sent
-   private Queue sendToAll;
-   private Queue sendToThisClient;
-   private Queue receivedFromClient;
+   private final Queue sendToAll;
+   private final Queue sendToThisClient;
+   private final Queue receivedFromClient;
    private SendFromServer sender;
    private ListeningToClients listeningToClient;
    private ConnectionToClientMonitor connectionToClientMonitor;
