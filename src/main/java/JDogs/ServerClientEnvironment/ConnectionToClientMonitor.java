@@ -11,19 +11,16 @@ public class ConnectionToClientMonitor implements Runnable {
     private final Queue sendToThisClient;
     private final ServerConnection serverConnection;
 
-
-    /*
-    This thread will check if a connection to the client still exists.
-    If no messages are sent between client and server for approx. 10000mS.
-    If no respond arrives after 10 attempts, the serverConnection will end itself.
+    /**
+     * This thread will check if a connection to the client still exists.
+     * If no messages are sent between client and server for approx. 10000mS.
+     * If no respond arrives after 10 attempts, the serverConnection will end itself.
      */
 
     public ConnectionToClientMonitor(Queue sendToThisClient, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;
         this.serverConnection = serverConnection;
-
     }
-
 
     @Override
     public void run() {

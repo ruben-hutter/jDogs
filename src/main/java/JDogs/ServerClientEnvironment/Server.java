@@ -10,9 +10,9 @@ import java.util.Map;
 public class Server {
 
     ServerSocket serverSocket;
-    ArrayList<SendFromServer> connections = new ArrayList<SendFromServer>();
-    ArrayList <String> allNickNames = new ArrayList<String>();
-    Map<String, User> UserPasswordMap = new HashMap<String, User>();
+    ArrayList<SendFromServer> connections = new ArrayList<>();
+    ArrayList <String> allNickNames = new ArrayList<>();
+    Map<String, User> UserPasswordMap = new HashMap<>();
 
 
     boolean running = true;

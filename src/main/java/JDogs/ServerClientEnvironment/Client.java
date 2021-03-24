@@ -35,14 +35,14 @@ public class Client {
         }
 
         //monitoring thread
-
         connectionToServerMonitor = new ConnectionToServerMonitor(this, sendQueue);
         Thread monitorThread = new Thread(connectionToServerMonitor);
         monitorThread.start();
 
         //receives messages from server
         //assert socket != null;
-        receiveFromServer = new ReceiveFromServer(socket,this, sendQueue, receiveQueue, connectionToServerMonitor);
+        receiveFromServer = new ReceiveFromServer(socket,this, receiveQueue,
+                connectionToServerMonitor);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 
@@ -60,9 +60,7 @@ public class Client {
         messageHandlerClient = new MessageHandlerClient(receiveQueue, sendQueue);
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
-
     }
-
 
     synchronized public void newSetUp() {
 

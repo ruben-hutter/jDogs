@@ -12,7 +12,7 @@ public class ReceiveFromServer implements Runnable {
     private DataInputStream din;
     private final ConnectionToServerMonitor connectionToServerMonitor;
 
-    public ReceiveFromServer(Socket socket, Client client, Queue sendQueue, Queue receiveQueue,
+    public ReceiveFromServer(Socket socket, Client client, Queue receiveQueue,
                              ConnectionToServerMonitor connectionToServerMonitor) {
         this.receiveQueue = receiveQueue;
         this.client = client;

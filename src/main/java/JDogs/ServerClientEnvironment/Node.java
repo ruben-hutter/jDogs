@@ -1,6 +1,5 @@
 package JDogs.ServerClientEnvironment;
 
-
 public class Node {
 
     String value;
