@@ -5,13 +5,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Server {
 
     ServerSocket serverSocket;
     ArrayList<SendFromServer> connections = new ArrayList<SendFromServer>();
+    ArrayList <String> allNickNames = new ArrayList<String>();
     Map<String, User> UserPasswordMap = new HashMap<String, User>();
+
 
     boolean running = true;
 
@@ -46,7 +49,23 @@ public class Server {
         }
     }
 
+    //returns if a nickname is already taken or not
+    public boolean isValidNickName(String newNick) {
+        for (int index = 0; index < allNickNames.size(); index++) {
+            if (allNickNames.get(index).equals(newNick)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
+
     public void kill() {
         System.exit(-1);
     }
+
+
 }

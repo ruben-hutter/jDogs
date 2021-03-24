@@ -51,7 +51,7 @@ In den kommenden Tagen werde ich den Arbeitsplan noch etwas anpassen und, anhand
 
 ### Protokoll#02 - Update Milestone 1
 
-Heute haben wir uns die Presentation zusammen angeschaut und entschieden, welche Punkte wir bis Dienstag verbessern müssen. Dann haben wir das Mockup und das GanttProjekt besprochen; was uns anfangs einige Schwierigkeiten bereitet hat, da wir es nicht auf Git hochladen konnten. Nach mehreren Versuchen haben wir es dann geschafft, es auch als .xml und nicht nur als .csv hochzuladen.
+Heute haben wir uns die Präsentation zusammen angeschaut und entschieden, welche Punkte wir bis Dienstag verbessern müssen. Dann haben wir das Mockup und das GanttProjekt besprochen; was uns anfangs einige Schwierigkeiten bereitet hat, da wir es nicht auf Git hochladen konnten. Nach mehreren Versuchen haben wir es dann geschafft, es auch als .xml und nicht nur als .csv hochzuladen.
 Unser nächstes Meeting findet am Dienstag statt, bei dem wir eine Generalprobe der Präsentation machen werden. Bis dahin stellt Gregor das Mockup fertig und korrigiert die besprochenen Punkte der Präsentation. Johanna und ich bearbeiten das GanttProjekt.
 
 > Fragen für Übungsstunde:
@@ -71,4 +71,17 @@ Ich habe weiter an der Planung gearbeitet. Die größte Schwierigkeit ist im Mom
 
 ---
 
+*23.März.2021 15:30, Johanna*
+
+### Protokoll#3 - Update Milestone 2
+
+Gregor hat seit unserem letzten Treffen bereits ein Grundgerüst für den Chat, Login und Ping/Pong erstellt. Ruben hat sich Gedanken zum Protokoll gemacht, ich zur Qualitätssicherung. Zu Beginn der heutigen Sitzung erklärte Gregor den anderen Teammitgliedern seinen Code. Gemeinsam schauten wir uns den Code an, klärten Fragen und brachten Verbesserungsvorschläge ein. Wir testeten den Chat unter Zuhilfenahme von Hamachi. Danach gingen wir die Achievements für Milestone 2 durch und notierten uns, was wir noch in der Übungsstunde fragen möchten. Zuletzt überlegten wir uns gemeinsam einige Befehle für das Netzwerkprotokoll, welche Ruben in einem Dokument festhielt. Wir einigten uns darauf, für die Befehle vorerst 4 Buchstaben zu verwenden. 
+
+> Fragen für die Übungsstunde:
+>
+> - Wie würde eine ideale projektspezifische Planung aussehen (konkretes Beispiel)?
+> - Wie können wir den Malus "Human modem" vermeiden? 
+> - Wie soll das Protokoll dokumentiert, im Code implementiert und validiert werden? 
+> - Wie soll das Software-Qualitätssicherungskonzept konkret aussehen? 
+> - Was ist genau mit "Garbage" gemeint? 
 

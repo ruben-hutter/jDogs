@@ -1,16 +1,21 @@
 package utils.JDogs.ServerClientChatPingPongWithThreads;
 
 
-//this class will save the password and if a user is currently logged in or not
-//we can add stats of the users here
+/*
+this class will save the password,
+the nickname and
+if a user is currently logged in or not.
+ */
 
 public class User {
     private boolean isLoggedIn;
     private String password;
+    private String nickName;
 
     public User(String password, boolean isLoggedIn) {
         this.password = password;
         this.isLoggedIn = isLoggedIn;
+        this.nickName = null;
 
     }
 
@@ -25,7 +30,15 @@ public class User {
     public void setLoggedIn () {
         isLoggedIn = true;
     }
+
     public void setLoggedOut () {
         isLoggedIn = false;
+    }
+
+   synchronized public void changeNickname(String newNick) {
+        nickName = newNick;
+    }
+   synchronized public String getNickName() {
+        return nickName;
     }
 }

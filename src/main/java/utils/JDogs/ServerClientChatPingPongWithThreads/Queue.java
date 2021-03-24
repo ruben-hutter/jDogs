@@ -2,16 +2,6 @@ package utils.JDogs.ServerClientChatPingPongWithThreads;
 
 import java.util.NoSuchElementException;
 
-    class Node {
-        String value;
-        Node next;
-
-
-        Node(String s) {
-            this.value = s;
-        }
-    }
-
     public class Queue {
 
         Node head;
