@@ -1,4 +1,4 @@
-package utils.JDogs.Board;
+package JDogs.Board;
 
 public abstract class Board {
     //import Tiles for Game
