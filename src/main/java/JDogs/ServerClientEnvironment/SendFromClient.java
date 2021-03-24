@@ -38,7 +38,6 @@ public class SendFromClient implements Runnable {
                     sendStringToServer(reply);
                 }
             }
-            //dout.close() closes DataOutputStream
         try {
             dout.close();
         } catch (IOException e) {

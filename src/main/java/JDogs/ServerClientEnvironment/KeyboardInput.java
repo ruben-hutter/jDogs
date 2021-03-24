@@ -20,7 +20,15 @@ public class KeyboardInput implements Runnable {
     public void run() {
         String input;
         while (running) {
+            while(!console.hasNextLine()) {
+                /*try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+                 */
+            }
             if(console.hasNextLine()) {
                 input = console.nextLine();
                 if (input.equalsIgnoreCase("quit")) {

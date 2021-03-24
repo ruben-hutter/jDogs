@@ -71,8 +71,8 @@ public class Client {
         connectionToServerMonitor.kill();
         keyboardInput.kill();
         messageHandlerClient.kill();
-        System.out.println("trying to reset connection to server..");
-
-        setUp();
+        System.out.println("trying to reset connection to server is not activated. Shutdown Client..");
+        System.exit(-1);
+        //setUp();
     }
 }

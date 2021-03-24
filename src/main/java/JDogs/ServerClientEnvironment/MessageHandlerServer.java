@@ -1,5 +1,6 @@
 package JDogs.ServerClientEnvironment;
 
+
 public class MessageHandlerServer implements Runnable {
     private Queue sendToAll;
     private Queue sendToThisClient;
