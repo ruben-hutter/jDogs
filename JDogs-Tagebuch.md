@@ -79,9 +79,34 @@ Gregor hat seit unserem letzten Treffen bereits ein Grundgerüst für den Chat, 
 
 > Fragen für die Übungsstunde:
 >
-> - Wie würde eine ideale projektspezifische Planung aussehen (konkretes Beispiel)?
-> - Wie können wir den Malus "Human modem" vermeiden? 
-> - Wie soll das Protokoll dokumentiert, im Code implementiert und validiert werden? 
-> - Wie soll das Software-Qualitätssicherungskonzept konkret aussehen? 
-> - Was ist genau mit "Garbage" gemeint? 
+> 1) Wie würde eine ideale projektspezifische Planung aussehen (konkretes Beispiel)?
+> 2) Wie können wir den Malus "Human modem" vermeiden? 
+> 3) Wie soll das Protokoll dokumentiert, im Code implementiert und validiert werden? 
+> 4) Wie soll das Software-Qualitätssicherungskonzept konkret aussehen? 
+> 5) Was ist genau mit "Garbage" gemeint? 
+
+---
+
+*24.März.2021 10:15, Johanna*
+
+### Protokoll#4 - Übungsstunde am 24.03.2021
+
+Antworten auf unsere Fragen:
+> 1) Der Tutor stellt uns einen Screenshot eines guten Projektplans zur Verfügung. Aus dem Projektplan sollte ersichtlich sein, um was für ein Spiel es sich genau handelt, etc. 
+> 2) Auf der Kommandozeile sollten nicht die exakten Befehle eingegeben werden, stattdessen sollte ein Frage-Antwort-Spiel gestartet werden, z.B. "Willst du deinen Nickname ändern?" "Gewünschter neuer Nickname", etc. 
+> 3) Dokumentation in einem PDF-Dokument. Implementation als enum, siehe Vorlesungsfolien. Validierung: Es sollen nur die definierten Befehle akzeptiert werden. Bei ungültigen Befehlen sollen entsprechende Handlungen eingeleitet werden. 
+> 4) Beschreibung, wie wir sicherstellen wollen, dass unsere Software das macht, was wir wollen. Auflistung der Tools und Hilfsmittel.
+> 5) Der Server soll damit umgehen können, wenn nicht definierte Befehle gesendet werden. 
+
+Wir verteilten die anstehenden Aufgaben wie folgt: 
+> - Gregor: Ping/Pong so abändern, dass das Ping regelmässig gesendet wird. 
+> - Ruben: Implementiert die gestern festgelegten Befehle des Protokolls.
+> - Johanna: Qualitätssicherungskonzept erstellen. Frage-Antwort-Spiel bei einigen Befehlen einbauen. 
+
+**Nächstes Treffen:** Freitag, 26.03.2021, 20 Uhr. Bis dann sollten die Aufgaben mehrheitlich erledigt sein. Kleinere Korrekturen können am Samstag erfolgen. 
+
+
+
+
+
 
