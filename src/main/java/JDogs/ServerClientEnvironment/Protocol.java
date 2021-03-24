@@ -23,6 +23,7 @@ public enum Protocol {
                 break;
             case 1:
                 System.out.println("Give me your password: ");
+                break;
             default:
                 System.out.println("Type a valid command!");
         }

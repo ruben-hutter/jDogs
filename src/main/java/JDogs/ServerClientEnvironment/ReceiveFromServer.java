@@ -29,7 +29,6 @@ public class ReceiveFromServer implements Runnable {
     public void run() {
         String message;
 
-
         try {
             while(running) {
 
