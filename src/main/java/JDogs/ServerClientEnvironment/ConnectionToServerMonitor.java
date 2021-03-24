@@ -2,67 +2,56 @@ package JDogs.ServerClientEnvironment;
 
 public class ConnectionToServerMonitor implements Runnable {
 
-        private long oldTime = -1;
-        private boolean running = true;
-        private final Queue sendQueue;
-        private int tryToReachServer;
-        private final Client client;
+    private long oldTime = -1;
+    private boolean running = true;
+    private final Queue sendQueue;
+    private int tryToReachServer;
+    private final Client client;
 
-        public ConnectionToServerMonitor(Client client, Queue sendQueue) {
-            this.sendQueue = sendQueue;
-            this.client = client;
-            this.tryToReachServer = 0;
+    public ConnectionToServerMonitor(Client client, Queue sendQueue) {
+        this.sendQueue = sendQueue;
+        this.client = client;
+        this.tryToReachServer = 0;
+    }
 
-        }
+    @Override
+    public void run() {
 
-        @Override
-        public void run() {
+        while (running) {
 
-            while (running) {
-
-                if (System.currentTimeMillis() - oldTime >= 10000) {
-
-                    if (tryToReachServer >= 5) {
-                        System.out.println("problem handling...exit" + tryToReachServer);
-                        client.newSetUp();
-                    }
-
-                } else {
-                    //Server was reached, set to zero
-                    tryToReachServer = 0;
-                }
-
-                sendSignal();
-                tryToReach();
-
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            if (System.currentTimeMillis() - oldTime >= 10000 && tryToReachServer >= 5) {
+                System.out.println("problem handling...exit" + tryToReachServer);
+                client.newSetUp();
             }
 
-            System.out.println(this.toString() + " stops now...");
+            sendSignal();
+            tryToReach();
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
-        //updates time of last incoming ping message from server
-        public void message(long timeInMilliSec) {
-            oldTime = timeInMilliSec;
-        }
+        System.out.println(this.toString() + " stops now...");
+    }
 
-        public void sendSignal() {
-            String pong = "pong";
-            sendQueue.enqueue(pong);
-        }
+    //updates time of last incoming ping message from server
+    public void message(long timeInMilliSec) {
+        oldTime = timeInMilliSec;
+    }
 
-        public void tryToReach() {
-            tryToReachServer++;
-        }
+    public void sendSignal() {
+        String pong = "pong";
+        sendQueue.enqueue(pong);
+    }
 
-        public void kill() {
-            running = false;
-        }
+    public void tryToReach() {
+        tryToReachServer++;
+    }
 
-
-
+    public void kill() {
+        running = false;
+    }
 }

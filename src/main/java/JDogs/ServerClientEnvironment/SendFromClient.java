@@ -17,7 +17,6 @@ public class SendFromClient implements Runnable {
         this.sendQueue = sendQueue;
         this.running = true;
         this.client = client;
-
     }
 
     @Override
@@ -27,17 +26,16 @@ public class SendFromClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         String reply;
 
-
-            while(running) {
-
-                if(!sendQueue.isEmpty()) {
-                    reply = sendQueue.dequeue();
-
-                    sendStringToServer(reply);
-                }
+        while(running) {
+            if(!sendQueue.isEmpty()) {
+                reply = sendQueue.dequeue();
+                sendStringToServer(reply);
             }
+        }
+        //dout.close() closes DataOutputStream
         try {
             dout.close();
         } catch (IOException e) {
@@ -53,7 +51,8 @@ public class SendFromClient implements Runnable {
             dout.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("problem sending...");
+            //System.out.println("problem sending...");
+            System.err.println("problem sending...");
             HandlingConnectionLoss();
         }
     }
