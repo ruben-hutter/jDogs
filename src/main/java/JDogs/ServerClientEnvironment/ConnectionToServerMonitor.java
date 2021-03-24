@@ -22,39 +22,37 @@ public class ConnectionToServerMonitor implements Runnable {
 
                 if (System.currentTimeMillis() - oldTime >= 10000) {
 
-                    if (tryToReachServer >= 20) {
+                    if (tryToReachServer >= 5) {
                         System.out.println("problem handling...exit" + tryToReachServer);
                         client.newSetUp();
-                    } else {
-                        sendSignal();
-                        tryToReach();
-
                     }
+
                 } else {
+                    //Server was reached, set to zero
                     tryToReachServer = 0;
                 }
 
+                sendSignal();
+                tryToReach();
+
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
 
             System.out.println(this.toString() + " stops now...");
-
         }
-        //update time of last incoming message
+
+        //updates time of last incoming ping message from server
         public void message(long timeInMilliSec) {
             oldTime = timeInMilliSec;
-
         }
 
         public void sendSignal() {
             String pong = "pong";
             sendQueue.enqueue(pong);
-
         }
 
         public void tryToReach() {

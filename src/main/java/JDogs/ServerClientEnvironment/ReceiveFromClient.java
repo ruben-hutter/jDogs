@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ListeningToClients implements Runnable {
+public class ReceiveFromClient implements Runnable {
     private final Socket socket;
     private boolean running;
     private DataInputStream din;
@@ -13,7 +13,7 @@ public class ListeningToClients implements Runnable {
     private ServerConnection serverConnection;
     private final ConnectionToClientMonitor connectionToClientMonitor;
 
-    public ListeningToClients(Socket socket, Queue sendToThisClient, Queue receivedFromThisClient, ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
+    public ReceiveFromClient(Socket socket, Queue sendToThisClient, Queue receivedFromThisClient, ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
         this.socket = socket;
         this.serverConnection = serverConnection;
         this.connectionToClientMonitor = connectionToClientMonitor;
@@ -44,9 +44,13 @@ public class ListeningToClients implements Runnable {
 
                 if (din.available() != 0) {
                     textIn = din.readUTF();
-                    connectionToClientMonitor.message(System.currentTimeMillis());
+
+                    //informs that any message arrived
+                    //connectionToClientMonitor.message(System.currentTimeMillis());
+
                     //heartbeat-signal
                     if (textIn.equals("pong")) {
+                        connectionToClientMonitor.message(System.currentTimeMillis());
                         connectionToClientMonitor.sendSignal();
                     } else {
                         //write to receiver-queue
@@ -54,7 +58,7 @@ public class ListeningToClients implements Runnable {
                     }
                 } else {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(20);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

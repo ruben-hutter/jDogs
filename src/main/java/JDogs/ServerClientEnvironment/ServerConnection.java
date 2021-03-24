@@ -1,7 +1,5 @@
 package JDogs.ServerClientEnvironment;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.net.Socket;
 
 public class ServerConnection implements Runnable {
@@ -13,7 +11,7 @@ public class ServerConnection implements Runnable {
    private final Queue sendToThisClient;
    private final Queue receivedFromClient;
    private SendFromServer sender;
-   private ListeningToClients listeningToClient;
+   private ReceiveFromClient listeningToClient;
    private ConnectionToClientMonitor connectionToClientMonitor;
    private MessageHandlerServer messageHandlerServer;
 
@@ -53,7 +51,7 @@ public class ServerConnection implements Runnable {
 
 
         //receivefromClient thread
-        listeningToClient = new ListeningToClients(socket, sendToThisClient,receivedFromClient,this, connectionToClientMonitor);
+        listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,this, connectionToClientMonitor);
         Thread listener = new Thread(listeningToClient);
         listener.start();
         System.out.println("thread listener name: " + listener.toString());

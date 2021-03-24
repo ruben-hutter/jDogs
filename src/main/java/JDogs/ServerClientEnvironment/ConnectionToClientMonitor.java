@@ -1,5 +1,8 @@
 package JDogs.ServerClientEnvironment;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ConnectionToClientMonitor implements Runnable {
 
     private long oldTime = -1;
@@ -28,36 +31,34 @@ public class ConnectionToClientMonitor implements Runnable {
         while (running) {
 
             if (System.currentTimeMillis() - oldTime >= 10000) {
-                //kill connection
-                if (tryToReachClient > 20) {
+                //kill connection to client
+                if (tryToReachClient > 5) {
                     serverConnection.kill();
-                } else {
-                    //send signal
-
-                    sendSignal();
-                    tryToReach();
-                    System.out.println(this.toString() + ": message sent");
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
             } else {
-                //set to zero
+                //Server was reached, set to zero
                 tryToReachClient = 0;
-
             }
 
 
+            //send signal
 
+            sendSignal();
+            tryToReach();
+
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         System.out.println(this.toString() + "  stops now...");
 
     }
-
-     public void message(long timeInMilliSec) {
+    //updates of last incoming pong message from client
+    public void message(long timeInMilliSec) {
        oldTime = timeInMilliSec;
 
     }
