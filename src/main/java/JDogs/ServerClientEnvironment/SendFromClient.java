@@ -67,7 +67,8 @@ public class SendFromClient implements Runnable {
             } catch (IOException e) {
                 //e.printStackTrace();
                 //if connection fails:
-                System.out.println(this.toString() + " cannot reconnect OutputStream to Server");
+                //System.out.println(this.toString() + " cannot reconnect OutputStream to Server");
+                System.err.println(this.toString() + " cannot reconnect OutputStream to Server");
                 client.newSetUp();
             }
         }
