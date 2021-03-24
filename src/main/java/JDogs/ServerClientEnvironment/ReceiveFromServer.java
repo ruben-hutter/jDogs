@@ -44,15 +44,7 @@ public class ReceiveFromServer implements Runnable {
                     } else {
                         receiveQueue.enqueue(message);
                     }
-                } else {
-
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
-
             }
         } catch (IOException e) {
             client.newSetUp();

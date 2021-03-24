@@ -50,16 +50,6 @@ public class SendFromServer implements Runnable {
 
                     sendStringToAllClients(sendToAll.dequeue());
                 }
-
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.out.println("thread sleep fehler");
-                }
-
-
-
         }
         System.out.println(this.toString() + "  stops now...");
         try {
