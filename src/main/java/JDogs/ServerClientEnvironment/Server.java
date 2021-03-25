@@ -11,7 +11,7 @@ public class Server {
 
     ServerSocket serverSocket;
     ArrayList<SendFromServer> connections = new ArrayList<>();
-    ArrayList <String> allNickNames = new ArrayList<>();
+    ArrayList<String> allNickNames = new ArrayList<>();
     Map<String, User> UserPasswordMap = new HashMap<>();
 
 

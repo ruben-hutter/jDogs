@@ -27,28 +27,21 @@ public class SendFromServer implements Runnable {
     @Override
     public void run() {
 
-
         try {
             dout = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String text;
-
+        //String text;
 
         while (running) {
-
-
-                if (!sendToThisClient.isEmpty()) {
-
-                    sendStringToClient(sendToThisClient.dequeue());
-                }
-
-                if (!sendToAll.isEmpty()) {
-
-                    sendStringToAllClients(sendToAll.dequeue());
-                }
+            if (!sendToThisClient.isEmpty()) {
+                sendStringToClient(sendToThisClient.dequeue());
+            }
+            if (!sendToAll.isEmpty()) {
+                sendStringToAllClients(sendToAll.dequeue());
+            }
         }
         System.out.println(this.toString() + "  stops now...");
         try {

@@ -20,7 +20,7 @@ public class KeyboardInput implements Runnable {
     public void run() {
         String input;
         while (running) {
-            while(!console.hasNextLine()) {
+            while (!console.hasNextLine()) {
                 /*try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -32,6 +32,7 @@ public class KeyboardInput implements Runnable {
             if(console.hasNextLine()) {
                 input = console.nextLine();
                 if (input.equalsIgnoreCase("quit")) {
+                    // kill();
                     running = false;
                 }
                 System.out.println("from keyboard:  " + input);

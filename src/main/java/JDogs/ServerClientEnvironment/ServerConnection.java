@@ -7,13 +7,13 @@ public class ServerConnection implements Runnable {
     private final Server server;
     private final Socket socket;
     //Queues: used to store messages, which should be sent
-   private final Queue sendToAll;
-   private final Queue sendToThisClient;
-   private final Queue receivedFromClient;
-   private SendFromServer sender;
-   private ReceiveFromClient listeningToClient;
-   private ConnectionToClientMonitor connectionToClientMonitor;
-   private MessageHandlerServer messageHandlerServer;
+    private final Queue sendToAll;
+    private final Queue sendToThisClient;
+    private final Queue receivedFromClient;
+    private SendFromServer sender;
+    private ReceiveFromClient listeningToClient;
+    private ConnectionToClientMonitor connectionToClientMonitor;
+    private MessageHandlerServer messageHandlerServer;
 
 
     private int stopNumber;
@@ -34,7 +34,8 @@ public class ServerConnection implements Runnable {
         System.out.println("serverConnection");
 
         //sender thread
-        this.sender = new SendFromServer(socket,server,sendToAll,sendToThisClient,this);
+        sender = new SendFromServer(socket, server, sendToAll, sendToThisClient,
+                this);
         stopNumber = server.connections.size();
 
         server.connections.add(sender);
@@ -44,20 +45,23 @@ public class ServerConnection implements Runnable {
         System.out.println("thread sender name: " + senderThread.toString());
 
         //detect connection problems thread
-        this.connectionToClientMonitor = new ConnectionToClientMonitor(sendToThisClient, this);
+        connectionToClientMonitor = new ConnectionToClientMonitor(sendToThisClient,
+                this);
         Thread conMoThread = new Thread(connectionToClientMonitor);
         conMoThread.start();
         System.out.println("conMo thread: " + conMoThread.toString());
 
 
         //receivefromClient thread
-        listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,this, connectionToClientMonitor);
+        listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,
+                this, connectionToClientMonitor);
         Thread listener = new Thread(listeningToClient);
         listener.start();
         System.out.println("thread listener name: " + listener.toString());
 
         //messageHandlerServer Thread
-        messageHandlerServer = new MessageHandlerServer(server, this, sendToThisClient, sendToAll, receivedFromClient);
+        messageHandlerServer = new MessageHandlerServer(server,
+                this, sendToThisClient, sendToAll, receivedFromClient);
         Thread messenger = new Thread(messageHandlerServer);
         messenger.start();
 
