@@ -2,6 +2,7 @@ package JDogs.ServerClientEnvironment;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
 
@@ -28,8 +29,19 @@ public class Client {
 
         Socket socket = null;
 
+        String serveraddress;
+        int portnumber;
+
+        System.out.println("IP-Adresse des Servers:");
+        Scanner scanner = new Scanner(System.in);
+        serveraddress = scanner.nextLine();
+        System.out.println("Portnummer:");
+        portnumber = scanner.nextInt();
+
+
+
         try {
-            socket = new Socket("localhost", 8090);
+            socket = new Socket(serveraddress, portnumber);
         } catch (IOException e) {
             e.printStackTrace();
         }
