@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/***
+/**
  * Server waits for new clients trying to connect
  * to server and if one connects the server creates a ServerConnection-thread
  * for this client.
@@ -65,7 +65,7 @@ public class Server {
         }
     }
 
-    /***
+    /**
      *
      * @param newNick
      * checks if a nickname is valid given to a client or claimed by him
@@ -80,7 +80,7 @@ public class Server {
         return true;
     }
 
-    /***
+    /**
      * server shutdown
      */
     public void kill() {

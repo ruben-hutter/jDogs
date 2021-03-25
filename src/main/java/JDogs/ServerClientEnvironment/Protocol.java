@@ -1,5 +1,9 @@
 package JDogs.ServerClientEnvironment;
 
+/**
+ * This protocol defines the commands to make the client and
+ * server interact with each other correctly.
+ */
 public enum Protocol {
 
     USER,
