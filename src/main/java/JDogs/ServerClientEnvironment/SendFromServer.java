@@ -4,6 +4,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/***
+ * purpose of this thread is sending messages to client
+ * and ends serverConnection if connection problems are detected
+ */
+
 public class SendFromServer implements Runnable {
 
     private boolean running;
@@ -33,16 +38,25 @@ public class SendFromServer implements Runnable {
             e.printStackTrace();
         }
 
-        //String text;
 
         while (running) {
+
             if (!sendToThisClient.isEmpty()) {
                 sendStringToClient(sendToThisClient.dequeue());
             }
             if (!sendToAll.isEmpty()) {
                 sendStringToAllClients(sendToAll.dequeue());
             }
+
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
+
+
         System.out.println(this.toString() + "  stops now...");
         try {
             dout.close();

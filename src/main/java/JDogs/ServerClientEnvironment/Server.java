@@ -12,6 +12,10 @@ import java.util.Map;
  * to server and if one connects the server creates a ServerConnection-thread
  * for this client.
  *
+ * ArrayList with all Sender-objects lies here
+ * ArrayList with all Nicknames lies here
+ * Hashmap with String(userName) and User(Password, Nickname..) lies here
+ *
  */
 public class Server {
 

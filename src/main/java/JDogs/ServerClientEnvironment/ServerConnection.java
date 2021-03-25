@@ -2,11 +2,22 @@ package JDogs.ServerClientEnvironment;
 
 import java.net.Socket;
 
+/***
+ * this thread is the main thread of the connection to the client
+ * here are lie the three Queues(sendtoClient, sendToAll, receivedFromClient)
+ * used by the threads.
+ * the threads are started here
+ * the connection to the client can be ended here by other threads by kill()
+ *
+ * it is doubtful if serverConnection needs to be a thread since
+ * it does not execute any commands or listens to client etc.
+ *
+ */
+
 public class ServerConnection implements Runnable {
 
     private final Server server;
     private final Socket socket;
-    //Queues: used to store messages, which should be sent
     private final Queue sendToAll;
     private final Queue sendToThisClient;
     private final Queue receivedFromClient;
@@ -15,6 +26,11 @@ public class ServerConnection implements Runnable {
     private ConnectionToClientMonitor connectionToClientMonitor;
     private MessageHandlerServer messageHandlerServer;
 
+    /* stopNumber is the number of the sender-object saved
+    in the ArrayList of server.connections.
+    this enables to delete this sender-object from the list
+    to prevent errors in the other sender threads after disconnection of this client
+     */
 
     private int stopNumber;
 

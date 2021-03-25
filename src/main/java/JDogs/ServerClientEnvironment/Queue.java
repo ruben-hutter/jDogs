@@ -2,6 +2,7 @@ package JDogs.ServerClientEnvironment;
 
 /***
  * this Queue is used to store messages from one thread and collect and process them by another thread
+ * synchronized methods to prevent conflicts betwixt threads
  */
 
 import java.util.NoSuchElementException;
