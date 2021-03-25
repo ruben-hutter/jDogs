@@ -31,15 +31,15 @@ public class Client {
 
         Socket socket = null;
 
-        String serveraddress;
-        int portnumber;
+        String serveraddress = "localhost";
+        int portnumber = 8090;
         //enter IP-Address of server
-        System.out.println("IP-Adresse des Servers:");
-        Scanner scanner = new Scanner(System.in);
-        serveraddress = scanner.nextLine();
+        //System.out.println("IP-Adresse des Servers:");
+        //Scanner scanner = new Scanner(System.in);
+        //serveraddress = scanner.nextLine();
         //enter Port
-        System.out.println("Portnummer:");
-        portnumber = scanner.nextInt();
+        //System.out.println("Portnummer:");
+        //portnumber = scanner.nextInt();
 
 
         //connect to server
