@@ -3,6 +3,11 @@ package JDogs.ServerClientEnvironment;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This thread will check if a connection to the client still exists.
+ * If no messages are sent between client and server for approx. 10000mS.
+ * If no respond arrives after 10 attempts, the serverConnection will end itself.
+ */
 public class ConnectionToClientMonitor implements Runnable {
 
     private long oldTime = -1;
@@ -10,12 +15,6 @@ public class ConnectionToClientMonitor implements Runnable {
     private int tryToReachClient = 0;
     private final Queue sendToThisClient;
     private final ServerConnection serverConnection;
-
-    /**
-     * This thread will check if a connection to the client still exists.
-     * If no messages are sent between client and server for approx. 10000mS.
-     * If no respond arrives after 10 attempts, the serverConnection will end itself.
-     */
 
     public ConnectionToClientMonitor(Queue sendToThisClient, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;

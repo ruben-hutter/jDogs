@@ -1,5 +1,10 @@
 package JDogs.ServerClientEnvironment;
 
+/**
+ * This thread will check if a connection to the server still exists.
+ * If no messages are sent between client and server for approx. 10000mS.
+ * If no respond arrives after 10 attempts, the serverConnection will end itself.
+ */
 public class ConnectionToServerMonitor implements Runnable {
 
     private long oldTime = -1;
