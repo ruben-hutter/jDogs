@@ -3,6 +3,16 @@ package JDogs.ServerClientEnvironment;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/***
+ * this thread processes messages received meaningfully.
+ *
+ *- it receives commands from server and reacts accordingly
+ * e.g. if the server wants a default nickname, the messageHandler
+ * sends the local hostname back to the server.
+ * - it prints messages meant for the client into the cmd.
+ *
+ */
+
 public class MessageHandlerClient implements Runnable{
 
     private boolean running;
@@ -21,13 +31,12 @@ public class MessageHandlerClient implements Runnable{
         while(running) {
 
             if (receiveQueue.isEmpty()) {
-               /* try {
-                    Thread.sleep(10);
+               try {
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                */
             } else {
                 reply = receiveQueue.dequeue();
                 messageHandling(reply);

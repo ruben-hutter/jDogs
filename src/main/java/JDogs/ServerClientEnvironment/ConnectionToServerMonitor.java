@@ -26,7 +26,7 @@ public class ConnectionToServerMonitor implements Runnable {
 
             if (System.currentTimeMillis() - oldTime >= 10000) {
                 if (tryToReachServer > 2) {
-                    client.newSetUp();
+                    client.kill();
                 }
             } else {
                 // server was reached, set to zero
