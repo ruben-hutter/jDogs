@@ -7,7 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/***
+ * Server waits for new clients trying to connect
+ * to server and if one connects the server creates a ServerConnection-thread
+ * for this client.
+ *
+ */
 public class Server {
+
 
     ServerSocket serverSocket;
     ArrayList<SendFromServer> connections = new ArrayList<>();
@@ -41,6 +48,12 @@ public class Server {
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
                 System.out.println("connections size:  " + connections.size());
 
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +61,12 @@ public class Server {
         }
     }
 
-    //returns if a nickname is already taken or not
+    /***
+     *
+     * @param newNick
+     * checks if a nickname is valid given to a client or claimed by him
+     * @return true/false
+     */
     public boolean isValidNickName(String newNick) {
         for (String allNickName : allNickNames) {
             if (allNickName.equals(newNick)) {
@@ -58,7 +76,9 @@ public class Server {
         return true;
     }
 
-
+    /***
+     * server shutdown
+     */
     public void kill() {
         System.exit(-1);
     }
