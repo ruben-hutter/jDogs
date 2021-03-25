@@ -4,6 +4,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
+/***
+ * starts threads for sending/receiving to/from server
+ * instantiates receiver & sender Queue
+ * kill client from here
+ *
+ */
+
 public class Client {
 
     private ReceiveFromServer receiveFromServer;
@@ -33,21 +40,23 @@ public class Client {
 
         String serveraddress = "localhost";
         int portnumber = 8090;
-        //enter IP-Address of server
-        //System.out.println("IP-Adresse des Servers:");
-        //Scanner scanner = new Scanner(System.in);
-        //serveraddress = scanner.nextLine();
+
+        /*
+        System.out.println("IP-Adresse des Servers:");
+        Scanner scanner = new Scanner(System.in);
+        serveraddress = scanner.nextLine();
         //enter Port
-        //System.out.println("Portnummer:");
-        //portnumber = scanner.nextInt();
+        portnumber = scanner.nextInt();
+
+         */
 
 
         //connect to server
         try {
             socket = new Socket(serveraddress, portnumber);
         } catch (IOException e) {
-            System.err.println("no server found...implement error handling here");
-            e.printStackTrace();
+            System.err.println("no server found...implement error handling here..shutdown now");
+            //e.printStackTrace();
         }
         /***
          * 5 threads to handle connection are started here
