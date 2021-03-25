@@ -45,8 +45,11 @@ public class MessageHandlerServer implements Runnable {
                 text = receivedFromClient.dequeue();
                 System.out.println(text);
 
+                if (Protocol.isACommand(text)) {
+                    System.out.println("place holder");
+                }
                 //internal commands begin with "jd "
-                if(text.length() >= 9 && text.substring(0,3).equals("jd ")) {
+                if (text.length() >= 9 && text.substring(0,3).equals("jd ")) {
                     messageHandling(text);
                 } else {
 
@@ -131,7 +134,7 @@ public class MessageHandlerServer implements Runnable {
                             incompleteLogin = false;
                             break;
                         } else {
-                            sendToThisClient.enqueue("passwords didn`t match..retry..");
+                            sendToThisClient.enqueue("passwords didn't match..retry..");
                         }
                     }
                 }

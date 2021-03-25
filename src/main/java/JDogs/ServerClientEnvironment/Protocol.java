@@ -16,20 +16,32 @@ public enum Protocol {
     WCHT,
     PCHT;
 
-    public static void main(String[] args) {
+    public static boolean isACommand(String text) {
+        for (Protocol command : Protocol.values()) {
+            if (command.toString().equals(text.substring(0, 4))) {
+                Protocol.manageCommand(text, command.ordinal());
+                return true;
+            }
+        }
+        return false;
+    }
 
-        Protocol protocol = Protocol.USER;  //TODO assign to user input
+    public static void manageCommand(String text, int ordinal) {
 
-        switch (protocol.ordinal()) {
+        switch (ordinal) {
 
             case 0:
-                System.out.println("Give me your username: ");
+                System.out.println(0);
                 break;
             case 1:
-                System.out.println("Give me your password: ");
+                System.out.println(1);
                 break;
             default:
-                System.out.println("Type a valid command!");
+                System.out.println("default");
         }
+    }
+
+    public static void test(String test) {
+        System.out.println(test);
     }
 }
