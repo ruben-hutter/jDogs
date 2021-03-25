@@ -80,7 +80,7 @@ public class Client {
         messageHandleThread.start();
     }
 
-    synchronized public void newSetUp() {
+    synchronized public void kill() {
         //kills all threads..reconnection could be started from here later
         receiveFromServer.kill();
         sendFromClient.kill();

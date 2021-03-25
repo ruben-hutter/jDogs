@@ -2,6 +2,15 @@ package JDogs.ServerClientEnvironment;
 
 import java.util.Scanner;
 
+/***
+ * receives any input from client
+ * blank/empty lines are ignored
+ * "quit" activates client.kill()
+ * every other message is sent to
+ * sendQueue(to be sent to server)
+ *
+ */
+
 public class KeyboardInput implements Runnable {
 
     private final Queue sendQueue;
@@ -20,24 +29,34 @@ public class KeyboardInput implements Runnable {
     public void run() {
         String input;
         while (running) {
-            while (!console.hasNextLine()) {
-                /*try {
-                    Thread.sleep(100);
+           if (!console.hasNextLine()) {
+
+                try {
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                 */
-            }
-            if(console.hasNextLine()) {
-                input = console.nextLine();
-                if (input.equalsIgnoreCase("quit")) {
-                    // kill();
-                    running = false;
-                }
-                System.out.println("from keyboard:  " + input);
-                sendQueue.enqueue(input);
-            }
+            } else {
+               if(console.hasNextLine()) {
+                   input = console.nextLine();
+
+
+                   if (input.isEmpty() || input.isBlank()) {
+                       // do nothing if input is an empty/blank string
+
+
+                   } else {
+                       if (input.equalsIgnoreCase("quit")) {
+                           client.kill();
+                       }
+
+                       System.out.println("from keyboard:  " + input);
+                       sendQueue.enqueue(input);
+                   }
+
+               }
+           }
         }
     }
 
