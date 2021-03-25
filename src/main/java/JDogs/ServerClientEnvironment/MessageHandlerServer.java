@@ -45,9 +45,11 @@ public class MessageHandlerServer implements Runnable {
                 text = receivedFromClient.dequeue();
                 System.out.println(text);
 
+                // check if text is a command
                 if (Protocol.isACommand(text)) {
-                    System.out.println("place holder");
+                    manageCommand(text, Protocol.protocol);
                 }
+                /*
                 //internal commands begin with "jd "
                 if (text.length() >= 9 && text.substring(0,3).equals("jd ")) {
                     messageHandling(text);
@@ -59,10 +61,10 @@ public class MessageHandlerServer implements Runnable {
 
                             sendToAll.enqueue(nickName + ": " + text);
 
-                        }
                     }
-                }
+                }*/
             }
+        }
         System.out.println(this.toString() + "  stops now");
     }
 
@@ -81,7 +83,7 @@ public class MessageHandlerServer implements Runnable {
                 }
             }
 
-            //TODO make it possible to change name if it exists, not logging in automatically
+            // TODO make it possible to change name if it exists, not logging in automatically
             if (server.UserPasswordMap.containsKey(userName)) {
                 //you were already logged in and did not log out
                 if (server.UserPasswordMap.get(userName).isLoggedIn()) {
@@ -152,9 +154,11 @@ public class MessageHandlerServer implements Runnable {
     }
 
 
+    /*
     public void messageHandling(String command) {
 
         switch (command.substring(3,9)) {
+
 
             case "logout":
                 sendToThisClient.enqueue("logout now");
@@ -168,6 +172,7 @@ public class MessageHandlerServer implements Runnable {
                 sendToThisClient.enqueue("whisperChat is not implemented");
 
                 break;
+
             case "nickna":
                 if (command.length() < 10) {
                     sendToThisClient.enqueue("no nickname entered");
@@ -205,6 +210,80 @@ public class MessageHandlerServer implements Runnable {
 
             default:
                 sendToThisClient.enqueue("unknown command");
+        }
+    }*/
+
+    public void manageCommand(String text, Protocol command) {
+        switch (command) {
+            case USER:
+                if (text.length() < 6) {
+                    sendToThisClient.enqueue("No username entered");
+                } else {
+                    nickName = text.substring(5);
+                    if (server.isValidNickName(nickName)) {
+                        server.UserPasswordMap.get(userName).changeNickname(nickName);
+                        server.allNickNames.add(nickName);
+                        sendToThisClient.enqueue("hi, user "+ userName
+                                + "! your new nickname is: " + nickName);
+                    } else {
+                        int number = 2;
+                        while (true) {
+                            if(server.isValidNickName(nickName + " " + number)) {
+                                nickName = nickName + " " + number;
+                                server.UserPasswordMap.get(userName).changeNickname(nickName);
+                                server.allNickNames.add(nickName);
+                                sendToThisClient.enqueue("hi, user "+ userName
+                                        + "! your new nickname is: " + nickName);
+                                break;
+                            } else {
+                                number++;
+                            }
+                        }
+                    }
+                }
+                break;
+            case PASS:
+                // TODO give and change password
+                break;
+            case ACTI:
+                // TODO return a list of online usernames
+                sendToThisClient.enqueue("list of active users not implemented");
+                break;
+            case QUIT:
+                sendToThisClient.enqueue("logout now");
+                server.UserPasswordMap.get(userName).setLoggedOut();
+
+                serverConnection.kill();
+                running = false;
+                break;
+            case EXIT:
+                // TODO leave game session
+                break;
+            case MOVE:
+                // TODO move marble in game
+                break;
+            case STAT:
+                // TODO sync game stats
+                break;
+            case MODE:
+                // TODO chose a game mode
+                break;
+            case WCHT:
+                // TODO chose a partner whom to send the message
+                sendToThisClient.enqueue("whisperChat is not implemented");
+                break;
+            case PCHT:
+                // TODO send message to all active clients
+                break;
+            case STAR:
+                // TODO confirm you wanna start the game
+                break;
+            case CTTP:
+                // TODO switch selected card with partner
+                break;
+            case HELP:
+                // TODO shows the user guide
+                break;
         }
     }
 
