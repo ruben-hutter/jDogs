@@ -19,22 +19,41 @@ public enum Protocol {
     public static boolean isACommand(String text) {
         for (Protocol command : Protocol.values()) {
             if (command.toString().equals(text.substring(0, 4))) {
-                Protocol.manageCommand(text, command.ordinal());
+                Protocol.manageCommand(text, command);
                 return true;
             }
         }
         return false;
     }
 
-    public static void manageCommand(String text, int ordinal) {
-
-        switch (ordinal) {
-
-            case 0:
-                System.out.println(0);
+    public static void manageCommand(String text, Protocol command) {
+        switch (command) {
+            case USER:
+                System.out.println(USER);
                 break;
-            case 1:
-                System.out.println(1);
+            case PASS:
+                System.out.println(PASS);
+                break;
+            case ACTI:
+                System.out.println(ACTI);
+                break;
+            case QUIT:
+                System.out.println(QUIT);
+                break;
+            case PLAY:
+                System.out.println(PLAY);
+                break;
+            case STAT:
+                System.out.println(STAT);
+                break;
+            case MODE:
+                System.out.println(MODE);
+                break;
+            case WCHT:
+                System.out.println(WCHT);
+                break;
+            case PCHT:
+                System.out.println(PCHT);
                 break;
             default:
                 System.out.println("default");
