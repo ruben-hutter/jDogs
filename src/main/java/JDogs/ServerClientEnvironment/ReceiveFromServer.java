@@ -4,6 +4,12 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/***
+ * purpose of this thread is receiving messages from server
+ * ping - messages are sent to Monitor-Thread
+ * all others: are given to receiveQueue(handled by MessageHandlerThread)
+ */
+
 public class ReceiveFromServer implements Runnable {
 
     private final Client client;
@@ -34,15 +40,20 @@ public class ReceiveFromServer implements Runnable {
 
                 if (din.available() != 0) {
                     message = din.readUTF();
-                    //informs that any message arrived
-                    //connectionToServerMonitor.message(System.currentTimeMillis());
 
                     if (message.equalsIgnoreCase("ping")) {
                         connectionToServerMonitor.message(System.currentTimeMillis());
                         connectionToServerMonitor.sendSignal();
+
                     } else {
                         receiveQueue.enqueue(message);
                     }
+                }
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {
