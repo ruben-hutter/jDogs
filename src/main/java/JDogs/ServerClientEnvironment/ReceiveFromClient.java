@@ -4,6 +4,12 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/***
+ * purpose of this thread is receiving messages from client
+ * received pong - messages are sent to Monitor-Thread
+ * all others: are given to receiveQueue(handled by MessageHandlerThread)
+ */
+
 public class ReceiveFromClient implements Runnable {
     private final Socket socket;
     private boolean running;

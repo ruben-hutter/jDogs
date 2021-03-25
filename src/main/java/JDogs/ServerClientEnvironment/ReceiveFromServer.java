@@ -6,7 +6,7 @@ import java.net.Socket;
 
 /***
  * purpose of this thread is receiving messages from server
- * ping - messages are sent to Monitor-Thread
+ * received ping - messages are sent to Monitor-Thread
  * all others: are given to receiveQueue(handled by MessageHandlerThread)
  */
 
@@ -57,7 +57,8 @@ public class ReceiveFromServer implements Runnable {
                 }
             }
         } catch (IOException e) {
-            client.newSetUp();
+            System.err.println("connection to server seems to be interrupted..will shut down");
+            client.kill();
         }
 
         System.out.println(this.toString() + " stops now");

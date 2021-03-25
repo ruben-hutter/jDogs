@@ -1,5 +1,9 @@
 package JDogs.ServerClientEnvironment;
 
+/***
+ * this Queue is used to store messages from one thread and collect and process them by another thread
+ */
+
 import java.util.NoSuchElementException;
 
     public class Queue {
