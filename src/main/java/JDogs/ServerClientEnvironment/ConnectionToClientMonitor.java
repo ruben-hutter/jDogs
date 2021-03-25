@@ -6,7 +6,7 @@ import java.util.TimerTask;
 /**
  * This thread will check if a connection to the client still exists.
  * If no messages are sent between client and server for approx. 10000mS and if then
- * no respond arrives after 5 attempts, the serverConnection will end itself.
+ * no respond arrives after 2 attempts, the serverConnection will end itself.
  */
 public class ConnectionToClientMonitor implements Runnable {
 
@@ -27,12 +27,12 @@ public class ConnectionToClientMonitor implements Runnable {
         while (running) {
 
             if (System.currentTimeMillis() - oldTime >= 10000) {
-                //kill connection to client
+                // kill connection to client
                 if (tryToReachClient > 4) {
                     serverConnection.kill();
                 }
             } else {
-                //Server was reached, set to zero
+                // client was reached, set to zero
                 tryToReachClient = 0;
             }
             sendSignal();
@@ -52,7 +52,7 @@ public class ConnectionToClientMonitor implements Runnable {
     /***
      *
      * @param timeInMilliSec
-     * this parameter comes from ReceiveFromClient thread
+     * this parameter is given from ReceiveFromClient thread
      * and is used if a message with "pong" is received.
      */
 
@@ -63,6 +63,7 @@ public class ConnectionToClientMonitor implements Runnable {
     /***
      * commands to send ping-message to client
      */
+
     public void sendSignal() {
         String ping = "ping";
         sendToThisClient.enqueue(ping);
@@ -71,6 +72,7 @@ public class ConnectionToClientMonitor implements Runnable {
     /***
      * counts the attempts to reach client by sending ping-messages.
      */
+
     public void tryToReach() {
         tryToReachClient++;
     }

@@ -3,7 +3,7 @@ package JDogs.ServerClientEnvironment;
 /**
  * This thread will check if a connection to the server still exists.
  * If no messages are sent between client and server for approx. 10000mS.
- * If no respond arrives after 10 attempts, the serverConnection will end itself.
+ * If no respond arrives after 2 attempts, the client will end itself.
  */
 public class ConnectionToServerMonitor implements Runnable {
 
@@ -24,11 +24,14 @@ public class ConnectionToServerMonitor implements Runnable {
 
         while (running) {
 
-            if (System.currentTimeMillis() - oldTime >= 10000 && tryToReachServer >= 5) {
-                System.out.println("problem handling...exit" + tryToReachServer);
-                client.newSetUp();
+            if (System.currentTimeMillis() - oldTime >= 10000) {
+                if (tryToReachServer > 2) {
+                    client.newSetUp();
+                }
+            } else {
+                // server was reached, set to zero
+                tryToReachServer = 0;
             }
-
             sendSignal();
             tryToReach();
 
@@ -42,19 +45,37 @@ public class ConnectionToServerMonitor implements Runnable {
         System.out.println(this.toString() + " stops now...");
     }
 
-    //updates time of last incoming ping message from server
+    /***
+     *
+     * @param timeInMilliSec
+     * this parameter is given from ReceiveFromServer thread
+     * and is used if a message with "ping" is received.
+     */
+
     public void message(long timeInMilliSec) {
         oldTime = timeInMilliSec;
     }
+
+    /***
+     * commands to send pong-message to server
+     */
 
     public void sendSignal() {
         String pong = "pong";
         sendQueue.enqueue(pong);
     }
 
+    /***
+     * counts the attempts to reach client by sending ping-messages.
+     */
+
     public void tryToReach() {
         tryToReachServer++;
     }
+
+    /***
+     * kills thread
+     */
 
     public void kill() {
         running = false;
