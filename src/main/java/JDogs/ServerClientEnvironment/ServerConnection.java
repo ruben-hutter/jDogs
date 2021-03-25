@@ -65,9 +65,7 @@ public class ServerConnection implements Runnable {
 
 
 
-        while (running) {
 
-        }
     }
 
     public SendFromServer getSender () {
