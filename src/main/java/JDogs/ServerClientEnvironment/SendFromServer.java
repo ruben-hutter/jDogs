@@ -4,7 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-/***
+/**
  * purpose of this thread is sending messages to client
  * and ends serverConnection if connection problems are detected
  */

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-/***
+/**
  * starts threads for sending/receiving to/from server
  * instantiates receiver & sender Queue
  * kill client from here
@@ -58,7 +58,7 @@ public class Client {
             System.err.println("no server found...implement error handling here..shutdown now");
             //e.printStackTrace();
         }
-        /***
+        /**
          * 5 threads to handle connection are started here
          */
 

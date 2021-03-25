@@ -49,7 +49,7 @@ public class ConnectionToClientMonitor implements Runnable {
         System.out.println(this.toString() + "  stops now...");
     }
 
-    /***
+    /**
      *
      * @param timeInMilliSec
      * this parameter is given from ReceiveFromClient thread
@@ -60,7 +60,7 @@ public class ConnectionToClientMonitor implements Runnable {
        oldTime = timeInMilliSec;
     }
 
-    /***
+    /**
      * commands to send ping-message to client
      */
 
@@ -69,7 +69,7 @@ public class ConnectionToClientMonitor implements Runnable {
         sendToThisClient.enqueue(ping);
     }
 
-    /***
+    /**
      * counts the attempts to reach client by sending ping-messages.
      */
 
@@ -77,7 +77,7 @@ public class ConnectionToClientMonitor implements Runnable {
         tryToReachClient++;
     }
 
-    /***
+    /**
      * kills thread
      */
     public void kill() {

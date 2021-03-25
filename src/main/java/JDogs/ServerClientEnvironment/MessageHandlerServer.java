@@ -1,26 +1,25 @@
 package JDogs.ServerClientEnvironment;
 
-/***
+/**
  * this thread processes messages received meaningfully.
- *- it distinguishes between messages for server and all clients
- * -it handles the login of the client
+ * - it distinguishes between messages for server and all clients
+ * - it handles the login of the client
  *
  */
-
-
 public class MessageHandlerServer implements Runnable {
-    private Queue sendToAll;
-    private Queue sendToThisClient;
-    private Queue receivedFromClient;
+
+    private final Queue sendToAll;
+    private final Queue sendToThisClient;
+    private final Queue receivedFromClient;
     private boolean running;
     private boolean incompleteLogin;
-    private Server server;
-    private ServerConnection serverConnection;
+    private final Server server;
+    private final ServerConnection serverConnection;
     private String userName;
     private String nickName;
 
-
-    public MessageHandlerServer(Server server,ServerConnection serverConnection, Queue sendToThisClient, Queue sendToAll, Queue receivedFromClient) {
+    public MessageHandlerServer(Server server,ServerConnection serverConnection,
+            Queue sendToThisClient, Queue sendToAll, Queue receivedFromClient) {
         this.sendToAll = sendToAll;
         this.sendToThisClient = sendToThisClient;
         this.receivedFromClient = receivedFromClient;
@@ -33,16 +32,16 @@ public class MessageHandlerServer implements Runnable {
 
     @Override
     public void run() {
-    //login
-    getLoggedIn();
+        //login
+        getLoggedIn();
 
-    //receive default nickname
-    getNickname();
+        //receive default nickname
+        getNickname();
 
-    String text;
+        String text;
 
-    while (running) {
-        if (!receivedFromClient.isEmpty()) {
+        while (running) {
+            if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
                 System.out.println(text);
 
@@ -79,6 +78,7 @@ public class MessageHandlerServer implements Runnable {
                 }
             }
 
+            //TODO make it possible to change name if it exists, not logging in automatically
             if (server.UserPasswordMap.containsKey(userName)) {
                 //you were already logged in and did not log out
                 if (server.UserPasswordMap.get(userName).isLoggedIn()) {
@@ -173,15 +173,18 @@ public class MessageHandlerServer implements Runnable {
                     if (server.isValidNickName(nickName)) {
                         server.UserPasswordMap.get(userName).changeNickname(nickName);
                         server.allNickNames.add(nickName);
-                        sendToThisClient.enqueue("hi, user "+ userName + "! your new nickname is: " + nickName);
+                        sendToThisClient.enqueue("hi, user "+ userName
+                                + "! your new nickname is: " + nickName);
                     } else {
                         int number = 2;
                         while (true) {
-                            if(server.isValidNickName(nickName + " " + Integer.toString(number))) {
+                            if(server.isValidNickName(nickName + " "
+                                    + Integer.toString(number))) {
                                 nickName = nickName + " " + Integer.toString(number);
                                 server.UserPasswordMap.get(userName).changeNickname(nickName);
                                 server.allNickNames.add(nickName);
-                                sendToThisClient.enqueue("hi, user "+ userName + "! your new nickname is: " + nickName);
+                                sendToThisClient.enqueue("hi, user "+ userName
+                                        + "! your new nickname is: " + nickName);
 
                                 break;
                             } else {
