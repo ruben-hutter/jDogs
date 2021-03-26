@@ -117,4 +117,13 @@ Die Schwierigkeit, auf die ich bei diesem Prozess gestoßen bin, war, dass, obwo
 
 ---
 
+*26.März.2021 20:00, Johanna*
+
+### Protokoll#05 - Protokoll
+
+An der heutigen Sitzung besprachen wir kurz das Qualitätssicherungskonzept. Danach machten wir uns gemeinsam Gedanken, wie wir das Protokoll genau implementieren und verwenden können. Bis morgen recherchieren wir nach möglichen Lösungen.
+ 
+**Nächstes Treffen:** Samstag, 27.03.2021, 17 Uhr
+
+---
 
