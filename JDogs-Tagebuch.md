@@ -105,8 +105,16 @@ Wir verteilten die anstehenden Aufgaben wie folgt:
 
 **Nächstes Treffen:** Freitag, 26.03.2021, 20 Uhr. Bis dann sollten die Aufgaben mehrheitlich erledigt sein. Kleinere Korrekturen können am Samstag erfolgen. 
 
+---
 
+*25.März.2021 22:30, Ruben*
 
+### Bericht#03 - Implementierung des Protokolls
 
+Zwischen gestern und heute habe ich ein Protokoll für unser Projekt erstellt und begonnen, es in den bereits vorhandenen Code für den Client und den Server zu integrieren. Was ich jetzt noch fertigstellen muss, ist die vollwertige Integration, die die eingefügten temporären Befehle ersetzt.
+Anfangs haben wir auch einen Unterschied zwischen Nickname und Benutzername gemacht, den wir jetzt auf nur den Benutzernamen ändern werden; das wird die Implementierung sicherlich vereinfachen und weniger verwirrend machen.
+Die Schwierigkeit, auf die ich bei diesem Prozess gestoßen bin, war, dass, obwohl wir uns den Code gemeinsam angeschaut haben, er immer noch anders geschrieben war, als ich es getan hätte, so dass ich oft doppelt überprüfen musste, was die verschiedenen Teile des bereits existierenden Codes taten. Aus dieser Erfahrung habe ich gelernt, wie wichtig es ist, seinen Code gut zu dokumentieren.
+
+---
 
 
