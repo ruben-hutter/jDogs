@@ -35,7 +35,6 @@ public class ServerConnection implements Runnable {
      * to prevent errors in the other sender threads after disconnection of this client
      */
 
-    private int stopNumber;
 
     private boolean running;
 
@@ -85,8 +84,9 @@ public class ServerConnection implements Runnable {
     }
 
     public void loggedIn() {
-        stopNumber = server.connections.size();
         server.connections.add(sender);
+        System.out.println(this.toString() + " logged in " + "servercon. size: " + server.connections.size());
+
         loggedIn = true;
     }
 
@@ -96,11 +96,11 @@ public class ServerConnection implements Runnable {
 
      synchronized public void kill() {
         try {
-             System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName());
+             System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName() );
         } catch (UnknownHostException e) {
              e.printStackTrace();
         }
-        server.connections.remove(stopNumber);
+        server.connections.remove(sender);
         this.listeningToClient.kill();
         this.connectionToClientMonitor.kill();
         this.sender.kill();
@@ -109,6 +109,4 @@ public class ServerConnection implements Runnable {
         running = false;
 
     }
-
-
 }

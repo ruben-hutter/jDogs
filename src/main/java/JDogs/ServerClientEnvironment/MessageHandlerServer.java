@@ -143,6 +143,7 @@ public class MessageHandlerServer implements Runnable {
         }
     }
 
+
     public void kill() {
         running = false;
     }
