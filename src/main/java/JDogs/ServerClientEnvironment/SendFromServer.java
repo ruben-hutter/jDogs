@@ -49,11 +49,10 @@ public class SendFromServer implements Runnable {
             }
 
             try {
-                Thread.sleep(50);
+                Thread.sleep(30);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
 
 
@@ -72,8 +71,8 @@ public class SendFromServer implements Runnable {
             dout.writeUTF(text);
             dout.flush();
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("ServerConnection error 1: send String to Client error....");
+            //e.printStackTrace();
+            System.err.println("ServerConnection error 1: send String to Client error....");
             //kill this serverConnection:
             server.connections.remove(this);
             running = false;

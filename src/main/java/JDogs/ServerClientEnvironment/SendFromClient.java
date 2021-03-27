@@ -13,15 +13,19 @@ public class SendFromClient implements Runnable {
 
     private final Socket socket;
     private final Queue sendQueue;
+    private final Queue keyBoardInQueue;
     private DataOutputStream dout;
     private boolean running;
+    public boolean keyBoardInBlocked;
     private final Client client;
 
-    public SendFromClient(Socket socket,Client client, Queue sendQueue) {
+    public SendFromClient(Socket socket,Client client, Queue sendQueue, Queue keyBoardInQueue) {
         this.socket = socket;
         this.sendQueue = sendQueue;
         this.running = true;
+        this.keyBoardInBlocked = true;
         this.client = client;
+        this.keyBoardInQueue = keyBoardInQueue;
     }
 
     @Override
@@ -32,16 +36,20 @@ public class SendFromClient implements Runnable {
             e.printStackTrace();
         }
 
-        String reply;
+        String reply = null;
 
         while(running) {
-            if(!sendQueue.isEmpty()) {
+            if (!sendQueue.isEmpty()) {
                 reply = sendQueue.dequeue();
+                sendStringToServer(reply);
+            }
+            if (!keyBoardInBlocked && !keyBoardInQueue.isEmpty()) {
+                reply = keyBoardInQueue.dequeue();
                 sendStringToServer(reply);
             }
 
             try {
-                Thread.sleep(50);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -67,7 +75,8 @@ public class SendFromClient implements Runnable {
         }
     }
 
-    /***
+
+    /**
      * this method is a first attempt to handle connection losses;
      * it should reSetUp connection to server, but is at the moment
      * disabled due to problems with threads not finishing

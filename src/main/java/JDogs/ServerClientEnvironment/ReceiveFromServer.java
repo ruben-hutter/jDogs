@@ -43,7 +43,7 @@ public class ReceiveFromServer implements Runnable {
 
                     if (message.equalsIgnoreCase("ping")) {
                         connectionToServerMonitor.message(System.currentTimeMillis());
-                        connectionToServerMonitor.sendSignal();
+                        //connectionToServerMonitor.sendSignal();
 
                     } else {
                         receiveQueue.enqueue(message);

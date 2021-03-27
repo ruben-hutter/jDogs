@@ -57,7 +57,7 @@ public class ReceiveFromClient implements Runnable {
                     //heartbeat-signal
                     if (textIn.equals("pong")) {
                         connectionToClientMonitor.message(System.currentTimeMillis());
-                        connectionToClientMonitor.sendSignal();
+                        //connectionToClientMonitor.sendSignal();
                     } else {
                         //write to receiver-queue
                         receivedFromThisClient.enqueue(textIn);

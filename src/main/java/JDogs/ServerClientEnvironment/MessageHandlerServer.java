@@ -12,10 +12,9 @@ public class MessageHandlerServer implements Runnable {
     private final Queue sendToThisClient;
     private final Queue receivedFromClient;
     private boolean running;
-    private boolean incompleteLogin;
+    private boolean loggedIn;
     private final Server server;
     private final ServerConnection serverConnection;
-    private String userName;
     private String nickName;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
@@ -26,264 +25,121 @@ public class MessageHandlerServer implements Runnable {
         this.server = server;
         this.serverConnection = serverConnection;
 
-        this.incompleteLogin = true;
         this.running = true;
+        this.loggedIn = false;
     }
 
     @Override
     public void run() {
-        //login
-        getLoggedIn();
-
-        //receive default nickname
-        getNickname();
-
         String text;
+        nickName = null;
+        //get loggedIn
+        sendToThisClient.enqueue("USER");
 
         while (running) {
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
-                System.out.println(text);
 
                 // check if text is a command
-                if (Protocol.isACommand(text)) {
-                    manageCommand(text, Protocol.protocol);
-                }
-                /*
-                //internal commands begin with "jd "
-                if (text.length() >= 9 && text.substring(0,3).equals("jd ")) {
-                    messageHandling(text);
+                if (text.length() >= 4 && Protocol.isACommand(text)) {
+                    manageCommand(text);
                 } else {
-
-                    if (text.length() >= 3 && text.substring(0,3).equals("jd ")) {
-                        sendToThisClient.enqueue("unknown command");
-                    } else {
-
-                            sendToAll.enqueue(nickName + ": " + text);
-
+                    //before sending messages to others: complete login!
+                    if (loggedIn) {
+                        sendToAll.enqueue(nickName + " : " + text);
                     }
-                }*/
+                }
+            } else {
+
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+
         }
         System.out.println(this.toString() + "  stops now");
     }
 
-    public void getLoggedIn() {
-
-        while (incompleteLogin) {
-
-            sendToThisClient.enqueue("enter UserName");
-            String password;
-
-            while (true) {
-
-                if (!receivedFromClient.isEmpty()) {
-                    this.userName = receivedFromClient.dequeue();
-                    break;
-                }
-            }
-
-            // TODO make it possible to change name if it exists, not logging in automatically
-            if (server.UserPasswordMap.containsKey(userName)) {
-                //you were already logged in and did not log out
-                if (server.UserPasswordMap.get(userName).isLoggedIn()) {
-                    sendToThisClient.enqueue("already logged in");
-                    incompleteLogin = false;
-                    break;
-                } else {
-                    //userName is taken but person logged out
-                    //ask for password
-                    sendToThisClient.enqueue("userName taken...enter password");
-
-                    while (true) {
-
-
-                        if (!receivedFromClient.isEmpty()) {
-                            password = receivedFromClient.dequeue();
-                            if (server.UserPasswordMap.get(userName).getPassword().equals(password)) {
-                                sendToThisClient.enqueue("logged in");
-                                incompleteLogin = false;
-                                System.out.println("login done..");
-
-                                break;
-                            }
-                        }
-                    }
-                }
-            } else {
-                //userName is unknown
-                sendToThisClient.enqueue("enter password phrase");
-                while (true) {
-
-
-                    if (!receivedFromClient.isEmpty()) {
-                        password = receivedFromClient.dequeue();
-                        break;
-                    }
-                }
-                sendToThisClient.enqueue("re-enter password phrase");
-
-                while (true) {
-                    if (!receivedFromClient.isEmpty()) {
-                        String password2 = receivedFromClient.dequeue();
-                        if (password2.equals(password)){
-                            User user = new User(password, true);
-                            server.UserPasswordMap.put(userName,user);
-                            sendToThisClient.enqueue("logged in");
-                            System.out.println("login done..");
-                            System.out.println(password2);
-
-                            incompleteLogin = false;
-                            break;
-                        } else {
-                            sendToThisClient.enqueue("passwords didn't match..retry..");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void getNickname() {
-
-        if (nickName == null) {
-            sendToThisClient.enqueue("jd nickna");
-        }
-
-
-    }
-
-
-    /*
-    public void messageHandling(String command) {
-
-        switch (command.substring(3,9)) {
-
-
-            case "logout":
-                sendToThisClient.enqueue("logout now");
-                server.UserPasswordMap.get(userName).setLoggedOut();
-
-                serverConnection.kill();
-                running = false;
-                break;
-
-            case "whispe":
-                sendToThisClient.enqueue("whisperChat is not implemented");
-
-                break;
-
-            case "nickna":
-                if (command.length() < 10) {
-                    sendToThisClient.enqueue("no nickname entered");
-                } else {
-                    nickName = command.substring(10, command.length());
-                    if (server.isValidNickName(nickName)) {
-                        server.UserPasswordMap.get(userName).changeNickname(nickName);
-                        server.allNickNames.add(nickName);
-                        sendToThisClient.enqueue("hi, user "+ userName
-                                + "! your new nickname is: " + nickName);
-                    } else {
-                        int number = 2;
-                        while (true) {
-                            if(server.isValidNickName(nickName + " "
-                                    + Integer.toString(number))) {
-                                nickName = nickName + " " + Integer.toString(number);
-                                server.UserPasswordMap.get(userName).changeNickname(nickName);
-                                server.allNickNames.add(nickName);
-                                sendToThisClient.enqueue("hi, user "+ userName
-                                        + "! your new nickname is: " + nickName);
-
-                                break;
-                            } else {
-                                number++;
-                            }
-                        }
-
-                    }
-                }
-                    break;
-            case "users":
-                sendToThisClient.enqueue("list of active users not implemented");
-                break;
-
-
-            default:
-                sendToThisClient.enqueue("unknown command");
-        }
-    }*/
-
-    public void manageCommand(String text, Protocol command) {
+    public void manageCommand(String text) {
+        String command = text.substring(0,4);
         switch (command) {
-            case USER:
+            case "USER":
                 if (text.length() < 6) {
                     sendToThisClient.enqueue("No username entered");
                 } else {
                     nickName = text.substring(5);
                     if (server.isValidNickName(nickName)) {
-                        server.UserPasswordMap.get(userName).changeNickname(nickName);
                         server.allNickNames.add(nickName);
-                        sendToThisClient.enqueue("hi, user "+ userName
-                                + "! your new nickname is: " + nickName);
+                        sendToThisClient.enqueue("hi, user! your new nickname is: " + nickName);
                     } else {
                         int number = 2;
                         while (true) {
                             if(server.isValidNickName(nickName + " " + number)) {
                                 nickName = nickName + " " + number;
-                                server.UserPasswordMap.get(userName).changeNickname(nickName);
                                 server.allNickNames.add(nickName);
-                                sendToThisClient.enqueue("hi, user "+ userName
-                                        + "! your new nickname is: " + nickName);
+                                sendToThisClient.enqueue("hi, user! your new name is: " + nickName);
                                 break;
                             } else {
                                 number++;
                             }
                         }
                     }
+                    System.out.println("login worked");
+                    serverConnection.loggedIn();
+                    loggedIn = true;
                 }
                 break;
-            case PASS:
-                // TODO give and change password
+            /*case "PASS":
+                // TODO give and change password Gregor: is pw necessary?
                 break;
-            case ACTI:
-                // TODO return a list of online usernames
-                sendToThisClient.enqueue("list of active users not implemented");
-                break;
-            case QUIT:
-                sendToThisClient.enqueue("logout now");
-                server.UserPasswordMap.get(userName).setLoggedOut();
 
-                serverConnection.kill();
-                running = false;
+             */
+            case "ACTI":
+                // TODO return a list of online usernames
+                String list = "";
+                for (int i = 0; i < server.allNickNames.size(); i++) {
+                    list += "player # " + i;
+                    list += server.allNickNames.get(i);
+                    list += "";
+                }
+                sendToThisClient.enqueue(list);
                 break;
-            case EXIT:
+            case "QUIT":
+                sendToThisClient.enqueue("logout now");
+                serverConnection.kill();
+                break;
+            case "EXIT":
                 // TODO leave game session
                 break;
-            case MOVE:
+            case "MOVE":
                 // TODO move marble in game
                 break;
-            case STAT:
+            case "STAT":
                 // TODO sync game stats
                 break;
-            case MODE:
+            case "MODE":
                 // TODO chose a game mode
                 break;
-            case WCHT:
+            case "WCHT":
                 // TODO chose a partner whom to send the message
                 sendToThisClient.enqueue("whisperChat is not implemented");
                 break;
-            case PCHT:
+            case "PCHT":
                 // TODO send message to all active clients
                 break;
-            case STAR:
+            case "STAR":
                 // TODO confirm you wanna start the game
                 break;
-            case CTTP:
+            case "CTTP":
                 // TODO switch selected card with partner
                 break;
-            case HELP:
-                // TODO shows the user guide
+            /*case HELP:
+                // TODO shows the user guide. Gregor: or save manual on client side?
                 break;
+
+             */
         }
     }
 

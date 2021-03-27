@@ -4,10 +4,11 @@ package JDogs.ServerClientEnvironment;
  * this class will save the password,
  * the nickname and
  * if a user is currently logged in or not.
+ *
+ * not used anymore, since we have changeable nicknames only
  */
 public class User {
-
-    private boolean isLoggedIn;
+    /*private boolean isLoggedIn;
     private final String password;
     private String nickName;
 
@@ -40,4 +41,6 @@ public class User {
     synchronized public String getNickName() {
         return nickName;
     }
+
+     */
 }

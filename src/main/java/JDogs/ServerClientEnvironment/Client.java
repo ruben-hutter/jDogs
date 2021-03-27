@@ -1,7 +1,9 @@
 package JDogs.ServerClientEnvironment;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /**
@@ -20,6 +22,7 @@ public class Client {
     private MessageHandlerClient messageHandlerClient;
     private String nickname;
 
+
     public static void main(String[] args) {
         new Client();
     }
@@ -33,22 +36,26 @@ public class Client {
         //queues save messages,
         // received ones
         // and those who will be sent
+        //and those typed from keyboard
         Queue receiveQueue = new Queue();
         Queue sendQueue = new Queue();
+        Queue keyBoardInQueue = new Queue();
 
         Socket socket = null;
 
         String serveraddress = "localhost";
         int portnumber = 8090;
 
-        /*
-        System.out.println("IP-Adresse des Servers:");
+        /*System.out.println("IP-Adresse des Servers:");
         Scanner scanner = new Scanner(System.in);
         serveraddress = scanner.nextLine();
-        //enter Port
+        scanner = new Scanner(System.in);
+        System.out.println("port number:");
         portnumber = scanner.nextInt();
 
          */
+
+
 
 
         //connect to server
@@ -74,19 +81,30 @@ public class Client {
         receiverThread.start();
 
         //3.send messages to server thread
-        sendFromClient = new SendFromClient(socket,this, sendQueue);
+        sendFromClient = new SendFromClient(socket,this, sendQueue, keyBoardInQueue);
         Thread toServerThread = new Thread(sendFromClient);
         toServerThread.start();
 
         //4.process keyboard input thread
-        keyboardInput = new KeyboardInput(this, sendQueue);
+        keyboardInput = new KeyboardInput(this, keyBoardInQueue);
         Thread keyboard = new Thread(keyboardInput);
         keyboard.start();
 
         //5.handle received messages meaningfully
-        messageHandlerClient = new MessageHandlerClient(receiveQueue, sendQueue);
+        messageHandlerClient = new MessageHandlerClient(this, sendFromClient,receiveQueue, sendQueue, keyBoardInQueue);
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
+    }
+
+    public String getHostName() {
+
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+
+        }
     }
 
     synchronized public void kill() {

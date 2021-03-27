@@ -4,6 +4,7 @@ package JDogs.ServerClientEnvironment;
  * This protocol defines the commands to make the client and
  * server interact with each other correctly.
  */
+
 public enum Protocol {
 
     USER,
@@ -20,12 +21,12 @@ public enum Protocol {
     CTTP,
     HELP;
 
-    public static Protocol protocol;
+    //public static Protocol protocol;
 
     public static boolean isACommand(String text) {
         for (Protocol command : Protocol.values()) {
             if (command.toString().equals(text.substring(0, 4))) {
-                protocol = command;
+                //protocol = command;
                 return true;
             }
         }

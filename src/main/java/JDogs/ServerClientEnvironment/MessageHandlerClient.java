@@ -2,6 +2,7 @@ package JDogs.ServerClientEnvironment;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 /***
  * this thread processes messages received meaningfully.
@@ -18,59 +19,74 @@ public class MessageHandlerClient implements Runnable{
     private boolean running;
     private final Queue receiveQueue;
     private final Queue sendQueue;
+    private final Queue keyBoardInQueue;
+    private Client client;
+    private SendFromClient sendFromClient;
 
-    public MessageHandlerClient(Queue receiveQueue, Queue sendQueue) {
+    public MessageHandlerClient(Client client, SendFromClient sendFromClient, Queue receiveQueue, Queue sendQueue, Queue keyBoardInQueue) {
         this.running = true;
         this.receiveQueue = receiveQueue;
         this.sendQueue = sendQueue;
+        this.keyBoardInQueue = keyBoardInQueue;
+        this.sendFromClient = sendFromClient;
+        this.client = client;
     }
 
     @Override
     public void run() {
         String reply;
-        while(running) {
+        while (running) {
 
-            if (receiveQueue.isEmpty()) {
-               try {
-                    Thread.sleep(50);
+            if (!receiveQueue.isEmpty()) {
+                reply = receiveQueue.dequeue();
+
+                if (reply.length() >= 4 && Protocol.isACommand(reply)) {
+                    messageHandling(reply);
+                } else {
+                System.out.println("from server " + reply);
+                }
+            } else {
+                try {
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-            } else {
-                reply = receiveQueue.dequeue();
-                messageHandling(reply);
-                }
             }
+        }
 
         System.out.println(this.toString() + " stops now");
-
     }
 
     public void messageHandling(String reply) {
 
-        if(reply.substring(0,3).equals("jd ")) {
+        String command = reply.substring(0,4);
 
-            if ("nickna".equals(reply.substring(3, 9))) {
-                String defaultNickname = null;
-                try {
-                    defaultNickname = InetAddress.getLocalHost().getHostName();
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
+        switch (command) {
+
+            case "USER":
+                String name;
+                System.out.println("server wants a nickname from you. Your default nickname "
+                        + client.getHostName()
+                        + " will be sent; accept by 'Y' or enter other name now");
+                while (keyBoardInQueue.isEmpty()) {
+                    //do nothing
+                    //for later: wake up, if keyboardInput is not empty anymore or handle with commands
                 }
-                sendQueue.enqueue("jd nickna " + defaultNickname);
-            } else {
-                System.out.println("from server:  " + reply);
-            }
+                name = keyBoardInQueue.dequeue();
+                System.out.println(" name is " + name);
 
-
-        } else {
-            System.out.println("from server:  " + reply);
+                if (name.equalsIgnoreCase("y")) {
+                    sendQueue.enqueue("USER " + client.getHostName());
+                } else {
+                    sendQueue.enqueue("USER " + name);
+                }
+                //allow sending messages from keyboard to server
+                sendFromClient.keyBoardInBlocked = false;
+                break;
+            default:
+                System.out.println("received from server " + reply + ". But this command " + command + " is not implemented");
         }
-
     }
-
-
 
     public void kill() {
         running = false;

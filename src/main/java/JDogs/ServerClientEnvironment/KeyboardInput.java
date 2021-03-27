@@ -13,13 +13,13 @@ import java.util.Scanner;
 
 public class KeyboardInput implements Runnable {
 
-    private final Queue sendQueue;
+    private final Queue keyBoardInput;
     private final Scanner console;
     private boolean running;
     private final Client client;
 
-    public KeyboardInput(Client client, Queue sendQueue) {
-        this.sendQueue = sendQueue;
+    public KeyboardInput(Client client, Queue keyBoardInput) {
+        this.keyBoardInput = keyBoardInput;
         this.console = new Scanner(System.in);
         this.client = client;
         this.running = true;
@@ -50,9 +50,9 @@ public class KeyboardInput implements Runnable {
                        if (input.equalsIgnoreCase("quit")) {
                            client.kill();
                        }
-
+                       keyBoardInput.enqueue(input);
                        System.out.println("from keyboard:  " + input);
-                       sendQueue.enqueue(input);
+
                    }
 
                }

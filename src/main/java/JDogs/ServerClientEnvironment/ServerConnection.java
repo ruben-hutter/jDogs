@@ -1,6 +1,8 @@
 package JDogs.ServerClientEnvironment;
 
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * this thread is the main thread of the connection to the client
@@ -25,6 +27,7 @@ public class ServerConnection implements Runnable {
     private ReceiveFromClient listeningToClient;
     private ConnectionToClientMonitor connectionToClientMonitor;
     private MessageHandlerServer messageHandlerServer;
+    public boolean loggedIn;
 
     /** stopNumber is the number of the sender-object saved
      * in the ArrayList of server.connections.
@@ -43,6 +46,7 @@ public class ServerConnection implements Runnable {
         this.sendToThisClient = new Queue();
         this.receivedFromClient = new Queue();
         this.running = true;
+        this.loggedIn = false;
     }
 
     @Override
@@ -52,9 +56,6 @@ public class ServerConnection implements Runnable {
         //sender thread
         sender = new SendFromServer(socket, server, sendToAll, sendToThisClient,
                 this);
-        stopNumber = server.connections.size();
-
-        server.connections.add(sender);
 
         Thread senderThread = new Thread(sender);
         senderThread.start();
@@ -81,11 +82,12 @@ public class ServerConnection implements Runnable {
         Thread messenger = new Thread(messageHandlerServer);
         messenger.start();
 
+    }
 
-
-
-
-
+    public void loggedIn() {
+        stopNumber = server.connections.size();
+        server.connections.add(sender);
+        loggedIn = true;
     }
 
     public SendFromServer getSender () {
@@ -93,7 +95,11 @@ public class ServerConnection implements Runnable {
     }
 
      synchronized public void kill() {
-        System.out.println("stop ServerConnection...");
+        try {
+             System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName());
+        } catch (UnknownHostException e) {
+             e.printStackTrace();
+        }
         server.connections.remove(stopNumber);
         this.listeningToClient.kill();
         this.connectionToClientMonitor.kill();
