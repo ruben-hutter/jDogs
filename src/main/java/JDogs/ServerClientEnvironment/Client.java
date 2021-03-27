@@ -43,7 +43,7 @@ public class Client {
 
         Socket socket = null;
 
-        String serveraddress = "localhost";
+        String serveraddress = "25.74.38.24";
         int portnumber = 8090;
 
         /*System.out.println("IP-Adresse des Servers:");

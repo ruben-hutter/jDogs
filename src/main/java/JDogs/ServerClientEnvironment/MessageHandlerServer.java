@@ -87,15 +87,14 @@ public class MessageHandlerServer implements Runnable {
                         }
                     }
                     System.out.println("login worked");
-                    serverConnection.loggedIn();
+                    if(!loggedIn) {serverConnection.loggedIn();}
                     loggedIn = true;
                 }
                 break;
-            /*case "PASS":
+            case "PASS":
                 // TODO give and change password Gregor: is pw necessary?
                 break;
 
-             */
             case "ACTI":
                 // TODO return a list of online usernames
                 String list = "";
@@ -135,11 +134,11 @@ public class MessageHandlerServer implements Runnable {
             case "CTTP":
                 // TODO switch selected card with partner
                 break;
-            /*case HELP:
-                // TODO shows the user guide. Gregor: or save manual on client side?
+            case "HELP":
+                // TODO shows the user guide.
                 break;
 
-             */
+
         }
     }
 
