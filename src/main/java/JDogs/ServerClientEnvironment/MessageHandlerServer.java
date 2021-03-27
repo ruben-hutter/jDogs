@@ -4,7 +4,6 @@ package JDogs.ServerClientEnvironment;
  * this thread processes messages received meaningfully.
  * - it distinguishes between messages for server and all clients
  * - it handles the login of the client
- *
  */
 public class MessageHandlerServer implements Runnable {
 
