@@ -73,7 +73,6 @@ public class MessageHandlerClient implements Runnable{
                     //for later: wake up, if keyboardInput is not empty anymore or handle with commands
                 }
                 name = keyBoardInQueue.dequeue();
-                System.out.println(" name is " + name);
 
                 if (name.equalsIgnoreCase("y")) {
                     sendQueue.enqueue("USER " + client.getHostName());
