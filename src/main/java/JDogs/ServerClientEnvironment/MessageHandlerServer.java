@@ -69,9 +69,11 @@ public class MessageHandlerServer implements Runnable {
                 if (text.length() < 6) {
                     sendToThisClient.enqueue("No username entered");
                 } else {
+                    String oldNick = nickName;
                     nickName = text.substring(5);
                     if (server.isValidNickName(nickName)) {
                         server.allNickNames.add(nickName);
+                        server.allNickNames.remove(oldNick);
                         sendToThisClient.enqueue("hi, user! your new nickname is: " + nickName);
                     } else {
                         int number = 2;
@@ -79,6 +81,7 @@ public class MessageHandlerServer implements Runnable {
                             if(server.isValidNickName(nickName + " " + number)) {
                                 nickName = nickName + " " + number;
                                 server.allNickNames.add(nickName);
+                                server.allNickNames.remove(oldNick);
                                 sendToThisClient.enqueue("hi, user! your new name is: " + nickName);
                                 break;
                             } else {
@@ -140,6 +143,10 @@ public class MessageHandlerServer implements Runnable {
 
 
         }
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 
 

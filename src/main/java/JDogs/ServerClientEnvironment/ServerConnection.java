@@ -85,7 +85,7 @@ public class ServerConnection implements Runnable {
 
     public void loggedIn() {
         server.connections.add(sender);
-        System.out.println(this.toString() + " logged in " + "servercon. size: " + server.connections.size());
+        System.out.println(this.toString() + " logged in ");
 
         loggedIn = true;
     }
@@ -101,6 +101,7 @@ public class ServerConnection implements Runnable {
              e.printStackTrace();
         }
         server.connections.remove(sender);
+        server.allNickNames.remove(messageHandlerServer.getNickName());
         this.listeningToClient.kill();
         this.connectionToClientMonitor.kill();
         this.sender.kill();
