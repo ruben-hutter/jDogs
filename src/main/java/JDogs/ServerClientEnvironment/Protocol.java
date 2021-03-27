@@ -12,6 +12,7 @@ public enum Protocol {
     ACTI,
     QUIT,
     EXIT,
+    PLAY,
     MOVE,
     STAT,
     MODE,
