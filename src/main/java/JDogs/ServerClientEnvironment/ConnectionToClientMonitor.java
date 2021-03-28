@@ -1,8 +1,5 @@
 package JDogs.ServerClientEnvironment;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * This thread will check if a connection to the client still exists.
  * If no messages are sent between client and server for approx. 10000mS and if then
@@ -23,9 +20,7 @@ public class ConnectionToClientMonitor implements Runnable {
 
     @Override
     public void run() {
-
         while (running) {
-
             if (System.currentTimeMillis() - oldTime >= 10000) {
                 // kill connection to client
                 if (tryToReachClient > 4) {
@@ -37,51 +32,44 @@ public class ConnectionToClientMonitor implements Runnable {
             }
             sendSignal();
             tryToReach();
-
-
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
         System.out.println(this.toString() + "  stops now...");
     }
 
     /**
-     *
+     * Sets the oldTime to the new given from ReceiveFromClient.
      * @param timeInMilliSec
-     * this parameter is given from ReceiveFromClient thread
+     * This parameter is given from ReceiveFromClient thread
      * and is used if a message with "pong" is received.
      */
-
     public void message(long timeInMilliSec) {
        oldTime = timeInMilliSec;
     }
 
     /**
-     * commands to send ping-message to client
+     * Sends a ping-message to client
      */
-
     public void sendSignal() {
         String ping = "ping";
         sendToThisClient.enqueue(ping);
     }
 
     /**
-     * counts the attempts to reach client by sending ping-messages.
+     * Counts the attempts to reach the client by sending ping-messages.
      */
-
     public void tryToReach() {
         tryToReachClient++;
     }
 
     /**
-     * kills thread
+     * Kills thread
      */
     public void kill() {
         running = false;
     }
-
 }

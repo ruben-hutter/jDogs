@@ -2,15 +2,13 @@ package JDogs.ServerClientEnvironment;
 
 import java.util.Scanner;
 
-/***
- * receives any input from client
+/**
+ * Receives any input from client
  * blank/empty lines are ignored
  * "quit" activates client.kill()
  * every other message is sent to
  * sendQueue(to be sent to server)
- *
  */
-
 public class KeyboardInput implements Runnable {
 
     private final Queue keyBoardInput;

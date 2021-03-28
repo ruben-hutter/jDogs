@@ -21,9 +21,7 @@ public class ConnectionToServerMonitor implements Runnable {
 
     @Override
     public void run() {
-
         while (running) {
-
             if (System.currentTimeMillis() - oldTime >= 10000) {
                 if (tryToReachServer > 2) {
                     client.kill();
@@ -34,49 +32,43 @@ public class ConnectionToServerMonitor implements Runnable {
             }
             sendSignal();
             tryToReach();
-
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
         System.out.println(this.toString() + " stops now...");
     }
 
     /**
-     *
+     * Sets the oldTime to the new given from ReceiveFromServer.
      * @param timeInMilliSec
-     * this parameter is given from ReceiveFromServer thread
+     * This parameter is given from ReceiveFromServer thread
      * and is used if a message with "ping" is received.
      */
-
     public void message(long timeInMilliSec) {
         oldTime = timeInMilliSec;
     }
 
     /**
-     * commands to send pong-message to server
+     * Sends a pong-message to server.
      */
-
     public void sendSignal() {
         String pong = "pong";
         sendQueue.enqueue(pong);
     }
 
     /**
-     * counts the attempts to reach client by sending ping-messages.
+     * Counts the attempts to reach client by sending ping-messages.
      */
-
     public void tryToReach() {
         tryToReachServer++;
     }
 
     /**
-     * kills thread
+     * Kills thread
      */
-
     public void kill() {
         running = false;
     }

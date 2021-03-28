@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 /**
  * starts threads for sending/receiving to/from server
@@ -12,7 +11,6 @@ import java.util.Scanner;
  * kill client from here
  *
  */
-
 public class Client {
 
     private ReceiveFromServer receiveFromServer;
@@ -22,21 +20,20 @@ public class Client {
     private MessageHandlerClient messageHandlerClient;
     private String nickname;
 
-
     public static void main(String[] args) {
         new Client();
     }
 
     public Client() {
-        //sets up connection to Server
         setUp();
     }
 
+    /**
+     * Sets up connection to Server
+     * Messages are saved in specific queues
+     * 5 threads to handle connection are started
+     */
     public void setUp() {
-        //queues save messages,
-        // received ones
-        // and those who will be sent
-        //and those typed from keyboard
         Queue receiveQueue = new Queue();
         Queue sendQueue = new Queue();
         Queue keyBoardInQueue = new Queue();
@@ -52,11 +49,7 @@ public class Client {
         scanner = new Scanner(System.in);
         System.out.println("port number:");
         portnumber = scanner.nextInt();
-
          */
-
-
-
 
         //connect to server
         try {
@@ -65,9 +58,6 @@ public class Client {
             System.err.println("no server found...implement error handling here..shutdown now");
             //e.printStackTrace();
         }
-        /**
-         * 5 threads to handle connection are started here
-         */
 
         //1.monitor connection to server thread
         connectionToServerMonitor = new ConnectionToServerMonitor(this, sendQueue);
@@ -96,19 +86,24 @@ public class Client {
         messageHandleThread.start();
     }
 
+    /**
+     * Returns the hostname of the client
+     * @return hostname
+     */
     public String getHostName() {
-
         try {
             return InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             e.printStackTrace();
             return null;
-
         }
     }
 
+    /**
+     * Kills all threads.. reconnection could
+     * be started from here later
+     */
     synchronized public void kill() {
-        //kills all threads..reconnection could be started from here later
         receiveFromServer.kill();
         sendFromClient.kill();
         connectionToServerMonitor.kill();
