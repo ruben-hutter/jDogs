@@ -54,7 +54,7 @@ The following block adds both compile and runtime dependencies to the jar
 jar {
     manifest {
         attributes(
-                'Main-Class': mainClassName
+                'Main-Class': 'JDogs.ServerClientEnvironment.Client'
         )
     }
     from {
