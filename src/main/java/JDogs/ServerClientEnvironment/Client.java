@@ -9,7 +9,6 @@ import java.net.UnknownHostException;
  * starts threads for sending/receiving to/from server
  * instantiates receiver & sender Queue
  * kill client from here
- *
  */
 public class Client {
 
@@ -51,7 +50,7 @@ public class Client {
         portnumber = scanner.nextInt();
          */
 
-        //connect to server
+        // connect to server
         try {
             socket = new Socket(serveraddress, portnumber);
         } catch (IOException e) {
@@ -59,28 +58,28 @@ public class Client {
             //e.printStackTrace();
         }
 
-        //1.monitor connection to server thread
+        // 1.monitor connection to server thread
         connectionToServerMonitor = new ConnectionToServerMonitor(this, sendQueue);
         Thread monitorThread = new Thread(connectionToServerMonitor);
         monitorThread.start();
 
-        //2.receive messages from server thread
+        // 2.receive messages from server thread
         receiveFromServer = new ReceiveFromServer(socket,this, receiveQueue,
                 connectionToServerMonitor);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 
-        //3.send messages to server thread
+        // 3.send messages to server thread
         sendFromClient = new SendFromClient(socket,this, sendQueue, keyBoardInQueue);
         Thread toServerThread = new Thread(sendFromClient);
         toServerThread.start();
 
-        //4.process keyboard input thread
+        // 4.process keyboard input thread
         keyboardInput = new KeyboardInput(this, keyBoardInQueue);
         Thread keyboard = new Thread(keyboardInput);
         keyboard.start();
 
-        //5.handle received messages meaningfully
+        // 5.handle received messages meaningfully
         messageHandlerClient = new MessageHandlerClient(this, sendFromClient,receiveQueue, sendQueue, keyBoardInQueue);
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
