@@ -121,9 +121,21 @@ Die Schwierigkeit, auf die ich bei diesem Prozess gestoßen bin, war, dass, obwo
 
 ### Protokoll#05 - Protokoll
 
-An der heutigen Sitzung besprachen wir kurz das Qualitätssicherungskonzept. Danach machten wir uns gemeinsam Gedanken, wie wir das Protokoll genau implementieren und verwenden können. Bis morgen recherchieren wir nach möglichen Lösungen.
+An der heutigen Sitzung besprachen wir kurz das Qualitätssicherungskonzept. Danach machten wir uns gemeinsam Gedanken, wie wir das Protokoll genau implementieren und verwenden können. Bis morgen recherchieren wir nach möglichen Lösungen. Es war uns nicht ganz klar, wo wir die Befehle des Protokolls behandeln sollen, im Enum, wo auch die Protokollbefehle definiert sind, oder im MessageHandler. 
 
 **Nächstes Treffen:** Samstag, 27.03.2021, 17 Uhr
+
+---
+
+*27.März.2021 17:00, Johanna*
+
+### Protokoll#06 - Protokoll
+
+Bei unserem heutigen Treffen einigten wir uns darauf, dass die Behandlung der Protokollbefehle im jeweiligen MessageHandler vonstatten gehen sollte und nicht in Protocol.java. Danach gingen wir die Achievements für Milestone 2 durch. Dabei stellten uns Emoijs im Chat vor einige Probleme. Zwischen Linux und Mac konnten Sonderzeichen und Emoijs problemlos versendet werden, bei Windows wurden hingegen diese Zeichen nicht korrekt dargestellt. Wir versuchten, das Problem zu beheben. Während des Testens wurden wir auf zwei weitere Fehler aufmerksam, die während der Zoom-Sitzung behoben wurden. 
+>1. Wenn ein Client seinen Namen ändert, zählt der Server dies als eine neue Verbindung
+>2. Wenn ein Client seinen Namen ändert, wird der neue Name zur Liste der aktiven User hinzugefügt. 
+
+Wir sprachen noch über AWT, SWING und JavaFX, die in der Vorlesung zu GUI vorgestellt wurden, und entschieden uns, JavaFX zu verwenden. 
 
 ---
 
