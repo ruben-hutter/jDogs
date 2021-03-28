@@ -75,15 +75,15 @@ Ich habe weiter an der Planung gearbeitet. Die größte Schwierigkeit ist im Mom
 
 ### Protokoll#3 - Update Milestone 2
 
-Gregor hat seit unserem letzten Treffen bereits ein Grundgerüst für den Chat, Login und Ping/Pong erstellt. Ruben hat sich Gedanken zum Protokoll gemacht, ich zur Qualitätssicherung. Zu Beginn der heutigen Sitzung erklärte Gregor den anderen Teammitgliedern seinen Code. Gemeinsam schauten wir uns den Code an, klärten Fragen und brachten Verbesserungsvorschläge ein. Wir testeten den Chat unter Zuhilfenahme von Hamachi. Danach gingen wir die Achievements für Milestone 2 durch und notierten uns, was wir noch in der Übungsstunde fragen möchten. Zuletzt überlegten wir uns gemeinsam einige Befehle für das Netzwerkprotokoll, welche Ruben in einem Dokument festhielt. Wir einigten uns darauf, für die Befehle vorerst 4 Buchstaben zu verwenden. 
+Gregor hat seit unserem letzten Treffen bereits ein Grundgerüst für den Chat, Login und Ping/Pong erstellt. Ruben hat sich Gedanken zum Protokoll gemacht, ich zur Qualitätssicherung. Zu Beginn der heutigen Sitzung erklärte Gregor den anderen Teammitgliedern seinen Code. Gemeinsam schauten wir uns den Code an, klärten Fragen und brachten Verbesserungsvorschläge ein. Wir testeten den Chat unter Zuhilfenahme von Hamachi. Danach gingen wir die Achievements für Milestone 2 durch und notierten uns, was wir noch in der Übungsstunde fragen möchten. Zuletzt überlegten wir uns gemeinsam einige Befehle für das Netzwerkprotokoll, welche Ruben in einem Dokument festhielt. Wir einigten uns darauf, für die Befehle vorerst 4 Buchstaben zu verwenden.
 
 > Fragen für die Übungsstunde:
 >
 > 1) Wie würde eine ideale projektspezifische Planung aussehen (konkretes Beispiel)?
-> 2) Wie können wir den Malus "Human modem" vermeiden? 
-> 3) Wie soll das Protokoll dokumentiert, im Code implementiert und validiert werden? 
-> 4) Wie soll das Software-Qualitätssicherungskonzept konkret aussehen? 
-> 5) Was ist genau mit "Garbage" gemeint? 
+> 2) Wie können wir den Malus "Human modem" vermeiden?
+> 3) Wie soll das Protokoll dokumentiert, im Code implementiert und validiert werden?
+> 4) Wie soll das Software-Qualitätssicherungskonzept konkret aussehen?
+> 5) Was ist genau mit "Garbage" gemeint?
 
 ---
 
@@ -92,18 +92,18 @@ Gregor hat seit unserem letzten Treffen bereits ein Grundgerüst für den Chat, 
 ### Protokoll#4 - Übungsstunde am 24.03.2021
 
 Antworten auf unsere Fragen:
-> 1) Der Tutor stellt uns einen Screenshot eines guten Projektplans zur Verfügung. Aus dem Projektplan sollte ersichtlich sein, um was für ein Spiel es sich genau handelt, etc. 
-> 2) Auf der Kommandozeile sollten nicht die exakten Befehle eingegeben werden, stattdessen sollte ein Frage-Antwort-Spiel gestartet werden, z.B. "Willst du deinen Nickname ändern?" "Gewünschter neuer Nickname", etc. 
-> 3) Dokumentation in einem PDF-Dokument. Implementation als enum, siehe Vorlesungsfolien. Validierung: Es sollen nur die definierten Befehle akzeptiert werden. Bei ungültigen Befehlen sollen entsprechende Handlungen eingeleitet werden. 
+> 1) Der Tutor stellt uns einen Screenshot eines guten Projektplans zur Verfügung. Aus dem Projektplan sollte ersichtlich sein, um was für ein Spiel es sich genau handelt, etc.
+> 2) Auf der Kommandozeile sollten nicht die exakten Befehle eingegeben werden, stattdessen sollte ein Frage-Antwort-Spiel gestartet werden, z.B. "Willst du deinen Nickname ändern?" "Gewünschter neuer Nickname", etc.
+> 3) Dokumentation in einem PDF-Dokument. Implementation als enum, siehe Vorlesungsfolien. Validierung: Es sollen nur die definierten Befehle akzeptiert werden. Bei ungültigen Befehlen sollen entsprechende Handlungen eingeleitet werden.
 > 4) Beschreibung, wie wir sicherstellen wollen, dass unsere Software das macht, was wir wollen. Auflistung der Tools und Hilfsmittel.
-> 5) Der Server soll damit umgehen können, wenn nicht definierte Befehle gesendet werden. 
+> 5) Der Server soll damit umgehen können, wenn nicht definierte Befehle gesendet werden.
 
-Wir verteilten die anstehenden Aufgaben wie folgt: 
-> - Gregor: Ping/Pong so abändern, dass das Ping regelmässig gesendet wird. 
+Wir verteilten die anstehenden Aufgaben wie folgt:
+> - Gregor: Ping/Pong so abändern, dass das Ping regelmässig gesendet wird.
 > - Ruben: Implementiert die gestern festgelegten Befehle des Protokolls.
-> - Johanna: Qualitätssicherungskonzept erstellen. Frage-Antwort-Spiel bei einigen Befehlen einbauen. 
+> - Johanna: Qualitätssicherungskonzept erstellen. Frage-Antwort-Spiel bei einigen Befehlen einbauen.
 
-**Nächstes Treffen:** Freitag, 26.03.2021, 20 Uhr. Bis dann sollten die Aufgaben mehrheitlich erledigt sein. Kleinere Korrekturen können am Samstag erfolgen. 
+**Nächstes Treffen:** Freitag, 26.03.2021, 20 Uhr. Bis dann sollten die Aufgaben mehrheitlich erledigt sein. Kleinere Korrekturen können am Samstag erfolgen.
 
 ---
 
@@ -122,8 +122,43 @@ Die Schwierigkeit, auf die ich bei diesem Prozess gestoßen bin, war, dass, obwo
 ### Protokoll#05 - Protokoll
 
 An der heutigen Sitzung besprachen wir kurz das Qualitätssicherungskonzept. Danach machten wir uns gemeinsam Gedanken, wie wir das Protokoll genau implementieren und verwenden können. Bis morgen recherchieren wir nach möglichen Lösungen.
- 
+
 **Nächstes Treffen:** Samstag, 27.03.2021, 17 Uhr
 
 ---
 
+*28.März.2021 16:30, Gregor*
+
+### Bericht#04 - Aufbau der ServerClient-Architektur
+
+Ich habe viel an der ServerClient-Architektur unserer Gruppe gearbeitet und werde hier einige wichtige Punkte der Architektur besprechen.
+
+Um uns dem Problem anzunähern, können wir uns überlegen, welche Funktionen Server- und Clientseite jeweils erfüllen müssen. Diese sind auf beiden Seiten fast dieselben.
+
+Die erste Funktion ist, Input zu empfangen.
+Die Clientseite hat zwei verschiedene Inputs, die erfasst werden müssen.
+Erstens alles, was von der Tastatur eingeben und (später) auch, was auf Buttons des GUI gedrückt wird, sowie zweitens alles, was vom Server zum Client gesendet wird.
+
+Die zweite Funktion ist, Input zu verarbeiten.
+Die Clientseite muss diese Inputs verarbeiten, auch dafür ist ein Thread nötig.
+Um die Belastung der CPU gering zu halten, könnte man sich überlegen diesen Thread nur dann zu aktivieren, wenn Input empfangen wurde.
+
+Die dritte Funktion ist, Output zu verschicken.
+Auf Clientseite kann dieser Output erstens zum User gesendet werden, um etwas im GUI bzw. in der cmd anzuzeigen und kann zweitens zum Server gesendet werden.
+
+Die vierte Funktion ist, die Verbindung zwischen Server und Client zu überwachen und bei Verbindungsabbruch, Schritte einzuleiten.
+Das wird momentan auf Server- wie Clientseite durch einen eigenen Thread ausgeführt. Wir wollen allerdings, um auch da ein wenig CPU-Leistung einzusparen, diesen Thread nur noch alle 5 Sekunden laufen lassen mittels eines Threadpools.
+
+Auf Serverseite läuft alles ganz ähnlich ab, aber es gibt für jeden Client eine eigene Input-Entgegennahme, eine eigene Verarbeitung von Input, eine eigene Output-Linie sowie eine eigene Überprüfung der Verbindung.
+Das heisst, jedes Mal, wenn sich ein neuer Client mit dem Server verbindet, werden 4 neue Threads gestartet(bzw. 3 und der vierte, der Überwachungsthread, wird regelmässig aktiviert).
+
+Deshalb hat der Server eine Funktion mehr, die überhaupt erlaubt, all diesen Clients auf Serverseite 4 (bzw. 3 Threads) zuzuweisen.
+Diese Funktion wird im Main-Thread(public static void main(String[] args)) ausgeführt und ein while(true) - Loop sorgt dafür, dass der Server immer bereit ist, neuen Clients, 4(bzw. 3) Threads auf Serverseite zuzuweisen.
+
+Ausblick
+
+Alle Nachrichten von Server zu Client bzw. von Client zu Server gehen durch dieselbe Verbindung.
+Da sind Spielbefehle, Nicht-Spielbefehle, öffentliche Chat-Nachrichten, private Chat-Nachrichten, Falsch-Nachrichten und Ping-Pong-Signale. Und nach Ankunft muss für eine schnelle Verteilung gesorgt werden, um Verzögerungen zu minimieren.
+Der nächste Schritt, den wir nun angehen müssen ist, liegt genau da: wir müssen für die richtige Verteilung der Nachrichten sorgen. Und wir benötigen eine kluge Struktur, um die Befehle, die die Nachrichten nach sich ziehen, auszuführen.
+
+---
