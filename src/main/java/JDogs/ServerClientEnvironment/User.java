@@ -1,7 +1,7 @@
 package JDogs.ServerClientEnvironment;
 
 /**
- * this class will save the password,
+ * Saves the password,
  * the nickname and
  * if a user is currently logged in or not.
  *

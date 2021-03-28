@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * purpose of this thread is receiving messages from client
+ * This thread is receiving messages from client
  * received pong - messages are sent to Monitor-Thread
  * all others: are given to receiveQueue(handled by MessageHandlerThread)
  */
-
 public class ReceiveFromClient implements Runnable {
+
     private final Socket socket;
     private boolean running;
     private DataInputStream din;
@@ -19,19 +19,17 @@ public class ReceiveFromClient implements Runnable {
     private ServerConnection serverConnection;
     private final ConnectionToClientMonitor connectionToClientMonitor;
 
-    public ReceiveFromClient(Socket socket, Queue sendToThisClient, Queue receivedFromThisClient, ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
+    public ReceiveFromClient(Socket socket, Queue sendToThisClient, Queue receivedFromThisClient,
+            ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
         this.socket = socket;
         this.serverConnection = serverConnection;
         this.connectionToClientMonitor = connectionToClientMonitor;
         this.running = true;
         this.receivedFromThisClient = receivedFromThisClient;
-
     }
 
-
     @Override
-     public void run() {
-
+    public void run() {
         try {
             din = new DataInputStream(socket.getInputStream());
         } catch (IOException e) {
@@ -40,8 +38,6 @@ public class ReceiveFromClient implements Runnable {
 
 
         String textIn;
-
-
         try {
 
 
@@ -67,7 +63,6 @@ public class ReceiveFromClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         try {
             din.close();
         } catch (IOException e) {
@@ -76,7 +71,9 @@ public class ReceiveFromClient implements Runnable {
         System.out.println(this.toString() + "  stops now...");
     }
 
-
+    /**
+     * Kills thread
+     */
     public void kill() {
         this.connectionToClientMonitor.kill();
         running = false;

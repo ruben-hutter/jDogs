@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * this thread is the main thread of the connection to the client
+ * This thread is the main thread of the connection to the client
  * here are lie the three Queues(sendtoClient, sendToAll, receivedFromClient)
  * used by the threads.
  * the threads are started here
@@ -14,8 +14,11 @@ import java.net.UnknownHostException;
  * it is doubtful if serverConnection needs to be a thread since
  * it does not execute any commands or listens to client etc.
  *
+ * stopNumber is the number of the sender-object saved
+ * in the ArrayList of server.connections.
+ * this enables to delete this sender-object from the list
+ * to prevent errors in the other sender threads after disconnection of this client
  */
-
 public class ServerConnection implements Runnable {
 
     private final Server server;
@@ -28,14 +31,6 @@ public class ServerConnection implements Runnable {
     private ConnectionToClientMonitor connectionToClientMonitor;
     private MessageHandlerServer messageHandlerServer;
     public boolean loggedIn;
-
-    /** stopNumber is the number of the sender-object saved
-     * in the ArrayList of server.connections.
-     * this enables to delete this sender-object from the list
-     * to prevent errors in the other sender threads after disconnection of this client
-     */
-
-
     private boolean running;
 
     public ServerConnection(Socket socket, Server server) {
@@ -52,15 +47,14 @@ public class ServerConnection implements Runnable {
     public void run() {
         System.out.println("serverConnection");
 
-        //sender thread
+        // sender thread
         sender = new SendFromServer(socket, server, sendToAll, sendToThisClient,
                 this);
-
         Thread senderThread = new Thread(sender);
         senderThread.start();
         System.out.println("thread sender name: " + senderThread.toString());
 
-        //detect connection problems thread
+        // detect connection problems thread
         connectionToClientMonitor = new ConnectionToClientMonitor(sendToThisClient,
                 this);
         Thread conMoThread = new Thread(connectionToClientMonitor);
@@ -68,25 +62,23 @@ public class ServerConnection implements Runnable {
         System.out.println("conMo thread: " + conMoThread.toString());
 
 
-        //receivefromClient thread
+        // receiveFromClient thread
         listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,
                 this, connectionToClientMonitor);
         Thread listener = new Thread(listeningToClient);
         listener.start();
         System.out.println("thread listener name: " + listener.toString());
 
-        //messageHandlerServer Thread
+        // messageHandlerServer Thread
         messageHandlerServer = new MessageHandlerServer(server,
                 this, sendToThisClient, sendToAll, receivedFromClient);
         Thread messenger = new Thread(messageHandlerServer);
         messenger.start();
-
     }
 
     public void loggedIn() {
         server.connections.add(sender);
         System.out.println(this.toString() + " logged in ");
-
         loggedIn = true;
     }
 
@@ -94,7 +86,7 @@ public class ServerConnection implements Runnable {
         return sender;
     }
 
-     synchronized public void kill() {
+    synchronized public void kill() {
         try {
              System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName() );
         } catch (UnknownHostException e) {
@@ -106,8 +98,6 @@ public class ServerConnection implements Runnable {
         this.connectionToClientMonitor.kill();
         this.sender.kill();
         this.messageHandlerServer.kill();
-
         running = false;
-
     }
 }

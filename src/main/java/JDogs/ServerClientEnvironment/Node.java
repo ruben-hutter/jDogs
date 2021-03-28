@@ -1,9 +1,8 @@
 package JDogs.ServerClientEnvironment;
 
-/***
- * this Node is used in Queue.java
+/**
+ * A helper-class for Queue
  */
-
 public class Node {
 
     String value;
