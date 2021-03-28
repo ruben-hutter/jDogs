@@ -36,17 +36,10 @@ public class KeyboardInput implements Runnable {
             } else {
                 if(console.hasNextLine()) {
                    input = console.nextLine();
-                   if (input.isEmpty() || input.isBlank()) {
-                       // do nothing if input is an empty/blank string
-                   } else {
-                       if (input.equalsIgnoreCase("quit")) {
-                           client.kill();
-                       }
-                       keyBoardInput.enqueue(input);
-                       System.out.println("from keyboard:  " + input);
-                   }
+                   keyBoardInput.enqueue(input);
+                   System.out.println("from keyboard:  " + input);
                }
-           }
+            }
         }
     }
 
