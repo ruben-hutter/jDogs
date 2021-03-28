@@ -27,37 +27,32 @@ public class KeyboardInput implements Runnable {
     public void run() {
         String input;
         while (running) {
-           if (!console.hasNextLine()) {
-
+            if (!console.hasNextLine()) {
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             } else {
-               if(console.hasNextLine()) {
+                if(console.hasNextLine()) {
                    input = console.nextLine();
-
-
                    if (input.isEmpty() || input.isBlank()) {
                        // do nothing if input is an empty/blank string
-
-
                    } else {
                        if (input.equalsIgnoreCase("quit")) {
                            client.kill();
                        }
                        keyBoardInput.enqueue(input);
                        System.out.println("from keyboard:  " + input);
-
                    }
-
                }
            }
         }
     }
 
+    /**
+     * Kills thread
+     */
     public void kill() {
         running = false;
     }
