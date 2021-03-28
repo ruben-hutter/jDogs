@@ -39,7 +39,7 @@ public class Server {
                 Thread scThread = new Thread(sc);
                 scThread.start();
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
-                System.out.println("connections size:  " + connections.size());
+                System.out.println("connections size:  " + (connections.size() + 1));
                 try {
                     Thread.sleep(30);
                 } catch (InterruptedException e) {
