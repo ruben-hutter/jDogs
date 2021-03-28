@@ -1,9 +1,9 @@
 package JDogs.ServerClientEnvironment;
 
 /**
- * this thread processes messages received meaningfully.
- * - it distinguishes between messages for server and all clients
- * - it handles the login of the client
+ * This thread processes messages received meaningfully.
+ * <li>it distinguishes between messages for server and all clients</li>
+ * <li>it handles the login of the client</li>
  */
 public class MessageHandlerServer implements Runnable {
 
@@ -23,7 +23,6 @@ public class MessageHandlerServer implements Runnable {
         this.receivedFromClient = receivedFromClient;
         this.server = server;
         this.serverConnection = serverConnection;
-
         this.running = true;
         this.loggedIn = false;
     }
@@ -32,31 +31,27 @@ public class MessageHandlerServer implements Runnable {
     public void run() {
         String text;
         nickName = null;
-        //get loggedIn
+        // get loggedIn
         sendToThisClient.enqueue("USER");
-
         while (running) {
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
-
                 // check if text is a command
                 if (text.length() >= 4 && Protocol.isACommand(text)) {
                     manageCommand(text);
                 } else {
-                    //before sending messages to others: complete login!
+                    // before sending messages to others: complete login!
                     if (loggedIn) {
                         sendToAll.enqueue(nickName + " : " + text);
                     }
                 }
             } else {
-
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
         }
         System.out.println(this.toString() + "  stops now");
     }
@@ -81,7 +76,8 @@ public class MessageHandlerServer implements Runnable {
                                 nickName = nickName + " " + number;
                                 server.allNickNames.add(nickName);
                                 server.allNickNames.remove(oldNick);
-                                sendToThisClient.enqueue("hi, user! your new name is: " + nickName);
+                                sendToThisClient.enqueue("hi, user! your new name is: "
+                                        + nickName);
                                 break;
                             } else {
                                 number++;
@@ -96,7 +92,6 @@ public class MessageHandlerServer implements Runnable {
             case "PASS":
                 // TODO give and change password Gregor: is pw necessary?
                 break;
-
             case "ACTI":
                 // TODO return a list of online usernames
                 String list = "";
@@ -139,16 +134,20 @@ public class MessageHandlerServer implements Runnable {
             case "HELP":
                 // TODO shows the user guide.
                 break;
-
-
         }
     }
 
+    /**
+     * Returns the nickName of the user
+     * @return nickName
+     */
     public String getNickName() {
         return nickName;
     }
 
-
+    /**
+     * Kills thread
+     */
     public void kill() {
         running = false;
     }

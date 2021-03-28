@@ -8,7 +8,6 @@ import java.net.Socket;
  * purpose of this thread is sending messages to client
  * and ends serverConnection if connection problems are detected
  */
-
 public class SendFromServer implements Runnable {
 
     private boolean running;
@@ -19,72 +18,67 @@ public class SendFromServer implements Runnable {
     private final Queue sendToThisClient;
     private final ServerConnection serverConnection;
 
-    public SendFromServer(Socket socket, Server server, Queue sendToAll, Queue sendToThisClient,ServerConnection serverConnection) {
+    public SendFromServer(Socket socket, Server server, Queue sendToAll, Queue sendToThisClient,
+            ServerConnection serverConnection) {
         this.socket = socket;
         this.server = server;
         this.sendToAll = sendToAll;
         this.sendToThisClient = sendToThisClient;
         this.running = true;
         this.serverConnection = serverConnection;
-
     }
 
     @Override
     public void run() {
-
         try {
             dout = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         while (running) {
-
             if (!sendToThisClient.isEmpty()) {
                 sendStringToClient(sendToThisClient.dequeue());
             }
             if (!sendToAll.isEmpty()) {
                 sendStringToAllClients(sendToAll.dequeue());
             }
-
             try {
                 Thread.sleep(30);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
-
         System.out.println(this.toString() + "  stops now...");
         try {
             dout.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
+    /**
+     * Sends a message to a specific client
+     * @param text a String message
+     */
     synchronized public void sendStringToClient(String text) {
         try {
             dout.writeUTF(text);
             dout.flush();
         } catch (IOException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
             System.err.println("ServerConnection error 1: send String to Client error....");
-            //kill this serverConnection:
+            // kill this serverConnection:
             server.connections.remove(this);
             running = false;
             serverConnection.kill();
-
-            //here: error handling needed, when Server can t be reached, program gets stuck here
-
+            // here: error handling needed, when Server can t be reached, program gets stuck here
         }
-
     }
 
-
+    /**
+     * Sends a message to all clients
+     * @param text a String message
+     */
     synchronized public void sendStringToAllClients(String text) {
         for (int index = 0; index < server.connections.size(); index++) {
             System.out.println();
@@ -93,6 +87,9 @@ public class SendFromServer implements Runnable {
         }
     }
 
+    /**
+     * Kills thread
+     */
     public void kill() {
         running = false;
     }

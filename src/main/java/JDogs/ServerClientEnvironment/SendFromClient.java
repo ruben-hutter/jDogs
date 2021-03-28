@@ -4,11 +4,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-/***
- * purpose of this thread is sending messages to server
+/**
+ * This thread is sending messages to server
  * and ends client if connection problems are detected
  */
-
 public class SendFromClient implements Runnable {
 
     private final Socket socket;
@@ -29,15 +28,13 @@ public class SendFromClient implements Runnable {
     }
 
     @Override
-     public void run() {
+    public void run() {
         try {
             this.dout = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        String reply = null;
-
+        String reply;
         while(running) {
             if (!sendQueue.isEmpty()) {
                 reply = sendQueue.dequeue();
@@ -47,14 +44,12 @@ public class SendFromClient implements Runnable {
                 reply = keyBoardInQueue.dequeue();
                 sendStringToServer(reply);
             }
-
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
         try {
             dout.close();
         } catch (IOException e) {
@@ -63,8 +58,11 @@ public class SendFromClient implements Runnable {
         System.out.println(this.toString() + " stops now");
     }
 
-     public void sendStringToServer(String text) {
-
+    /**
+     * Sends a message to the server
+     * @param text a String message
+     */
+    public void sendStringToServer(String text) {
         try {
             dout.writeUTF(text);
             dout.flush();
@@ -75,21 +73,17 @@ public class SendFromClient implements Runnable {
         }
     }
 
-
     /**
-     * this method is a first attempt to handle connection losses;
+     * First attempt to handle connection losses;
      * it should reSetUp connection to server, but is at the moment
      * disabled due to problems with threads not finishing
      * before restarting.
      * the method just kills the client at the moment.
      */
-
     public void HandlingConnectionLoss() {
-
-
         try {
             dout.close();
-            //dout = new DataOutputStream(socket.getOutputStream());
+            // dout = new DataOutputStream(socket.getOutputStream());
             System.err.println(this.toString() + " cannot reconnect OutputStream to Server");
             client.kill();
         } catch (IOException e) {
@@ -97,6 +91,9 @@ public class SendFromClient implements Runnable {
         }
     }
 
+    /**
+     * Kills thread
+     */
     public void kill() {
         running = false;
     }
