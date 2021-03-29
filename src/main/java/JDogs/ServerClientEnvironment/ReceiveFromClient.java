@@ -17,13 +17,11 @@ public class ReceiveFromClient implements Runnable {
     private Queue sendToAllClients;
     private final Queue receivedFromThisClient;
     private ServerConnection serverConnection;
-    private final ConnectionToClientMonitor connectionToClientMonitor;
 
     public ReceiveFromClient(Socket socket, Queue sendToThisClient, Queue receivedFromThisClient,
-            ServerConnection serverConnection, ConnectionToClientMonitor connectionToClientMonitor) {
+            ServerConnection serverConnection) {
         this.socket = socket;
         this.serverConnection = serverConnection;
-        this.connectionToClientMonitor = connectionToClientMonitor;
         this.running = true;
         this.receivedFromThisClient = receivedFromThisClient;
     }
@@ -52,7 +50,7 @@ public class ReceiveFromClient implements Runnable {
 
                     //heartbeat-signal
                     if (textIn.equals("pong")) {
-                        connectionToClientMonitor.message(System.currentTimeMillis());
+                        serverConnection.monitorMsg(System.currentTimeMillis());
                         //connectionToClientMonitor.sendSignal();
                     } else {
                         //write to receiver-queue
@@ -75,7 +73,6 @@ public class ReceiveFromClient implements Runnable {
      * Kills thread
      */
     public void kill() {
-        this.connectionToClientMonitor.kill();
         running = false;
     }
 }

@@ -34,10 +34,14 @@ public class Server {
             // runs as long as the server is activated
             while(running) {
                 Socket socket = serverSocket.accept();
-                ServerConnection sc = new ServerConnection(socket, this);
+                new ServerConnection(socket, this).createConnection();
+
+                /*
                 // new threads to maintain connection to the individual clients
                 Thread scThread = new Thread(sc);
                 scThread.start();
+
+                 */
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
                 System.out.println("connections size:  " + (connections.size() + 1));
                 try {

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * starts threads for sending/receiving to/from server
@@ -14,9 +17,9 @@ public class Client {
 
     private ReceiveFromServer receiveFromServer;
     private KeyboardInput keyboardInput;
-    private ConnectionToServerMonitor connectionToServerMonitor;
     private SendFromClient sendFromClient;
     private MessageHandlerClient messageHandlerClient;
+    private Monitor monitor;
     private String nickname;
 
     public static void main(String[] args) {
@@ -39,7 +42,7 @@ public class Client {
 
         Socket socket = null;
 
-        String serveraddress = "25.74.38.24";
+        String serveraddress = "localhost";
         int portnumber = 8090;
 
         /*System.out.println("IP-Adresse des Servers:");
@@ -58,14 +61,14 @@ public class Client {
             //e.printStackTrace();
         }
 
-        // 1.monitor connection to server thread
-        connectionToServerMonitor = new ConnectionToServerMonitor(this, sendQueue);
-        Thread monitorThread = new Thread(connectionToServerMonitor);
-        monitorThread.start();
+        monitor = new Monitor();
+
+        // 1.monitor connection to server thread starts every 5 seconds
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(new ConnectionToServerMonitor(this, sendQueue, monitor), 5000, 5000, TimeUnit.MILLISECONDS);
 
         // 2.receive messages from server thread
-        receiveFromServer = new ReceiveFromServer(socket,this, receiveQueue,
-                connectionToServerMonitor);
+        receiveFromServer = new ReceiveFromServer(socket,this, receiveQueue);
         Thread receiverThread = new Thread(receiveFromServer);
         receiverThread.start();
 
@@ -97,6 +100,10 @@ public class Client {
             return null;
         }
     }
+    //transmit received ping message to monitor object
+    public void monitorMsg(long time) {
+        this.monitor.receivedMsg(time);
+    }
 
     /**
      * Kills all threads.. reconnection could
@@ -105,7 +112,6 @@ public class Client {
     synchronized public void kill() {
         receiveFromServer.kill();
         sendFromClient.kill();
-        connectionToServerMonitor.kill();
         keyboardInput.kill();
         messageHandlerClient.kill();
         System.out.println("trying to reset connection to server is not activated. Shutdown Client..");

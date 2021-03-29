@@ -15,14 +15,11 @@ public class ReceiveFromServer implements Runnable {
     private final Queue receiveQueue;
     private boolean running;
     private DataInputStream din;
-    private final ConnectionToServerMonitor connectionToServerMonitor;
 
-    public ReceiveFromServer(Socket socket, Client client, Queue receiveQueue,
-                             ConnectionToServerMonitor connectionToServerMonitor) {
+    public ReceiveFromServer(Socket socket, Client client, Queue receiveQueue) {
         this.receiveQueue = receiveQueue;
         this.client = client;
         this.running = true;
-        this.connectionToServerMonitor = connectionToServerMonitor;
         try {
             this.din = new DataInputStream(socket.getInputStream());
         } catch (IOException e) {
@@ -38,7 +35,7 @@ public class ReceiveFromServer implements Runnable {
                 if (din.available() != 0) {
                     message = din.readUTF();
                     if (message.equalsIgnoreCase("ping")) {
-                        connectionToServerMonitor.message(System.currentTimeMillis());
+                        client.monitorMsg(System.currentTimeMillis());
                         //connectionToServerMonitor.sendSignal();
                     } else {
                         receiveQueue.enqueue(message);
