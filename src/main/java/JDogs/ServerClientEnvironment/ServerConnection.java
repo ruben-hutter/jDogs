@@ -69,9 +69,9 @@ public class ServerConnection {
          */
 
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new ConnectionToClientMonitor
-                        (this, sendToThisClient, monitor), 5000,5000, TimeUnit.MILLISECONDS);
-
+        scheduledExecutorService.scheduleAtFixedRate(new ConnectionToClientMonitor(
+                this, sendToThisClient, monitor),
+                5000,5000, TimeUnit.MILLISECONDS);
 
                 // receiveFromClient thread
         listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,
@@ -104,7 +104,7 @@ public class ServerConnection {
 
     synchronized public void kill() {
         try {
-             System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName() );
+             System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException e) {
              e.printStackTrace();
         }

@@ -65,7 +65,8 @@ public class Client {
 
         // 1.monitor connection to server thread starts every 5 seconds
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new ConnectionToServerMonitor(this, sendQueue, monitor), 5000, 5000, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new ConnectionToServerMonitor(this,
+                sendQueue, monitor), 5000, 5000, TimeUnit.MILLISECONDS);
 
         // 2.receive messages from server thread
         receiveFromServer = new ReceiveFromServer(socket,this, receiveQueue);
@@ -83,7 +84,8 @@ public class Client {
         keyboard.start();
 
         // 5.handle received messages meaningfully
-        messageHandlerClient = new MessageHandlerClient(this, sendFromClient,receiveQueue, sendQueue, keyBoardInQueue);
+        messageHandlerClient = new MessageHandlerClient(this, sendFromClient,receiveQueue,
+                sendQueue, keyBoardInQueue);
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
     }
