@@ -17,8 +17,8 @@ public class MessageHandlerServer implements Runnable {
     private boolean loggedIn;
     private final Server server;
     private final ServerConnection serverConnection;
-    private ServerGameCommand gameCommand;
-    private ServerMenuCommand menuCommand;
+    private ServerGameCommand serverGameCommand;
+    private ServerMenuCommand serverMenuCommand;
     private String nickName;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
@@ -30,8 +30,8 @@ public class MessageHandlerServer implements Runnable {
         this.serverConnection = serverConnection;
         this.running = true;
         this.loggedIn = false;
-        this.menuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient);
-        this.gameCommand = new ServerGameCommand();
+        this.serverMenuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient);
+        this.serverGameCommand = new ServerGameCommand();
     }
 
     @Override
@@ -43,23 +43,27 @@ public class MessageHandlerServer implements Runnable {
 
         //while()-loop always running
         while (running) {
+            nickName = "< " + getNickName() + " >";
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
                 // check if text is a GameCommand
                 if (text.length() >= 4 && ServerGameProtocol.isACommand(text.substring(0,4))) {
-                    gameCommand.execute(text);
-                }
-                // check if text is a MenuCommand
-                if (text.length() >= 4 && ServerMenuProtocol.isACommand(text)) {
-                    menuCommand.execute(text);
+                    serverGameCommand.execute(text);
+                } else {
+                    // check if text is a MenuCommand
+                    if (text.length() >= 4 && ServerMenuProtocol.isACommand(text)) {
+                           serverMenuCommand.execute(text);
+                    } else {
+                        // before sending messages to others: complete login!
+                        System.out.println("received " + text + "  login:  " + loggedIn);
+                        if (serverMenuCommand.isLoggedIn()) {
+                            sendToAll.enqueue(nickName + " : " + text);
+                        }
+                    }
+
                 }
 
-                else {
-                    // before sending messages to others: complete login!
-                    if (loggedIn) {
-                        sendToAll.enqueue(nickName + " : " + text);
-                    }
-                }
+
             } else {
                 try {
                     Thread.sleep(20);
@@ -71,95 +75,13 @@ public class MessageHandlerServer implements Runnable {
         System.out.println(this.toString() + "  stops now");
     }
 
-    public void manageCommand(String text) {
-        /*String command = text.substring(0,4);
-        switch (command) {
-            case "USER":
-                if (text.length() < 6) {
-                    sendToThisClient.enqueue("No username entered");
-                } else {
-                    String oldNick = nickName;
-                    nickName = text.substring(5);
-                    if (server.isValidNickName(nickName)) {
-                        server.allNickNames.add(nickName);
-                        server.allNickNames.remove(oldNick);
-                        sendToThisClient.enqueue("hi, user! your new nickname is: " + nickName);
-                    } else {
-                        int number = 2;
-                        while (true) {
-                            if(server.isValidNickName(nickName + " " + number)) {
-                                nickName = nickName + " " + number;
-                                server.allNickNames.add(nickName);
-                                server.allNickNames.remove(oldNick);
-                                sendToThisClient.enqueue("hi, user! your new name is: "
-                                        + nickName);
-                                break;
-                            } else {
-                                number++;
-                            }
-                        }
-                    }
-                    System.out.println("login worked");
-                    if(!loggedIn) {serverConnection.loggedIn();}
-                    loggedIn = true;
-                }
-                break;
-            case "PASS":
-                // TODO give and change password Gregor: is pw necessary?
-                break;
-            case "ACTI":
-                // TODO return a list of online usernames
-                String list = "";
-                for (int i = 0; i < server.allNickNames.size(); i++) {
-                    list += "player # " + i;
-                    list += server.allNickNames.get(i);
-                    list += "";
-                }
-                sendToThisClient.enqueue(list);
-                break;
-            case "QUIT":
-                sendToThisClient.enqueue("logout now");
-                serverConnection.kill();
-                break;
-            case "EXIT":
-                // TODO leave game session
-                break;
-            case "MOVE":
-                // TODO move marble in game
-                break;
-            case "STAT":
-                // TODO sync game stats
-                break;
-            case "MODE":
-                // TODO chose a game mode
-                break;
-            case "WCHT":
-                // TODO chose a partner whom to send the message
-                sendToThisClient.enqueue("whisperChat is not implemented");
-                break;
-            case "PCHT":
-                // TODO send message to all active clients
-                break;
-            case "STAR":
-                // TODO confirm you wanna start the game
-                break;
-            case "CTTP":
-                // TODO switch selected card with partner
-                break;
-            case "HELP":
-                // TODO shows the user guide.
-                break;
-        }
-
-         */
-    }
 
     /**
      * Returns the nickName of the user
      * @return nickName
      */
     public String getNickName() {
-        return menuCommand.getNickName();
+        return serverMenuCommand.getNickName();
     }
 
     /**
