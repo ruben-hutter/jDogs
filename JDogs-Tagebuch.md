@@ -121,7 +121,7 @@ Die Schwierigkeit, auf die ich bei diesem Prozess gestoßen bin, war, dass, obwo
 
 ### Protokoll#05 - Protokoll
 
-An der heutigen Sitzung besprachen wir kurz das Qualitätssicherungskonzept. Danach machten wir uns gemeinsam Gedanken, wie wir das Protokoll genau implementieren und verwenden können. Bis morgen recherchieren wir nach möglichen Lösungen. Es war uns nicht ganz klar, wo wir die Befehle des Protokolls behandeln sollen, im Enum, wo auch die Protokollbefehle definiert sind, oder im MessageHandler. 
+An der heutigen Sitzung besprachen wir kurz das Qualitätssicherungskonzept. Danach machten wir uns gemeinsam Gedanken, wie wir das Protokoll genau implementieren und verwenden können. Bis morgen recherchieren wir nach möglichen Lösungen. Es war uns nicht ganz klar, wo wir die Befehle des Protokolls behandeln sollen, im Enum, wo auch die Protokollbefehle definiert sind, oder im MessageHandler.
 
 **Nächstes Treffen:** Samstag, 27.03.2021, 17 Uhr
 
@@ -131,11 +131,11 @@ An der heutigen Sitzung besprachen wir kurz das Qualitätssicherungskonzept. Dan
 
 ### Protokoll#06 - Protokoll
 
-Bei unserem heutigen Treffen einigten wir uns darauf, dass die Behandlung der Protokollbefehle im jeweiligen MessageHandler vonstatten gehen sollte und nicht in Protocol.java. Danach gingen wir die Achievements für Milestone 2 durch. Dabei stellten uns Emoijs im Chat vor einige Probleme. Zwischen Linux und Mac konnten Sonderzeichen und Emoijs problemlos versendet werden, bei Windows wurden hingegen diese Zeichen nicht korrekt dargestellt. Wir versuchten, das Problem zu beheben. Während des Testens wurden wir auf zwei weitere Fehler aufmerksam, die während der Zoom-Sitzung behoben wurden. 
+Bei unserem heutigen Treffen einigten wir uns darauf, dass die Behandlung der Protokollbefehle im jeweiligen MessageHandler vonstatten gehen sollte und nicht in Protocol.java. Danach gingen wir die Achievements für Milestone 2 durch. Dabei stellten uns Emoijs im Chat vor einige Probleme. Zwischen Linux und Mac konnten Sonderzeichen und Emoijs problemlos versendet werden, bei Windows wurden hingegen diese Zeichen nicht korrekt dargestellt. Wir versuchten, das Problem zu beheben. Während des Testens wurden wir auf zwei weitere Fehler aufmerksam, die während der Zoom-Sitzung behoben wurden.
 >1. Wenn ein Client seinen Namen ändert, zählt der Server dies als eine neue Verbindung
->2. Wenn ein Client seinen Namen ändert, wird der neue Name zur Liste der aktiven User hinzugefügt. 
+>2. Wenn ein Client seinen Namen ändert, wird der neue Name zur Liste der aktiven User hinzugefügt.
 
-Wir sprachen noch über AWT, SWING und JavaFX, die in der Vorlesung zu GUI vorgestellt wurden, und entschieden uns, JavaFX zu verwenden. 
+Wir sprachen noch über AWT, SWING und JavaFX, die in der Vorlesung zu GUI vorgestellt wurden, und entschieden uns, JavaFX zu verwenden.
 
 ---
 
@@ -172,5 +172,19 @@ Ausblick
 Alle Nachrichten von Server zu Client bzw. von Client zu Server gehen durch dieselbe Verbindung.
 Da sind Spielbefehle, Nicht-Spielbefehle, öffentliche Chat-Nachrichten, private Chat-Nachrichten, Falsch-Nachrichten und Ping-Pong-Signale. Und nach Ankunft muss für eine schnelle Verteilung gesorgt werden, um Verzögerungen zu minimieren.
 Der nächste Schritt, den wir nun angehen müssen ist, liegt genau da: wir müssen für die richtige Verteilung der Nachrichten sorgen. Und wir benötigen eine kluge Struktur, um die Befehle, die die Nachrichten nach sich ziehen, auszuführen.
+
+---
+
+*30.März.2021 19:00, Gregor*
+
+### Protokoll#07 - Protokoll
+
+Thema war zuerst kurz einige Veränderungen, die ich hochlud und danach sprachen wir über Meilenstein 3.
+Der grösste Brocken ist unserer Ansicht nach die GameLogic. Dort müssen wir viel Zeit investieren. Deshalb ist es wichtig, andere kleinere Sachen schnell fertig zu bringen und zugleich schon mit der GameLogic zu beginnen.
+Als wichtige kleinere Sachen wären die Qualitätssicherung sowie das GUI und der Whisper-Chat zu nennen.
+
+Heute ging es darum, die Aufgaben zu verteilen und einen ersten Überblick über die GameLogic zu gewinnen. Die GameLogic sollte Brett, Karten, Spielfiguren und eine Klasse o.ä., die die Veränderungen berechnet und überprüft. Momentan möchten wir die Zustände in den Spielfiguren speichern. Wir werden sehen, ob das der richtige Weg ist.
+
+Bis zum nächsten Treffen wird sich Ruben um die GameLogic kümmern, Johanna schaut sich die Konzepte zur Qualitätssicherung(JUnit-Test, Mockito..) an, um herauszufinden, wie wir sie benutzen können, Gregor kümmert sich um den WhisperChat und die GUI.
 
 ---
