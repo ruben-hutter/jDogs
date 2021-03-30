@@ -34,8 +34,11 @@ public class MessageHandlerClient implements Runnable{
         while (running) {
             if (!receiveQueue.isEmpty()) {
                 reply = receiveQueue.dequeue();
-                if (reply.length() >= 4 && Protocol.isACommand(reply)) {
+                if (reply.length() >= 4 //&& Protocol.isACommand(reply)
+                        ){
                     messageHandling(reply);
+
+
                 } else {
                 System.out.println("from server " + reply);
                 }

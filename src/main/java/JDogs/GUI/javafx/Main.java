@@ -1,4 +1,4 @@
-package utils.JDogs.GUI.javafx;
+package JDogs.GUI.javafx;
 
 import javafx.application.Application;
 
