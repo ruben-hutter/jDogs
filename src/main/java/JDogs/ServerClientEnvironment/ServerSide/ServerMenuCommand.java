@@ -2,6 +2,13 @@ package JDogs.ServerClientEnvironment.ServerSide;
 
 import JDogs.ServerClientEnvironment.QueueJD;
 
+/**
+ * ServerMenuCommand contains the menu/lobby
+ * commands which are sent from the clients to
+ * communicate with the server.
+ *
+ */
+
 public class ServerMenuCommand {
     private Server server;
     private ServerConnection serverConnection;

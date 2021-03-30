@@ -1,5 +1,13 @@
 package JDogs.ServerClientEnvironment.ServerSide;
 
+/**
+ * ServerGameCommand contains the game
+ * commands which are sent from the
+ * clients to communicate with the
+ * server.
+ *
+ */
+
 public class ServerGameCommand {
 
     public ServerGameCommand() {

@@ -2,7 +2,15 @@ package JDogs.ServerClientEnvironment.ClientSide;
 
 import JDogs.ServerClientEnvironment.QueueJD;
 
+/**
+ * ClientMenuCommand contains the menu/lobby
+ * commands which are sent from the server to
+ * communicate with the client.
+ *
+ */
+
 public class ClientMenuCommand {
+
     private Client client;
     private SendFromClient sendFromClient;
     private QueueJD sendQueue;

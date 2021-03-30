@@ -1,7 +1,7 @@
 package JDogs.ServerClientEnvironment;
 
 /**
- * A helper-class for Queue
+ * A helper-class for QueueJD
  */
 public class Node {
 

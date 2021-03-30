@@ -2,6 +2,15 @@ package JDogs.ServerClientEnvironment;
 
 public class MonitorCS {
 
+    /**
+     * this class is used to store the last
+     * received ping/pong message and the method connectionCheck is
+     * given to the ConnectionToClientMonitor/
+     * ConnectionToServerMonitor to check the
+     * connection and to eventually
+     * shutdown the connection
+     */
+
     long newTime;
 
     public MonitorCS() {
