@@ -1,10 +1,9 @@
-package JDogs.ServerClientEnvironment;
+package JDogs.ServerClientEnvironment.ServerSide;
 
 public class GameCommand {
 
     public GameCommand() {
-
-        //or static?
+        // TODO
 
     }
 
@@ -12,7 +11,8 @@ public class GameCommand {
         String command = text.substring(0,4);
 
         switch(command) {
-
+            case "QUIT":
+                // TODO stop ServerConnection and Client
             case "EXIT":
                 // TODO startExit();
                 //finish game
@@ -20,7 +20,6 @@ public class GameCommand {
             case "MOVE":
                 // TODO startMove()
                 // Server: give it to GameEngine if move is according to the rules
-
                 break;
 
             case "CTTP":

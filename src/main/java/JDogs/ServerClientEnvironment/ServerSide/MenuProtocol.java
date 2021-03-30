@@ -1,4 +1,4 @@
-package JDogs.ServerClientEnvironment;
+package JDogs.ServerClientEnvironment.ServerSide;
 
 //this protocol is an enum for all menu and lobby commands
 

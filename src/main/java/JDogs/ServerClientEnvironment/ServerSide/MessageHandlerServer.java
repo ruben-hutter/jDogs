@@ -7,6 +7,7 @@ import JDogs.ServerClientEnvironment.QueueJD;
  * <li>it distinguishes between messages for server and all clients</li>
  * <li>it handles the login of the client</li>
  */
+
 public class MessageHandlerServer implements Runnable {
 
     private final QueueJD sendToAll;
@@ -16,6 +17,8 @@ public class MessageHandlerServer implements Runnable {
     private boolean loggedIn;
     private final Server server;
     private final ServerConnection serverConnection;
+    private GameCommand gameCommand;
+    private MenuCommand menuCommand;
     private String nickName;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
@@ -27,21 +30,31 @@ public class MessageHandlerServer implements Runnable {
         this.serverConnection = serverConnection;
         this.running = true;
         this.loggedIn = false;
+        this.menuCommand = new MenuCommand(server, serverConnection,this,sendToThisClient);
+        this.gameCommand = new GameCommand();
     }
 
     @Override
     public void run() {
         String text;
-        nickName = null;
+
         // get loggedIn
         sendToThisClient.enqueue("USER");
+
+        //while()-loop always running
         while (running) {
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
-                // check if text is a command
-                if (text.length() >= 4 && Protocol.isACommand(text)) {
-                    manageCommand(text);
-                } else {
+                // check if text is a GameCommand
+                if (text.length() >= 4 && GameProtocol.isACommand(text.substring(0,4))) {
+                    gameCommand.execute(text);
+                }
+                // check if text is a MenuCommand
+                if (text.length() >= 4 && MenuProtocol.isACommand(text)) {
+                    menuCommand.execute(text);
+                }
+
+                else {
                     // before sending messages to others: complete login!
                     if (loggedIn) {
                         sendToAll.enqueue(nickName + " : " + text);
@@ -59,7 +72,7 @@ public class MessageHandlerServer implements Runnable {
     }
 
     public void manageCommand(String text) {
-        String command = text.substring(0,4);
+        /*String command = text.substring(0,4);
         switch (command) {
             case "USER":
                 if (text.length() < 6) {
@@ -137,6 +150,8 @@ public class MessageHandlerServer implements Runnable {
                 // TODO shows the user guide.
                 break;
         }
+
+         */
     }
 
     /**
@@ -144,7 +159,7 @@ public class MessageHandlerServer implements Runnable {
      * @return nickName
      */
     public String getNickName() {
-        return nickName;
+        return menuCommand.getNickName();
     }
 
     /**

@@ -1,4 +1,4 @@
-package JDogs.ServerClientEnvironment;
+package JDogs.ServerClientEnvironment.ServerSide;
 
 //this is an enum for all game commands
 public enum GameProtocol {
