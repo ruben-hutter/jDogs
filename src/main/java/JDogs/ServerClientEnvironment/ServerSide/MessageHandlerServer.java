@@ -17,8 +17,8 @@ public class MessageHandlerServer implements Runnable {
     private boolean loggedIn;
     private final Server server;
     private final ServerConnection serverConnection;
-    private GameCommand gameCommand;
-    private MenuCommand menuCommand;
+    private ServerGameCommand gameCommand;
+    private ServerMenuCommand menuCommand;
     private String nickName;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
@@ -30,8 +30,8 @@ public class MessageHandlerServer implements Runnable {
         this.serverConnection = serverConnection;
         this.running = true;
         this.loggedIn = false;
-        this.menuCommand = new MenuCommand(server, serverConnection,this,sendToThisClient);
-        this.gameCommand = new GameCommand();
+        this.menuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient);
+        this.gameCommand = new ServerGameCommand();
     }
 
     @Override
@@ -46,11 +46,11 @@ public class MessageHandlerServer implements Runnable {
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
                 // check if text is a GameCommand
-                if (text.length() >= 4 && GameProtocol.isACommand(text.substring(0,4))) {
+                if (text.length() >= 4 && ServerGameProtocol.isACommand(text.substring(0,4))) {
                     gameCommand.execute(text);
                 }
                 // check if text is a MenuCommand
-                if (text.length() >= 4 && MenuProtocol.isACommand(text)) {
+                if (text.length() >= 4 && ServerMenuProtocol.isACommand(text)) {
                     menuCommand.execute(text);
                 }
 

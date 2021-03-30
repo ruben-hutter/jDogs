@@ -62,20 +62,12 @@ public class ServerConnection {
         System.out.println("thread sender name: " + senderThread.toString());
 
         // detect connection problems thread
-        /*connectionToClientMonitor = new OldConnectionToClientMonitor(sendToThisClient,
-                this);
-        Thread conMoThread = new Thread(connectionToClientMonitor);
-        conMoThread.start();
-        System.out.println("conMo thread: " + conMoThread.toString());
-
-         */
-
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(new ConnectionToClientMonitor
                         (this, sendToThisClient, monitorCS), 5000,5000, TimeUnit.MILLISECONDS);
 
 
-                // receiveFromClient thread
+        // receiveFromClient thread
         listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,
                 this);
         Thread listener = new Thread(listeningToClient);

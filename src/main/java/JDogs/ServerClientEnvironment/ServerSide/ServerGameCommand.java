@@ -1,8 +1,8 @@
 package JDogs.ServerClientEnvironment.ServerSide;
 
-public class GameCommand {
+public class ServerGameCommand {
 
-    public GameCommand() {
+    public ServerGameCommand() {
         // TODO
 
     }

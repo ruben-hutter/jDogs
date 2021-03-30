@@ -3,10 +3,12 @@ package JDogs.GUI.javafx;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -35,6 +37,12 @@ public class GUI extends Application {
         window = stage;
 
         // scene1
+
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10,10,10,10));
+        grid.setVgap(8);
+        grid.setHgap(10);
+
 
         Label label1 = new Label("Welcome to JDogs. Please LogIn.");
         Button button1 = new Button("alright, log me in!");

@@ -17,6 +17,8 @@ public class MessageHandlerClient implements Runnable{
     private final QueueJD keyBoardInQueue;
     private final Client client;
     private final SendFromClient sendFromClient;
+    private ClientMenuCommand clientMenuCommand;
+    private ClientGameCommand clientGameCommand;
 
     public MessageHandlerClient(Client client, SendFromClient sendFromClient, QueueJD receiveQueue,
             QueueJD sendQueue, QueueJD keyBoardInQueue) {
@@ -26,6 +28,9 @@ public class MessageHandlerClient implements Runnable{
         this.keyBoardInQueue = keyBoardInQueue;
         this.sendFromClient = sendFromClient;
         this.client = client;
+        this.clientMenuCommand = new ClientMenuCommand(client,sendFromClient,sendQueue,keyBoardInQueue);
+        this.clientGameCommand = new ClientGameCommand();
+
     }
 
     @Override
@@ -34,14 +39,18 @@ public class MessageHandlerClient implements Runnable{
         while (running) {
             if (!receiveQueue.isEmpty()) {
                 reply = receiveQueue.dequeue();
-                if (reply.length() >= 4 //&& Protocol.isACommand(reply)
-                        ){
-                    messageHandling(reply);
 
-
+                if (reply.length() >= 4 && ClientMenuProtocol.isACommand(reply.substring(0,4))) {
+                    clientMenuCommand.execute(reply);
                 } else {
-                System.out.println("from server " + reply);
+                    if (reply.length() >= 4 && ClientGameProtocol
+                            .isACommand(reply.substring(0, 4))) {
+                        clientMenuCommand.execute(reply);
+                    } else {
+                        System.out.println("from server " + reply);
+                    }
                 }
+
             } else {
                 try {
                     Thread.sleep(100);
@@ -52,34 +61,6 @@ public class MessageHandlerClient implements Runnable{
         }
 
         System.out.println(this.toString() + " stops now");
-    }
-
-    public void messageHandling(String reply) {
-        String command = reply.substring(0,4);
-        switch (command) {
-            case "USER":
-                String name;
-                System.out.println("server wants a nickname from you. Your default nickname "
-                        + client.getHostName()
-                        + " will be sent; accept by 'Y' or enter other name now");
-                while (keyBoardInQueue.isEmpty()) {
-                    // do nothing
-                    // for later: wake up, if keyboardInput is not empty anymore
-                    // or handle with commands
-                }
-                name = keyBoardInQueue.dequeue();
-                if (name.equalsIgnoreCase("y")) {
-                    sendQueue.enqueue("USER " + client.getHostName());
-                } else {
-                    sendQueue.enqueue("USER " + name);
-                }
-                // allow sending messages from keyboard to server
-                sendFromClient.keyBoardInBlocked = false;
-                break;
-            default:
-                System.out.println("received from server " + reply + ". This command " + command
-                        + " is not implemented");
-        }
     }
 
     /**

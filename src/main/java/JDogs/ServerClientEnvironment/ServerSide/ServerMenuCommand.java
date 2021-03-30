@@ -2,14 +2,14 @@ package JDogs.ServerClientEnvironment.ServerSide;
 
 import JDogs.ServerClientEnvironment.QueueJD;
 
-public class MenuCommand {
+public class ServerMenuCommand {
     private Server server;
     private ServerConnection serverConnection;
     private MessageHandlerServer messageHandlerServer;
     private QueueJD sendToThisClient;
     private boolean loggedIn;
     private String nickName;
-    public MenuCommand(Server server, ServerConnection serverConnection,
+    public ServerMenuCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, QueueJD sendToThisClient) {
         this.server = server;
         this.serverConnection = serverConnection;
@@ -19,7 +19,7 @@ public class MenuCommand {
         this.nickName = null;
     }
 
-    public void execute(String text) {
+    public void execute (String text) {
         //execute commands
         String command = text.substring(0,4);
         switch (command) {

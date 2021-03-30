@@ -1,23 +1,24 @@
 package JDogs.ServerClientEnvironment.ServerSide;
 
-//this protocol is an enum for all menu and lobby commands
+//this is an enum for all game commands
+public enum ServerGameProtocol {
 
-public enum MenuProtocol {
 
-    USER,
-    ACTI,
-    QUIT,
+
+    EXIT,
     PLAY,
-    STAT,
-    MODE,
-    WCHT,
-    STAR;
-    //HELP;
+    MOVE,
+    CTTP,
+    CARD,
+    HOME,
+    VICT,
+    TURN,
+    ANEW;
 
 
 
 public static boolean isACommand(String text) {
-    for (MenuProtocol command : MenuProtocol.values()) {
+    for (ServerGameProtocol command : ServerGameProtocol.values()) {
         if (command.toString().equals(text.substring(0, 4))) {
             return true;
         }
