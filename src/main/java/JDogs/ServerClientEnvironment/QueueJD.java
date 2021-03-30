@@ -6,12 +6,12 @@ import java.util.NoSuchElementException;
  * This Queue is used to store messages from one thread and collect and process them by another thread
  * synchronized methods to prevent conflicts betwixt threads
  */
-public class Queue {
+public class QueueJD {
 
     Node head;
     Node tail;
 
-    public Queue() {
+    public QueueJD() {
         this.head = null;
         this.tail = null;
     }

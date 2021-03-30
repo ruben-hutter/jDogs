@@ -1,10 +1,10 @@
 package JDogs.ServerClientEnvironment;
 
-public class Monitor {
+public class MonitorCS {
 
     long newTime;
 
-    Monitor() {
+    public MonitorCS() {
         this.newTime = System.currentTimeMillis();
     }
 
@@ -14,7 +14,7 @@ public class Monitor {
 
     }
     //return if last ping/pong received under 10 s;
-    boolean connectionCheck() {
+    public boolean connectionCheck() {
 
         if (System.currentTimeMillis() - this.newTime >= 10000) {
             return false;
