@@ -8,15 +8,42 @@ package JDogs.ServerClientEnvironment.ServerSide;
 public enum ServerGameProtocol {
 
 
-
+    /**
+     * Command to leave the current game and return to the lobby.
+     */
     EXIT,
+    /**
+     * Command to choose the game mode: Number of players, composition of the team, design of the board.
+     */
     PLAY,
+    /**
+     * Command to make a move.
+     * Parameters are: cardvalue, startposition, goalposition.
+     */
     MOVE,
+    /**
+     * Command to give a card to a player.
+     */
     CTTP,
+    /**
+     * Command to deal cards to the players and tell them the number of the following round.
+     */
     CARD,
+    /**
+     * Command to tell that a marble is sent home.
+     */
     HOME,
+    /**
+     * Command to announce victory.
+     */
     VICT,
+    /**
+     * Command to inform which player can now play.
+     */
     TURN,
+    /**
+     * Command to provide information to actualize the whole board.
+     */
     ANEW;
 
 
