@@ -9,6 +9,7 @@ public enum ServerMenuProtocol {
     USER,
     ACTI,
     SESS,
+    PCHT,
     WCHT,
     STAT,
     QUIT,

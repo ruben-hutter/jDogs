@@ -14,6 +14,7 @@ public enum ClientMenuProtocol {
     PLAY,
     STAT,
     MODE,
+    PCHT,
     WCHT,
     STAR,
     SESS,

@@ -2,6 +2,9 @@ package JDogs.GUI.javafx;
 
 import javafx.application.Application;
 
+/**
+ * this starts at the moment the client
+ */
 public class Main {
 
     /**
@@ -9,6 +12,7 @@ public class Main {
      * The reason this class exists is documented in {@link GUI#main(String[])}
      */
     public static void main(String[] args) {
-        Application.launch(GUI.class, args);
+
+        Application.launch(ChatGui.class, args);
     }
 }

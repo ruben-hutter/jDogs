@@ -1,5 +1,6 @@
 package JDogs.ServerClientEnvironment.ClientSide;
 
+import JDogs.GUI.javafx.ChatGui;
 import JDogs.ServerClientEnvironment.QueueJD;
 
 /**
@@ -15,14 +16,16 @@ public class ClientMenuCommand {
     private SendFromClient sendFromClient;
     private QueueJD sendQueue;
     private QueueJD keyBoardInQueue;
+    private ChatGui chatGui;
 
-    ClientMenuCommand(Client client, SendFromClient sendFromClient, QueueJD sendQueue, QueueJD keyBoardInQueue) {
+    ClientMenuCommand(Client client,ChatGui chatGui, SendFromClient sendFromClient, QueueJD sendQueue, QueueJD keyBoardInQueue) {
 
         this.client = client;
         this.sendQueue = sendQueue;
         this.sendFromClient = sendFromClient;
         this.sendQueue = sendQueue;
         this.keyBoardInQueue = keyBoardInQueue;
+        this.chatGui = chatGui;
 
     }
 
@@ -49,6 +52,10 @@ public class ClientMenuCommand {
                 }
                 // allow sending messages from keyboard to server
                 sendFromClient.keyBoardInBlocked = false;
+                break;
+
+            case "PCHT":
+                chatGui.displayMessage(text.substring(4));
                 break;
             default:
                 System.out.println("received from server " + text + ". This command " + command

@@ -1,5 +1,6 @@
 package JDogs.ServerClientEnvironment.ClientSide;
 
+import JDogs.GUI.javafx.ChatGui;
 import JDogs.ServerClientEnvironment.QueueJD;
 
 /**
@@ -19,8 +20,9 @@ public class MessageHandlerClient implements Runnable{
     private final SendFromClient sendFromClient;
     private ClientMenuCommand clientMenuCommand;
     private ClientGameCommand clientGameCommand;
+    private ChatGui chatGui;
 
-    public MessageHandlerClient(Client client, SendFromClient sendFromClient, QueueJD receiveQueue,
+    public MessageHandlerClient(Client client,ChatGui chatGui, SendFromClient sendFromClient, QueueJD receiveQueue,
             QueueJD sendQueue, QueueJD keyBoardInQueue) {
         this.running = true;
         this.receiveQueue = receiveQueue;
@@ -28,7 +30,8 @@ public class MessageHandlerClient implements Runnable{
         this.keyBoardInQueue = keyBoardInQueue;
         this.sendFromClient = sendFromClient;
         this.client = client;
-        this.clientMenuCommand = new ClientMenuCommand(client,sendFromClient,sendQueue,keyBoardInQueue);
+        this.chatGui = chatGui;
+        this.clientMenuCommand = new ClientMenuCommand(client, chatGui, sendFromClient,sendQueue,keyBoardInQueue);
         this.clientGameCommand = new ClientGameCommand();
 
     }
@@ -39,8 +42,9 @@ public class MessageHandlerClient implements Runnable{
         while (running) {
             if (!receiveQueue.isEmpty()) {
                 reply = receiveQueue.dequeue();
-
+                System.out.println("before: " + reply.substring(0,4));
                 if (reply.length() >= 4 && ClientMenuProtocol.isACommand(reply.substring(0,4))) {
+                    System.out.println("MENU COMMAND " + reply.substring(0,4));
                     clientMenuCommand.execute(reply);
                 } else {
                     if (reply.length() >= 4 && ClientGameProtocol

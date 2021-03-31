@@ -1,5 +1,6 @@
 package JDogs.ServerClientEnvironment.ClientSide;
 
+import JDogs.GUI.javafx.ChatGui;
 import JDogs.ServerClientEnvironment.MonitorCS;
 import JDogs.ServerClientEnvironment.QueueJD;
 import java.io.IOException;
@@ -23,12 +24,13 @@ public class Client {
     private MessageHandlerClient messageHandlerClient;
     private MonitorCS monitorCS;
     private String nickname;
+    private QueueJD receiveQueue;
+    private QueueJD sendQueue;
+    private QueueJD keyBoardInQueue;
+    private ChatGui chatGui;
 
-    public static void main(String[] args) {
-        new Client();
-    }
-
-    public Client() {
+    public Client(ChatGui chatGui) {
+        this.chatGui = chatGui;
         setUp();
     }
 
@@ -38,9 +40,9 @@ public class Client {
      * 5 threads to handle connection are started
      */
     public void setUp() {
-        QueueJD receiveQueue = new QueueJD();
-        QueueJD sendQueue = new QueueJD();
-        QueueJD keyBoardInQueue = new QueueJD();
+        this.receiveQueue = new QueueJD();
+        this.sendQueue = new QueueJD();
+        this.keyBoardInQueue = new QueueJD();
 
         Socket socket = null;
 
@@ -85,9 +87,12 @@ public class Client {
         keyboard.start();
 
         // 5.handle received messages meaningfully
-        messageHandlerClient = new MessageHandlerClient(this, sendFromClient,receiveQueue, sendQueue, keyBoardInQueue);
+        messageHandlerClient = new MessageHandlerClient(this,chatGui, sendFromClient,receiveQueue, sendQueue, keyBoardInQueue);
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
+    }
+    public void sendMessageToServer(String message) {
+        keyBoardInQueue.enqueue(message);
     }
 
     /**

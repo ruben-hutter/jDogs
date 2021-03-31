@@ -81,7 +81,7 @@ public class ServerConnection {
         messenger.start();
     }
 
-    public void loggedIn() {
+    public void getLoggedIn() {
         server.connections.add(sender);
         System.out.println(this.toString() + " logged in ");
         loggedIn = true;

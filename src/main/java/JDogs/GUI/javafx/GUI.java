@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * This is an example JavaFX-Application.
+ * This class is a mess, Gregor will clean up soon
  */
 public class GUI extends Application {
     Stage window;

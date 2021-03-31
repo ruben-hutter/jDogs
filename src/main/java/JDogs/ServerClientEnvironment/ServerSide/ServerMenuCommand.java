@@ -14,14 +14,17 @@ public class ServerMenuCommand {
     private ServerConnection serverConnection;
     private MessageHandlerServer messageHandlerServer;
     private QueueJD sendToThisClient;
+    private QueueJD sendToAll;
     private boolean loggedIn;
     private String nickName;
+
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
-            MessageHandlerServer messageHandlerServer, QueueJD sendToThisClient) {
+            MessageHandlerServer messageHandlerServer, QueueJD sendToThisClient, QueueJD sendToAll) {
         this.server = server;
         this.serverConnection = serverConnection;
         this.messageHandlerServer = messageHandlerServer;
         this.sendToThisClient = sendToThisClient;
+        this.sendToAll = sendToAll;
         this.loggedIn = false;
         this.nickName = null;
     }
@@ -61,7 +64,15 @@ public class ServerMenuCommand {
                         }
                     }
                     System.out.println("login worked");
-                    if(!loggedIn) {serverConnection.loggedIn();}
+                    if (!loggedIn) {
+                        /*
+                        is needed to import the SendFromServer to the list
+                        which is to send public chat messages to all
+                         */
+                        serverConnection.getLoggedIn();
+                    }
+                    nickName = "< " + nickName + " > ";
+
                     loggedIn = true;
                 }
                 break;
@@ -69,7 +80,7 @@ public class ServerMenuCommand {
             case "ACTI":
                 String list = "";
                 for (int i = 0; i < server.allNickNames.size(); i++) {
-                    list += "player # " + i;
+                    list += "player # " + i + "\n";
                     list += server.allNickNames.get(i);
                     list += "";
                 }
@@ -96,6 +107,10 @@ public class ServerMenuCommand {
 
             case "PCHT":
                 // TODO send message to all active clients
+                //PCHT is now necessary for MessageHandlerClients
+                if(loggedIn) {
+                    sendToAll.enqueue("PCHT " + nickName + text.substring(4));
+                }
                 break;
 
             case "STAR":

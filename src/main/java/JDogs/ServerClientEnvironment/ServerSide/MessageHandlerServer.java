@@ -30,7 +30,7 @@ public class MessageHandlerServer implements Runnable {
         this.serverConnection = serverConnection;
         this.running = true;
         this.loggedIn = false;
-        this.serverMenuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient);
+        this.serverMenuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient, sendToAll);
         this.serverGameCommand = new ServerGameCommand();
     }
 
@@ -43,7 +43,6 @@ public class MessageHandlerServer implements Runnable {
 
         //while()-loop always running
         while (running) {
-            nickName = "< " + getNickName() + " >";
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
                 // check if text is a GameCommand
@@ -51,19 +50,13 @@ public class MessageHandlerServer implements Runnable {
                     serverGameCommand.execute(text);
                 } else {
                     // check if text is a MenuCommand
+
                     if (text.length() >= 4 && ServerMenuProtocol.isACommand(text)) {
-                           serverMenuCommand.execute(text);
+                        serverMenuCommand.execute(text);
                     } else {
-                        // before sending messages to others: complete login!
-                        System.out.println("received " + text + "  login:  " + loggedIn);
-                        if (serverMenuCommand.isLoggedIn()) {
-                            sendToAll.enqueue(nickName + " : " + text);
-                        }
+                        System.err.println("message did not match menu or game protocol:  " + text);
                     }
-
                 }
-
-
             } else {
                 try {
                     Thread.sleep(20);
@@ -75,6 +68,9 @@ public class MessageHandlerServer implements Runnable {
         System.out.println(this.toString() + "  stops now");
     }
 
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
 
     /**
      * Returns the nickName of the user
