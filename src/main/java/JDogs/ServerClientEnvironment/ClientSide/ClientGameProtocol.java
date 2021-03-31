@@ -8,12 +8,30 @@ package JDogs.ServerClientEnvironment.ClientSide;
  */
 public enum ClientGameProtocol {
 
-
+    /**
+     * Command to start a new game.
+     */
     PLAY,
+    /**
+     * Command to leave the current game and return to the lobby.
+     */
     EXIT,
+    /**
+     * Command to make a move.
+     * Parameters are: cardvalue, startposition, goalposition.
+     */
     MOVE,
+    /**
+     * Command to give a card to a player.
+     */
     CTTP,
+    /**
+     * Command to ask which player can play now.
+     */
     TURN,
+    /**
+     * Command to ask for informations to actualize the whole board.
+     */
     ANEW;
 
 
