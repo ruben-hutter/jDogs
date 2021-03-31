@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-04-11" view-index="0" gantt-divider-location="527" resource-divider-location="300" version="3.0.3000" locale="de_DE">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-04-01" view-index="0" gantt-divider-location="663" resource-divider-location="300" version="3.0.3005" locale="en_US">
     <description/>
     <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Vorgang" width="259" order="0"/>
-        <field id="tpd8" name="Verantwortlich" width="131" order="1"/>
-        <field id="tpd4" name="Anfang" width="59" order="2"/>
-        <field id="tpd5" name="Ende" width="59" order="3"/>
+        <field id="tpd3" name="Name" width="293" order="0"/>
+        <field id="tpd8" name="Coordinator" width="165" order="1"/>
+        <field id="tpd4" name="Begin date" width="93" order="2"/>
+        <field id="tpd5" name="End date" width="93" order="3"/>
         <option id="color.recent">
             <![CDATA[#ff99ff #3399ff #ffcc00 #0000ff #ff0000 #eeeeee #00cc00]]>
         </option>
     </view>
     <view id="resource-table">
-        <field id="0" name="Ressource" width="265" order="0"/>
-        <field id="1" name="Rolle" width="31" order="1"/>
+        <field id="0" name="Name" width="265" order="0"/>
+        <field id="1" name="Default role" width="31" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -369,7 +369,7 @@ Have a well thought out and detailed written QA concept and a solid and realisti
                 <![CDATA[Present a working prototype of the game logic in the exercise slot by playing the game (Terminal or GUI).]]>
             </notes>
         </task>
-        <task id="7" name="Milestone 3 Check-In" color="#00cc00" meeting="true" start="2021-04-23" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
+        <task id="7" name="Milestone 3 Check-In" color="#00cc00" meeting="true" start="2021-04-19" duration="0" complete="0" thirdDate="2021-03-05" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Präsentation im Plenum, alle Gruppen.
 
