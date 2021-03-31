@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -43,8 +44,27 @@ public class GUI extends Application {
         grid.setVgap(8);
         grid.setHgap(10);
 
+        // Name label
+        Label label0 = new Label("NickName: ");
+        GridPane.setConstraints(label0, 1, 1);
 
-        Label label1 = new Label("Welcome to JDogs. Please LogIn.");
+        // Name input
+        TextField nameInput = new TextField();
+        nameInput.setPromptText("nickname here");
+
+        GridPane.setConstraints(nameInput, 1, 2);
+        Button button0 = new Button("login now");
+
+        GridPane.setConstraints(button0, 3, 2);
+        button0.setOnAction(e -> setScene1(nameInput.getText()));
+
+
+        grid.getChildren().addAll(label0,nameInput,button0);
+
+        Scene scene0 = new Scene(grid, 300, 300);
+
+
+        Label label1 = new Label("Welcome to JDogs. Please Log In.");
         Button button1 = new Button("alright, log me in!");
         //from scene1 to scene2 by window.setScene(scene2)
         button1.setOnAction(e -> window.setScene(scene2));
@@ -93,12 +113,18 @@ public class GUI extends Application {
 
 
 
-        window.setScene(scene1);
+        window.setScene(scene0);
         window.setTitle("JDogs GUI");
         window.show();
 
 
         stage.show();
+    }
+    private void setScene1(String nickname) {
+        if (nickname.equals("Gregor")) {
+            window.setScene(scene1);
+        }
+
     }
 
 
