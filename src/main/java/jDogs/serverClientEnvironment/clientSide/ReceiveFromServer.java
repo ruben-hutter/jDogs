@@ -1,6 +1,6 @@
-package JDogs.ServerClientEnvironment.ClientSide;
+package jDogs.serverClientEnvironment.clientSide;
 
-import JDogs.ServerClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.QueueJD;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;

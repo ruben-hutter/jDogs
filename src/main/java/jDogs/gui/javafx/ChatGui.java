@@ -1,6 +1,6 @@
-package JDogs.GUI.javafx;
+package jDogs.gui.javafx;
 
-import JDogs.ServerClientEnvironment.ClientSide.Client;
+import jDogs.serverClientEnvironment.clientSide.Client;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;

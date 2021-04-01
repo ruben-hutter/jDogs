@@ -1,4 +1,4 @@
-package JDogs.ServerClientEnvironment;
+package jDogs.serverClientEnvironment;
 
 /**
  * A helper-class for QueueJD

@@ -1,6 +1,6 @@
-package JDogs.ServerClientEnvironment.ServerSide;
+package jDogs.serverClientEnvironment.serverSide;
 
-import JDogs.ServerClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.QueueJD;
 
 /**
  * This thread processes messages received meaningfully.

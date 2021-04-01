@@ -1,4 +1,4 @@
-package JDogs.GUI.javafx;
+package jDogs.gui.javafx;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

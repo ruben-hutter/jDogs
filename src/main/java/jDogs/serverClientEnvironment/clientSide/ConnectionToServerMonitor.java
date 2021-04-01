@@ -1,7 +1,7 @@
-package JDogs.ServerClientEnvironment.ClientSide;
+package jDogs.serverClientEnvironment.clientSide;
 
-import JDogs.ServerClientEnvironment.MonitorCS;
-import JDogs.ServerClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.MonitorCS;
+import jDogs.serverClientEnvironment.QueueJD;
 
 public class ConnectionToServerMonitor implements Runnable {
     QueueJD sendToServer;

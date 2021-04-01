@@ -1,4 +1,4 @@
-package JDogs.Board;
+package jDogs.board;
 //this file represents the small board
 public class SmallBoard extends Board {
     //at least 16*16 Squares

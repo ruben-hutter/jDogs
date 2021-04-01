@@ -1,4 +1,4 @@
-package JDogs.Board;
+package jDogs.board;
 //represents a coordinate on the board
 public class Point {
 

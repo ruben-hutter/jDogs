@@ -1,4 +1,4 @@
-package JDogs.Board;
+package jDogs.board;
 //represents the big board with 96 NormIndentations + 6*4 BoxIndentations + 6*4 GoalIndentations
 public class BigBoard extends Board {
     //at least 16 * ca. 24

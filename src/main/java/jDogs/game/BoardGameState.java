@@ -1,7 +1,7 @@
-package JDogs.Game;
+package jDogs.game;
 //this class will save the state of the board with the players
 
-import JDogs.Board.*;
+import jDogs.board.*;
 
 public class BoardGameState {
 

@@ -1,7 +1,7 @@
-package JDogs.ServerClientEnvironment.ClientSide;
+package jDogs.serverClientEnvironment.clientSide;
 
-import JDogs.GUI.javafx.ChatGui;
-import JDogs.ServerClientEnvironment.QueueJD;
+import jDogs.gui.javafx.ChatGui;
+import jDogs.serverClientEnvironment.QueueJD;
 
 /**
  * This thread processes messages received meaningfully.

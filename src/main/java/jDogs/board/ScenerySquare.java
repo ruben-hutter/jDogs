@@ -1,4 +1,4 @@
-package JDogs.Board;
+package jDogs.board;
 
 public class ScenerySquare extends Square {
 

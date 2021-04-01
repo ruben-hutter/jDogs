@@ -1,4 +1,4 @@
-package JDogs.Board;
+package jDogs.board;
 //Tile = a square where a token can be placed
 public abstract class Tile extends Square {
 

@@ -1,4 +1,4 @@
-package JDogs.Player;
+package jDogs.player;
 //player entity
 
 public class Player {

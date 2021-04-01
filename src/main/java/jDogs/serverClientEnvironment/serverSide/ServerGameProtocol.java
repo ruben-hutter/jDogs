@@ -1,4 +1,4 @@
-package JDogs.ServerClientEnvironment.ServerSide;
+package jDogs.serverClientEnvironment.serverSide;
 
 /**
  * this enum contains all words used as commands

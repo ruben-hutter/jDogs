@@ -1,7 +1,7 @@
-package JDogs.ServerClientEnvironment.ServerSide;
+package jDogs.serverClientEnvironment.serverSide;
 
-import JDogs.ServerClientEnvironment.MonitorCS;
-import JDogs.ServerClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.MonitorCS;
+import jDogs.serverClientEnvironment.QueueJD;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
