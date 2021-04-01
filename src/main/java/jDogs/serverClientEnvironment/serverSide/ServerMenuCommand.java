@@ -102,6 +102,7 @@ public class ServerMenuCommand {
 
             case "WCHT":
                 // TODO chose a partner whom to send the message
+
                 sendToThisClient.enqueue("whisperChat is not implemented");
                 break;
 
