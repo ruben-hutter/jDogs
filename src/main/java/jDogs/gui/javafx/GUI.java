@@ -1,5 +1,6 @@
 package jDogs.gui.javafx;
 
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,6 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+
+
 
 /**
  * This class is a mess, Gregor will clean up soon

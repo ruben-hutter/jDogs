@@ -11,9 +11,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+
 public class ChatGui extends Application {
     Client client = new Client(this);
     TextField input;
+
 
     public static void main(String[] args) {
         launch(args);

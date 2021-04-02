@@ -1,4 +1,5 @@
 plugins {
+    id 'idea'
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
@@ -48,11 +49,11 @@ dependencies {
      */
     testImplementation 'junit:junit:4.+'
 
-    //Guava
+    // GUAVA
     /*
     this should add GuavaLibrary for EventBus
      */
-    compile group: 'com.google.guava', name: 'guava', version: '30.1.1'
+    compile "com.google.guava:guava-gwt:30.1.1-jre"
 }
 
 /*
