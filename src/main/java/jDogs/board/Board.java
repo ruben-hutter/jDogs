@@ -1,13 +1,8 @@
 package jDogs.board;
 
-public abstract class Board {
-    //import Tiles for Game
-    abstract public Tile[] getGameArray();
+public class Board {
 
-
-
-
-
-
-
+    public Tile getTile(final int tileCoordinate) {
+        return null;
+    }
 }
