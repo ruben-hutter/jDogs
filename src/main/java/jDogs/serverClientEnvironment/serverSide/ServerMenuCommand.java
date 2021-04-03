@@ -8,7 +8,6 @@ import jDogs.serverClientEnvironment.QueueJD;
  * communicate with the server.
  *
  */
-
 public class ServerMenuCommand {
     private Server server;
     private ServerConnection serverConnection;
