@@ -5,8 +5,7 @@ package jDogs.gui;
  */
 public class LoginEvent {
 
-    public LoginEvent() {
-
+    LoginEvent() {
     }
 
 }

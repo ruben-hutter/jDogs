@@ -4,6 +4,7 @@ import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 
 public class LoginEventListener {
+
     private GUIManager guiManager;
 
     public LoginEventListener(GUIManager guiManager) {
@@ -13,6 +14,10 @@ public class LoginEventListener {
     @Subscribe
     @AllowConcurrentEvents
     public void login(LoginEvent loginEvent) {
+
+        //System.out.println("nickname: " + loginEvent.nickname);
+
+
         guiManager.goToLobby();
     }
 

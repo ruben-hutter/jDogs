@@ -16,9 +16,12 @@ public class GUIManager extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         //activate LoginEventListener
 
+
         LoginEventListener loginEventListener = new LoginEventListener(this);
+
         GuavaEventBus.INSTANCE.addToEventBus(loginEventListener);
 
         //get path
@@ -37,6 +40,7 @@ public class GUIManager extends Application {
     }
 
     public void goToLobby() {
+
        System.out.println("arrived at lobby");
 
 

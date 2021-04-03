@@ -23,7 +23,12 @@ public class LoginController {
     }
 
     @FXML
-    void loginButtonClicked(ActionEvent event) {
-        GuavaEventBus.INSTANCE.post(new LoginEvent());
+    void loginButtonOnAction(ActionEvent event) {
+        String nickname = textField.getText();
+        if (nickname.isEmpty()) {
+            //return Error
+        } else {
+            GuavaEventBus.INSTANCE.post(new LoginEvent());
+        }
     }
 }
