@@ -1,7 +1,6 @@
 package jDogs.serverClientEnvironment.clientSide;
 
-import jDogs.gui.javafx.ChatGui;
-import jDogs.serverClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.helpers.QueueJD;
 
 /**
  * ClientMenuCommand contains the menu/lobby
@@ -16,16 +15,14 @@ public class ClientMenuCommand {
     private SendFromClient sendFromClient;
     private QueueJD sendQueue;
     private QueueJD keyBoardInQueue;
-    private ChatGui chatGui;
 
-    ClientMenuCommand(Client client,ChatGui chatGui, SendFromClient sendFromClient, QueueJD sendQueue, QueueJD keyBoardInQueue) {
+    ClientMenuCommand(Client client,SendFromClient sendFromClient, QueueJD sendQueue, QueueJD keyBoardInQueue) {
 
         this.client = client;
         this.sendQueue = sendQueue;
         this.sendFromClient = sendFromClient;
         this.sendQueue = sendQueue;
         this.keyBoardInQueue = keyBoardInQueue;
-        this.chatGui = chatGui;
 
     }
 
@@ -55,7 +52,8 @@ public class ClientMenuCommand {
                 break;
 
             case "PCHT":
-                chatGui.displayMessage(text.substring(4));
+                //chatGui.displayMessage(text.substring(4));
+                System.out.println("public chat message: " + text.substring(4));
                 break;
 
 

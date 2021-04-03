@@ -1,6 +1,6 @@
 package jDogs.serverClientEnvironment.clientSide;
 
-import jDogs.serverClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.helpers.QueueJD;
 import java.util.Scanner;
 
 /**

@@ -1,8 +1,7 @@
 package jDogs.serverClientEnvironment.clientSide;
 
-import jDogs.gui.javafx.ChatGui;
-import jDogs.serverClientEnvironment.MonitorCS;
-import jDogs.serverClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.helpers.MonitorCS;
+import jDogs.serverClientEnvironment.helpers.QueueJD;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -27,10 +26,9 @@ public class Client {
     private QueueJD receiveQueue;
     private QueueJD sendQueue;
     private QueueJD keyBoardInQueue;
-    private ChatGui chatGui;
 
-    public Client(ChatGui chatGui) {
-        this.chatGui = chatGui;
+    public Client() {
+
         setUp();
     }
 
@@ -87,7 +85,7 @@ public class Client {
         keyboard.start();
 
         // 5.handle received messages meaningfully
-        messageHandlerClient = new MessageHandlerClient(this,chatGui, sendFromClient,receiveQueue, sendQueue, keyBoardInQueue);
+        messageHandlerClient = new MessageHandlerClient(this, sendFromClient,receiveQueue, sendQueue, keyBoardInQueue);
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
     }

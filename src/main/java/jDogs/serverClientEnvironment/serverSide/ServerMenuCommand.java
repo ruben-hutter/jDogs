@@ -1,6 +1,6 @@
 package jDogs.serverClientEnvironment.serverSide;
 
-import jDogs.serverClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.helpers.QueueJD;
 
 /**
  * ServerMenuCommand contains the menu/lobby

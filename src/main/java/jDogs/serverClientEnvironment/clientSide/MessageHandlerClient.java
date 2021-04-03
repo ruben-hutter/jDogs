@@ -1,7 +1,6 @@
 package jDogs.serverClientEnvironment.clientSide;
 
-import jDogs.gui.javafx.ChatGui;
-import jDogs.serverClientEnvironment.QueueJD;
+import jDogs.serverClientEnvironment.helpers.QueueJD;
 
 /**
  * This thread processes messages received meaningfully.
@@ -20,9 +19,8 @@ public class MessageHandlerClient implements Runnable{
     private final SendFromClient sendFromClient;
     private ClientMenuCommand clientMenuCommand;
     private ClientGameCommand clientGameCommand;
-    private ChatGui chatGui;
 
-    public MessageHandlerClient(Client client,ChatGui chatGui, SendFromClient sendFromClient, QueueJD receiveQueue,
+    public MessageHandlerClient(Client client, SendFromClient sendFromClient, QueueJD receiveQueue,
             QueueJD sendQueue, QueueJD keyBoardInQueue) {
         this.running = true;
         this.receiveQueue = receiveQueue;
@@ -30,8 +28,7 @@ public class MessageHandlerClient implements Runnable{
         this.keyBoardInQueue = keyBoardInQueue;
         this.sendFromClient = sendFromClient;
         this.client = client;
-        this.chatGui = chatGui;
-        this.clientMenuCommand = new ClientMenuCommand(client, chatGui, sendFromClient,sendQueue,keyBoardInQueue);
+        this.clientMenuCommand = new ClientMenuCommand(client, sendFromClient,sendQueue,keyBoardInQueue);
         this.clientGameCommand = new ClientGameCommand();
 
     }
