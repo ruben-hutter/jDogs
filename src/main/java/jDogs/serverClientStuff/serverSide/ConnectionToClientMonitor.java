@@ -1,7 +1,7 @@
-package jDogs.serverClientEnvironment.serverSide;
+package jDogs.serverClientStuff.serverSide;
 
-import jDogs.serverClientEnvironment.helpers.MonitorCS;
-import jDogs.serverClientEnvironment.helpers.QueueJD;
+import jDogs.serverClientStuff.helpers.MonitorCS;
+import jDogs.serverClientStuff.helpers.QueueJD;
 
 public class ConnectionToClientMonitor implements Runnable {
 

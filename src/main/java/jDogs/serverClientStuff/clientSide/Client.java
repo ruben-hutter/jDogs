@@ -1,7 +1,7 @@
-package jDogs.serverClientEnvironment.clientSide;
+package jDogs.serverClientStuff.clientSide;
 
-import jDogs.serverClientEnvironment.helpers.MonitorCS;
-import jDogs.serverClientEnvironment.helpers.QueueJD;
+import jDogs.serverClientStuff.helpers.MonitorCS;
+import jDogs.serverClientStuff.helpers.QueueJD;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;

@@ -18,11 +18,12 @@ public class LoginController {
 
     @FXML
     void cancelButtonOnAction(ActionEvent event) {
-
+        //Shutdown
+        System.exit(-1);
     }
 
     @FXML
     void loginButtonClicked(ActionEvent event) {
-
+        GuavaEventBus.INSTANCE.post(new LoginEvent());
     }
 }

@@ -1,6 +1,6 @@
-package jDogs.serverClientEnvironment.clientSide;
+package jDogs.serverClientStuff.clientSide;
 
-import jDogs.serverClientEnvironment.helpers.QueueJD;
+import jDogs.serverClientStuff.helpers.QueueJD;
 
 /**
  * ClientMenuCommand contains the menu/lobby

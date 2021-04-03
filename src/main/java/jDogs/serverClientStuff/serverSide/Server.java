@@ -1,4 +1,4 @@
-package jDogs.serverClientEnvironment.serverSide;
+package jDogs.serverClientStuff.serverSide;
 
 import java.io.IOException;
 import java.net.ServerSocket;

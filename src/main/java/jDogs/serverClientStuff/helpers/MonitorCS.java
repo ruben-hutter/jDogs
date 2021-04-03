@@ -1,4 +1,4 @@
-package jDogs.serverClientEnvironment.helpers;
+package jDogs.serverClientStuff.helpers;
 
 public class MonitorCS {
 

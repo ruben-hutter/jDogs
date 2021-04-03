@@ -1,4 +1,4 @@
-package jDogs.serverClientEnvironment.serverSide;
+package jDogs.serverClientStuff.serverSide;
 
 /**
  * ServerGameCommand contains the game

@@ -16,18 +16,29 @@ public class GUIManager extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //get path
-        URL url = Paths.get("src/main/resources/loginWindow.fxml").toUri().toURL();
+        //activate LoginEventListener
 
+        LoginEventListener loginEventListener = new LoginEventListener(this);
+        GuavaEventBus.INSTANCE.addToEventBus(loginEventListener);
+
+        //get path
+        URL url = Paths.get("src/main/java/resources/loginWindow.fxml").toUri().toURL();
+
+        //root
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(url);
 
+        //scene1
         Scene scene1 = new Scene(root);
         primaryStage.setScene(scene1);
 
-        LoginController loginController = loader.getController();
-
 
         primaryStage.show();
+    }
+
+    public void goToLobby() {
+       System.out.println("arrived at lobby");
+
+
     }
 }

@@ -1,6 +1,5 @@
-package jDogs.serverClientEnvironment.helpers;
+package jDogs.serverClientStuff.helpers;
 
-import jDogs.serverClientEnvironment.helpers.Node;
 import java.util.NoSuchElementException;
 
 /**
