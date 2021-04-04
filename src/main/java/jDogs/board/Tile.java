@@ -32,6 +32,9 @@ public class Tile {
 
     @Override
     public String toString() {
-        return tileCoordinate + " - " + piece;
+        if (isTileOccupied()) {
+            return getPiece().toString();
+        }
+        return String.valueOf(tileCoordinate);
     }
 }

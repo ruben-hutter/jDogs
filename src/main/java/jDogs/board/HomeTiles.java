@@ -12,23 +12,12 @@ public class HomeTiles {
         homeTiles = createHomeTiles();
     }
 
-    private static Tile[] createHomeTiles() {
-        final Tile[] homeTiles = new Tile[BoardUtils.NUM_TILES_HOME];
-        for (int i = 0; i < BoardUtils.NUM_TILES_HOME; i++) {
-            homeTiles[i] = new Tile(i, );
+    // should be void?
+    private Tile[] createHomeTiles() {
+        final Tile[] homeTiles = new Tile[Board.NUM_HOME_TILES];
+        for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
+            homeTiles[i] = new Tile(i, new Piece(alliance, false, i));
         }
         return homeTiles;
     }
 }
-Start:
-        yellow-1  yellow-2
-        green-1   green-2   green-3
-        . . . .
-        . . . .
-Spielfeld:
-        . . . . . . . . red-1 . . . (x64)
-Ziel:
-        . . . .
-        . . . .
-        . . . .
-        . . . .
