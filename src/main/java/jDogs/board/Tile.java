@@ -14,11 +14,6 @@ public class Tile {
         this.tileCoordinate = tileCoordinate;
     }
 
-    Tile(final int tileCoordinate, Piece piece) {
-        this.tileCoordinate = tileCoordinate;
-        this.piece = piece;
-    }
-
     public boolean isTileOccupied() {
         if (piece != null) {
             return true;
@@ -35,6 +30,6 @@ public class Tile {
         if (isTileOccupied()) {
             return getPiece().toString();
         }
-        return String.valueOf(tileCoordinate);
+        return ".";
     }
 }

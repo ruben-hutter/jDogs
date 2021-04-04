@@ -16,4 +16,13 @@ public class TrackTiles {
         }
         return trackTiles;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Tile tile : trackTiles) {
+            sb.append(tile.toString() + " ");
+        }
+        return sb.toString();
+    }
 }

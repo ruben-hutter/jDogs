@@ -14,22 +14,47 @@ public class Board {
     public static final int NUM_HEAVEN_TILES = 4;
     public static final int NUM_HOME_TILES = 4;
 
+    HomeTiles yellowHome;
+    HomeTiles greenHome;
+    HomeTiles blueHome;
+    HomeTiles redHome;
+    TrackTiles trackTiles;
+    HeavenTiles yellowHeaven;
+    HeavenTiles greenHeaven;
+    HeavenTiles blueHeaven;
+    HeavenTiles redHeaven;
+
     public Board() {
         createBoard();
     }
 
     public void createBoard() {
         // set 4 homes
-        HomeTiles yellowHome = new HomeTiles(Alliance.YELLOW);
-        HomeTiles greenHome = new HomeTiles(Alliance.GREEN);
-        HomeTiles blueHome = new HomeTiles(Alliance.BLUE);
-        HomeTiles redHome = new HomeTiles(Alliance.RED);
+        yellowHome = new HomeTiles(Alliance.YELLOW);
+        greenHome = new HomeTiles(Alliance.GREEN);
+        blueHome = new HomeTiles(Alliance.BLUE);
+        redHome = new HomeTiles(Alliance.RED);
 
         // set track
-        TrackTiles trackTiles = new TrackTiles();
+        trackTiles = new TrackTiles();
 
         // set 4 heavens
-        HeavenTiles yellowHeaven = new HeavenTiles(Alliance.YELLOW);
+        yellowHeaven = new HeavenTiles(Alliance.YELLOW);
+        greenHeaven = new HeavenTiles(Alliance.GREEN);
+        blueHeaven = new HeavenTiles(Alliance.BLUE);
+        redHeaven = new HeavenTiles(Alliance.RED);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("JDogs\n\n");
+        sb.append("Home:\n");
+        sb.append(yellowHome.toString() + "\n");
+        sb.append(greenHome.toString() + "\n");
+        sb.append(blueHome.toString() + "\n");
+        sb.append(redHome.toString() + "\n");
+
+        return sb.toString();
     }
 }
 

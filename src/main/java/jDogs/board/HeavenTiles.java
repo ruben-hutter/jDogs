@@ -9,6 +9,7 @@ public class HeavenTiles {
 
     HeavenTiles(Alliance alliance) {
         heavenTiles = createHeavenTiles();
+        this.alliance = alliance;
     }
 
     // should be void?
@@ -18,5 +19,14 @@ public class HeavenTiles {
             heavenTiles[i] = new Tile(i);
         }
         return heavenTiles;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Tile tile : heavenTiles) {
+            sb.append(tile.toString() + " ");
+        }
+        return sb.toString();
     }
 }
