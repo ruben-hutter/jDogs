@@ -8,11 +8,10 @@ public class HeavenTiles {
     Alliance alliance;
 
     HeavenTiles(Alliance alliance) {
-        heavenTiles = createHeavenTiles();
         this.alliance = alliance;
+        heavenTiles = createHeavenTiles();
     }
 
-    // should be void?
     private Tile[] createHeavenTiles() {
         final Tile[] heavenTiles = new Tile[Board.NUM_HEAVEN_TILES];
         for (int i = 0; i < Board.NUM_HEAVEN_TILES; i++) {
@@ -25,7 +24,7 @@ public class HeavenTiles {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Tile tile : heavenTiles) {
-            sb.append(tile.toString() + " ");
+            sb.append(tile + " ");
         }
         return sb.toString();
     }

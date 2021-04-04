@@ -1,6 +1,6 @@
 package jDogs.board;
 
-import jDogs.pieces.Piece;
+import jDogs.Piece;
 
 /**
  * Tile is a square where a token can be placed
@@ -23,6 +23,10 @@ public class Tile {
 
     public Piece getPiece() {
         return piece;
+    }
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
     }
 
     @Override

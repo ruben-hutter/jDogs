@@ -8,11 +8,10 @@ public class HomeTiles {
     Alliance alliance;
 
     public HomeTiles(Alliance alliance) {
-        homeTiles = createHomeTiles();
         this.alliance = alliance;
+        homeTiles = createHomeTiles();
     }
 
-    // should be void?
     private Tile[] createHomeTiles() {
         final Tile[] homeTiles = new Tile[Board.NUM_HOME_TILES];
         for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
@@ -21,11 +20,19 @@ public class HomeTiles {
         return homeTiles;
     }
 
+    public Alliance getAlliance() {
+        return alliance;
+    }
+
+    public Tile getHomeTile(int i) {
+        return homeTiles[i];
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Tile tile : homeTiles) {
-            sb.append(tile.toString() + " ");
+            sb.append(tile + " ");
         }
         return sb.toString();
     }

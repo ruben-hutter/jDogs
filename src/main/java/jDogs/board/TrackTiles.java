@@ -8,7 +8,6 @@ public class TrackTiles {
         trackTiles = createTrackTiles();
     }
 
-    // should be void?
     private Tile[] createTrackTiles() {
         final Tile[] trackTiles = new Tile[Board.NUM_TRACK_TILES];
         for (int i = 0; i < Board.NUM_TRACK_TILES; i++) {
@@ -21,7 +20,7 @@ public class TrackTiles {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Tile tile : trackTiles) {
-            sb.append(tile.toString() + " ");
+            sb.append(tile + " ");
         }
         return sb.toString();
     }

@@ -6,7 +6,7 @@ import jDogs.Alliance;
  * Creates board initial setup
  * <li>1 x TrackTiles</li>
  * <li>4 x HomeTiles</li>
- * <li>5 x HeavenTiles</li>
+ * <li>4 x HeavenTiles</li>
  */
 public class Board {
 
@@ -14,15 +14,9 @@ public class Board {
     public static final int NUM_HEAVEN_TILES = 4;
     public static final int NUM_HOME_TILES = 4;
 
-    HomeTiles yellowHome;
-    HomeTiles greenHome;
-    HomeTiles blueHome;
-    HomeTiles redHome;
+    HomeTiles[] allHomeTiles = new HomeTiles[4];
     TrackTiles trackTiles;
-    HeavenTiles yellowHeaven;
-    HeavenTiles greenHeaven;
-    HeavenTiles blueHeaven;
-    HeavenTiles redHeaven;
+    HeavenTiles[] allHeavenTiles = new HeavenTiles[4];
 
     public Board() {
         createBoard();
@@ -30,53 +24,43 @@ public class Board {
 
     public void createBoard() {
         // set 4 homes
-        yellowHome = new HomeTiles(Alliance.YELLOW);
-        greenHome = new HomeTiles(Alliance.GREEN);
-        blueHome = new HomeTiles(Alliance.BLUE);
-        redHome = new HomeTiles(Alliance.RED);
+        allHomeTiles[0] = new HomeTiles(Alliance.YELLOW);
+        allHomeTiles[1] = new HomeTiles(Alliance.GREEN);
+        allHomeTiles[2] = new HomeTiles(Alliance.BLUE);
+        allHomeTiles[3] = new HomeTiles(Alliance.RED);
 
         // set track
         trackTiles = new TrackTiles();
 
         // set 4 heavens
-        yellowHeaven = new HeavenTiles(Alliance.YELLOW);
-        greenHeaven = new HeavenTiles(Alliance.GREEN);
-        blueHeaven = new HeavenTiles(Alliance.BLUE);
-        redHeaven = new HeavenTiles(Alliance.RED);
+        allHeavenTiles[0] = new HeavenTiles(Alliance.YELLOW);
+        allHeavenTiles[1] = new HeavenTiles(Alliance.GREEN);
+        allHeavenTiles[2] = new HeavenTiles(Alliance.BLUE);
+        allHeavenTiles[3] = new HeavenTiles(Alliance.RED);
+    }
+
+    public HomeTiles getHomeTiles(Alliance alliance) {
+        for (HomeTiles homeTiles : allHomeTiles) {
+            if (homeTiles.getAlliance() == alliance) {
+                return homeTiles;
+            }
+        }
+        return null;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("\nJDogs\n");
+        StringBuilder sb = new StringBuilder();
         sb.append("\nHome:\n");
-        sb.append(yellowHome + "\n");
-        sb.append(greenHome + "\n");
-        sb.append(blueHome + "\n");
-        sb.append(redHome+ "\n");
+        for (int i = 0; i < allHomeTiles.length; i++) {
+            sb.append(allHomeTiles[i] + "\n");
+        }
         sb.append("\nTrack:\n");
         sb.append(trackTiles + "\n");
         sb.append("\nHeaven:\n");
-        sb.append(yellowHeaven + "\n");
-        sb.append(greenHeaven + "\n");
-        sb.append(blueHeaven + "\n");
-        sb.append(redHeaven + "\n");
+        for (int i = 0; i < allHeavenTiles.length; i++) {
+            sb.append(allHeavenTiles[i] + "\n");
+        }
         return sb.toString();
     }
 }
-
-
-
-/*
-Home:
-        yellow-1  yellow-2
-        green-1   green-2   green-3
-        . . . .
-        . . . .
-Track:
-        . . . . . . . . red-1 . . . (x64)
-Heaven:
-        . . . .
-        . . . .
-        . . . .
-        . . . .
- */
