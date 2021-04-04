@@ -47,13 +47,19 @@ public class Board {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("JDogs\n\n");
-        sb.append("Home:\n");
-        sb.append(yellowHome.toString() + "\n");
-        sb.append(greenHome.toString() + "\n");
-        sb.append(blueHome.toString() + "\n");
-        sb.append(redHome.toString() + "\n");
-
+        StringBuilder sb = new StringBuilder("\nJDogs\n");
+        sb.append("\nHome:\n");
+        sb.append(yellowHome + "\n");
+        sb.append(greenHome + "\n");
+        sb.append(blueHome + "\n");
+        sb.append(redHome+ "\n");
+        sb.append("\nTrack:\n");
+        sb.append(trackTiles + "\n");
+        sb.append("\nHeaven:\n");
+        sb.append(yellowHeaven + "\n");
+        sb.append(greenHeaven + "\n");
+        sb.append(blueHeaven + "\n");
+        sb.append(redHeaven + "\n");
         return sb.toString();
     }
 }
