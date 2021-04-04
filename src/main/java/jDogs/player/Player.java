@@ -38,10 +38,6 @@ public class Player {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(getPlayerName() + ": ");
-        for (Piece piece : pieces) {
-            sb.append(piece + " ");
-        }
-        return sb.toString();
+        return getPlayerName() + ": " + getAlliance();
     }
 }
