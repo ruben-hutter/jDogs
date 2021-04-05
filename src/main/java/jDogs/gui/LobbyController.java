@@ -39,12 +39,12 @@ public class LobbyController {
     }
 
 
-
+    @FXML
     public void refreshTextArea() {
         //publicChatMessagesLobby.setText("");
-
     }
 
+    @FXML
     public void displayMessage(String message) {
         System.out.println(message);
         publicChatMessagesLobby.appendText(message + "\n");

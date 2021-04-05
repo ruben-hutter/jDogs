@@ -59,8 +59,8 @@ public class GUIManager extends Application {
             e.printStackTrace();
         }
 
-
         LobbyController lobbyController = new LobbyController();
+
         FXMLLoader lobbyLoader = new FXMLLoader(url);
         lobbyLoader.setController(lobbyController);
         Parent root = null;
@@ -78,7 +78,6 @@ public class GUIManager extends Application {
 
         primaryStage.show();
 
-
         Platform.runLater(new Runnable() {
                               @Override
                               public void run() {
@@ -86,6 +85,8 @@ public class GUIManager extends Application {
                                   lobbyController.displayMessage(nickname + "sent this message from GUI");
                               }
         });
+
+
 
 
 
