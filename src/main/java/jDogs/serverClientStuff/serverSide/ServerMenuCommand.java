@@ -45,7 +45,7 @@ public class ServerMenuCommand {
                     } else {
                         int number = 2;
                         while (true) {
-                            if(server.isValidNickName(nickName + " " + number)) {
+                            if (server.isValidNickName(nickName + " " + number)) {
                                 nickName = nickName + " " + number;
                                 sendToThisClient.enqueue("hi, user! your new name is: "
                                         + nickName);
@@ -61,17 +61,13 @@ public class ServerMenuCommand {
                     }
                     System.out.println("login worked");
                     if (loggedIn) {
-
                         server.removeNickname(nickName);
-
-                        /*
-                        is needed to import the SendFromServer to the list
-                        which is to send public chat messages to all
-                         */
+                    } else {
+                        server.addSender(serverConnection.getSender());
                     }
                     //nickName = "< " + nickName + " > ";
-                    serverConnection.getLoggedIn(nickName);
-
+                    server.addNickname(nickName, serverConnection.getSender());
+                    serverConnection.updateNickname(nickName);
 
                     loggedIn = true;
                 }
@@ -101,16 +97,31 @@ public class ServerMenuCommand {
                 break;
 
             case "WCHT":
-                // TODO chose a partner whom to send the message
+                // chose a partner whom to send the message
+                //get separator sign
+                int separator = -1;
+                for (int i = 0; i < text.substring(4).length(); i++) {
+                   if (text.toCharArray()[i] == ';') {
+                       separator = i;
+                       break;
+                   }
+                }
 
-                sendToThisClient.enqueue("whisperChat is not implemented");
+                if (separator == -1) {
+                    sendToThisClient.enqueue("wrong WCHT format");
+                } else {
+                    String adressor = text.substring(4,separator);
+                    String message = text.substring(separator + 1);
+                    new Thread(new SendOrder(server,adressor,nickName,message)).start();
+                }
+
                 break;
 
             case "PCHT":
                 // TODO send message to all active clients
                 //PCHT is now necessary for MessageHandlerClients
                 if(loggedIn) {
-                    sendToAll.enqueue("PCHT " + nickName + text.substring(4));
+                    sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
                 }
                 break;
 

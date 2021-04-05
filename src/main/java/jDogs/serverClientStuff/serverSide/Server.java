@@ -81,36 +81,35 @@ public class Server {
     }
 
     public void addNickname(String nickname, SendFromServer connection) {
-
         //add to whisperlist
         whisperList.put(nickname, connection);
 
         //add to nicknamelist
         allNickNames.add(nickname);
-
-
-
     }
 
     public void removeNickname(String nickname) {
-        //remove from whisperlist
+        //remove nickname from whisperlist
         whisperList.remove(nickname);
 
-        //remove from nicknamelist
+        //remove nickname from nicknamelist
         allNickNames.remove(nickname);
     }
 
+    //returns sender object to send private message
+    public SendFromServer getSenderForWhisper(String nickname) {
+        return whisperList.get(nickname);
+    }
+
+    // add sender object from publicChatList
     public void addSender(SendFromServer connection) {
         connections.add(connection);
     }
-
+    // remove sender object from publicChatList
     public void removeSender(SendFromServer connection) {
         connections.remove(connection);
     }
 
-    public int getConnectionsSize() {
-        return connections.size();
-    }
 
 
 }

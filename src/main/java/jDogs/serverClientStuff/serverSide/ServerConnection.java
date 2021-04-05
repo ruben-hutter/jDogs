@@ -37,6 +37,7 @@ public class ServerConnection {
     public boolean loggedIn;
     private boolean running;
     private MonitorCS monitorCS;
+    private String nickName;
     ScheduledExecutorService scheduledExecutorService = null;
 
     public ServerConnection(Socket socket, Server server) {
@@ -81,11 +82,6 @@ public class ServerConnection {
         messenger.start();
     }
 
-    public void getLoggedIn(String nickname) {
-        server.addSender(sender);
-        server.addNickname(nickname, sender);
-        loggedIn = true;
-    }
 
     public SendFromServer getSender () {
         return sender;
@@ -112,5 +108,11 @@ public class ServerConnection {
         this.messageHandlerServer.kill();
 
         running = false;
+    }
+
+    public void updateNickname(String nickName) {
+        loggedIn = true;
+        this.nickName = nickName;
+
     }
 }
