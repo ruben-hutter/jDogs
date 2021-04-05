@@ -3,6 +3,10 @@ package jDogs.gui;
 
 import java.io.IOException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
 import javafx.fxml.FXMLLoader;
@@ -44,8 +48,14 @@ public class GUIManager extends Application {
         // activate loginWindow
 
         // root
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/loginWindow.fxml")));
-
+        //FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/loginWindow.fxml")));
+        URL url = null;
+        try {
+            url = Paths.get("src/sample/resources/loginWindow.fxml").toUri().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        FXMLLoader loginLoader = new FXMLLoader(url);
         Parent root = null;
         try {
             root = loginLoader.load();
