@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane layoutX="100.0" layoutY="71.0" prefHeight="224.0" prefWidth="393.0">
+         <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="213.0" prefWidth="398.0">
+               <children>
+                  <TableView prefHeight="214.0" prefWidth="385.0">
+                    <columns>
+                      <TableColumn prefWidth="283.20002442598343" text="Offene Spiele" />
+                      <TableColumn prefWidth="91.20001220703125" text="Spieler/Total" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+         </content>
+      </ScrollPane>
+      <SplitPane dividerPositions="0.24195278969957085" layoutX="118.0" layoutY="437.0" prefHeight="235.0" prefWidth="464.0">
+        <items>
+          <AnchorPane prefHeight="258.0" prefWidth="154.0">
+               <children>
+                  <TableView layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="238.0" prefWidth="116.0">
+                    <columns>
+                      <TableColumn maxWidth="115.20002442598343" minWidth="-1.0" prefWidth="115.20002442598343" text="aktiv" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+            <SplitPane dividerPositions="0.7438080495356038" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <TextArea fx:id="publicChatMessagesLobby" layoutX="2.0" layoutY="-5.0" prefHeight="200.0" prefWidth="340.0" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="280.0">
+                     <children>
+                        <TextField fx:id="messageFieldLobby" prefHeight="63.0" prefWidth="218.0" promptText="Your message to everyone" />
+                        <Button fx:id="sendButtonLobby" layoutX="219.0" layoutY="19.0" mnemonicParsing="false" onAction="#sendButtonOnAction" text="SendMe" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+        </items>
+      </SplitPane>
+      <Pane prefHeight="38.0" prefWidth="600.0">
+         <children>
+            <MenuButton layoutX="40.0" layoutY="6.0" mnemonicParsing="false" text="Menu">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Statistics" />
+                <MenuItem mnemonicParsing="false" text="Options" />
+                  <MenuItem fx:id="exitGameLobby" mnemonicParsing="false" onAction="#exitJDogs" text="Exit" />
+              </items>
+            </MenuButton>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
