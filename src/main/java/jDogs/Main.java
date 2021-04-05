@@ -5,10 +5,7 @@ import jDogs.board.HomeTiles;
 import jDogs.player.Player;
 
 /**
- * This Main class must be cleaned up.
- * The process of building the players and
- * associating them to the home tiles
- * has to be done in an other class
+ * Generates the board and the players for a game.
  */
 public class Main {
 
@@ -17,17 +14,14 @@ public class Main {
     public static void main(String[] args) {
 
         // creates the board
-        Board board = new Board();
+        Board board = new Board(NUM_PLAYERS);
 
         // creates all the players
         Player[] players = new Player[NUM_PLAYERS];
-        players[0] = new Player("player1", Alliance.YELLOW);
-        players[1] = new Player("player2", Alliance.GREEN);
-        players[2] = new Player("player3", Alliance.BLUE);
-        players[3] = new Player("player4", Alliance.RED);
-
-        // sets the players pieces to the home tiles
-        setPlayerToHome(players, board);
+        players[0] = new Player("player1", Alliance.YELLOW, board);
+        players[1] = new Player("player2", Alliance.GREEN, board);
+        players[2] = new Player("player3", Alliance.BLUE, board);
+        players[3] = new Player("player4", Alliance.RED, board);
 
         //Cards cards = new Cards();
 
@@ -36,17 +30,5 @@ public class Main {
             System.out.println(player);
         }
         System.out.println(board);
-    }
-
-    public static void setPlayerToHome(Player[] players, Board board) {
-        Piece[] piecesPlayerI;
-        HomeTiles homeTilesPlayerI;
-        for (int i = 0; i < players.length; i++) {
-            piecesPlayerI = players[i].getPieces();
-            homeTilesPlayerI = board.getHomeTiles(players[i].getAlliance());
-            for (int j = 0; j < Board.NUM_HOME_TILES; j++) {
-                homeTilesPlayerI.getHomeTile(j).setPiece(piecesPlayerI[j]);
-            }
-        }
     }
 }

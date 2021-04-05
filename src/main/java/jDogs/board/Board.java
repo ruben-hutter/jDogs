@@ -14,29 +14,46 @@ public class Board {
     public static final int NUM_HEAVEN_TILES = 4;
     public static final int NUM_HOME_TILES = 4;
 
-    HomeTiles[] allHomeTiles = new HomeTiles[4];
+    HomeTiles[] allHomeTiles;
     TrackTiles trackTiles;
-    HeavenTiles[] allHeavenTiles = new HeavenTiles[4];
+    HeavenTiles[] allHeavenTiles;
 
-    public Board() {
-        createBoard();
+    public Board(int numOfPlayers) {
+        allHomeTiles = createAllHomeTiles(numOfPlayers);
+        trackTiles = new TrackTiles();
+        allHeavenTiles = createAllHeavenTiles(numOfPlayers);
     }
 
-    public void createBoard() {
-        // set 4 homes
+    private HomeTiles[] createAllHomeTiles(int numOfPlayers) {
+        allHomeTiles = new HomeTiles[numOfPlayers];
         allHomeTiles[0] = new HomeTiles(Alliance.YELLOW);
         allHomeTiles[1] = new HomeTiles(Alliance.GREEN);
-        allHomeTiles[2] = new HomeTiles(Alliance.BLUE);
-        allHomeTiles[3] = new HomeTiles(Alliance.RED);
+        if (numOfPlayers == 6) {
+            allHomeTiles[2] = new HomeTiles(Alliance.WHITE);
+            allHomeTiles[3] = new HomeTiles(Alliance.BLUE);
+            allHomeTiles[4] = new HomeTiles(Alliance.RED);
+            allHomeTiles[5] = new HomeTiles(Alliance.BLACK);
+        } else {
+            allHomeTiles[2] = new HomeTiles(Alliance.BLUE);
+            allHomeTiles[3] = new HomeTiles(Alliance.RED);
+        }
+        return allHomeTiles;
+    }
 
-        // set track
-        trackTiles = new TrackTiles();
-
-        // set 4 heavens
+    private HeavenTiles[] createAllHeavenTiles(int numOfPlayers) {
+        allHeavenTiles = new HeavenTiles[numOfPlayers];
         allHeavenTiles[0] = new HeavenTiles(Alliance.YELLOW);
         allHeavenTiles[1] = new HeavenTiles(Alliance.GREEN);
-        allHeavenTiles[2] = new HeavenTiles(Alliance.BLUE);
-        allHeavenTiles[3] = new HeavenTiles(Alliance.RED);
+        if (numOfPlayers == 6) {
+            allHeavenTiles[2] = new HeavenTiles(Alliance.WHITE);
+            allHeavenTiles[3] = new HeavenTiles(Alliance.BLUE);
+            allHeavenTiles[4] = new HeavenTiles(Alliance.RED);
+            allHeavenTiles[5] = new HeavenTiles(Alliance.BLACK);
+        } else {
+            allHeavenTiles[2] = new HeavenTiles(Alliance.BLUE);
+            allHeavenTiles[3] = new HeavenTiles(Alliance.RED);
+        }
+        return allHeavenTiles;
     }
 
     public HomeTiles getHomeTiles(Alliance alliance) {
