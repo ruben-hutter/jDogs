@@ -1,6 +1,6 @@
 package jDogs.serverclient.helpers;
 
-public class MonitorCS {
+public class Monitorcs {
 //ok
     /**
      * this class is used to store the last
@@ -13,7 +13,7 @@ public class MonitorCS {
 
     long newTime;
 
-    public MonitorCS() {
+    public Monitorcs() {
         this.newTime = System.currentTimeMillis();
     }
 

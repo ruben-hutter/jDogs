@@ -1,8 +1,8 @@
 package jDogs.serverclient.clientside;
 
 import jDogs.gui.GUIManager;
-import jDogs.serverclient.helpers.MonitorCS;
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Monitorcs;
+import jDogs.serverclient.helpers.Queuejd;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -22,12 +22,12 @@ public class Client {
     private KeyboardInput keyboardInput;
     private SendFromClient sendFromClient;
     private MessageHandlerClient messageHandlerClient;
-    private MonitorCS monitorCS;
+    private Monitorcs monitorCS;
     private GUIManager guiManager;
     private String nickname;
-    private QueueJD receiveQueue;
-    private QueueJD sendQueue;
-    private QueueJD keyBoardInQueue;
+    private Queuejd receiveQueue;
+    private Queuejd sendQueue;
+    private Queuejd keyBoardInQueue;
 
     public Client(GUIManager guiManager) {
         this.guiManager = guiManager;
@@ -40,9 +40,9 @@ public class Client {
      * 5 threads to handle connection are started
      */
     public void setUp() {
-        this.receiveQueue = new QueueJD();
-        this.sendQueue = new QueueJD();
-        this.keyBoardInQueue = new QueueJD();
+        this.receiveQueue = new Queuejd();
+        this.sendQueue = new Queuejd();
+        this.keyBoardInQueue = new Queuejd();
 
         Socket socket = null;
 
@@ -65,7 +65,7 @@ public class Client {
             //e.printStackTrace();
         }
 
-        monitorCS = new MonitorCS();
+        monitorCS = new Monitorcs();
 
         // 1.monitor connection to server thread starts every 5 seconds
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();

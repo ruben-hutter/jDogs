@@ -1,17 +1,16 @@
 package jDogs.serverclient.helpers;
-
 import java.util.NoSuchElementException;
-//ok
+
 /**
  * This Queue is used to store messages from one thread and collect and process them by another thread
  * synchronized methods to prevent conflicts betwixt threads
  */
-public class QueueJD {
+public class Queuejd {
 
-    Node head;
-    Node tail;
+    Nodejd head;
+    Nodejd tail;
 
-    public QueueJD() {
+    public Queuejd() {
         this.head = null;
         this.tail = null;
     }
@@ -21,7 +20,7 @@ public class QueueJD {
      * @param s a given String message
      */
     public synchronized void enqueue(String s) {
-        Node n = new Node(s);
+        Nodejd n = new Nodejd(s);
         if (head == null) {
             head = n;
         } else {

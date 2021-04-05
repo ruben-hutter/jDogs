@@ -2,12 +2,12 @@ package jDogs.serverclient.helpers;
 /**
  * A helper-class for QueueJD
  */
-public class Node {
+public class Nodejd {
 
     String value;
-    Node next;
+    Nodejd next;
 
-    Node(String s) {
+    Nodejd(String s) {
         this.value = s;
     }
 }

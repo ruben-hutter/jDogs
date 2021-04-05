@@ -1,7 +1,7 @@
 package jDogs.serverclient.serverside;
 
 
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Queuejd;
 
 /**
  * This thread processes messages received meaningfully.
@@ -11,9 +11,9 @@ import jDogs.serverclient.helpers.QueueJD;
 
 public class MessageHandlerServer implements Runnable {
 
-    private final QueueJD sendToAll;
-    private final QueueJD sendToThisClient;
-    private final QueueJD receivedFromClient;
+    private final Queuejd sendToAll;
+    private final Queuejd sendToThisClient;
+    private final Queuejd receivedFromClient;
     private boolean running;
     private boolean loggedIn;
     private final Server server;
@@ -23,7 +23,7 @@ public class MessageHandlerServer implements Runnable {
     private String nickName;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
-            QueueJD sendToThisClient, QueueJD sendToAll, QueueJD receivedFromClient) {
+            Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient) {
         this.sendToAll = sendToAll;
         this.sendToThisClient = sendToThisClient;
         this.receivedFromClient = receivedFromClient;

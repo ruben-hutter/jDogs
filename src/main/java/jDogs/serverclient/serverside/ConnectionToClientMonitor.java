@@ -1,16 +1,16 @@
 package jDogs.serverclient.serverside;
 
 
-import jDogs.serverclient.helpers.MonitorCS;
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Monitorcs;
+import jDogs.serverclient.helpers.Queuejd;
 
 public class ConnectionToClientMonitor implements Runnable {
 
-    QueueJD sendToClient;
-    MonitorCS monitorCS;
+    Queuejd sendToClient;
+    Monitorcs monitorCS;
     ServerConnection serverConnection;
 
-    ConnectionToClientMonitor(ServerConnection serverConnection,QueueJD sendToClient, MonitorCS monitorCS) {
+    ConnectionToClientMonitor(ServerConnection serverConnection, Queuejd sendToClient, Monitorcs monitorCS) {
         this.sendToClient = sendToClient;
         this.monitorCS = monitorCS;
         this.serverConnection = serverConnection;

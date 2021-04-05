@@ -8,7 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class LobbyController {
-
+//this is a commentary
     @FXML
     private TextArea publicChatMessagesLobby;
 

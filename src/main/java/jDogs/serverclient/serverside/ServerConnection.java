@@ -1,7 +1,7 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.serverclient.helpers.MonitorCS;
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Monitorcs;
+import jDogs.serverclient.helpers.Queuejd;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -28,26 +28,26 @@ public class ServerConnection {
 
     private final Server server;
     private final Socket socket;
-    private final QueueJD sendToAll;
-    private final QueueJD sendToThisClient;
-    private final QueueJD receivedFromClient;
+    private final Queuejd sendToAll;
+    private final Queuejd sendToThisClient;
+    private final Queuejd receivedFromClient;
     private SendFromServer sender;
     private ReceiveFromClient listeningToClient;
     private MessageHandlerServer messageHandlerServer;
     public boolean loggedIn;
     private boolean running;
-    private MonitorCS monitorCS;
+    private Monitorcs monitorCS;
     ScheduledExecutorService scheduledExecutorService = null;
 
     public ServerConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
-        this.sendToAll = new QueueJD();
-        this.sendToThisClient = new QueueJD();
-        this.receivedFromClient = new QueueJD();
+        this.sendToAll = new Queuejd();
+        this.sendToThisClient = new Queuejd();
+        this.receivedFromClient = new Queuejd();
         this.running = true;
         this.loggedIn = false;
-        this.monitorCS = new MonitorCS();
+        this.monitorCS = new Monitorcs();
     }
 
 

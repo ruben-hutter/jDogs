@@ -1,6 +1,6 @@
 package jDogs.serverclient.clientside;
 
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Queuejd;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -13,11 +13,11 @@ import java.net.Socket;
 public class ReceiveFromServer implements Runnable {
 
     private final Client client;
-    private final QueueJD receiveQueue;
+    private final Queuejd receiveQueue;
     private boolean running;
     private DataInputStream din;
 
-    public ReceiveFromServer(Socket socket, Client client, QueueJD receiveQueue) {
+    public ReceiveFromServer(Socket socket, Client client, Queuejd receiveQueue) {
         this.receiveQueue = receiveQueue;
         this.client = client;
         this.running = true;

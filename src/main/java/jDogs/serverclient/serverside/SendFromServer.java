@@ -1,6 +1,6 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Queuejd;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -15,11 +15,11 @@ public class SendFromServer implements Runnable {
     private DataOutputStream dout;
     private final Socket socket;
     private final Server server;
-    private final QueueJD sendToAll;
-    private final QueueJD sendToThisClient;
+    private final Queuejd sendToAll;
+    private final Queuejd sendToThisClient;
     private final ServerConnection serverConnection;
 
-    public SendFromServer(Socket socket, Server server, QueueJD sendToAll, QueueJD sendToThisClient,
+    public SendFromServer(Socket socket, Server server, Queuejd sendToAll, Queuejd sendToThisClient,
             ServerConnection serverConnection) {
         this.socket = socket;
         this.server = server;

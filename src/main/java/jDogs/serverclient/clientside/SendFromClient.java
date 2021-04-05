@@ -1,6 +1,6 @@
 package jDogs.serverclient.clientside;
 
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Queuejd;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -12,14 +12,14 @@ import java.net.Socket;
 public class SendFromClient implements Runnable {
 
     private final Socket socket;
-    private final QueueJD sendQueue;
-    private final QueueJD keyBoardInQueue;
+    private final Queuejd sendQueue;
+    private final Queuejd keyBoardInQueue;
     private DataOutputStream dout;
     private boolean running;
     public boolean keyBoardInBlocked;
     private final Client client;
 
-    public SendFromClient(Socket socket,Client client, QueueJD sendQueue, QueueJD keyBoardInQueue) {
+    public SendFromClient(Socket socket,Client client, Queuejd sendQueue, Queuejd keyBoardInQueue) {
         this.socket = socket;
         this.sendQueue = sendQueue;
         this.running = true;

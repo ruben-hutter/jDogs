@@ -1,7 +1,7 @@
 package jDogs.serverclient.serverside;
 
 
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Queuejd;
 
 /**
  * ServerMenuCommand contains the menu/lobby
@@ -14,13 +14,13 @@ public class ServerMenuCommand {
     private Server server;
     private ServerConnection serverConnection;
     private MessageHandlerServer messageHandlerServer;
-    private QueueJD sendToThisClient;
-    private QueueJD sendToAll;
+    private Queuejd sendToThisClient;
+    private Queuejd sendToAll;
     private boolean loggedIn;
     private String nickName;
 
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
-            MessageHandlerServer messageHandlerServer, QueueJD sendToThisClient, QueueJD sendToAll) {
+            MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
         this.server = server;
         this.serverConnection = serverConnection;
         this.messageHandlerServer = messageHandlerServer;

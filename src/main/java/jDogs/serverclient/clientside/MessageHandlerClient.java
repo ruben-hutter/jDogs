@@ -1,7 +1,8 @@
 package jDogs.serverclient.clientside;
 
 
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Queuejd;
+
 
 /**
  * This thread processes messages received meaningfully.
@@ -13,16 +14,16 @@ import jDogs.serverclient.helpers.QueueJD;
 public class MessageHandlerClient implements Runnable{
 
     private boolean running;
-    private final QueueJD receiveQueue;
-    private final QueueJD sendQueue;
-    private final QueueJD keyBoardInQueue;
+    private final Queuejd receiveQueue;
+    private final Queuejd sendQueue;
+    private final Queuejd keyBoardInQueue;
     private final Client client;
     private final SendFromClient sendFromClient;
     private ClientMenuCommand clientMenuCommand;
     private ClientGameCommand clientGameCommand;
 
-    public MessageHandlerClient(Client client, SendFromClient sendFromClient, QueueJD receiveQueue,
-            QueueJD sendQueue, QueueJD keyBoardInQueue) {
+    public MessageHandlerClient(Client client, SendFromClient sendFromClient, Queuejd receiveQueue,
+            Queuejd sendQueue, Queuejd keyBoardInQueue) {
         this.running = true;
         this.receiveQueue = receiveQueue;
         this.sendQueue = sendQueue;

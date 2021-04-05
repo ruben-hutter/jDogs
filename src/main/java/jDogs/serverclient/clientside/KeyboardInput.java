@@ -1,6 +1,6 @@
 package jDogs.serverclient.clientside;
 
-import jDogs.serverclient.helpers.QueueJD;
+import jDogs.serverclient.helpers.Queuejd;
 import java.util.Scanner;
 
 /**
@@ -12,12 +12,12 @@ import java.util.Scanner;
  */
 public class KeyboardInput implements Runnable {
 
-    private final QueueJD keyBoardInput;
+    private final Queuejd keyBoardInput;
     private final Scanner console;
     private boolean running;
     private final Client client;
 
-    public KeyboardInput(Client client, QueueJD keyBoardInput) {
+    public KeyboardInput(Client client, Queuejd keyBoardInput) {
         this.keyBoardInput = keyBoardInput;
         this.console = new Scanner(System.in);
         this.client = client;
