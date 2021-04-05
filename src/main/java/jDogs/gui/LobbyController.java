@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import com.google.errorprone.annotations.FormatMethod;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,18 +36,18 @@ public class LobbyController {
         String message = messageFieldLobby.getText();
         messageFieldLobby.clear();
         System.out.println(message);
-        displayMessage(message);
+        displayPCHTmsg(message);
     }
 
 
     @FXML
-    public void refreshTextArea() {
-        //publicChatMessagesLobby.setText("");
-    }
-
-    @FXML
-    public void displayMessage(String message) {
+    public void displayPCHTmsg(String message) {
         System.out.println(message);
         publicChatMessagesLobby.appendText(message + "\n");
+    }
+
+    @FXML
+    public void displayWCHTmsg(String message) {
+        System.out.println(message + " wcht not implemented");
     }
 }

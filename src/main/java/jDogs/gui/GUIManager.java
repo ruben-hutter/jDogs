@@ -1,22 +1,23 @@
 package jDogs.gui;
 
+
+import jDogs.serverclient.clientside.Client;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javax.swing.Action;
 
 public class GUIManager extends Application {
-
-    Stage primaryStage;
+    private Client client;
+    private Stage primaryStage;
+    private boolean isInLobby = false;
+    LobbyController lobbyController;
 
     public static void main(String[] args) {
         launch(args);
@@ -47,9 +48,10 @@ public class GUIManager extends Application {
     }
 
     public void goToLobby(String nickname) {
-        System.out.println("your nickname is:  " + nickname);
 
-        // activate loginWindow
+        setUpClient(nickname);
+
+        // activate lobbyWindow
 
         // get path
         URL url = null;
@@ -59,7 +61,7 @@ public class GUIManager extends Application {
             e.printStackTrace();
         }
 
-        LobbyController lobbyController = new LobbyController();
+        lobbyController = new LobbyController();
 
         FXMLLoader lobbyLoader = new FXMLLoader(url);
         lobbyLoader.setController(lobbyController);
@@ -78,11 +80,12 @@ public class GUIManager extends Application {
 
         primaryStage.show();
 
+        isInLobby = true;
+
         Platform.runLater(new Runnable() {
                               @Override
                               public void run() {
-                                  lobbyController.refreshTextArea();
-                                  lobbyController.displayMessage(nickname + "sent this message from GUI");
+                                  lobbyController.displayPCHTmsg(nickname + "  sent this message from GUI");
                               }
         });
 
@@ -92,9 +95,31 @@ public class GUIManager extends Application {
 
     }
 
+    public void sendPCHTmsg(String message) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                lobbyController.displayPCHTmsg(message);
+            }
+        });
+    }
+
+    public void displayWCHTmsg (String message) {
+        if (isInLobby) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    lobbyController.displayWCHTmsg(message);
+                }
+            });
+        }
+    }
 
 
 
-
+    void setUpClient(String nickname) {
+       // this.client = new Client(this);
+        // this.client.setNickname(nickname);
+    }
 
 }
