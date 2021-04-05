@@ -81,9 +81,9 @@ public class ServerConnection {
         messenger.start();
     }
 
-    public void getLoggedIn() {
-        server.connections.add(sender);
-        System.out.println(this.toString() + " logged in ");
+    public void getLoggedIn(String nickname) {
+        server.addSender(sender);
+        server.addNickname(nickname, sender);
         loggedIn = true;
     }
 
@@ -105,8 +105,8 @@ public class ServerConnection {
         scheduledExecutorService.shutdown();
         System.out.println(scheduledExecutorService.toString() + " stops now");
 
-        server.connections.remove(sender);
-        server.allNickNames.remove(messageHandlerServer.getNickName());
+        server.removeSender(sender);
+        server.removeNickname(messageHandlerServer.getNickName());
         this.listeningToClient.kill();
         this.sender.kill();
         this.messageHandlerServer.kill();

@@ -41,20 +41,12 @@ public class ServerMenuCommand {
                     nickName = text.substring(5);
 
                     if (server.isValidNickName(nickName)) {
-                        server.allNickNames.add(nickName);
-                        //oldNick is null, if client just logged in to the server
-                        if (oldNick != null) {
-                            server.allNickNames.remove(oldNick);
-                        }
-
                         sendToThisClient.enqueue("hi, user! your new nickname is: " + nickName);
                     } else {
                         int number = 2;
                         while (true) {
                             if(server.isValidNickName(nickName + " " + number)) {
                                 nickName = nickName + " " + number;
-                                server.allNickNames.add(nickName);
-                                server.allNickNames.remove(oldNick);
                                 sendToThisClient.enqueue("hi, user! your new name is: "
                                         + nickName);
                                 break;
@@ -63,15 +55,23 @@ public class ServerMenuCommand {
                             }
                         }
                     }
+
+                    if (oldNick != null) {
+                        server.removeNickname(oldNick);
+                    }
                     System.out.println("login worked");
-                    if (!loggedIn) {
+                    if (loggedIn) {
+
+                        server.removeNickname(nickName);
+
                         /*
                         is needed to import the SendFromServer to the list
                         which is to send public chat messages to all
                          */
-                        serverConnection.getLoggedIn();
                     }
-                    nickName = "< " + nickName + " > ";
+                    //nickName = "< " + nickName + " > ";
+                    serverConnection.getLoggedIn(nickName);
+
 
                     loggedIn = true;
                 }
