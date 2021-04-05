@@ -4,7 +4,7 @@ package jDogs.gui;
 import java.io.IOException;
 
 import javafx.application.Application;
-
+import jDogs.serverclient.clientside.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +14,7 @@ public class GUIManager extends Application {
     private Stage primaryStage;
     private boolean isInLobby = false;
     private static GUIManager instance;
+    //private Client client;
 
     public static void main(String[] args) {
         launch(args);

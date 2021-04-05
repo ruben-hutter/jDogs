@@ -43,12 +43,12 @@ public class LobbyController implements Initializable {
         String message = messageFieldLobby.getText();
         messageFieldLobby.clear();
         System.out.println(message);
-        displayPCHTmsg(message);
+        //displayPCHTmsg(message);
     }
 
 
 
-    public void displayPCHTmsg(String message) {
+    /*public void displayPCHTmsg(String message) {
         System.out.println(message);
         publicChatMessagesLobby.appendText(message + "\n");
     }
@@ -57,4 +57,8 @@ public class LobbyController implements Initializable {
     public void displayWCHTmsg(String message) {
         System.out.println(message + " wcht not implemented");
     }
+
+     */
+
+
 }
