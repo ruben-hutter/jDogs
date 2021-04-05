@@ -12,7 +12,6 @@ public class ServerGameCommand {
 
     public ServerGameCommand() {
         // TODO
-
     }
 
     public void execute(String text) {

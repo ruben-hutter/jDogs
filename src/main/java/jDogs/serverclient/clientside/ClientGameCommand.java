@@ -21,9 +21,6 @@ public class ClientGameCommand {
 
         switch(command) {
 
-
-
-
         }
 
     }

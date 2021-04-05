@@ -1,14 +1,22 @@
 package jDogs.gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class LobbyController {
-//this is a commentary
+public class LobbyController implements Initializable {
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
     @FXML
     private TextArea publicChatMessagesLobby;
 
@@ -39,13 +47,13 @@ public class LobbyController {
     }
 
 
-    @FXML
+
     public void displayPCHTmsg(String message) {
         System.out.println(message);
         publicChatMessagesLobby.appendText(message + "\n");
     }
 
-    @FXML
+
     public void displayWCHTmsg(String message) {
         System.out.println(message + " wcht not implemented");
     }

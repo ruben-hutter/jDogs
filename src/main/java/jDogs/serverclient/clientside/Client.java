@@ -23,14 +23,12 @@ public class Client {
     private SendFromClient sendFromClient;
     private MessageHandlerClient messageHandlerClient;
     private Monitorcs monitorCS;
-    private GUIManager guiManager;
     private String nickname;
     private Queuejd receiveQueue;
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
 
-    public Client(GUIManager guiManager) {
-        this.guiManager = guiManager;
+    public Client() {
         setUp();
     }
 
@@ -125,14 +123,7 @@ public class Client {
         System.exit(-1);
         //setUp();
     }
-
-    public void displayPCHTmsg(String message) {
-        guiManager.displayPCHTmsg(message);
-    }
-
-    public void displayWCHTmsg(String message) {
-        guiManager.displayWCHTmsg(message);
-    }
+    
 
     public void setNickname(String nickname) {
         this.nickname = nickname;

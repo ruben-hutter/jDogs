@@ -1,44 +1,45 @@
 package jDogs.gui;
 
 
-import jDogs.serverclient.clientside.Client;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Paths;
+
 import javafx.application.Application;
-import javafx.application.Platform;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class GUIManager extends Application {
-    private Client client;
     private Stage primaryStage;
     private boolean isInLobby = false;
     LobbyController lobbyController;
+    private static GUIManager instance;
 
     public static void main(String[] args) {
         launch(args);
     }
+    //get the singleton
+    public static GUIManager getInstance() {
+        return instance;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //create the singleton
+        instance = this;
 
         this.primaryStage = primaryStage;
+
 
         //activate LoginEventHandler
         LoginEventHandler.INSTANCE.setUp(this);
 
         // activate loginWindow
 
-        // get path
-        URL url = Paths.get("src/main/java/resources/loginWindow.fxml").toUri().toURL();
-
         // root
-        FXMLLoader loginLoader = new FXMLLoader();
-        Parent root = loginLoader.load(url);
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/loginWindow.fxml")));
+        Parent root = loginLoader.load();
 
         // loginScene
         Scene loginScene = new Scene(root);
@@ -47,72 +48,26 @@ public class GUIManager extends Application {
         primaryStage.show();
     }
 
-    public void goToLobby(String nickname) {
-
-        setUpClient(nickname);
+    public void setScene(String url) {
 
         // activate lobbyWindow
-
+        FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
         // get path
-        URL url = null;
-        try {
-            url = Paths.get("src/main/java/resources/lobbyWindow.fxml").toUri().toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        lobbyController = new LobbyController();
-
-        FXMLLoader lobbyLoader = new FXMLLoader(url);
-        lobbyLoader.setController(lobbyController);
         Parent root = null;
+
         try {
             root = lobbyLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+
+        lobbyController = lobbyLoader.getController();
+
         // lobbyScene
-        Scene lobbyScene = new Scene(root);
-
-
-        primaryStage.setScene(lobbyScene);
-
-        primaryStage.show();
+        primaryStage.getScene().setRoot(root);
 
         isInLobby = true;
-
-        Platform.runLater(new Runnable() {
-                              @Override
-                              public void run() {
-                                  lobbyController.displayPCHTmsg(nickname + "  sent this message from GUI");
-                              }
-        });
-
-
-
-
-
-    }
-
-    public void displayPCHTmsg(String message) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                lobbyController.displayPCHTmsg(message);
-            }
-        });
-    }
-
-    public void displayWCHTmsg (String message) {
-        if (isInLobby) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    lobbyController.displayWCHTmsg(message);
-                }
-            });
-        }
     }
 
 
@@ -122,4 +77,7 @@ public class GUIManager extends Application {
         // this.client.setNickname(nickname);
     }
 
+    public void goToLobby(String nickname) {
+        System.out.println("arrived");
+    }
 }

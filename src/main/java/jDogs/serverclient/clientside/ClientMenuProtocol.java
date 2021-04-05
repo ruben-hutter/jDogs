@@ -62,6 +62,7 @@ public enum ClientMenuProtocol {
      * @return if matches, else does not match
      */
     public static boolean isACommand(String text) {
+        int i = 8;
         for (ClientMenuProtocol command : ClientMenuProtocol.values()) {
             if (command.toString().equals(text.substring(0, 4))) {
                 return true;
