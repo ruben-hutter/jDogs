@@ -1,6 +1,5 @@
 package jDogs.gui;
 
-import com.google.errorprone.annotations.FormatMethod;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

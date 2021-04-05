@@ -126,6 +126,14 @@ public class Client {
         //setUp();
     }
 
+    public void displayPCHTmsg(String message) {
+        guiManager.displayPCHTmsg(message);
+    }
+
+    public void displayWCHTmsg(String message) {
+        guiManager.displayWCHTmsg(message);
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }

@@ -95,7 +95,7 @@ public class GUIManager extends Application {
 
     }
 
-    public void sendPCHTmsg(String message) {
+    public void displayPCHTmsg(String message) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
