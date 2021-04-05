@@ -13,16 +13,17 @@ import javafx.stage.Stage;
 public class GUIManager extends Application {
     private Stage primaryStage;
     private boolean isInLobby = false;
-    LobbyController lobbyController;
     private static GUIManager instance;
 
     public static void main(String[] args) {
         launch(args);
     }
-    //get the singleton
+
+    //get singleton
     public static GUIManager getInstance() {
         return instance;
     }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -31,6 +32,10 @@ public class GUIManager extends Application {
 
         this.primaryStage = primaryStage;
 
+        setLoginScene();
+    }
+
+    private void setLoginScene() {
 
         //activate LoginEventHandler
         LoginEventHandler.INSTANCE.setUp(this);
@@ -39,7 +44,13 @@ public class GUIManager extends Application {
 
         // root
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/loginWindow.fxml")));
-        Parent root = loginLoader.load();
+
+        Parent root = null;
+        try {
+            root = loginLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // loginScene
         Scene loginScene = new Scene(root);
@@ -47,6 +58,7 @@ public class GUIManager extends Application {
 
         primaryStage.show();
     }
+
 
     public void setScene(String url) {
 
@@ -61,21 +73,17 @@ public class GUIManager extends Application {
             e.printStackTrace();
         }
 
+        LobbyController lobbyController = lobbyLoader.getController();
 
-        lobbyController = lobbyLoader.getController();
+
 
         // lobbyScene
         primaryStage.getScene().setRoot(root);
 
+
         isInLobby = true;
     }
 
-
-
-    void setUpClient(String nickname) {
-       // this.client = new Client(this);
-        // this.client.setNickname(nickname);
-    }
 
     public void goToLobby(String nickname) {
         System.out.println("arrived");

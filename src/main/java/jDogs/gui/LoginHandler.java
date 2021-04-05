@@ -11,7 +11,7 @@ public class LoginHandler {
     }
 
     public void getLoggedIn(String nickname) {
-        guiManager.goToLobby(nickname);
+        guiManager.setScene(nickname);
     }
 
 }
