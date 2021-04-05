@@ -32,6 +32,10 @@ public class Client {
         setUp();
     }
 
+    public static void main(String[] args) {
+        new Client();
+    }
+
     /**
      * Sets up connection to Server
      * Messages are saved in specific queues

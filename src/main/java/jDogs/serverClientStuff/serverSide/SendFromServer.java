@@ -38,7 +38,9 @@ public class SendFromServer implements Runnable {
         }
         while (running) {
             if (!sendToThisClient.isEmpty()) {
-                sendStringToClient(sendToThisClient.dequeue());
+                String message = sendToThisClient.dequeue();
+
+                    sendStringToClient(message);
             }
             if (!sendToAll.isEmpty()) {
                 sendStringToAllClients(sendToAll.dequeue());
@@ -67,7 +69,7 @@ public class SendFromServer implements Runnable {
             dout.flush();
         } catch (IOException e) {
             // e.printStackTrace();
-            System.err.println("ServerConnection error 1: send String to Client error....");
+            System.out.println("ServerConnection error 1: send String to Client error....");
             // kill this serverConnection:
             server.removeSender(this);
             running = false;

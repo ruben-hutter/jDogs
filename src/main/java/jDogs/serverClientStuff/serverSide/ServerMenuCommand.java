@@ -101,7 +101,7 @@ public class ServerMenuCommand {
                 //get separator sign
                 int separator = -1;
                 for (int i = 0; i < text.substring(4).length(); i++) {
-                   if (text.toCharArray()[i] == ';') {
+                   if (text.substring(4).toCharArray()[i] == ';') {
                        separator = i;
                        break;
                    }
@@ -110,9 +110,14 @@ public class ServerMenuCommand {
                 if (separator == -1) {
                     sendToThisClient.enqueue("wrong WCHT format");
                 } else {
-                    String adressor = text.substring(4,separator);
-                    String message = text.substring(separator + 1);
-                    new Thread(new SendOrder(server,adressor,nickName,message)).start();
+                    String adressor = text.substring(5,4 + separator);
+                    String message = text.substring(4 + separator + 1);
+                    try {
+                        server.getSenderForWhisper(adressor).sendStringToClient("WCHT " + nickName + ";" + message);
+                    } catch (Exception e) {
+                        //prevent shutdown if nickname doesn`t exist in hashmap
+                        sendToThisClient.enqueue("nickname unknown");
+                    }
                 }
 
                 break;

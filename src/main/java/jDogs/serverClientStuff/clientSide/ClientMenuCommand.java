@@ -56,6 +56,25 @@ public class ClientMenuCommand {
                 System.out.println("public chat message: " + text.substring(4));
                 break;
 
+            case "WCHT":
+                int separator = -1;
+                for (int i = 0; i < text.substring(4).length(); i++) {
+                    if (text.toCharArray()[i] == ';') {
+                        separator = i;
+                        break;
+                    }
+                }
+
+                if (separator == -1) {
+                    System.out.println("from server: " + text + " wrong WCHT format");
+                } else {
+                    String origin = text.substring(4, separator);
+                    String message = text.substring(separator + 1);
+
+                    System.out.println("WCHT from " + origin);
+                    System.out.println("received message: " + message);
+                }
+                break;
 
             default:
                 System.out.println("received from server " + text + ". This command " + command
