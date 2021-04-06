@@ -27,9 +27,16 @@ public class Client {
     private Queuejd receiveQueue;
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
+    private static Client instance;
 
     public Client() {
+        instance = this;
         setUp();
+    }
+
+    // return singleton
+    public static Client getInstance() {
+        return instance;
     }
 
     /**

@@ -27,11 +27,14 @@ public class LoginController {
     @FXML
     void loginButtonOnAction(ActionEvent event) {
         nickname = textField.getText();
-        if (nickname.isEmpty()) {
+        if (nickname.isEmpty() || nickname.isBlank() || nickname.length() < 3) {
             //open AlertWindow here
         } else {
             System.out.println(nickname);
-            LoginEventHandler.INSTANCE.loggedIn(nickname);
+            GUIManager.getInstance().goToLobby(nickname);
+
+            //LoginEventHandler.INSTANCE.loggedIn(nickname);
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import jDogs.serverclient.clientside.Client;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -42,14 +43,14 @@ public class LobbyController implements Initializable {
         System.out.println("send..");
         String message = messageFieldLobby.getText();
         messageFieldLobby.clear();
-        System.out.println(message);
-        //displayPCHTmsg(message);
+        //System.out.println(message);
+        Client.getInstance().sendMessageToServer("PCHT " + message);
     }
 
 
 
-    /*public void displayPCHTmsg(String message) {
-        System.out.println(message);
+    public void displayPCHTmsg(String message) {
+        //System.out.println(message);
         publicChatMessagesLobby.appendText(message + "\n");
     }
 
@@ -57,8 +58,4 @@ public class LobbyController implements Initializable {
     public void displayWCHTmsg(String message) {
         System.out.println(message + " wcht not implemented");
     }
-
-     */
-
-
 }

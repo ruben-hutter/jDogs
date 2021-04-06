@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
@@ -16,9 +15,10 @@ import javafx.stage.Stage;
 
 public class GUIManager extends Application {
     private Stage primaryStage;
-    private boolean isInLobby = false;
     private static GUIManager instance;
-    //private Client client;
+    FXMLLoader lobbyLoader;
+    public LobbyController lobbyController;
+    private Client client;
 
     public static void main(String[] args) {
         launch(args);
@@ -48,14 +48,18 @@ public class GUIManager extends Application {
         // activate loginWindow
 
         // root
-        //FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/loginWindow.fxml")));
+        //FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/resources/loginWindow.fxml")));
+
         URL url = null;
+
         try {
-            url = Paths.get("src/sample/resources/loginWindow.fxml").toUri().toURL();
+            url = Paths.get("src/main/resources/loginWindow.fxml").toUri().toURL();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
         FXMLLoader loginLoader = new FXMLLoader(url);
+
         Parent root = null;
         try {
             root = loginLoader.load();
@@ -67,14 +71,29 @@ public class GUIManager extends Application {
         Scene loginScene = new Scene(root);
         primaryStage.setScene(loginScene);
 
+        //shut down application by closing the window(works for all scenes)
+        primaryStage.setOnCloseRequest(e-> System.exit(-1));
+
         primaryStage.show();
     }
 
 
-    public void setScene(String url) {
+    public void setLobbyScene() {
+        String lobbyPath = "src/main/resources/lobbyWindow.fxml";
+        // activate Window
+        //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
 
-        // activate lobbyWindow
-        FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
+        URL url = null;
+
+        try {
+            url = Paths.get(lobbyPath).toUri().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        lobbyLoader = new FXMLLoader(url);
+
+
         // get path
         Parent root = null;
 
@@ -84,19 +103,30 @@ public class GUIManager extends Application {
             e.printStackTrace();
         }
 
-        LobbyController lobbyController = lobbyLoader.getController();
 
-
+        lobbyController = lobbyLoader.getController();
 
         // lobbyScene
         primaryStage.getScene().setRoot(root);
 
 
-        isInLobby = true;
+
     }
 
 
     public void goToLobby(String nickname) {
-        System.out.println("arrived");
+        client = new Client();
+        setLobbyScene();
     }
+
+
+
+    public void startGame() {
+        setGameScene();
+    }
+
+    private void setGameScene() {
+
+    }
+
 }

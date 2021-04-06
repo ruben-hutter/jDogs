@@ -1,7 +1,9 @@
 package jDogs.serverclient.clientside;
 
 
+import jDogs.gui.GUIManager;
 import jDogs.serverclient.helpers.Queuejd;
+import javafx.application.Platform;
 
 /**
  * ClientMenuCommand contains the menu/lobby
@@ -53,11 +55,15 @@ public class ClientMenuCommand {
                 break;
 
             case "PCHT":
-                //chatGui.displayMessage(text.substring(4));
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(4)));
+
                 System.out.println("public chat message: " + text.substring(4));
                 break;
 
             case "WCHT":
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(4)));
                 System.out.println("whisper chat message: " + text.substring(4));
 
 
