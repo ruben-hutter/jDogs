@@ -4,6 +4,7 @@ import jDogs.Alliance;
 import jDogs.Piece;
 import jDogs.board.Board;
 import jDogs.board.HomeTiles;
+
 /**
  * This class defines a player
  * Giving a name and an alliance it initializes
@@ -41,17 +42,9 @@ public class Player {
      */
     private void setPiecesOnHome() {
         HomeTiles homeTiles = board.getHomeTiles(alliance);
-        for (int i = 0; i < board.NUM_HOME_TILES; i++) {
+        for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
             homeTiles.getHomeTile(i).setPiece(pieces[i]);
         }
-    }
-
-    /**
-     * Gives back the array with the player's pieces
-     * @return array of pieces
-     */
-    public Piece[] getPieces() {
-        return pieces;
     }
 
     public String getPlayerName() {

@@ -10,7 +10,7 @@ import jDogs.Alliance;
  */
 public class Board {
 
-    public static final int NUM_TRACK_TILES = 64;
+    public static final int NUM_TRACK_TILES_X_PLAYER = 16;
     public static final int NUM_HEAVEN_TILES = 4;
     public static final int NUM_HOME_TILES = 4;
 
@@ -20,7 +20,7 @@ public class Board {
 
     public Board(int numOfPlayers) {
         allHomeTiles = createAllHomeTiles(numOfPlayers);
-        trackTiles = new TrackTiles();
+        trackTiles = new TrackTiles(numOfPlayers);
         allHeavenTiles = createAllHeavenTiles(numOfPlayers);
     }
 
@@ -69,14 +69,14 @@ public class Board {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nHome:\n");
-        for (int i = 0; i < allHomeTiles.length; i++) {
-            sb.append(allHomeTiles[i] + "\n");
+        for (HomeTiles allHomeTile : allHomeTiles) {
+            sb.append(allHomeTile).append("\n");
         }
         sb.append("\nTrack:\n");
-        sb.append(trackTiles + "\n");
+        sb.append(trackTiles).append("\n");
         sb.append("\nHeaven:\n");
-        for (int i = 0; i < allHeavenTiles.length; i++) {
-            sb.append(allHeavenTiles[i] + "\n");
+        for (HeavenTiles allHeavenTile : allHeavenTiles) {
+            sb.append(allHeavenTile).append("\n");
         }
         return sb.toString();
     }

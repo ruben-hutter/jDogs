@@ -15,7 +15,7 @@ public enum Alliance {
 
     private int startingPosition;
 
-    // TODO find a way not to give a fix value to a color (increse it by 16 for every new color)
+    // TODO find a way not to give a fix value to a color (increase it by 16 for every new color)
     Alliance(int startingPosition) {
         this.startingPosition = startingPosition;
     }

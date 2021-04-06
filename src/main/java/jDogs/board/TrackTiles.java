@@ -4,13 +4,13 @@ public class TrackTiles {
 
     Tile[] trackTiles;
 
-    TrackTiles() {
-        trackTiles = createTrackTiles();
+    TrackTiles(int numOfPlayers) {
+        trackTiles = createTrackTiles(numOfPlayers);
     }
 
-    private Tile[] createTrackTiles() {
-        final Tile[] trackTiles = new Tile[Board.NUM_TRACK_TILES];
-        for (int i = 0; i < Board.NUM_TRACK_TILES; i++) {
+    private Tile[] createTrackTiles(int numOfPlayers) {
+        final Tile[] trackTiles = new Tile[numOfPlayers * Board.NUM_TRACK_TILES_X_PLAYER];
+        for (int i = 0; i < trackTiles.length; i++) {
             trackTiles[i] = new Tile(i);
         }
         return trackTiles;
@@ -20,7 +20,7 @@ public class TrackTiles {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Tile tile : trackTiles) {
-            sb.append(tile + " ");
+            sb.append(tile).append(" ");
         }
         return sb.toString();
     }
