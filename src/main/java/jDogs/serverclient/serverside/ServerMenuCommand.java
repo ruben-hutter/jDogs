@@ -42,20 +42,12 @@ public class ServerMenuCommand {
                     nickName = text.substring(5);
 
                     if (server.isValidNickName(nickName)) {
-                        server.allNickNames.add(nickName);
-                        //oldNick is null, if client just logged in to the server
-                        if (oldNick != null) {
-                            server.allNickNames.remove(oldNick);
-                        }
-
                         sendToThisClient.enqueue("hi, user! your new nickname is: " + nickName);
                     } else {
                         int number = 2;
                         while (true) {
-                            if(server.isValidNickName(nickName + " " + number)) {
+                            if (server.isValidNickName(nickName + " " + number)) {
                                 nickName = nickName + " " + number;
-                                server.allNickNames.add(nickName);
-                                server.allNickNames.remove(oldNick);
                                 sendToThisClient.enqueue("hi, user! your new name is: "
                                         + nickName);
                                 break;
@@ -64,15 +56,19 @@ public class ServerMenuCommand {
                             }
                         }
                     }
-                    System.out.println("login worked");
-                    if (!loggedIn) {
-                        /*
-                        is needed to import the SendFromServer to the list
-                        which is to send public chat messages to all
-                         */
-                        serverConnection.getLoggedIn();
+
+                    if (oldNick != null) {
+                        server.removeNickname(oldNick);
                     }
-                    nickName = "< " + nickName + " > ";
+                    System.out.println("login worked");
+                    if (loggedIn) {
+                        server.removeNickname(nickName);
+                    } else {
+                        server.addSender(serverConnection.getSender());
+                    }
+                    //nickName = "< " + nickName + " > ";
+                    server.addNickname(nickName, serverConnection.getSender());
+                    serverConnection.updateNickname(nickName);
 
                     loggedIn = true;
                 }
@@ -102,16 +98,36 @@ public class ServerMenuCommand {
                 break;
 
             case "WCHT":
-                // TODO chose a partner whom to send the message
+                // chose a partner whom to send the message
+                //get separator sign
+                int separator = -1;
+                for (int i = 0; i < text.substring(4).length(); i++) {
+                   if (text.substring(4).toCharArray()[i] == ';') {
+                       separator = i;
+                       break;
+                   }
+                }
 
-                sendToThisClient.enqueue("whisperChat is not implemented");
+                if (separator == -1) {
+                    sendToThisClient.enqueue("wrong WCHT format");
+                } else {
+                    String adressor = text.substring(5,4 + separator);
+                    String message = text.substring(4 + separator + 1);
+                    try {
+                        server.getSenderForWhisper(adressor).sendStringToClient("WCHT " + nickName + ";" + message);
+                    } catch (Exception e) {
+                        //prevent shutdown if nickname doesn`t exist in hashmap
+                        sendToThisClient.enqueue("nickname unknown");
+                    }
+                }
+
                 break;
 
             case "PCHT":
                 // TODO send message to all active clients
                 //PCHT is now necessary for MessageHandlerClients
                 if(loggedIn) {
-                    sendToAll.enqueue("PCHT " + nickName + text.substring(4));
+                    sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
                 }
                 break;
 

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -16,9 +18,10 @@ import java.util.ArrayList;
  */
 public class Server {
 
-    ServerSocket serverSocket;
+    private ServerSocket serverSocket;
     ArrayList<SendFromServer> connections = new ArrayList<>();
     ArrayList<String> allNickNames = new ArrayList<>();
+    private Map<String, SendFromServer> whisperList = new HashMap<>();
 
     boolean running = true;
 
@@ -76,4 +79,37 @@ public class Server {
     public void kill() {
         System.exit(-1);
     }
+
+    public void addNickname(String nickname, SendFromServer connection) {
+        //add to whisperlist
+        whisperList.put(nickname, connection);
+
+        //add to nicknamelist
+        allNickNames.add(nickname);
+    }
+
+    public void removeNickname(String nickname) {
+        //remove nickname from whisperlist
+        whisperList.remove(nickname);
+
+        //remove nickname from nicknamelist
+        allNickNames.remove(nickname);
+    }
+
+    //returns sender object to send private message
+    public SendFromServer getSenderForWhisper(String nickname) {
+        return whisperList.get(nickname);
+    }
+
+    // add sender object from publicChatList
+    public void addSender(SendFromServer connection) {
+        connections.add(connection);
+    }
+    // remove sender object from publicChatList
+    public void removeSender(SendFromServer connection) {
+        connections.remove(connection);
+    }
+
+
+
 }

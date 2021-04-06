@@ -42,12 +42,9 @@ public class GUIManager extends Application {
 
     private void setLoginScene() {
 
-        //activate LoginEventHandler
-        LoginEventHandler.INSTANCE.setUp(this);
-
         // activate loginWindow
 
-        // root
+        // TODO why does it not work:
         //FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/resources/loginWindow.fxml")));
 
         URL url = null;
@@ -57,9 +54,7 @@ public class GUIManager extends Application {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         FXMLLoader loginLoader = new FXMLLoader(url);
-
         Parent root = null;
         try {
             root = loginLoader.load();
@@ -82,30 +77,21 @@ public class GUIManager extends Application {
         String lobbyPath = "src/main/resources/lobbyWindow.fxml";
         // activate Window
         //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
-
         URL url = null;
-
         try {
             url = Paths.get(lobbyPath).toUri().toURL();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         lobbyLoader = new FXMLLoader(url);
-
-
         // get path
         Parent root = null;
-
         try {
             root = lobbyLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         lobbyController = lobbyLoader.getController();
-
         // lobbyScene
         primaryStage.getScene().setRoot(root);
 

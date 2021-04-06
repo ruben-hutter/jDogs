@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
 import java.net.InetAddress;
@@ -37,6 +38,7 @@ public class ServerConnection {
     public boolean loggedIn;
     private boolean running;
     private Monitorcs monitorCS;
+    private String nickName;
     ScheduledExecutorService scheduledExecutorService = null;
 
     public ServerConnection(Socket socket, Server server) {
@@ -81,11 +83,6 @@ public class ServerConnection {
         messenger.start();
     }
 
-    public void getLoggedIn() {
-        server.connections.add(sender);
-        System.out.println(this.toString() + " logged in ");
-        loggedIn = true;
-    }
 
     public SendFromServer getSender () {
         return sender;
@@ -105,12 +102,18 @@ public class ServerConnection {
         scheduledExecutorService.shutdown();
         System.out.println(scheduledExecutorService.toString() + " stops now");
 
-        server.connections.remove(sender);
-        server.allNickNames.remove(messageHandlerServer.getNickName());
+        server.removeSender(sender);
+        server.removeNickname(messageHandlerServer.getNickName());
         this.listeningToClient.kill();
         this.sender.kill();
         this.messageHandlerServer.kill();
 
         running = false;
+    }
+
+    public void updateNickname(String nickName) {
+        loggedIn = true;
+        this.nickName = nickName;
+
     }
 }
