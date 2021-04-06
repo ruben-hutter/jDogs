@@ -1,6 +1,5 @@
 package jDogs.serverclient.clientside;
 
-import jDogs.gui.GUIManager;
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
 import java.io.IOException;
