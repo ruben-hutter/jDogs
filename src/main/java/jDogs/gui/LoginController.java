@@ -7,8 +7,6 @@ import javafx.scene.control.TextField;
 
 public class LoginController {
 
-    private String nickname;
-
     @FXML
     private Button loginButton;
 
@@ -26,6 +24,7 @@ public class LoginController {
 
     @FXML
     void loginButtonOnAction(ActionEvent event) {
+        String nickname;
         nickname = textField.getText();
         if (nickname.isEmpty() || nickname.isBlank() || nickname.length() < 3) {
             //open AlertWindow here

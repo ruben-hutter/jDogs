@@ -95,13 +95,26 @@ public class GUIManager extends Application {
         // lobbyScene
         primaryStage.getScene().setRoot(root);
 
+        lobbyController.displayPendentGameInLobby("Spiel1;Fritz;2;4");
+        lobbyController.displayPendentGameInLobby("Spiel2;Fritz;2;4");
+
+        lobbyController.displayPlayersInLobby("Hans");
+        lobbyController.displayPlayersInLobby("Fritz");
+        lobbyController.displayPlayersInLobby("Josef");
+
+
+
+
+
+
+
 
 
     }
 
 
     public void goToLobby(String nickname) {
-        client = new Client();
+        //client = new Client();
         setLobbyScene();
     }
 

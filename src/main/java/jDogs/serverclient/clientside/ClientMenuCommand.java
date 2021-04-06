@@ -36,7 +36,20 @@ public class ClientMenuCommand {
         switch (command) {
             case "USER":
                 String name;
-                System.out.println("server wants a nickname from you. Your default nickname "
+
+                //case 1: Server wants a nickname, it sends "USER" only
+                if (text.length() == command.length()) {
+                    name = client.getNickname();
+                    sendQueue.enqueue("USER " + name);
+                } else {
+                    //case 2: Server confirms nickname, it sends "USER " + new nick
+                    name = text.substring(4);
+                    client.setNickname(name);
+                    Platform.runLater(() -> GUIManager.getInstance().lobbyController.
+                            displayInfomsg("info from server. Your new nick is " + name));
+
+                }
+                /*System.out.println("server wants a nickname from you. Your default nickname "
                         + client.getHostName()
                         + " will be sent; accept by 'Y' or enter other name now");
                 while (keyBoardInQueue.isEmpty()) {
@@ -52,6 +65,9 @@ public class ClientMenuCommand {
                 }
                 // allow sending messages from keyboard to server
                 sendFromClient.keyBoardInBlocked = false;
+
+                 */
+
                 break;
 
             case "PCHT":

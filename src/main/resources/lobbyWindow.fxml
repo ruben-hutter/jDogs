@@ -5,7 +5,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -18,36 +17,23 @@
          <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="213.0" prefWidth="398.0">
                <children>
-                  <TableView prefHeight="214.0" prefWidth="385.0">
-                    <columns>
-                      <TableColumn prefWidth="283.20002442598343" text="Offene Spiele" />
-                      <TableColumn prefWidth="91.20001220703125" text="Spieler/Total" />
-                    </columns>
-                  </TableView>
+                  <TableView fx:id="tableViewActiveGames" prefHeight="214.0" prefWidth="385.0" />
                </children></AnchorPane>
          </content>
       </ScrollPane>
-      <SplitPane dividerPositions="0.24195278969957085" layoutX="118.0" layoutY="437.0" prefHeight="235.0" prefWidth="464.0">
+      <SplitPane layoutX="188.0" layoutY="352.0" prefHeight="320.0" prefWidth="394.0">
         <items>
-          <AnchorPane prefHeight="258.0" prefWidth="154.0">
-               <children>
-                  <TableView layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="238.0" prefWidth="116.0">
-                    <columns>
-                      <TableColumn maxWidth="115.20002442598343" minWidth="-1.0" prefWidth="115.20002442598343" text="aktiv" />
-                    </columns>
-                  </TableView>
-               </children></AnchorPane>
-            <SplitPane dividerPositions="0.7438080495356038" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+            <SplitPane dividerPositions="0.7438080495356038" orientation="VERTICAL" prefHeight="202.0" prefWidth="334.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="442.0">
                      <children>
-                        <TextArea fx:id="publicChatMessagesLobby" layoutX="2.0" layoutY="-5.0" prefHeight="200.0" prefWidth="340.0" />
+                        <TextArea fx:id="publicChatMessagesLobby" layoutX="-3.0" layoutY="-5.0" prefHeight="238.0" prefWidth="394.0" />
                      </children>
                   </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="83.0" prefWidth="280.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="76.0" prefWidth="394.0">
                      <children>
-                        <TextField fx:id="messageFieldLobby" prefHeight="63.0" prefWidth="218.0" promptText="Your message to everyone" />
-                        <Button fx:id="sendButtonLobby" layoutX="219.0" layoutY="19.0" mnemonicParsing="false" onAction="#sendButtonOnAction" text="SendMe" />
+                        <TextField fx:id="messageFieldLobby" layoutY="7.0" prefHeight="63.0" prefWidth="270.0" promptText="Your message to everyone" />
+                        <Button fx:id="sendButtonLobby" layoutX="283.0" layoutY="14.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="26.0" prefWidth="98.0" text="SendMe" />
                      </children>
                   </AnchorPane>
               </items>
@@ -65,5 +51,6 @@
             </MenuButton>
          </children>
       </Pane>
+      <TableView fx:id="tableViewActPlayers" layoutX="1.0" layoutY="356.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="298.0" prefWidth="186.0" />
    </children>
 </AnchorPane>
