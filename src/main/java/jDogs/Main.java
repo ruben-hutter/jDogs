@@ -16,7 +16,8 @@ public class Main {
         // creates the board
         Board board = new Board(NUM_PLAYERS);
 
-        // creates all the players
+        // creates all the players (has to be created in the right order,
+        // to give them the correct starting position
         Player[] players = new Player[NUM_PLAYERS];
         players[0] = new Player("player1", Alliance.YELLOW, board);
         players[1] = new Player("player2", Alliance.GREEN, board);

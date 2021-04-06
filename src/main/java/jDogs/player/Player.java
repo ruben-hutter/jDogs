@@ -12,7 +12,9 @@ import jDogs.board.HomeTiles;
  */
 public class Player {
 
-    Piece[] pieces;
+    private static int counter = 0;
+
+    public Piece[] pieces;
     String playerName;
     Alliance alliance;
     Board board;
@@ -21,18 +23,19 @@ public class Player {
         this.playerName = playerName;
         this.alliance = alliance;
         this.board = board;
-        pieces = createPieces();
+        pieces = createPieces(counter);
         setPiecesOnHome();
+        counter += Board.NUM_TRACK_TILES_X_PLAYER;
     }
 
     /**
      * Creates 4 pieces for a player
      * @return an array with the 4 pieces
      */
-    private Piece[] createPieces() {
+    private Piece[] createPieces(int startingPosition) {
         Piece[] pieces = new Piece[Board.NUM_HOME_TILES];
-        for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
-            pieces[i] = new Piece(alliance, i + 1);
+        for (int i = 0; i < pieces.length; i++) {
+            pieces[i] = new Piece(alliance, startingPosition,i + 1);
         }
         return pieces;
     }
