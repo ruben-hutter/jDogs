@@ -62,4 +62,18 @@ public class Player {
     public String toString() {
         return getPlayerName() + ": " + getAlliance();
     }
+
+    /**
+     *
+     * @param pieceID
+     * @return Piece with fitting pieceID
+     */
+    public Piece getPiece(int pieceID) {
+        for (int i = 0; i < pieces.length; i++) {
+            if (pieces[i].getPieceID() == pieceID) {
+                return pieces[i];
+            }
+        }
+        return null;
+    }
 }
