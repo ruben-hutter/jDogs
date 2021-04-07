@@ -138,4 +138,8 @@ public class Client {
     public String getNickname() {
         return nickname;
     }
+
+    public MessageHandlerClient getMessageHandlerClient() {
+        return messageHandlerClient;
+    }
 }

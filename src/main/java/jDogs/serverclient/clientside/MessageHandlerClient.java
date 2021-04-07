@@ -72,4 +72,7 @@ public class MessageHandlerClient implements Runnable{
     public void kill() {
         running = false;
     }
+
+    //specify particular lobbyGroup
+
 }

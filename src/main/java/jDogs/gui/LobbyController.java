@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -26,9 +28,11 @@ public class LobbyController implements Initializable {
     ObservableList<Participant> playersInLobby;
 
     private OpenGame selectedGame;
+    private String lobbyAddress;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        lobbyAddress = "";
 
         /**
          * TableViewActiveGames displays all active games
@@ -84,6 +88,8 @@ public class LobbyController implements Initializable {
         tableViewActPlayers.setItems((ObservableList) playersInLobby);
 
     }
+    @FXML
+    private Button quitButton;
 
     @FXML
     private Button joinButton;
@@ -111,11 +117,24 @@ public class LobbyController implements Initializable {
     private TextField textField;
 
     @FXML
+    void setQButtonOnAction(ActionEvent event) {
+        if(lobbyAddress != "") {
+            lobbyAddress = "";
+            new Alert(AlertType.INFORMATION, "you quit game and are public" ).showAndWait();
+        } else {
+            new Alert(AlertType.INFORMATION, "Error.you were already public" ).showAndWait();
+        }
+
+    }
+
+    @FXML
     void setJButtonOnAction(ActionEvent event) {
         if (selectedGame != null && tableViewActiveGames.getSelectionModel().getSelectedItem()!= null) {
-            System.out.println("you joined " + selectedGame.getName());
+            new Alert(AlertType.INFORMATION, "you joined " + selectedGame.getName()).showAndWait();
+            lobbyAddress = selectedGame.getName();
+
         } else {
-            System.out.println("no game selected");
+            new Alert(AlertType.INFORMATION, "you did not select a game");
         }
     }
 
@@ -131,10 +150,17 @@ public class LobbyController implements Initializable {
         String message = messageFieldLobby.getText();
         messageFieldLobby.clear();
         //System.out.println(message);
-        Client.getInstance().sendMessageToServer("PCHT " + message);
+        Client.getInstance().sendMessageToServer("PCHT" + lobbyAddress + message);
     }
 
+    /**
+     * all display methods enable Input via GUI-Manager from Server or local
+     */
 
+    /**
+     *
+     * @param message from server for public chat
+     */
 
     public void displayPCHTmsg(String message) {
         //System.out.println(message);
