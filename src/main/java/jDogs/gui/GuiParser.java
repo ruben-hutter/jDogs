@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import jDogs.serverclient.clientside.Client;
 import java.sql.SQLOutput;
 
 /**
@@ -54,9 +55,34 @@ public class GuiParser {
         String needed = message.substring(sumSeparator + 1);
 
 
-
-
-
         return new OpenGame(id,responsible,sum,needed);
+    }
+
+
+    public static String sendWcht(String message) {
+        for (int i = 0; i < message.length(); i++) {
+            if (Character.isWhitespace(message.toCharArray()[i])) {
+                if (!message.substring(i + 1).isBlank() || !message.substring(i + 1).isEmpty()) {
+                    return message.substring(1, i) + ";" + message.substring(i + 1);
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String[] getArray(String activeUsers) {
+        // activeUsers String contains at the first place: the number of nicknames in String
+        // e.g. "3;Joe;Jonas;John"
+        String[] array = new String[activeUsers.charAt(0)];
+        int arrayCount = 0;
+        int first = 2;
+        for (int i = 2; i < activeUsers.length(); i++) {
+            if(activeUsers.charAt(i) == ';') {
+                array[arrayCount] = activeUsers.substring(first,i);
+                arrayCount++;
+                first = i + 1;
+            }
+        }
+        return array;
     }
 }

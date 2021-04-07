@@ -22,6 +22,7 @@ public class Server {
     ArrayList<SendFromServer> connections = new ArrayList<>();
     ArrayList<String> allNickNames = new ArrayList<>();
     private Map<String, SendFromServer> whisperList = new HashMap<>();
+    ArrayList<GameFile> allGames = new ArrayList<GameFile>();
 
     boolean running = true;
 

@@ -43,44 +43,44 @@ public class ClientMenuCommand {
                     sendQueue.enqueue("USER " + name);
                 } else {
                     //case 2: Server confirms nickname, it sends "USER " + new nick
-                    name = text.substring(4);
+                    name = text.substring(5);
                     client.setNickname(name);
+                    sendFromClient.keyBoardInBlocked = false;
+
                     Platform.runLater(() -> GUIManager.getInstance().lobbyController.
                             displayInfomsg("info from server. Your new nick is " + name));
-
                 }
-                /*System.out.println("server wants a nickname from you. Your default nickname "
-                        + client.getHostName()
-                        + " will be sent; accept by 'Y' or enter other name now");
-                while (keyBoardInQueue.isEmpty()) {
-                    // do nothing
-                    // for later: wake up, if keyboardInput is not empty anymore
-                    // or handle with commands
-                }
-                name = keyBoardInQueue.dequeue();
-                if (name.equalsIgnoreCase("y")) {
-                    sendQueue.enqueue("USER " + client.getHostName());
-                } else {
-                    sendQueue.enqueue("USER " + name);
-                }
-                // allow sending messages from keyboard to server
-                sendFromClient.keyBoardInBlocked = false;
-
-                 */
-
                 break;
 
             case "PCHT":
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(4)));
+                System.out.println("PCHT: " + text.substring(4));
 
-                System.out.println("public chat message: " + text.substring(4));
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
                 break;
 
             case "WCHT":
+                System.out.println("WCHT: " + text.substring(5));
+
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(4)));
-                System.out.println("whisper chat message: " + text.substring(4));
+                        GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
+
+                break;
+
+            case "LPUB":
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayLPUB(text.substring(5)));
+                break;
+
+
+            case "LSEP":
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayLSEP(text.substring(5)));
+                break;
+
+            case "INFO":
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayPCHTmsg("SRVRINFO: " + text.substring(5)));
 
 
 

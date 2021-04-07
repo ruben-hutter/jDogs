@@ -55,6 +55,7 @@ public class ReceiveFromClient implements Runnable {
                         //connectionToClientMonitor.sendSignal();
                     } else {
                         //write to receiver-queue
+                        System.out.println("received:  " + textIn);
                         receivedFromThisClient.enqueue(textIn);
                     }
                 }

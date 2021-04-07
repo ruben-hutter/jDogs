@@ -40,11 +40,10 @@ public class SendFromClient implements Runnable {
             if (!sendQueue.isEmpty()) {
                 reply = sendQueue.dequeue();
                 sendStringToServer(reply);
-                //System.out.println("send Queue:  " + reply);
             }
             if (!keyBoardInBlocked && !keyBoardInQueue.isEmpty()) {
                 reply = keyBoardInQueue.dequeue();
-                //System.out.println("keyboard sending: " + reply);
+                System.out.println("keyboard sending: " + reply);
                 sendStringToServer(reply);
             }
             try {

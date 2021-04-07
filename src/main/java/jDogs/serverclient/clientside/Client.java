@@ -38,6 +38,13 @@ public class Client {
         return instance;
     }
 
+ /* //maintenance only
+    public static void main(String[] args) {
+        new Client();
+    }
+
+  */
+
     /**
      * Sets up connection to Server
      * Messages are saved in specific queues

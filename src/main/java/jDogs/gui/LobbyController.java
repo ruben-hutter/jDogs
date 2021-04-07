@@ -29,6 +29,8 @@ public class LobbyController implements Initializable {
 
     private OpenGame selectedGame;
     private String lobbyAddress;
+    private String[] activeUsersInPublic;
+    private String[] activeUsersInSeparee;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -130,7 +132,7 @@ public class LobbyController implements Initializable {
     void setJButtonOnAction(ActionEvent event) {
         if (selectedGame != null && tableViewActiveGames.getSelectionModel().getSelectedItem()!= null) {
             new Alert(AlertType.INFORMATION, "you joined " + selectedGame.getName()).showAndWait();
-            lobbyAddress = selectedGame.getName();
+            lobbyAddress = "" + selectedGame.getName();
 
         } else {
             new Alert(AlertType.INFORMATION, "you did not select a game");
@@ -149,7 +151,25 @@ public class LobbyController implements Initializable {
         String message = messageFieldLobby.getText();
         messageFieldLobby.clear();
         //System.out.println(message);
-        Client.getInstance().sendMessageToServer("PCHT" + lobbyAddress + message);
+
+        if (message.isEmpty() || message.isBlank()) {
+            //not allowed to send
+        } else {
+            System.out.println(message + " : " + message.charAt(0));
+            if (message.charAt(0) == '@') {
+                String parsedMsg = null;
+                if ((parsedMsg = GuiParser.sendWcht(message)) == null) {
+                    new Alert(AlertType.ERROR,
+                            "wrong Wcht format entered. E.g. '@nickname message' ");
+                } else {
+                    displayWCHTmsg(message);
+                    Client.getInstance().sendMessageToServer("WCHT " + parsedMsg);
+                }
+
+            } else {
+                Client.getInstance().sendMessageToServer("PCHT" + lobbyAddress + message);
+            }
+        }
     }
 
     /**
@@ -168,7 +188,7 @@ public class LobbyController implements Initializable {
 
 
     public void displayWCHTmsg(String message) {
-        System.out.println(message + " wcht not implemented");
+        publicChatMessagesLobby.appendText(message + "\n");
     }
 
     public void displayInfomsg(String info) {
@@ -210,4 +230,13 @@ public class LobbyController implements Initializable {
     }
 
 
+    public void displayLPUB(String activeUsers) {
+       String[] userArray = GuiParser.getArray(activeUsers);
+
+
+    }
+
+    public void displayLSEP(String activeUsers) {
+        String[] userArray = GuiParser.getArray(activeUsers);
+    }
 }

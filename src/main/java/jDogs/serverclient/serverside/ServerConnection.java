@@ -39,7 +39,9 @@ public class ServerConnection {
     private boolean running;
     private Monitorcs monitorCS;
     private String nickName;
+    private ServerParser serverParser;
     ScheduledExecutorService scheduledExecutorService = null;
+
 
     public ServerConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -115,5 +117,15 @@ public class ServerConnection {
         loggedIn = true;
         this.nickName = nickName;
 
+    }
+
+    public String getDefaultName() {
+        loggedIn = true;
+        nickName = socket.getLocalAddress().getHostName();
+        return nickName;
+    }
+
+    public String getNickname() {
+        return nickName;
     }
 }

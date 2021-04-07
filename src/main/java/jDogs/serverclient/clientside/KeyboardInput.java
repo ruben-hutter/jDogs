@@ -38,7 +38,6 @@ public class KeyboardInput implements Runnable {
                 if(console.hasNextLine()) {
                    input = console.nextLine();
                    keyBoardInput.enqueue(input);
-                   System.out.println("from keyboard:  " + input);
                 }
             }
         }

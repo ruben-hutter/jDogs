@@ -2,7 +2,7 @@ package jDogs.serverclient.serverside;
 
 /**
  * this enum contains all words used as commands
- * received by the server and which deal with the menu/lobby.
+ * received by the server from clients and which deal with the menu/lobby.
  */
 public enum ServerMenuProtocol {
 
@@ -49,7 +49,11 @@ public enum ServerMenuProtocol {
     /**
      * Command to tell if a client has joined the game or not.
      */
-    JOIN;
+    JOIN,
+    /**
+     * Command to set game up in lobby
+     */
+    SETG;
 
 
 

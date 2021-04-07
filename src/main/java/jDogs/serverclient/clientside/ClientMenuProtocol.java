@@ -50,7 +50,19 @@ public enum ClientMenuProtocol {
     /**
      * Command to join a game.
      */
-    JOIN;
+    JOIN,
+    /**
+     * Information about the active users in Lobby Séparée
+     */
+    LSEP,
+    /**
+     * Information about the active users in Public Lobby
+     */
+    LPUB,
+    /**
+     * Common Information from Server
+     */
+    INFO;
 
 
 
@@ -59,7 +71,7 @@ public enum ClientMenuProtocol {
     /**
      *
      * @param text check if a string matches the list
-     * @return if matches, else does not match
+     * @return true if matches, else does not match
      */
     public static boolean isACommand(String text) {
         int i = 8;

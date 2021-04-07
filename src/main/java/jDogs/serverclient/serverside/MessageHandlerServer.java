@@ -54,6 +54,7 @@ public class MessageHandlerServer implements Runnable {
 
                     if (text.length() >= 4 && ServerMenuProtocol.isACommand(text)) {
                         serverMenuCommand.execute(text);
+                        System.out.println("menu command: " + text);
                     } else {
                         System.err.println("message did not match menu or game protocol:  " + text);
                     }

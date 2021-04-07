@@ -18,6 +18,7 @@ public class ServerMenuCommand {
     private Queuejd sendToAll;
     private boolean loggedIn;
     private String nickName;
+    private ServerParser serverParser;
 
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -28,6 +29,7 @@ public class ServerMenuCommand {
         this.sendToAll = sendToAll;
         this.loggedIn = false;
         this.nickName = null;
+        this.serverParser = new ServerParser(server,serverConnection);
     }
 
     public void execute (String text) {
@@ -41,15 +43,15 @@ public class ServerMenuCommand {
                     String oldNick = nickName;
                     nickName = text.substring(5);
 
-                    if (server.isValidNickName(nickName)) {
-                        sendToThisClient.enqueue("hi, user! your new nickname is: " + nickName);
-                    } else {
+                    if (!validCharacters(nickName)) {
+                        serverConnection.getDefaultName();
+                    }
+
+                    if (!server.isValidNickName(nickName)) {
                         int number = 2;
                         while (true) {
                             if (server.isValidNickName(nickName + " " + number)) {
                                 nickName = nickName + " " + number;
-                                sendToThisClient.enqueue("hi, user! your new name is: "
-                                        + nickName);
                                 break;
                             } else {
                                 number++;
@@ -57,16 +59,19 @@ public class ServerMenuCommand {
                         }
                     }
 
+
                     if (oldNick != null) {
                         server.removeNickname(oldNick);
                     }
-                    System.out.println("login worked");
+                    sendToThisClient.enqueue("USER "
+                            + nickName);
+
+                    System.out.println("login worked " + "USER " + nickName);
                     if (loggedIn) {
                         server.removeNickname(nickName);
                     } else {
                         server.addSender(serverConnection.getSender());
                     }
-                    //nickName = "< " + nickName + " > ";
                     server.addNickname(nickName, serverConnection.getSender());
                     serverConnection.updateNickname(nickName);
 
@@ -98,10 +103,9 @@ public class ServerMenuCommand {
                 break;
 
             case "WCHT":
-                // chose a partner whom to send the message
-                //get separator sign
+                //send private message
                 int separator = -1;
-                for (int i = 0; i < text.substring(4).length(); i++) {
+                for (int i = 0; i < text.substring(5).length(); i++) {
                    if (text.substring(4).toCharArray()[i] == ';') {
                        separator = i;
                        break;
@@ -109,15 +113,15 @@ public class ServerMenuCommand {
                 }
 
                 if (separator == -1) {
-                    sendToThisClient.enqueue("wrong WCHT format");
+                    sendToThisClient.enqueue("INFO " + "wrong WCHT format");
                 } else {
                     String adressor = text.substring(5,4 + separator);
-                    String message = text.substring(4 + separator + 1);
+                    String message = text.substring(5 + separator);
                     try {
-                        server.getSenderForWhisper(adressor).sendStringToClient("WCHT " + nickName + ";" + message);
+                        server.getSenderForWhisper(adressor).sendStringToClient("WCHT " + "@" +nickName + ": " + message);
                     } catch (Exception e) {
                         //prevent shutdown if nickname doesn`t exist in hashmap
-                        sendToThisClient.enqueue("nickname unknown");
+                        sendToThisClient.enqueue("INFO nickname unknown");
                     }
                 }
 
@@ -131,12 +135,62 @@ public class ServerMenuCommand {
                 }
                 break;
 
+            case "SETG":
+                //set game up with this command
+                try {
+                    setUpGame(text.substring(5));
+                } catch (Exception e) {
+                    sendToThisClient.enqueue("INFO wrong gameFile format");
+
+                }
+
+
+
+
+            case "JOIN":
+                //join a game with this command
+                try {
+                    joinGame(text.substring(5));
+                } catch (Exception e) {
+                    sendToThisClient.enqueue("INFO wrong format, can`t join");
+                }
+                break;
+
             case "STAR":
                 // TODO confirm you wanna start the game
                 break;
 
         }
     }
+
+    private void joinGame(String substring) {
+        ServerParser.joinGame(substring);
+    }
+
+    private void setUpGame(String game) {
+       GameFile gameFile = serverParser.setUpGame(game);
+       if (gameFile == null) {
+           sendToThisClient.enqueue("INFO wrong game file format");
+       } else {
+          server.allGames.add(gameFile);
+          sendToAll.enqueue(gameFile.getSendReady());
+       }
+    }
+
+    /**
+     *
+     * @param name nickname to check
+     * @return false, if name contains ';'
+     */
+    private boolean validCharacters(String name) {
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) == ';') {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Returns the nickName of the user
      * @return nickName
