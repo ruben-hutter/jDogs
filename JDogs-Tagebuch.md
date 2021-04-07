@@ -188,3 +188,14 @@ Heute ging es darum, die Aufgaben zu verteilen und einen ersten Überblick über
 Bis zum nächsten Treffen wird sich Ruben um die GameLogic kümmern, Johanna schaut sich die Konzepte zur Qualitätssicherung(JUnit-Test, Mockito..) an, um herauszufinden, wie wir sie benutzen können, Gregor kümmert sich um den WhisperChat und die GUI.
 
 ---
+
+*03.04.2021 10:00, Johanna*
+
+### Protokoll#08 - Protokoll
+
+Gregor berichtete von einem grösseren Problem, das bei ihm in Zusammenhang mit Guava Eventbus auftrat und es ihm praktisch verunmöglichte, weiter an der GUI zu arbeiten. Wir sprachen noch über JUnit-Tests und die Game-Logic. Uns ist noch nicht ganz klar, wie wir JUnit-Tests für komplexere Aufgaben anwenden können. 
+Gregor versucht das Problem mit Eventbus zu lösen. Ruben und Johanna versuchen sich am Nachmittag im Pair-Programming an einer Implementation des Spielbretts und der Positionen der Murmeln. 
+Bericht vom Nachmittag (Spielbrett): Wir überlegten, ob wir das Spielbrett als Murmel-Array darstellen oder ob das Spielbrett getrennt von den Murmeln dargestellt werden sollte. Wir entschieden uns für Letzteres.
+
+
+ 
