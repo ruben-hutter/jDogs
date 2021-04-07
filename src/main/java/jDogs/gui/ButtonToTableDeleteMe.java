@@ -8,7 +8,7 @@ import javafx.scene.control.TableColumn;
 
 public class ButtonToTableDeleteMe {
 
-    private void addButtonToTable() {
+   /* private void addButtonToTable() {
         TableColumn<Data, Void> colBtn = new TableColumn("Button Column");
 
         Callback<TableColumn<Data, Void>, TableCell<Data, Void>> cellFactory =
@@ -44,4 +44,6 @@ public class ButtonToTableDeleteMe {
 
         table.getColumns().add(colBtn);
     }
+
+    */
 }

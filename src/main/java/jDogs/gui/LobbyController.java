@@ -2,6 +2,7 @@ package jDogs.gui;
 
 import jDogs.serverclient.clientside.Client;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,16 +12,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class LobbyController implements Initializable {
     @FXML
     ObservableList<OpenGame> openGames;
     @FXML
     ObservableList<Participant> playersInLobby;
+
+    private OpenGame selectedGame;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,15 +54,23 @@ public class LobbyController implements Initializable {
                 new PropertyValueFactory<OpenGame, String>("button")
         );
 
+
+
+
+
+
         tableViewActiveGames.setItems((ObservableList)openGames);
+
+        tableViewActiveGames.setOnMousePressed ((MouseEvent event) -> {
+            if (event.getClickCount() == 1 &&
+                    ((tableViewActiveGames.getSelectionModel().getSelectedItem() != null))) {
+                    Object object = tableViewActiveGames.getSelectionModel().getSelectedItem();
+                    selectedGame = (OpenGame) object;
+            };});
 
         /**
          * tableViewPlayersInLobby: displays all players in Lobby
          */
-
-
-
-
 
         TableColumn player = new TableColumn("player");
         TableColumn pM = new TableColumn("pM");
@@ -70,9 +83,11 @@ public class LobbyController implements Initializable {
 
         tableViewActPlayers.setItems((ObservableList) playersInLobby);
 
-
-
     }
+
+    @FXML
+    private Button joinButton;
+
     @FXML
     private TableView<String> tableViewActPlayers;
 
@@ -94,6 +109,15 @@ public class LobbyController implements Initializable {
 
     @FXML
     private TextField textField;
+
+    @FXML
+    void setJButtonOnAction(ActionEvent event) {
+        if (selectedGame != null && tableViewActiveGames.getSelectionModel().getSelectedItem()!= null) {
+            System.out.println("you joined " + selectedGame.getName());
+        } else {
+            System.out.println("no game selected");
+        }
+    }
 
     @FXML
     void exitJDogs(ActionEvent event) {
