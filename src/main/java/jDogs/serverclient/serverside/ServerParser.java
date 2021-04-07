@@ -12,15 +12,6 @@ public class ServerParser {
         this.serverConnection = serverConnection;
     }
 
-    public static void joinGame(String substring) {
-        for (int i = 0; i < substring.length(); i++) {
-            if (substring.charAt(i) == ';') {
-                // TODO format: gameName only gamename distroy this after
-            }
-        }
-    }
-
-
     public GameFile setUpGame(String gameSetup) {
 
         int nameSeparator = 0;
@@ -40,6 +31,7 @@ public class ServerParser {
 
         System.out.println(name);
         System.out.println(total);
+        System.out.println("size " + server.allGames.size());
 
         String host = serverConnection.getNickname();
         name = checkName(name);
@@ -56,7 +48,7 @@ public class ServerParser {
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
 
@@ -76,6 +68,8 @@ public class ServerParser {
         }
         return name;
     }
+
+
 
 
 }

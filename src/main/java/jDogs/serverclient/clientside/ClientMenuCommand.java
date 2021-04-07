@@ -46,9 +46,11 @@ public class ClientMenuCommand {
                     name = text.substring(5);
                     client.setNickname(name);
                     sendFromClient.keyBoardInBlocked = false;
-
+                    /*
                     Platform.runLater(() -> GUIManager.getInstance().lobbyController.
                             displayInfomsg("info from server. Your new nick is " + name));
+
+                     */
                 }
                 break;
 
@@ -68,20 +70,41 @@ public class ClientMenuCommand {
                 break;
 
             case "LPUB":
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLPUB(text.substring(5)));
+
+                 */
+                System.out.println("LPUB: " + text.substring(5));
                 break;
 
 
             case "LSEP":
-                Platform.runLater(()->
+
+                /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLSEP(text.substring(5)));
+
+                 */
+                System.out.println("LSEP: " + text.substring(5));
                 break;
 
-            case "INFO":
+            case "OGAM":
+                System.out.println("OGAM: " + text.substring(5));
+                /*
                 Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displaynewGame(text.substring(5)));
+
+                 */
+
+
+
+            case "INFO":
+                /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg("SRVRINFO: " + text.substring(5)));
 
+                 */
+                System.out.println("SRVRINFO: " + text.substring(5));
+                break;
 
 
             default:

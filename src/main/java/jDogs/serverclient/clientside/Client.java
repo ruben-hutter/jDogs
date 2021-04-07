@@ -38,12 +38,13 @@ public class Client {
         return instance;
     }
 
- /* //maintenance only
+ //maintenance only
     public static void main(String[] args) {
-        new Client();
+        Client c = new Client();
+        c.setNickname("maintenance");
     }
 
-  */
+
 
     /**
      * Sets up connection to Server

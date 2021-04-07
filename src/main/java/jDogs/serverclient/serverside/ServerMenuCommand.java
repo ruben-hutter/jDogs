@@ -143,16 +143,19 @@ public class ServerMenuCommand {
                     sendToThisClient.enqueue("INFO wrong gameFile format");
 
                 }
-
-
-
+                break;
 
             case "JOIN":
                 //join a game with this command
                 try {
-                    joinGame(text.substring(5));
+                    GameFile game = getGame(text.substring(5));
+                    if (game == null) {
+                        sendToThisClient.enqueue("INFO join not possible,game name does not exist");
+                    } else {
+                        game.addParticipants(serverConnection.getNickname());
+                    }
                 } catch (Exception e) {
-                    sendToThisClient.enqueue("INFO wrong format, can`t join");
+                    sendToThisClient.enqueue("INFO wrong format,you cannot join");
                 }
                 break;
 
@@ -163,17 +166,24 @@ public class ServerMenuCommand {
         }
     }
 
-    private void joinGame(String substring) {
-        ServerParser.joinGame(substring);
+    private GameFile getGame(String gameName) {
+        for (int i = 0; i < server.allGames.size(); i++) {
+            if (server.allGames.get(i).getNameId().equals(gameName)) {
+               return server.allGames.get(i);
+            }
+        }
+        return null;
     }
+
 
     private void setUpGame(String game) {
        GameFile gameFile = serverParser.setUpGame(game);
        if (gameFile == null) {
+           System.err.println("ERROR");
            sendToThisClient.enqueue("INFO wrong game file format");
        } else {
           server.allGames.add(gameFile);
-          sendToAll.enqueue(gameFile.getSendReady());
+          sendToAll.enqueue("OGAM " + gameFile.getSendReady());
        }
     }
 
