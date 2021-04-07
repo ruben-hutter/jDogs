@@ -77,13 +77,12 @@ public class LobbyController implements Initializable {
          */
 
         TableColumn player = new TableColumn("player");
-        TableColumn pM = new TableColumn("pM");
-        tableViewActPlayers.getColumns().addAll(player,pM);
+        tableViewActPlayers.getColumns().addAll(player);
 
         playersInLobby = FXCollections.observableArrayList();
 
         player.setCellValueFactory(new PropertyValueFactory<Participant, String>("player"));
-        pM.setCellValueFactory(new PropertyValueFactory<Participant, Button>("button"));
+
 
         tableViewActPlayers.setItems((ObservableList) playersInLobby);
 
