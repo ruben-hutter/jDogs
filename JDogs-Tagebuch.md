@@ -197,5 +197,32 @@ Gregor berichtete von einem grösseren Problem, das bei ihm in Zusammenhang mit 
 Gregor versucht das Problem mit Eventbus zu lösen. Ruben und Johanna versuchen sich am Nachmittag im Pair-Programming an einer Implementation des Spielbretts und der Positionen der Murmeln. 
 Bericht vom Nachmittag (Spielbrett): Wir überlegten, ob wir das Spielbrett als Murmel-Array darstellen oder ob das Spielbrett getrennt von den Murmeln dargestellt werden sollte. Wir entschieden uns für Letzteres.
 
+**Nächstes Treffen:** Montag, 05.04.21, 16:30 Uhr
+
+*05.04.2021 16:00, Johanna*
+
+### Protokoll#09 - Protokoll
+
+Ruben zeigte uns seine Implementation des Spielbretts. Das Spielbrett sowie die Position der Spieler kann auf der Konsole ausgegegeben werden. Wir diskutierten,  ob die Farbe der Karten nötig ist, oder ob der Kartenwert reicht. Wir überlegten, welche externen Libraries wir benutzen könnten und entschieden, dass sich Gregor Log4j, Ruben Guava und Johanna Mockito genauer ansehen soll. Gregor macht sich Gedanken zur Regelübrprüfung. 
+
+**Nächstes Treffen:** Mittwoch, 07.04.21 in der Übungsstunde
+
+
+*07.04.2021 10:00, Johanna*
+
+### Protokoll#10 - Protokoll
+
+Gregor konnte das Problem mit Guava Eventbus glücklicherweise lösen. Wir besprachen das Spielbrett, die Karten, GUI und die Anforderungen für den Meilenstein 3.
+- Spielbrett: Wir diskutierten, wie wir das Spielbrett und die Spielfiguren konstruieren sollen, damit wir jeweils den aktuellen Stand der Figuren abfragen können. Gregor schlug vor, eine abstrakte Klasse Tiles zu erstellen,  von der dann die Heaven Tiles, Home Tiles und Track Tiles abgeleitet werden. 
+- Karten: Gregor schlug vor, eine abstrakte Klasse Card zu erstellen, von der dann für jede Karte eine eigene Klasse abgeleitet werden kann.Um den Spielzug zu überprüfen reicht es, wenn lediglich der Wert der Karte übergeben wird. Spezialkarten sind Joker und Ass, die verschiedene Werte einnehmen können. 
+- GUI: Ruben schlug vor, dass ein WhisperChat mit einer anderen Person gestartet werden kann, wenn das Zeichen @ verwendet wird. 
+
+
+Wir fragten Tim, was man alles mit JUnit-Tests testen sollte. Er meinte, hauptsächlich sollte die GameLogic getestet werden, die Verbindung zwischen Client und Server sei schwierig zu testen. 
+
+**Nächstes Treffen:** Freitag, 09.04.21, 10 Uhr. 
+
+Bis dahin kümmert sich Gregor weiter um GUI, GameRules und Logger, Ruben um das Spielbrett und Guava und Johanna um die Karten und Mockito. 
+
 
  
