@@ -29,6 +29,11 @@ public class ClientGameCommand {
                 }
                 break;
 
+            case "ROUN":
+                //TODO received hand of cards display in Game GUI
+                System.out.println("ROUN: " + text.substring(5));
+                break;
+
             default:
                 System.out.println("the command " + command + " is not implemented. Can`t execute " + text);
 

@@ -129,9 +129,6 @@ public class ClientMenuCommand {
                 //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
                 break;
 
-            case "ROUN":
-                //TODO received hand of cards display in Game GUI
-                break;
 
             default:
                 System.out.println("received from server " + text + ". This command " + command

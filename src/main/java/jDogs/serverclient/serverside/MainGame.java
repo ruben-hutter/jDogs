@@ -39,10 +39,13 @@ public class MainGame {
         }
     }
 
-
     private void nextTurn() {
         //sendRequest to next player to make a move
-        Server.getInstance().getSender(gameArray[turnNumber] + "TURN");
+
+        Server.getInstance().getSender(gameArray[turnNumber]).sendStringToClient("TURN");
+        System.out.println(turnNumber);
+        System.out.println(gameArray[turnNumber]);
+
         System.out.println("TURN");
     }
 

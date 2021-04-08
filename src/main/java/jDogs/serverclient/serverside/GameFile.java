@@ -20,7 +20,7 @@ public class GameFile {
         this.participants = host;
         this.numberParticipants = 1;
         this.confirmedParticipants = host;
-        this.numberOfConfirmed = 1;
+        this.numberOfConfirmed = 0;
 
     }
 
@@ -80,7 +80,11 @@ public class GameFile {
     }
 
     public void confirmStart(String nickName) {
-        confirmedParticipants += ";"+ nickName;
+        if (numberOfConfirmed == 0) {
+            confirmedParticipants = nickName;
+        } else {
+            confirmedParticipants += nickName;
+        }
         numberOfConfirmed++;
     }
 

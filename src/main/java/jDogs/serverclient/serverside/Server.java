@@ -6,7 +6,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import org.checkerframework.checker.units.qual.A;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -20,11 +19,13 @@ import org.checkerframework.checker.units.qual.A;
 public class Server {
 
     private ServerSocket serverSocket;
-    ArrayList<SendFromServer> connections = new ArrayList<>();
+    ArrayList<SendFromServer> senderlist = new ArrayList<>();
     ArrayList<String> allNickNames = new ArrayList<>();
     private Map<String, SendFromServer> whisperList = new HashMap<>();
     ArrayList<GameFile> allGamesNotFinished = new ArrayList<GameFile>();
     ArrayList<MainGame> runningGames = new ArrayList<>();
+    ArrayList<ServerConnection> serverConnections = new ArrayList<>();
+
     private static Server instance;
 
     boolean running = true;
@@ -47,7 +48,9 @@ public class Server {
             // runs as long as the server is activated
             while(running) {
                 Socket socket = serverSocket.accept();
-                new ServerConnection(socket, this).createConnection();
+                ServerConnection sc = new ServerConnection(socket, this);
+                sc.createConnection();
+                serverConnections.add(sc);
 
                 /*
                 // new threads to maintain connection to the individual clients
@@ -56,7 +59,7 @@ public class Server {
 
                  */
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
-                System.out.println("connections size:  " + (connections.size() + 1));
+                System.out.println("senderlist size:  " + (senderlist.size() + 1));
                 try {
                     Thread.sleep(30);
                 } catch (InterruptedException e) {
@@ -113,15 +116,24 @@ public class Server {
 
     // add sender object from publicChatList
     public void addSender(SendFromServer connection) {
-        connections.add(connection);
+        senderlist.add(connection);
     }
     // remove sender object from publicChatList
     public void removeSender(SendFromServer connection) {
-        connections.remove(connection);
+        senderlist.remove(connection);
     }
 
 
     public void startGame(MainGame mainGame) {
         runningGames.add(mainGame);
+    }
+
+    public ServerConnection getServerConnections(String nickname) {
+        for (int i = 0; i < serverConnections.size(); i++) {
+            if (serverConnections.get(i).getNickname() == nickname) {
+                return serverConnections.get(i);
+            }
+        }
+        return null;
     }
 }

@@ -88,4 +88,8 @@ public class MessageHandlerServer implements Runnable {
     public void kill() {
         running = false;
     }
+
+    public ServerMenuCommand getServerMenuCommand() {
+        return serverMenuCommand;
+    }
 }

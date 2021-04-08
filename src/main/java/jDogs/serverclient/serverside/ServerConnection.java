@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * it does not execute any commands or listens to client etc.
  *
  * stopNumber is the number of the sender-object saved
- * in the ArrayList of server.connections.
+ * in the ArrayList of server.senderlist.
  * this enables to delete this sender-object from the list
  * to prevent errors in the other sender threads after disconnection of this client
  */
@@ -127,5 +127,9 @@ public class ServerConnection {
 
     public String getNickname() {
         return nickName;
+    }
+
+    public ServerMenuCommand getServerMenuCommand() {
+        return messageHandlerServer.getServerMenuCommand();
     }
 }

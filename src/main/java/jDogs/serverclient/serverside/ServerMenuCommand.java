@@ -106,9 +106,8 @@ public class ServerMenuCommand {
                     MainGame mainGame = getRunningGame(actualGame);
                     sendMessageToThisGroup(mainGame.getGameFile().getParticipantsArray(), "QUIT");
                     sendMessageToThisGroup(mainGame.getGameFile().getParticipantsArray(), "INFO user " + nickName + " left session" );
-                    server.runningGames.remove(mainGame);
-                    server.allGamesNotFinished.remove(getGame(actualGame));
                     isPlaying = false;
+                    endGameforAll(mainGame);
                     break;
                 }
 
@@ -126,6 +125,7 @@ public class ServerMenuCommand {
                     joinedGame = false;
                     break;
                 }
+
                 sendToThisClient.enqueue("INFO logout now");
                 serverConnection.kill();
                 break;
@@ -189,11 +189,13 @@ public class ServerMenuCommand {
 
             case "JOIN":
                 //join a game with this command
+                System.out.println("JOIN from " +nickName + " : " + text );
                 try {
                     if (isPlaying || joinedGame) {
                         sendToThisClient.enqueue("INFO already joined a game or playing");
                         break;
                     }
+
                     GameFile game = getGame(text.substring(5));
                     if (game == null) {
                         sendToThisClient.enqueue("INFO join not possible,game name does not exist");
@@ -226,15 +228,26 @@ public class ServerMenuCommand {
                 gameFile.confirmStart(nickName);
                 isPlaying = true;
                 actualGame = gameFile.getNameId();
+
                 if (gameFile.startGame()) {
-                    sendToAll.enqueue("DOGA " + gameFile.getNameId());
+                    sendToAll.enqueue("GAME " + gameFile.getNameId());
                     server.startGame(new MainGame(gameFile));
                 }
                 break;
-
-
-
         }
+    }
+
+    private void endGameforAll(MainGame mainGame) {
+        server.runningGames.remove(mainGame);
+        server.allGamesNotFinished.remove(getGame(actualGame));
+        String[] array = mainGame.getGameFile().getParticipantsArray();
+        for (int i = 0; i < array.length; i++) {
+            server.getServerConnections(array[i]).getServerMenuCommand().setIsPlaying(false);
+        }
+    }
+
+    private void setIsPlaying(boolean value) {
+        isPlaying = value;
     }
 
     private void sendMessageToThisGroup(String[] participantsArray, String message) {
