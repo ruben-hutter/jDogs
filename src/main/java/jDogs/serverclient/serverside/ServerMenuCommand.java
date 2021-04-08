@@ -19,6 +19,8 @@ public class ServerMenuCommand {
     private boolean loggedIn;
     private String nickName;
     private ServerParser serverParser;
+    private  boolean isPlaying;
+    private boolean joinedGame;
 
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -30,6 +32,8 @@ public class ServerMenuCommand {
         this.loggedIn = false;
         this.nickName = null;
         this.serverParser = new ServerParser(server,serverConnection);
+        this.isPlaying = false;
+        this.joinedGame = false;
     }
 
     public void execute (String text) {
@@ -37,6 +41,11 @@ public class ServerMenuCommand {
         String command = text.substring(0,4);
         switch (command) {
             case "USER":
+                if (isPlaying() || joinedGame) {
+                    sendToThisClient.enqueue("INFO not allowed changing name after joining or playing game");
+                    break;
+                }
+
                 if (text.length() < 6) {
                     sendToThisClient.enqueue("No username entered");
                 } else {
@@ -104,6 +113,10 @@ public class ServerMenuCommand {
 
             case "WCHT":
                 //send private message
+                if (isPlaying) {
+                    sendToThisClient.enqueue("INFO whisper not allowed while playing");
+                    break;
+                }
                 int separator = -1;
                 for (int i = 0; i < text.substring(5).length(); i++) {
                    if (text.substring(4).toCharArray()[i] == ';') {
@@ -130,6 +143,7 @@ public class ServerMenuCommand {
             case "PCHT":
                 // TODO send message to all active clients
                 //PCHT is now necessary for MessageHandlerClients
+                if (isPlaying)
                 if(loggedIn) {
                     sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
                 }
@@ -138,7 +152,12 @@ public class ServerMenuCommand {
             case "SETG":
                 //set game up with this command
                 try {
+                    if (isPlaying || joinedGame) {
+                        sendToThisClient.enqueue("INFO already joined game or playing");
+                        break;
+                    }
                     setUpGame(text.substring(5));
+                    joinedGame = true;
                 } catch (Exception e) {
                     sendToThisClient.enqueue("INFO wrong gameFile format");
 
@@ -148,11 +167,17 @@ public class ServerMenuCommand {
             case "JOIN":
                 //join a game with this command
                 try {
+                    if (isPlaying || joinedGame) {
+                        sendToThisClient.enqueue("INFO already joined a game or playing");
+                        break;
+                    }
                     GameFile game = getGame(text.substring(5));
                     if (game == null) {
                         sendToThisClient.enqueue("INFO join not possible,game name does not exist");
                     } else {
                         game.addParticipants(serverConnection.getNickname());
+                        joinedGame = true;
+
                         // all required players are set, then send start request to client
                         if (game.readyToStart()) {
                             String[] array = game.getParticipantsArray();
@@ -170,6 +195,7 @@ public class ServerMenuCommand {
                 // TODO confirm you wanna start the game
                 GameFile gameFile = getGame(text.substring(5));
                 gameFile.confirmStart(nickName);
+                isPlaying = true;
                 if (gameFile.startGame()) {
                     server.startGame(new MainGame(gameFile));
                 }
@@ -177,6 +203,14 @@ public class ServerMenuCommand {
                 break;
 
         }
+    }
+
+    /**
+     *
+     * @return if player joined a game in lobby or is playing
+     */
+    private boolean isPlaying() {
+        return isPlaying;
     }
 
     private GameFile getGame(String gameName) {
@@ -197,6 +231,7 @@ public class ServerMenuCommand {
        } else {
           server.allGamesNotFinished.add(gameFile);
           sendToAll.enqueue("OGAM " + gameFile.getSendReady());
+          isPlaying = true;
        }
     }
 

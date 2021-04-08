@@ -45,6 +45,7 @@ public class MainGame {
     }
 
     private void dealOutCards() {
+        //deal out cards from here by using a certain procedure
     }
 
 
