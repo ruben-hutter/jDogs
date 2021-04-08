@@ -10,6 +10,7 @@ public class MainGame {
 
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
+        startGameRhythm();
     }
 
     private void startGameRhythm() {
@@ -42,6 +43,7 @@ public class MainGame {
     private void nextTurn() {
         //sendRequest to next player to make a move
         Server.getInstance().getSender(gameArray[turnNumber] + "TURN");
+        System.out.println("TURN");
     }
 
     private void dealOutCards() {
@@ -64,5 +66,7 @@ public class MainGame {
     }
 
 
-
+    public GameFile getGameFile() {
+        return gameFile;
+    }
 }

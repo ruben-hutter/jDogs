@@ -21,6 +21,7 @@ public class ServerMenuCommand {
     private ServerParser serverParser;
     private  boolean isPlaying;
     private boolean joinedGame;
+    private String actualGame;
 
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -34,6 +35,7 @@ public class ServerMenuCommand {
         this.serverParser = new ServerParser(server,serverConnection);
         this.isPlaying = false;
         this.joinedGame = false;
+        this.actualGame = null;
     }
 
     public void execute (String text) {
@@ -92,23 +94,44 @@ public class ServerMenuCommand {
                 String list = "";
                 for (int i = 0; i < server.allNickNames.size(); i++) {
                     list += "player # " + i + "\n";
-                    list += server.allNickNames.get(i);
-                    list += "";
+                    list += server.allNickNames.get(i) + " ";
+                    list += "\n";
                 }
                 sendToThisClient.enqueue(list);
                 break;
 
             case "QUIT":
-                sendToThisClient.enqueue("logout now");
+                if (isPlaying) {
+                    //stop gaming for all
+                    MainGame mainGame = getRunningGame(actualGame);
+                    sendMessageToThisGroup(mainGame.getGameFile().getParticipantsArray(), "QUIT");
+                    sendMessageToThisGroup(mainGame.getGameFile().getParticipantsArray(), "INFO user " + nickName + " left session" );
+                    server.runningGames.remove(mainGame);
+                    server.allGamesNotFinished.remove(getGame(actualGame));
+                    isPlaying = false;
+                    break;
+                }
+
+                if (joinedGame) {
+                    System.out.println(actualGame);
+                    GameFile gameFile = getGame(actualGame);
+                    if (gameFile.getHost() == nickName) {
+                        server.allGamesNotFinished.remove(gameFile);
+                        sendToAll.enqueue("DOGA " + gameFile.getNameId());
+                    } else {
+                        gameFile.removeParticipant(nickName);
+                        System.out.println(gameFile.getParticipants());
+                        sendToAll.enqueue("DPER " + gameFile.getNameId() + ";" + getNickName());
+                    }
+                    joinedGame = false;
+                    break;
+                }
+                sendToThisClient.enqueue("INFO logout now");
                 serverConnection.kill();
                 break;
 
             case "STAT":
                 // TODO sync game stats
-                break;
-
-            case "MODE":
-                // TODO chose a game mode
                 break;
 
             case "WCHT":
@@ -149,8 +172,8 @@ public class ServerMenuCommand {
                 }
                 break;
 
-            case "SETG":
-                //set game up with this command
+            case "OGAM":
+                //set new game up with this command
                 try {
                     if (isPlaying || joinedGame) {
                         sendToThisClient.enqueue("INFO already joined game or playing");
@@ -176,6 +199,8 @@ public class ServerMenuCommand {
                         sendToThisClient.enqueue("INFO join not possible,game name does not exist");
                     } else {
                         game.addParticipants(serverConnection.getNickname());
+                        sendToAll.enqueue("JOIN " + game.getNameId() + ";" + nickName);
+                        actualGame = game.getNameId();
                         joinedGame = true;
 
                         // all required players are set, then send start request to client
@@ -193,16 +218,44 @@ public class ServerMenuCommand {
 
             case "STAR":
                 // TODO confirm you wanna start the game
+                if (isPlaying) {
+                    sendToThisClient.enqueue("INFO already joined a game");
+                    break;
+                }
                 GameFile gameFile = getGame(text.substring(5));
                 gameFile.confirmStart(nickName);
                 isPlaying = true;
+                actualGame = gameFile.getNameId();
                 if (gameFile.startGame()) {
+                    sendToAll.enqueue("DOGA " + gameFile.getNameId());
                     server.startGame(new MainGame(gameFile));
                 }
-
                 break;
 
+
+
         }
+    }
+
+    private void sendMessageToThisGroup(String[] participantsArray, String message) {
+        for (int i = 0; i < participantsArray.length; i++) {
+            server.getSender(participantsArray[i]).sendStringToClient(message);
+        }
+    }
+
+    /**
+     *
+     * @param actualGame is the ongoing game which should be found
+     * @return the game or null
+     */
+
+    private MainGame getRunningGame(String actualGame) {
+        for (int i = 0; i < server.runningGames.size(); i++) {
+           if (server.runningGames.get(i).getGameId() == actualGame) {
+              return server.runningGames.get(i);
+           }
+        }
+        return null;
     }
 
     /**
@@ -226,12 +279,13 @@ public class ServerMenuCommand {
     private void setUpGame(String game) {
        GameFile gameFile = serverParser.setUpGame(game);
        if (gameFile == null) {
-           System.err.println("ERROR");
+           System.err.println("ERROR setUpGame");
            sendToThisClient.enqueue("INFO wrong game file format");
        } else {
           server.allGamesNotFinished.add(gameFile);
-          sendToAll.enqueue("OGAM " + gameFile.getSendReady());
-          isPlaying = true;
+          actualGame = gameFile.getNameId();
+           sendToAll.enqueue("OGAM " + gameFile.getSendReady());
+
        }
     }
 

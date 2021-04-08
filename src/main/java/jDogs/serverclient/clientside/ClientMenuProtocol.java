@@ -12,13 +12,14 @@ public enum ClientMenuProtocol {
      */
     USER,
     /**
+     * Command to leave game or pendent game
+     * ,because game terminated or pendent game was deleted by host
+     */
+    QUIT,
+    /**
      * Command to show a list of active users.
      */
     ACTI,
-    /**
-     * Command to disconnect client from the server.
-     */
-    QUIT,
     /**
      * Command to start a new game.
      */
@@ -27,10 +28,6 @@ public enum ClientMenuProtocol {
      * Command to request the game statistics.
      */
     STAT,
-    /**
-     * Command to choose the game mode: Number of players, composition of the team, design of the board.
-     */
-    MODE,
     /**
      * Command to send a public chat message to all players
      */
@@ -48,21 +45,25 @@ public enum ClientMenuProtocol {
      */
     SESS,
     /**
-     * Command to join a game.
+     * Information about a new or new active users in Lobby of a pendent game
      */
     JOIN,
     /**
-     * Information about the active users in Lobby Séparée
-     */
-    LSEP,
-    /**
-     * Information about the active users in Public Lobby
+     * Information update of active users in Public Lobby
      */
     LPUB,
     /**
      * A new OpenGame to display is sent
      */
     OGAM,
+    /**
+     * Delete open game from lobby display
+     */
+    DOGA,
+    /**
+     * Delete a person from pendent game
+     */
+    DPER,
     /**
      * A new Game with this Client is started, get required data of game from server
      */

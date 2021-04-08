@@ -3,6 +3,7 @@ package jDogs.serverclient.clientside;
 
 import jDogs.gui.GUIManager;
 import jDogs.serverclient.helpers.Queuejd;
+import java.sql.SQLOutput;
 import javafx.application.Platform;
 
 /**
@@ -30,7 +31,7 @@ public class ClientMenuCommand {
     }
 
     public void execute (String text) {
-
+        System.out.println("text " + text);
         String command = text.substring(0,4);
 
         switch (command) {
@@ -70,6 +71,10 @@ public class ClientMenuCommand {
                 break;
 
             case "LPUB":
+
+                //TODO Information update of active users in Public Lobby
+                //just compare to existing String/Array and replace if necessary
+
                 /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLPUB(text.substring(5)));
@@ -79,24 +84,37 @@ public class ClientMenuCommand {
                 break;
 
 
-            case "LSEP":
+            case "JOIN":
+
+                //TODO display Information about a user or users who joined a pendent game
 
                 /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLSEP(text.substring(5)));
 
                  */
-                System.out.println("LSEP: " + text.substring(5));
+                System.out.println("JOIN: " + text.substring(5));
                 break;
 
             case "OGAM":
+
+                //TODO display a new pendent
                 System.out.println("OGAM: " + text.substring(5));
                 /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displaynewGame(text.substring(5)));
 
                  */
+                break;
 
+            case "DOGA":
+                //TODO remove openGame from GUI-Lobby-Display
+                System.out.println("DOGA: " + text.substring(5));
+                break;
 
+            case "DPER":
+                //TODO remove person from open game in lobby
+                System.out.println("DPER: " + text.substring(5));
+                break;
 
             case "INFO":
                 /*Platform.runLater(()->
@@ -107,12 +125,18 @@ public class ClientMenuCommand {
                 break;
 
             case "GAME":
-                //TODO send game details when started new game
+                //TODO receive game details when game starts and display in Game GUI
+                //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
+                break;
 
+            case "ROUN":
+                //TODO received hand of cards display in Game GUI
+                break;
 
             default:
                 System.out.println("received from server " + text + ". This command " + command
                         + " is not implemented");
+
         }
 
     }

@@ -15,7 +15,7 @@ public enum ServerMenuProtocol {
      */
     ACTI,
     /**
-     * Command to show the open games which can be joined.
+     * Command to show all the open games which can be joined.
      */
     SESS,
     /**
@@ -31,7 +31,8 @@ public enum ServerMenuProtocol {
      */
     STAT,
     /**
-     * Command to disconnect client from the server.
+     * Command to return to stop joining game
+     * or stop playing and return to public lobby
      */
     QUIT,
     /**
@@ -53,8 +54,7 @@ public enum ServerMenuProtocol {
     /**
      * Command to set game up in lobby
      */
-    SETG;
-
+    OGAM;
 
 
 

@@ -17,20 +17,25 @@ public enum ClientGameProtocol {
      */
     EXIT,
     /**
-     * Command to make a move.
+     * Information about other player who made a move.
      * Parameters are: cardvalue, startposition, goalposition.
      */
     MOVE,
     /**
-     * Command to give a card to a player.
+     * Command to give a card to this player.
      */
     CTTP,
     /**
-     * Command to ask which player can play now.
+     * without name: Command to tell this player can play now.
+     * with name: Information which player`s turn it is
      */
     TURN,
     /**
-     * Command to ask for informations to actualize the whole board.
+     * Client receives the hand of cards of the upcoming round
+     */
+    ROUN,
+    /**
+     * Information to actualize the whole board.
      */
     ANEW;
 

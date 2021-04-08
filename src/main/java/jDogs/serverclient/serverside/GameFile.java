@@ -87,4 +87,24 @@ public class GameFile {
     public boolean startGame() {
         return total == numberOfConfirmed;
     }
+
+    /**
+     *
+     * @param nickName is the participant which should be removed
+     *                 attention: it doesn`t work for the host
+     *                 the host should be removed
+     *                 by deleting the whole file
+     */
+    public void removeParticipant(String nickName) {
+        if (nickName == host) {
+            System.err.println(this.toString() + " tried to delete host as participant. Forbidden!");
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append(participants);
+            int firstChar = sb.indexOf(nickName);
+            sb.delete(firstChar - 1,firstChar + nickName.length());
+            participants = sb.toString();
+        }
+
+    }
 }

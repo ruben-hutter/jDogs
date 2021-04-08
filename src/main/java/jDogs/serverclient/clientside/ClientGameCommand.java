@@ -21,6 +21,17 @@ public class ClientGameCommand {
 
         switch(command) {
 
+            case "TURN":
+                if (text.length() == command.length()) {
+                    System.out.println("TURN: your turn");
+                } else {
+                    System.out.println("it is " + text.substring(5) + "`s turn");
+                }
+                break;
+
+            default:
+                System.out.println("the command " + command + " is not implemented. Can`t execute " + text);
+
         }
 
     }
