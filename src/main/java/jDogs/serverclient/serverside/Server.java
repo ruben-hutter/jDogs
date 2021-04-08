@@ -26,6 +26,7 @@ public class Server {
     ArrayList<MainGame> runningGames = new ArrayList<>();
     ArrayList<ServerConnection> serverConnections = new ArrayList<>();
 
+
     private static Server instance;
 
     boolean running = true;
