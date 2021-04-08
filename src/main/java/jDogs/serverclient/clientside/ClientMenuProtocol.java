@@ -60,9 +60,13 @@ public enum ClientMenuProtocol {
      */
     LPUB,
     /**
-     * a new OpenGame to display is sent
+     * A new OpenGame to display is sent
      */
     OGAM,
+    /**
+     * A new Game with this Client is started, get required data of game from server
+     */
+    GAME,
     /**
      * Common Information from Server
      */

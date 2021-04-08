@@ -118,7 +118,7 @@ public class ServerMenuCommand {
                     String adressor = text.substring(5,4 + separator);
                     String message = text.substring(5 + separator);
                     try {
-                        server.getSenderForWhisper(adressor).sendStringToClient("WCHT " + "@" +nickName + ": " + message);
+                        server.getSender(adressor).sendStringToClient("WCHT " + "@" +nickName + ": " + message);
                     } catch (Exception e) {
                         //prevent shutdown if nickname doesn`t exist in hashmap
                         sendToThisClient.enqueue("INFO nickname unknown");
@@ -153,6 +153,13 @@ public class ServerMenuCommand {
                         sendToThisClient.enqueue("INFO join not possible,game name does not exist");
                     } else {
                         game.addParticipants(serverConnection.getNickname());
+                        // all required players are set, then send start request to client
+                        if (game.readyToStart()) {
+                            String[] array = game.getParticipantsArray();
+                            for (int i = 0; i < game.getNumberOfParticipants(); i++) {
+                                server.getSender(array[i]).sendStringToClient("STAR " + game.getNameId());
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     sendToThisClient.enqueue("INFO wrong format,you cannot join");
@@ -161,15 +168,21 @@ public class ServerMenuCommand {
 
             case "STAR":
                 // TODO confirm you wanna start the game
+                GameFile gameFile = getGame(text.substring(5));
+                gameFile.confirmStart(nickName);
+                if (gameFile.startGame()) {
+                    server.startGame(new MainGame(gameFile));
+                }
+
                 break;
 
         }
     }
 
     private GameFile getGame(String gameName) {
-        for (int i = 0; i < server.allGames.size(); i++) {
-            if (server.allGames.get(i).getNameId().equals(gameName)) {
-               return server.allGames.get(i);
+        for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
+            if (server.allGamesNotFinished.get(i).getNameId().equals(gameName)) {
+               return server.allGamesNotFinished.get(i);
             }
         }
         return null;
@@ -182,7 +195,7 @@ public class ServerMenuCommand {
            System.err.println("ERROR");
            sendToThisClient.enqueue("INFO wrong game file format");
        } else {
-          server.allGames.add(gameFile);
+          server.allGamesNotFinished.add(gameFile);
           sendToAll.enqueue("OGAM " + gameFile.getSendReady());
        }
     }

@@ -1,7 +1,5 @@
 package jDogs.serverclient.serverside;
 
-import java.util.ArrayList;
-
 public class ServerParser {
 
     private Server server;
@@ -31,20 +29,20 @@ public class ServerParser {
 
         System.out.println(name);
         System.out.println(total);
-        System.out.println("size " + server.allGames.size());
+        System.out.println("size " + server.allGamesNotFinished.size());
 
         String host = serverConnection.getNickname();
         name = checkName(name);
 
         if (checkHost(host)) {return new GameFile(name, host, total);}
 
-        System.err.println("Gamehost " + host + " already exists in server.allGames!");
+        System.err.println("Gamehost " + host + " already exists in server.allGamesNotFinished!");
         return null;
     }
 
     private boolean checkHost(String host) {
-        for (int i = 0; i < server.allGames.size(); i++) {
-            if (server.allGames.get(i).getHost().equals(host)) {
+        for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
+            if (server.allGamesNotFinished.get(i).getHost().equals(host)) {
                 return false;
             }
         }
@@ -54,12 +52,12 @@ public class ServerParser {
 
     private String checkName(String name) {
         int problem = -1;
-        for (int i = 0; i < server.allGames.size(); i++) {
-            if (server.allGames.get(i).getNameId().equals(name)) {
+        for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
+            if (server.allGamesNotFinished.get(i).getNameId().equals(name)) {
                 int num = 1;
                 while (true) {
                     num++;
-                    if (!server.allGames.get(i).getNameId().equals(name + num)) {
+                    if (!server.allGamesNotFinished.get(i).getNameId().equals(name + num)) {
                         break;
                     }
                 }

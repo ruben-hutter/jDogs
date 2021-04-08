@@ -3,11 +3,13 @@ package jDogs.serverclient.serverside;
 
 public class GameFile {
 
-    String nameId;
-    String host;
-    String participants;
-    int numberParticipants;
-    int total;
+    private String nameId;
+    private String host;
+    private String participants;
+    private String confirmedParticipants;
+    private int numberOfConfirmed;
+    private int numberParticipants;
+    private int total;
 
 
     public GameFile(String nameId, String host,String total) {
@@ -15,17 +17,15 @@ public class GameFile {
         this.nameId = nameId;
         this.host = host;
         this.total = Integer.parseInt(total);
-        this.participants = null;
+        this.participants = host;
         this.numberParticipants = 1;
+        this.confirmedParticipants = host;
+        this.numberOfConfirmed = 1;
 
     }
 
     public void addParticipants(String newParticipant) {
-        if (participants == null) {
-            participants = newParticipant;
-        } else {
-            participants += ";" + newParticipant;
-        }
+        participants += ";" + newParticipant;
         numberParticipants++;
     }
 
@@ -43,5 +43,48 @@ public class GameFile {
 
     public String getHost() {
         return host;
+    }
+
+    public String[] getParticipantsArray() {
+        String[] array = new String[numberParticipants];
+        int arrayEntries = 0;
+        int separator = 0;
+        if (numberParticipants > 1) {
+            while (arrayEntries < numberParticipants - 1) {
+                int i = separator;
+                while (i < participants.length()) {
+
+                    if (participants.charAt(i) == ';') {
+                        array[arrayEntries] = participants.substring(separator, i);
+                        separator = i + 1;
+                        arrayEntries++;
+                        i = participants.length();
+                    }
+                    i++;
+                }
+
+                array[arrayEntries] = participants.substring(separator);
+            }
+        } else {
+            array[0] = participants;
+        }
+        return array;
+    }
+
+    public boolean readyToStart() {
+        return total == numberParticipants;
+    }
+
+    public int getNumberOfParticipants() {
+        return numberParticipants;
+    }
+
+    public void confirmStart(String nickName) {
+        confirmedParticipants += ";"+ nickName;
+        numberOfConfirmed++;
+    }
+
+    public boolean startGame() {
+        return total == numberOfConfirmed;
     }
 }

@@ -106,6 +106,9 @@ public class ClientMenuCommand {
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
+            case "GAME":
+                //TODO send game details when started new game
+
 
             default:
                 System.out.println("received from server " + text + ". This command " + command

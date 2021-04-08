@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.checkerframework.checker.units.qual.A;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -22,7 +23,9 @@ public class Server {
     ArrayList<SendFromServer> connections = new ArrayList<>();
     ArrayList<String> allNickNames = new ArrayList<>();
     private Map<String, SendFromServer> whisperList = new HashMap<>();
-    ArrayList<GameFile> allGames = new ArrayList<GameFile>();
+    ArrayList<GameFile> allGamesNotFinished = new ArrayList<GameFile>();
+    ArrayList<MainGame> runningGames = new ArrayList<>();
+    private static Server instance;
 
     boolean running = true;
 
@@ -30,8 +33,14 @@ public class Server {
         new Server();
     }
 
+    // return Singleton
+    public static Server getInstance() {
+        return instance;
+    }
+
     public Server() {
         try {
+            instance = this;
             // port 8090
             serverSocket = new ServerSocket(8090);
             System.out.println("server started...");
@@ -98,7 +107,7 @@ public class Server {
     }
 
     //returns sender object to send private message
-    public SendFromServer getSenderForWhisper(String nickname) {
+    public SendFromServer getSender(String nickname) {
         return whisperList.get(nickname);
     }
 
@@ -112,5 +121,7 @@ public class Server {
     }
 
 
-
+    public void startGame(MainGame mainGame) {
+        runningGames.add(mainGame);
+    }
 }
