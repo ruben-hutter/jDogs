@@ -31,32 +31,17 @@ public enum ServerMenuProtocol {
      */
     STAT,
     /**
-     * Command to return to stop joining game
-     * or stop playing and return to public lobby
+     * Command to kill ServerConnection of this client
      */
     QUIT,
     /**
-     * Command to confirm whether the game should be started under the given conditions.
-     */
-    STAR,
-    /**
-     * Command to start a new game.
-     */
-    PLAY,
-    /**
-     * Command to choose the game mode: Number of players, composition of the team, design of the board.
-     */
-    MODE,
-    /**
-     * Command to tell if a client has joined the game or not.
+     * Command to tell that a client wants to join the game.
      */
     JOIN,
     /**
      * Command to set game up in lobby
      */
     OGAM;
-
-
 
     /**
      *

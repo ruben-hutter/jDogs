@@ -3,6 +3,7 @@ package jDogs.serverclient.serverside;
 
 import jDogs.serverclient.helpers.Queuejd;
 
+
 /**
  * ServerMenuCommand contains the menu/lobby
  * commands which are sent from the clients to
@@ -19,7 +20,6 @@ public class ServerMenuCommand {
     private boolean loggedIn;
     private String nickName;
     private ServerParser serverParser;
-    private  boolean isPlaying;
     private boolean joinedGame;
     private String actualGame;
 
@@ -33,7 +33,6 @@ public class ServerMenuCommand {
         this.loggedIn = false;
         this.nickName = null;
         this.serverParser = new ServerParser(server,serverConnection);
-        this.isPlaying = false;
         this.joinedGame = false;
         this.actualGame = null;
     }
@@ -43,13 +42,13 @@ public class ServerMenuCommand {
         String command = text.substring(0,4);
         switch (command) {
             case "USER":
-                if (isPlaying() || joinedGame) {
-                    sendToThisClient.enqueue("INFO not allowed changing name after joining or playing game");
+                if (joinedGame) {
+                    sendToThisClient.enqueue("INFO not allowed changing name after joining game");
                     break;
                 }
 
                 if (text.length() < 6) {
-                    sendToThisClient.enqueue("No username entered");
+                    sendToThisClient.enqueue("INFO No username entered");
                 } else {
                     String oldNick = nickName;
                     nickName = text.substring(5);
@@ -61,8 +60,8 @@ public class ServerMenuCommand {
                     if (!server.isValidNickName(nickName)) {
                         int number = 2;
                         while (true) {
-                            if (server.isValidNickName(nickName + " " + number)) {
-                                nickName = nickName + " " + number;
+                            if (server.isValidNickName(nickName + number)) {
+                                nickName = nickName + number;
                                 break;
                             } else {
                                 number++;
@@ -78,12 +77,11 @@ public class ServerMenuCommand {
                             + nickName);
 
                     System.out.println("login worked " + "USER " + nickName);
-                    if (loggedIn) {
-                        server.removeNickname(nickName);
-                    } else {
+
+                    if (!loggedIn) {
                         server.addSender(serverConnection.getSender());
                     }
-                    server.addNickname(nickName, serverConnection.getSender());
+                    server.addNickname(nickName,serverConnection);
                     serverConnection.updateNickname(nickName);
 
                     loggedIn = true;
@@ -101,45 +99,18 @@ public class ServerMenuCommand {
                 break;
 
             case "QUIT":
-                if (isPlaying) {
-                    //stop gaming for all
-                    MainGame mainGame = getRunningGame(actualGame);
-                    sendMessageToThisGroup(mainGame.getGameFile().getParticipantsArray(), "QUIT");
-                    sendMessageToThisGroup(mainGame.getGameFile().getParticipantsArray(), "INFO user " + nickName + " left session" );
-                    isPlaying = false;
-                    endGameforAll(mainGame);
-                    break;
-                }
-
-                if (joinedGame) {
-                    System.out.println(actualGame);
-                    GameFile gameFile = getGame(actualGame);
-                    if (gameFile.getHost() == nickName) {
-                        server.allGamesNotFinished.remove(gameFile);
-                        sendToAll.enqueue("DOGA " + gameFile.getNameId());
-                    } else {
-                        gameFile.removeParticipant(nickName);
-                        System.out.println(gameFile.getParticipants());
-                        sendToAll.enqueue("DPER " + gameFile.getNameId() + ";" + getNickName());
-                    }
-                    joinedGame = false;
-                    break;
-                }
 
                 sendToThisClient.enqueue("INFO logout now");
                 serverConnection.kill();
                 break;
 
             case "STAT":
-                // TODO sync game stats
+                sendToThisClient.enqueue("STAT " + "runningGames " + server.runningGames.size() + " finishedGames " + server.finishedGames.size());
                 break;
 
             case "WCHT":
                 //send private message
-                if (isPlaying) {
-                    sendToThisClient.enqueue("INFO whisper not allowed while playing");
-                    break;
-                }
+
                 int separator = -1;
                 for (int i = 0; i < text.substring(5).length(); i++) {
                    if (text.substring(4).toCharArray()[i] == ';') {
@@ -166,7 +137,6 @@ public class ServerMenuCommand {
             case "PCHT":
                 // TODO send message to all active clients
                 //PCHT is now necessary for MessageHandlerClients
-                if (isPlaying)
                 if(loggedIn) {
                     sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
                 }
@@ -175,7 +145,7 @@ public class ServerMenuCommand {
             case "OGAM":
                 //set new game up with this command
                 try {
-                    if (isPlaying || joinedGame) {
+                    if (joinedGame) {
                         sendToThisClient.enqueue("INFO already joined game or playing");
                         break;
                     }
@@ -191,7 +161,7 @@ public class ServerMenuCommand {
                 //join a game with this command
                 System.out.println("JOIN from " +nickName + " : " + text );
                 try {
-                    if (isPlaying || joinedGame) {
+                    if (joinedGame) {
                         sendToThisClient.enqueue("INFO already joined a game or playing");
                         break;
                     }
@@ -204,6 +174,7 @@ public class ServerMenuCommand {
                         sendToAll.enqueue("JOIN " + game.getNameId() + ";" + nickName);
                         actualGame = game.getNameId();
                         joinedGame = true;
+                        Server.getInstance().publicLobbyGuests.remove(nickName);
 
                         // all required players are set, then send start request to client
                         if (game.readyToStart()) {
@@ -218,38 +189,23 @@ public class ServerMenuCommand {
                 }
                 break;
 
-            case "STAR":
-                // TODO confirm you wanna start the game
-                if (isPlaying) {
-                    sendToThisClient.enqueue("INFO already joined a game");
-                    break;
-                }
-                GameFile gameFile = getGame(text.substring(5));
-                gameFile.confirmStart(nickName);
-                isPlaying = true;
-                //set all to game mode
-                actualGame = gameFile.getNameId();
-
-                if (gameFile.startGame()) {
-                    sendToAll.enqueue("GAME " + gameFile.getNameId());
-                    server.startGame(new MainGame(gameFile));
-                }
-                break;
         }
     }
+
+    private void changeServerConnectionsToPlay(String[] array, boolean boole) {
+        for (int i = 0; i < array.length; i++) {
+            server.getServerConnections(array[i]).getMessageHandlerServer().setPlaying(boole);
+        }
+    }
+
 
     private void endGameforAll(MainGame mainGame) {
         server.runningGames.remove(mainGame);
         server.allGamesNotFinished.remove(getGame(actualGame));
         String[] array = mainGame.getGameFile().getParticipantsArray();
-        for (int i = 0; i < array.length; i++) {
-            server.getServerConnections(array[i]).getServerMenuCommand().setIsPlaying(false);
-        }
+       changeServerConnectionsToPlay(mainGame.getGameFile().getParticipantsArray(), false);
     }
 
-    private void setIsPlaying(boolean value) {
-        isPlaying = value;
-    }
 
     private void sendMessageToThisGroup(String[] participantsArray, String message) {
         for (int i = 0; i < participantsArray.length; i++) {
@@ -257,28 +213,6 @@ public class ServerMenuCommand {
         }
     }
 
-    /**
-     *
-     * @param actualGame is the ongoing game which should be found
-     * @return the game or null
-     */
-
-    private MainGame getRunningGame(String actualGame) {
-        for (int i = 0; i < server.runningGames.size(); i++) {
-           if (server.runningGames.get(i).getGameId() == actualGame) {
-              return server.runningGames.get(i);
-           }
-        }
-        return null;
-    }
-
-    /**
-     *
-     * @return if player joined a game in lobby or is playing
-     */
-    private boolean isPlaying() {
-        return isPlaying;
-    }
 
     private GameFile getGame(String gameName) {
         for (int i = 0; i < server.allGamesNotFinished.size(); i++) {

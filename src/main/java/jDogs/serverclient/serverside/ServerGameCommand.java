@@ -37,4 +37,20 @@ public class ServerGameCommand {
 
     }
 
+
+    /**
+     *
+     * @param actualGame is the ongoing game which should be found
+     * @return the game or null
+     */
+
+    private MainGame getRunningGame(String actualGame) {
+        for (int i = 0; i < Server.getInstance().runningGames.size(); i++) {
+            if (Server.getInstance().runningGames.get(i).getGameId() == actualGame) {
+                return Server.getInstance().runningGames.get(i);
+            }
+        }
+        return null;
+    }
+
 }

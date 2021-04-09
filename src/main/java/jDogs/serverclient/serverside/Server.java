@@ -21,10 +21,14 @@ public class Server {
     private ServerSocket serverSocket;
     ArrayList<SendFromServer> senderlist = new ArrayList<>();
     ArrayList<String> allNickNames = new ArrayList<>();
+    private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
     private Map<String, SendFromServer> whisperList = new HashMap<>();
     ArrayList<GameFile> allGamesNotFinished = new ArrayList<GameFile>();
     ArrayList<MainGame> runningGames = new ArrayList<>();
+    ArrayList<String> publicLobbyGuests = new ArrayList<>();
     ArrayList<ServerConnection> serverConnections = new ArrayList<>();
+    ArrayList<GameFile> finishedGames = new ArrayList<>();
+
 
 
     private static Server instance;
@@ -94,9 +98,16 @@ public class Server {
         System.exit(-1);
     }
 
-    public void addNickname(String nickname, SendFromServer connection) {
+    public void addNickname(String nickname, ServerConnection serverConnection) {
         //add to whisperlist
-        whisperList.put(nickname, connection);
+        whisperList.put(nickname, serverConnection.getSender());
+
+        //scMap
+
+        serverConnectionMap.put(nickname,serverConnection);
+
+        // add to lobbyGuests
+        publicLobbyGuests.add(nickname);
 
         //add to nicknamelist
         allNickNames.add(nickname);
@@ -105,6 +116,13 @@ public class Server {
     public void removeNickname(String nickname) {
         //remove nickname from whisperlist
         whisperList.remove(nickname);
+
+        //remove nickname from sConnectionNicknameMap
+
+        serverConnectionMap.remove(nickname);
+
+        //remove nickname from lobbyGuests
+        publicLobbyGuests.remove(nickname);
 
         //remove nickname from nicknamelist
         allNickNames.remove(nickname);
@@ -133,6 +151,36 @@ public class Server {
         for (int i = 0; i < serverConnections.size(); i++) {
             if (serverConnections.get(i).getNickname() == nickname) {
                 return serverConnections.get(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param gameFile
+     * @return list of server connection objects of clients who participate in this opened game or started game
+     */
+    public ArrayList<ServerConnection> getServerConnections(GameFile gameFile) {
+
+        ArrayList<ServerConnection> scArrayList = new ArrayList<>();
+        int j = 0;
+        while (j < gameFile.getNumberOfParticipants()) {
+            String nickname = gameFile.getParticipantsArray()[j];
+            j++;
+            for (int i = 0; i < serverConnectionMap.size(); i++) {
+                if (serverConnectionMap.get(i).equals(nickname)) {
+                   scArrayList.add(serverConnectionMap.get(i));
+                }
+            }
+        }
+        return scArrayList;
+    }
+
+    public GameFile getNotFinishedGame(String gameName) {
+        for (int i = 0; i < allGamesNotFinished.size(); i++) {
+            if (allGamesNotFinished.get(i).getNameId().equals(gameName)) {
+                return allGamesNotFinished.get(i);
             }
         }
         return null;

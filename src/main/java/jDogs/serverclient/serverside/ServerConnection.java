@@ -129,7 +129,8 @@ public class ServerConnection {
         return nickName;
     }
 
-    public ServerMenuCommand getServerMenuCommand() {
-        return messageHandlerServer.getServerMenuCommand();
+
+    public MessageHandlerServer getMessageHandlerServer() {
+        return messageHandlerServer;
     }
 }
