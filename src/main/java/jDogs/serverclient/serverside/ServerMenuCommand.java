@@ -227,6 +227,7 @@ public class ServerMenuCommand {
                 GameFile gameFile = getGame(text.substring(5));
                 gameFile.confirmStart(nickName);
                 isPlaying = true;
+                //set all to game mode
                 actualGame = gameFile.getNameId();
 
                 if (gameFile.startGame()) {

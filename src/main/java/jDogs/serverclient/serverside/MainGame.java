@@ -58,7 +58,8 @@ public class MainGame {
         System.out.println(nickname + " finished his turn");
         turnNumber++;
         // new round
-        if (turnNumber == gameFile.getNumberOfParticipants() - 1) {
+        //no cards in any player`s hand
+        if (true) {
             dealOutCards();
         }
 
