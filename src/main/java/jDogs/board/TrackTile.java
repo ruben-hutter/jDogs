@@ -1,10 +1,10 @@
 package jDogs.board;
 
-public class TrackTiles {
+public class TrackTile extends Tile {
 
     Tile[] trackTiles;
 
-    TrackTiles(int numOfPlayers) {
+    TrackTile(int numOfPlayers) {
         trackTiles = createTrackTiles(numOfPlayers);
     }
 

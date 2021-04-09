@@ -3,7 +3,7 @@ package jDogs.player;
 import jDogs.Alliance;
 import jDogs.Piece;
 import jDogs.board.Board;
-import jDogs.board.HomeTiles;
+import jDogs.board.HomeTile;
 
 /**
  * This class defines a player
@@ -44,9 +44,9 @@ public class Player {
      * Sets the newly created pieces on their home tiles.
      */
     private void setPiecesOnHome() {
-        HomeTiles homeTiles = board.getHomeTiles(alliance);
+        HomeTile homeTile = board.getHomeTiles(alliance);
         for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
-            homeTiles.getHomeTile(i).setPiece(pieces[i]);
+            homeTile.getHomeTile(i).setPiece(pieces[i]);
         }
     }
 

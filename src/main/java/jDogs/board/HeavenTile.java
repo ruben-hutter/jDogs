@@ -2,18 +2,18 @@ package jDogs.board;
 
 import jDogs.Alliance;
 
-public class HeavenTiles {
+public class HeavenTile extends Tile {
 
     Tile[] heavenTiles;
     Alliance alliance;
 
-    HeavenTiles(Alliance alliance) {
+    HeavenTile(Alliance alliance) {
         this.alliance = alliance;
-        heavenTiles = createHeavenTiles();
+        heavenTiles = createHeavenTile();
     }
 
-    private Tile[] createHeavenTiles() {
-        final Tile[] heavenTiles = new Tile[Board.NUM_HEAVEN_TILES];
+    private Tile createHeavenTile() {
+        final Tile heavenTile = new Tile[Board.NUM_HEAVEN_TILES];
         for (int i = 0; i < Board.NUM_HEAVEN_TILES; i++) {
             heavenTiles[i] = new Tile(i);
         }

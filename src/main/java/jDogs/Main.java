@@ -1,7 +1,6 @@
 package jDogs;
 
 import jDogs.board.Board;
-import jDogs.board.HomeTiles;
 import jDogs.player.Player;
 
 /**

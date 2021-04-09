@@ -5,7 +5,7 @@ import jDogs.Piece;
 /**
  * Tile is a square where a token can be placed
  */
-public class Tile {
+public abstract class Tile {
 
     protected final int tileCoordinate;
     protected Piece piece;
