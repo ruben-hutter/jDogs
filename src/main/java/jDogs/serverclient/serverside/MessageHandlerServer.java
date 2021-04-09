@@ -20,8 +20,8 @@ public class MessageHandlerServer implements Runnable {
     private final ServerConnection serverConnection;
     private ServerGameCommand serverGameCommand;
     private ServerMenuCommand serverMenuCommand;
-    private String nickName;
-    private boolean isPlaying;
+    private SeparateLobbyCommand separateLobbyCommand;
+    private String state;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient) {
@@ -34,7 +34,8 @@ public class MessageHandlerServer implements Runnable {
         this.loggedIn = false;
         this.serverMenuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient, sendToAll);
         this.serverGameCommand = new ServerGameCommand();
-        this.isPlaying = false;
+        this.separateLobbyCommand = new SeparateLobbyCommand(sendToThisClient, sendToAll, serverConnection);
+        this.state = "publicLobby";
     }
 
     @Override
@@ -48,18 +49,28 @@ public class MessageHandlerServer implements Runnable {
         while (running) {
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
-                // check if text is a GameCommand
-                if (isPlaying) {
-                    serverGameCommand.execute(text);
-                } else {
-                    // check if text is a MenuCommand
+                if (text.length() >= 4) {
 
-                    if (text.length() >= 4 && ServerMenuProtocol.isACommand(text)) {
+                switch(state) {
+
+                    case "playing":
+                        serverGameCommand.execute(text);
+                        break;
+
+                    case "openGame":
+
+                        break;
+
+
+                    case "publicLobby":
                         serverMenuCommand.execute(text);
-                        System.out.println("menu command: " + text);
-                    } else {
-                        System.err.println("message did not match menu or game protocol:  " + text);
+                        break;
+
                     }
+
+                } else {
+
+                    System.err.println("message did not match menu or game protocol:  " + text);
                 }
             } else {
                 try {
@@ -72,9 +83,6 @@ public class MessageHandlerServer implements Runnable {
         System.out.println(this.toString() + "  stops now");
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
 
     /**
      * Returns the nickName of the user
@@ -91,11 +99,43 @@ public class MessageHandlerServer implements Runnable {
         running = false;
     }
 
+    /**
+     *
+     * @param playing true: send messages to GameCommand (a game started)
+     *                false: send messages to public MenuCommand (a game ended)
+     */
+
     public void setPlaying(boolean playing) {
-        isPlaying = playing;
+        if (playing) {
+            state = "playing";
+        } else {
+            state = "publicLobby";
+        }
+    }
+
+    /**
+     *
+     * @param joined send messages to separateLobbyCommand
+     */
+
+    public void setJoinedOpenGame(boolean joined) {
+        if (joined) {
+            state = "openGame";
+        } else {
+            state = "publicLobby";
+        }
     }
 
     public ServerMenuCommand getServerMenuCommand() {
         return serverMenuCommand;
     }
+
+    public SeparateLobbyCommand getSeparateLobbyCommand() {
+        return separateLobbyCommand;
+    }
+
+    public ServerGameCommand getServerGameCommand() {
+        return serverGameCommand;
+    }
+
 }

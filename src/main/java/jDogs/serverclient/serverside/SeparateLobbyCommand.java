@@ -10,7 +10,6 @@ public class SeparateLobbyCommand {
     private ArrayList<ServerConnection> scArrayList;
     private SendFromServer[] senderArray;
     private ServerConnection serverConnection;
-    private String actualGame;
     private GameFile gameFile;
     private String nickname;
 
@@ -73,10 +72,6 @@ public class SeparateLobbyCommand {
 
             // client confirms to start the game
 
-            if (actualGame != gameFile.getNameId()) {
-                sendToThisClient.enqueue("INFO denied you didn`t join game");
-                break;
-            }
             GameFile gameFile = getGame(text.substring(5));
             if (gameFile == null) {
                 sendToThisClient.enqueue("INFO game name does not exist on server");
@@ -94,7 +89,7 @@ public class SeparateLobbyCommand {
 
         case "QUIT":
 
-                System.out.println(nickname + " doesn`t join anymore " + actualGame);
+                System.out.println(nickname + " doesn`t join anymore " + this.gameFile.getNameId());
                 if (this.gameFile.getHost() == nickname) {
                     Server.getInstance().allGamesNotFinished.remove(this.gameFile);
                     scArrayList.forEach(serverConnection1 -> serverConnection1.getMessageHandlerServer().setPlaying(false));
@@ -104,6 +99,11 @@ public class SeparateLobbyCommand {
                     sendToAll.enqueue("DPER " + this.gameFile.getNameId() + " " + nickname);
                 }
                 break;
+
+        case "STAT":
+            sendToThisClient.enqueue("STAT " + "runningGames " + Server.getInstance().runningGames.size() +
+                    " finishedGames " + Server.getInstance().finishedGames.size());
+            break;
 
 
         default:
@@ -160,8 +160,10 @@ public class SeparateLobbyCommand {
         createServerConnectionList();
     }
     // if client joined a game
-    public void setJoinedGame(String actualGame, String nickname) {
-        this.actualGame = actualGame;
+
+    public void setJoinedGame(GameFile gameFile, String nickname) {
+        this.gameFile = gameFile;
         this.nickname = nickname;
+        createServerConnectionList();
     }
 }
