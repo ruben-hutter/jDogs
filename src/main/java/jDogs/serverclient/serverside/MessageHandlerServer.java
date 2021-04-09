@@ -54,15 +54,18 @@ public class MessageHandlerServer implements Runnable {
                 switch(state) {
 
                     case "playing":
+                        System.out.println("game command case");
                         serverGameCommand.execute(text);
                         break;
 
                     case "openGame":
-
+                        System.out.println("open game case");
+                        separateLobbyCommand.execute(text);
                         break;
 
 
                     case "publicLobby":
+                        System.out.println("public lobby case");
                         serverMenuCommand.execute(text);
                         break;
 
@@ -137,5 +140,6 @@ public class MessageHandlerServer implements Runnable {
     public ServerGameCommand getServerGameCommand() {
         return serverGameCommand;
     }
+
 
 }

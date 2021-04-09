@@ -67,6 +67,7 @@ public class GameFile {
             }
         } else {
             array[0] = participants;
+            System.out.println("array: " + array[0] + " " + array.length);
         }
         return array;
     }

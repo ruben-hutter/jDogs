@@ -105,7 +105,8 @@ public class Server {
         //scMap
 
         serverConnectionMap.put(nickname,serverConnection);
-
+        System.out.println("added to serverConnection " + nickname + nickname.length());
+        serverConnectionMap.get("maintenance");
         // add to lobbyGuests
         publicLobbyGuests.add(nickname);
 
@@ -147,7 +148,8 @@ public class Server {
         runningGames.add(mainGame);
     }
 
-    public ServerConnection getServerConnections(String nickname) {
+    public ServerConnection getServerConnectionsMap(String nickname) {
+
         for (int i = 0; i < serverConnections.size(); i++) {
             if (serverConnections.get(i).getNickname() == nickname) {
                 return serverConnections.get(i);
@@ -161,20 +163,18 @@ public class Server {
      * @param gameFile
      * @return list of server connection objects of clients who participate in this opened game or started game
      */
-    public ArrayList<ServerConnection> getServerConnections(GameFile gameFile) {
+    public ArrayList<ServerConnection> getServerConnectionsMap(GameFile gameFile) {
 
-        ArrayList<ServerConnection> scArrayList = new ArrayList<>();
-        int j = 0;
-        while (j < gameFile.getNumberOfParticipants()) {
-            String nickname = gameFile.getParticipantsArray()[j];
-            j++;
-            for (int i = 0; i < serverConnectionMap.size(); i++) {
-                if (serverConnectionMap.get(i).equals(nickname)) {
-                   scArrayList.add(serverConnectionMap.get(i));
-                }
-            }
+        ArrayList<ServerConnection> aList = new ArrayList<>();
+        System.out.println(gameFile.getParticipants());
+        String[] participantArray = gameFile.getParticipantsArray();
+       for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
+           System.out.println(i);
+           ServerConnection sc = serverConnectionMap.get(participantArray[i]);
+           aList.add(sc);
+           System.out.println(i);
         }
-        return scArrayList;
+        return aList;
     }
 
     public GameFile getNotFinishedGame(String gameName) {

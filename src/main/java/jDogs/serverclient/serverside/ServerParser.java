@@ -15,10 +15,14 @@ public class ServerParser {
         int nameSeparator = 0;
 
         for (int i = 0; i < gameSetup.length(); i++) {
-            if (gameSetup.charAt(i) == ';') {
+            if (Character.isWhitespace(gameSetup.charAt(i))) {
                 nameSeparator = i;
                 break;
             }
+        }
+
+        if (nameSeparator == 0) {
+            return null;
         }
 
 
@@ -27,14 +31,18 @@ public class ServerParser {
         String total = gameSetup.substring(nameSeparator + 1);
 
 
+
+
+        String host = serverConnection.getNickname();
+        name = checkName(name);
         System.out.println(name);
         System.out.println(total);
         System.out.println("size " + server.allGamesNotFinished.size());
 
-        String host = serverConnection.getNickname();
-        name = checkName(name);
 
-        if (checkHost(host)) {return new GameFile(name, host, total);}
+        System.out.println(host);
+        if (checkHost(host)) {
+            return new GameFile(name, host, total);}
 
         System.err.println("Gamehost " + host + " already exists in server.allGamesNotFinished!");
         return null;

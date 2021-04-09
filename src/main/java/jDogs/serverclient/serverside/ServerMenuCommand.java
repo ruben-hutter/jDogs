@@ -146,7 +146,8 @@ public class ServerMenuCommand {
                     try {
                         setUpGame(text.substring(5));
                     } catch (Exception e) {
-                        sendToThisClient.enqueue("INFO wrong gameFile format");
+                        e.printStackTrace();
+                        sendToThisClient.enqueue("INFO error while building up new game file");
 
                     }
                     break;
@@ -179,6 +180,7 @@ public class ServerMenuCommand {
                             }
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         sendToThisClient.enqueue("INFO wrong format,you cannot join");
                     }
                     break;
@@ -211,11 +213,11 @@ public class ServerMenuCommand {
            System.err.println("ERROR setUpGame");
            sendToThisClient.enqueue("INFO wrong game file format");
        } else {
+           System.out.println("set up game <" + gameFile.getNameId() + "> worked");
           server.allGamesNotFinished.add(gameFile);
           messageHandlerServer.setJoinedOpenGame(true);
           messageHandlerServer.getSeparateLobbyCommand().setGameFile(gameFile, nickName);
           sendToAll.enqueue("OGAM " + gameFile.getSendReady());
-
        }
     }
 
