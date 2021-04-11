@@ -12,7 +12,7 @@ import jDogs.board.HomeTile;
  */
 public class Player {
 
-    private static int counter = 0;
+    private static int startingPosition = 0;
 
     public Piece[] pieces;
     String playerName;
@@ -23,9 +23,9 @@ public class Player {
         this.playerName = playerName;
         this.alliance = alliance;
         this.board = board;
-        pieces = createPieces(counter);
+        pieces = createPieces(startingPosition);
         setPiecesOnHome();
-        counter += Board.NUM_TRACK_TILES_X_PLAYER;
+        startingPosition += Board.NUM_TRACK_TILES_X_PLAYER;
     }
 
     /**
@@ -69,9 +69,9 @@ public class Player {
      * @return Piece with fitting pieceID
      */
     public Piece getPiece(int pieceID) {
-        for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i].getPieceID() == pieceID) {
-                return pieces[i];
+        for (Piece piece : pieces) {
+            if (piece.getPieceID() == pieceID) {
+                return piece;
             }
         }
         return null;

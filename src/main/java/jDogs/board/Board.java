@@ -25,56 +25,78 @@ public class Board {
     }
 
     private HomeTile[][] createAllHomeTiles(int numOfPlayers) {
-        allHomeTiles = new HomeTile[numOfPlayers];
-        allHomeTiles[0] = new HomeTile(Alliance.YELLOW);
-        allHomeTiles[1] = new HomeTile(Alliance.GREEN);
+        allHomeTiles = new HomeTile[numOfPlayers][];
+        allHomeTiles[0] = createHomeForAlliance(Alliance.YELLOW);
+        allHomeTiles[1] = createHomeForAlliance(Alliance.GREEN);
         if (numOfPlayers == 6) {
-            allHomeTiles[2] = new HomeTile(Alliance.WHITE);
-            allHomeTiles[3] = new HomeTile(Alliance.BLUE);
-            allHomeTiles[4] = new HomeTile(Alliance.RED);
-            allHomeTiles[5] = new HomeTile(Alliance.BLACK);
+            allHomeTiles[2] = createHomeForAlliance(Alliance.WHITE);
+            allHomeTiles[3] = createHomeForAlliance(Alliance.BLUE);
+            allHomeTiles[4] = createHomeForAlliance(Alliance.RED);
+            allHomeTiles[5] = createHomeForAlliance(Alliance.BLACK);
         } else {
-            allHomeTiles[2] = new HomeTile(Alliance.BLUE);
-            allHomeTiles[3] = new HomeTile(Alliance.RED);
+            allHomeTiles[2] = createHomeForAlliance(Alliance.BLUE);
+            allHomeTiles[3] = createHomeForAlliance(Alliance.RED);
         }
         return allHomeTiles;
     }
 
+    public HomeTile[] createHomeForAlliance(Alliance alliance) {
+        HomeTile[] homeTiles = new HomeTile[Board.NUM_HOME_TILES];
+        for (int i = 0; i < homeTiles.length; i++) {
+            homeTiles[i] = new HomeTile(i, alliance);
+        }
+        return homeTiles;
+    }
+
     private TrackTile[] createAllTrackTiles(int numOfPlayers) {
-        TrackTile[] allTrackTiles = new TrackTile[NUM_TRACK_TILES_X_PLAYER * numOfPlayers];
+        return new TrackTile[NUM_TRACK_TILES_X_PLAYER * numOfPlayers];
     }
 
     private HeavenTile[][] createAllHeavenTiles(int numOfPlayers) {
         allHeavenTiles = new HeavenTile[numOfPlayers][];
-        for (int i = 0; i < numOfPlayers; i++) {
-            allHeavenTiles[i] = new HeavenTile[Board.NUM_HEAVEN_TILES];
-            for (int j = 0; j < Board.NUM_HEAVEN_TILES; j++) {
-            }
+        allHeavenTiles[0] = createHeavenForAlliance(Alliance.YELLOW);
+        allHeavenTiles[1] = createHeavenForAlliance(Alliance.GREEN);
+        if (numOfPlayers == 6) {
+            allHeavenTiles[2] = createHeavenForAlliance(Alliance.WHITE);
+            allHeavenTiles[3] = createHeavenForAlliance(Alliance.BLUE);
+            allHeavenTiles[4] = createHeavenForAlliance(Alliance.RED);
+            allHeavenTiles[5] = createHeavenForAlliance(Alliance.BLACK);
+        } else {
+            allHeavenTiles[2] = createHeavenForAlliance(Alliance.BLUE);
+            allHeavenTiles[3] = createHeavenForAlliance(Alliance.RED);
         }
         return allHeavenTiles;
     }
 
-    public HomeTile getHomeTiles(Alliance alliance) {
-        for (HomeTile homeTile : allHomeTiles) {
-            if (homeTile.getAlliance() == alliance) {
-                return homeTile;
-            }
+    public HeavenTile[] createHeavenForAlliance(Alliance alliance) {
+        HeavenTile[] heavenTiles = new HeavenTile[Board.NUM_HEAVEN_TILES];
+        for (int i = 0; i < heavenTiles.length; i++) {
+            heavenTiles[i] = new HeavenTile(i, alliance);
         }
-        return null;
+        return heavenTiles;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nHome:\n");
-        for (HomeTile allHomeTile : allHomeTiles) {
-            sb.append(allHomeTile).append("\n");
+        for (HomeTile[] allHomeTiles : allHomeTiles) {
+            for (HomeTile homeTile : allHomeTiles) {
+                sb.append(homeTile);
+            }
+            sb.append("\n");
         }
         sb.append("\nTrack:\n");
-        sb.append(allTrackTiles).append("\n");
+        for (TrackTile trackTile : allTrackTiles) {
+            sb.append(trackTile);
+        }
+        sb.append("\n");
         sb.append("\nHeaven:\n");
-        for (HeavenTiles allHeavenTile : allHeavenTiles) {
-            sb.append(allHeavenTile).append("\n");
+        for (HeavenTile[] allHeavenTiles : allHeavenTiles) {
+            for (HeavenTile heavenTile : allHeavenTiles) {
+                sb.append(heavenTile);
+            }
+            sb.append("\n");
         }
         return sb.toString();
     }

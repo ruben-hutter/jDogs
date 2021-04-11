@@ -15,10 +15,7 @@ public abstract class Tile {
     }
 
     public boolean isTileOccupied() {
-        if (piece != null) {
-            return true;
-        }
-        return false;
+        return piece != null;
     }
 
     public Piece getPiece() {
@@ -34,6 +31,6 @@ public abstract class Tile {
         if (isTileOccupied()) {
             return getPiece().toString();
         }
-        return ".";
+        return ". ";
     }
 }

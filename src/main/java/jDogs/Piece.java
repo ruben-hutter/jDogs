@@ -27,7 +27,7 @@ public class Piece {
 
     @Override
     public String toString() {
-        return getPieceAlliance() + "-" + pieceID;
+        return getPieceAlliance() + "-" + pieceID + " ";
     }
 
     public int getPieceID() {
