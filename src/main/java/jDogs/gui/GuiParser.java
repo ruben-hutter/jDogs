@@ -19,21 +19,21 @@ public class GuiParser {
 
 
         for (int i = 0; i < message.length(); i++) {
-            if(message.toCharArray()[i] == ';') {
+            if (Character.isWhitespace(message.charAt(i))) {
                 idSeparator = i;
                 break;
             }
         }
 
         for (int i = idSeparator + 1; i < message.length(); i++) {
-            if(message.toCharArray()[i] == ';') {
+            if (Character.isWhitespace(message.charAt(i))) {
                 responsibleSeparator = i;
                 break;
             }
         }
 
         for (int i = responsibleSeparator + 1; i < message.length(); i++) {
-            if(message.toCharArray()[i] == ';') {
+            if (Character.isWhitespace(message.charAt(i))) {
                 sumSeparator = i;
                 break;
             }
@@ -44,7 +44,7 @@ public class GuiParser {
         System.out.println(responsibleSeparator);
         System.out.println(sumSeparator);
 
-        if(idSeparator == -1 || responsibleSeparator == -1 || sumSeparator == -1) {
+        if (idSeparator == -1 || responsibleSeparator == -1 || sumSeparator == -1) {
             System.out.println("couldn t parse message " + message + ". has wrong format..");
             return null;
         }
@@ -63,7 +63,7 @@ public class GuiParser {
         for (int i = 0; i < message.length(); i++) {
             if (Character.isWhitespace(message.toCharArray()[i])) {
                 if (!message.substring(i + 1).isBlank() || !message.substring(i + 1).isEmpty()) {
-                    return message.substring(1, i) + ";" + message.substring(i + 1);
+                    return message.substring(0, i) + " " + message.substring(i + 1);
                 }
             }
         }

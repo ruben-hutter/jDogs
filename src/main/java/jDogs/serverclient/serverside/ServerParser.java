@@ -27,7 +27,7 @@ public class ServerParser {
 
         String name = gameSetup.substring(0,nameSeparator);
         String total = gameSetup.substring(nameSeparator + 1);
-        int number = Integer.getInteger(total);
+        int number = Integer.parseInt(total);
         // allow only games with 4 or 6 players
         if (number == 4 || number == 6) {
 
