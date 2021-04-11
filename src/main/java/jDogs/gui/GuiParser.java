@@ -16,7 +16,7 @@ public class GuiParser {
         int idSeparator = -1;
         int responsibleSeparator = -1;
         int sumSeparator = -1;
-
+        System.out.println("message game " + message);
 
         for (int i = 0; i < message.length(); i++) {
             if (Character.isWhitespace(message.charAt(i))) {
@@ -84,5 +84,10 @@ public class GuiParser {
             }
         }
         return array;
+    }
+
+    public static void parseGameSetUp(String gameInfo) {
+
+
     }
 }

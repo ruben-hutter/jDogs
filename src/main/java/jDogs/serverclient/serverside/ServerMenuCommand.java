@@ -69,9 +69,12 @@ public class ServerMenuCommand {
 
                         if (oldNick != null) {
                             server.removeNickname(oldNick);
+                            sendToAll.enqueue("DPER " + oldNick);
                         }
                         sendToThisClient.enqueue("USER "
                                 + nickName);
+                        sendToAll.enqueue("LPUB " + nickName);
+
 
                         System.out.println("login worked " + "USER " + nickName);
 
@@ -170,29 +173,27 @@ public class ServerMenuCommand {
                     try {
                         GameFile game = getGame(text.substring(5));
                         if (game == null) {
+                            System.out.println(-1);
                             sendToThisClient
                                     .enqueue("INFO join not possible,game name does not exist");
                         } else {
                             game.addParticipants(serverConnection);
-                            sendToAll.enqueue("JOIN " + game.getNameId() + " " + nickName);
+                            sendToThisClient.enqueue("JOIN " + game.getNameId());
+                            sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
+                            System.out.println(1);
 
                             // all required players are set, then send start request to client
                             if (game.readyToStart()) {
-                                game.start();
-
-                                String[] array = game.getParticipantsArray();
-                                for (int i = 0; i < game.getNumberOfParticipants(); i++) {
-                                    server.getSender(array[i])
-                                            .sendStringToClient("STAR " + game.getNameId());
-                                }
+                                game.sendConfirmationMessage();
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         sendToThisClient.enqueue("INFO wrong format,you cannot join");
                     }
+                    System.out.println(3);
                     break;
             }
         }

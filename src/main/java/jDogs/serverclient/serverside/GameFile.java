@@ -44,6 +44,7 @@ public class GameFile {
         scArrayList.add(serverConnection);
         participants += " " + serverConnection.getNickname();
         numberParticipants++;
+        sendMessageToParticipants("OGAM " + getSendReady());
     }
 
     public String getParticipants() {
@@ -51,7 +52,7 @@ public class GameFile {
     }
 
     public String getSendReady() {
-         return nameId + " " + host + " " + total;
+         return nameId + " " + host + " " + numberParticipants + " " + total;
     }
 
     public String getNameId() {
@@ -93,6 +94,11 @@ public class GameFile {
         return total == numberParticipants;
     }
 
+    public void sendConfirmationMessage() {
+        sendMessageToParticipants("STAR");
+
+    }
+
     public int getNumberOfParticipants() {
         return numberParticipants;
     }
@@ -116,6 +122,8 @@ public class GameFile {
         Server.getInstance().startGame(new MainGame(this));
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getMessageHandlerServer().setPlaying(true);
+            Server.getInstance().startGame(new MainGame(this));
+            scArrayList.get(i).getSender().sendStringToClient("GAME " + " here will be displayed all the details necessary for the clients");
         }
     }
 
@@ -139,6 +147,7 @@ public class GameFile {
             participants = sb.toString();
 
             scArrayList.remove(serverConnection);
+            sendMessageToParticipants("DPER " + nickName);
         }
 
     }

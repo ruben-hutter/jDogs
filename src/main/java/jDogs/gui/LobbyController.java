@@ -5,8 +5,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.SQLOutput;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +34,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class LobbyController implements Initializable {
     @FXML
@@ -36,14 +47,16 @@ public class LobbyController implements Initializable {
     ObservableList<Participant> playersInLobby;
 
     private OpenGame selectedGame;
-    private String lobbyAddress;
+    private String gameId;
     private String[] activeUsersInPublic;
     private String[] activeUsersInSeparee;
     private Stage gameDialog;
+    boolean startGamePossible;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lobbyAddress = "";
+        this.startGamePossible = false;
 
         /**
          * TableViewActiveGames displays all active games
@@ -98,6 +111,8 @@ public class LobbyController implements Initializable {
         tableViewActPlayers.setItems((ObservableList) playersInLobby);
 
     }
+    @FXML
+    private Button startButton;
 
     @FXML
     private Button newGameButton;
@@ -131,6 +146,17 @@ public class LobbyController implements Initializable {
     private TextField textField;
 
     @FXML
+    void startButtonOnAction(ActionEvent event) {
+        if (startGamePossible) {
+            Client.getInstance().sendMessageToServer("STAR " + gameId);
+            //set everything up to game mode
+            startButton.setText("joined");
+            startGamePossible = false;
+        }
+
+    }
+
+    @FXML
     void newGameButtonOnAction(ActionEvent event) {
         System.out.println("started new game action");
         String dialogPath = "src/main/resources/createGameWindow.fxml";
@@ -159,8 +185,8 @@ public class LobbyController implements Initializable {
 
     @FXML
     void setQButtonOnAction(ActionEvent event) {
-        if(lobbyAddress != "") {
-            lobbyAddress = "";
+        if(gameId != "") {
+            gameId = "";
             new Alert(AlertType.INFORMATION, "you quit game and are public" ).showAndWait();
         } else {
             new Alert(AlertType.INFORMATION, "Error.you were already public" ).showAndWait();
@@ -172,8 +198,8 @@ public class LobbyController implements Initializable {
     void setJButtonOnAction(ActionEvent event) {
         if (selectedGame != null && tableViewActiveGames.getSelectionModel().getSelectedItem()!= null) {
             new Alert(AlertType.INFORMATION, "you joined " + selectedGame.getName()).showAndWait();
-            lobbyAddress = selectedGame.getName();
-            Client.getInstance().sendMessageToServer("JOIN " + lobbyAddress);
+            gameId = selectedGame.getName();
+            Client.getInstance().sendMessageToServer("JOIN " + gameId);
 
         } else {
             new Alert(AlertType.INFORMATION, "you did not select a game");
@@ -208,8 +234,8 @@ public class LobbyController implements Initializable {
                 }
 
             } else {
-                //Client.getInstance().sendMessageToServer("PCHT" + lobbyAddress + message);
-                Client.getInstance().sendMessageToServer("PCHT" + message);
+                //Client.getInstance().sendMessageToServer("PCHT" + gameId + message);
+                Client.getInstance().sendMessageToServer("PCHT " + message);
 
             }
         }
@@ -245,6 +271,11 @@ public class LobbyController implements Initializable {
 
     public void displayPendentGameInLobby(String game) {
         OpenGame newGame = GuiParser.getOpenGame(game);
+
+        if (newGame.getResponsible().equals(Client.getInstance().getNickname())) {
+            gameId = newGame.getName();
+        }
+
         //look for game by name
         int index = -1;
         for (int i = 0; i < openGames.size(); i++) {
@@ -256,35 +287,41 @@ public class LobbyController implements Initializable {
         // suppose: if name exists, game exists;
         // only refresh enlist number
         if (index > -1) {
-            openGames.get(index).setEnlist(newGame.getEnlist());
-        } else {
+            openGames.remove(index);
+        }
+
             // name doesn`t exist, game doesn`t exist;
             // add game
-            openGames.add(newGame);}
+            openGames.add(newGame);
+    }
+
+    public void removePendentGameInLobby(String substring) {
+        OpenGame openGame = GuiParser.getOpenGame(substring);
+        displayInfomsg("INFO removed game " + openGame.getName());
+        openGames.remove(openGame);
     }
 
     public void displayOnGoingGamesInLobby(String games) {
 
     }
 
-    public void displayPlayersInJDogs(String players) {
-
+    public void displayPlayerinPublic(String player) {
+        for (int i = 0; i < playersInLobby.size(); i++) {
+            if (playersInLobby.get(i).getPlayer().equals(player)) {
+                return;
+            }
+        }
+        playersInLobby.add(new Participant(player));
+    }
+    
+    public void removePlayerinPublic(String player) {
+        try {
+            playersInLobby.remove(new Participant(player));
+        } catch (Exception e) {
+            System.err.println("tried to remove non existing player");
+        }
     }
 
-
-    public void displayLPUB(String activeUsers) {
-       String[] userArray = GuiParser.getArray(activeUsers);
-
-
-    }
-
-    public void displayLSEP(String activeUsers) {
-        String[] userArray = GuiParser.getArray(activeUsers);
-    }
-
-    public void displaynewGame(String substring) {
-
-    }
 
     /**
      *  this method receives from the createGameWindowController
@@ -301,5 +338,36 @@ public class LobbyController implements Initializable {
     public void closeGameDialog() {
         System.out.println("close game dialog window");
         gameDialog.close();
+    }
+
+
+    public void startGameConfirmation() {
+        startGamePossible = true;
+        /**
+         * this code represents a rotating rectangle, that is rotating when the game is ready to start
+         */
+        final Rectangle rotatingRect = new Rectangle(5,5,10,6);
+        rotatingRect.setFill(Color.GREEN);
+
+        final Pane rectHolder = new Pane();
+        rectHolder.setMinSize(20, 16);
+        rectHolder.setPrefSize(20, 16);
+        rectHolder.setMaxSize(20, 16);
+        rectHolder.getChildren().add(rotatingRect);
+
+        final RotateTransition rotate = new RotateTransition(Duration.seconds(4), rotatingRect);
+        rotate.setByAngle(360);
+        rotate.setCycleCount(Animation.INDEFINITE);
+        rotate.setInterpolator(Interpolator.LINEAR);
+
+        startButton.setGraphic(rectHolder);
+
+        rotate.play();
+
+    }
+
+
+    public void startGame(String gameInfo) {
+        GUIManager.getInstance().startGame();
     }
 }
