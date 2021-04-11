@@ -84,7 +84,6 @@ public class SendFromServer implements Runnable {
      */
     synchronized public void sendStringToAllClients(String text) {
         for (int index = 0; index < server.senderlist.size(); index++) {
-            System.out.println();
             server.senderlist.get(index).sendStringToClient(text);
             //sfS.sendStringToClient(text);
         }

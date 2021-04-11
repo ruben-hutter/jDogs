@@ -57,16 +57,20 @@ public class ClientMenuCommand {
 
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
-
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
+
+                 */
                 break;
 
             case "WCHT":
                 System.out.println("WCHT: " + text.substring(5));
 
-                Platform.runLater(()->
+                /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
+
+                 */
 
                 break;
 

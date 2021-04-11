@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -28,6 +29,7 @@ public class Server {
     ArrayList<String> publicLobbyGuests = new ArrayList<>();
     ArrayList<ServerConnection> serverConnections = new ArrayList<>();
     ArrayList<GameFile> finishedGames = new ArrayList<>();
+    ArrayList<ServerConnection> publicLobbyGuestsSC = new ArrayList<>();
 
 
 
@@ -109,6 +111,7 @@ public class Server {
         serverConnectionMap.get("maintenance");
         // add to lobbyGuests
         publicLobbyGuests.add(nickname);
+        publicLobbyGuestsSC.add(serverConnection);
 
         //add to nicknamelist
         allNickNames.add(nickname);
@@ -136,6 +139,7 @@ public class Server {
 
     // add sender object from publicChatList
     public void addSender(SendFromServer connection) {
+
         senderlist.add(connection);
     }
     // remove sender object from publicChatList

@@ -61,6 +61,7 @@ public class SeparateLobbyCommand {
 
                 case "PCHT":
                     //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
+                    System.out.println("PCHT: " + text.substring(5));
                     for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
                         gameFile.getscArrayList().get(i).getSender()
                                 .sendStringToClient(text.substring(5));

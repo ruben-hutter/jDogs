@@ -124,13 +124,15 @@ public class MessageHandlerServer implements Runnable {
      */
     public void setJoinedOpenGame(GameFile gameFile, String nickname) {
         state = "openGame";
-        Server.getInstance().publicLobbyGuests.remove(nickname);
+        server.removeSender(serverConnection.getSender());
+        server.publicLobbyGuests.remove(nickname);
         separateLobbyCommand.setJoinedGame(gameFile, nickname);
         this.nickname = nickname;
     }
 
     public void returnToLobby() {
-        Server.getInstance().publicLobbyGuests.add(nickname);
+        server.publicLobbyGuests.add(nickname);
+        server.addSender(serverConnection.getSender());
         state = "publicLobby";
     }
 
