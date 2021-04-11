@@ -150,6 +150,20 @@ public class ServerMenuCommand {
                     }
                     break;
 
+                case "SESS":
+                    for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
+                        if (server.allGamesNotFinished.get(i).isPendent()) {
+                            sendToThisClient.enqueue("OGAM " + server.allGamesNotFinished.get(i).getSendReady());
+                        }
+                    }
+                    break;
+
+                case "LPUB":
+                    for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
+                        sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
+                    }
+                    break;
+
                 case "JOIN":
                     //join a game with this command
                     System.out.println("JOIN from " + nickName + " : " + text);

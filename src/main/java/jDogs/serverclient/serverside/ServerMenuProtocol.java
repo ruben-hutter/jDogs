@@ -15,7 +15,7 @@ public enum ServerMenuProtocol {
      */
     ACTI,
     /**
-     * Command to show all the open games which can be joined.
+     * Command to send all the open games which can be joined to this client.
      */
     SESS,
     /**
@@ -41,7 +41,11 @@ public enum ServerMenuProtocol {
     /**
      * Command to set game up in lobby
      */
-    OGAM;
+    OGAM,
+    /**
+     * Send Client all active Users in Public Lobby
+     */
+    LPUB;
 
     /**
      *

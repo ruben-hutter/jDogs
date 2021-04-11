@@ -13,7 +13,9 @@ public class GameFile {
     private int numberOfConfirmed;
     private int numberParticipants;
     private int total;
+    private boolean pendent;
     private ArrayList<ServerConnection> scArrayList = new ArrayList<>();
+
 
 
     public GameFile(String nameId, String host,String total, ServerConnection serverConnection) {
@@ -26,6 +28,7 @@ public class GameFile {
         this.confirmedParticipants = host;
         this.numberOfConfirmed = 0;
         this.scArrayList.add(serverConnection);
+        this.pendent = true;
         sendMessageToParticipants("OGAM " + getSendReady());
 
     }
@@ -109,6 +112,7 @@ public class GameFile {
     }
 
     public void start() {
+        pendent = false;
         Server.getInstance().startGame(new MainGame(this));
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getMessageHandlerServer().setPlaying(true);
@@ -147,5 +151,9 @@ public class GameFile {
 
     public ArrayList<ServerConnection> getscArrayList() {
         return scArrayList;
+    }
+
+    public boolean isPendent() {
+        return pendent;
     }
 }

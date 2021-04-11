@@ -239,4 +239,8 @@ public class LobbyController implements Initializable {
     public void displayLSEP(String activeUsers) {
         String[] userArray = GuiParser.getArray(activeUsers);
     }
+
+    public void displaynewGame(String substring) {
+
+    }
 }

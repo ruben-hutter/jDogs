@@ -47,31 +47,24 @@ public class ClientMenuCommand {
                     name = text.substring(5);
                     client.setNickname(name);
                     sendFromClient.keyBoardInBlocked = false;
-                    /*
-                    Platform.runLater(() -> GUIManager.getInstance().lobbyController.
-                            displayInfomsg("info from server. Your new nick is " + name));
 
-                     */
+                    Platform.runLater(() -> GUIManager.getInstance().lobbyController.
+                            displayInfomsg("INFO from server. Your new nick is " + name));
                 }
                 break;
 
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
-                /*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
-
-                 */
                 break;
 
             case "WCHT":
                 System.out.println("WCHT: " + text.substring(5));
 
-                /*Platform.runLater(()->
+                Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
-
-                 */
-
                 break;
 
             case "LPUB":
@@ -79,11 +72,11 @@ public class ClientMenuCommand {
                 //TODO Information update of active users in Public Lobby
                 //just compare to existing String/Array and replace if necessary
 
-                /*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLPUB(text.substring(5)));
 
-                 */
+
                 System.out.println("LPUB: " + text.substring(5));
                 break;
 
@@ -92,10 +85,10 @@ public class ClientMenuCommand {
 
                 //TODO display Information about a user or users who joined a pendent game
 
-                /*Platform.runLater(()->
+                Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLSEP(text.substring(5)));
 
-                 */
+
                 System.out.println("JOIN: " + text.substring(5));
                 break;
 
@@ -103,11 +96,9 @@ public class ClientMenuCommand {
 
                 //TODO display a new pendent
                 System.out.println("OGAM: " + text.substring(5));
-                /*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displaynewGame(text.substring(5)));
-
-                 */
                 break;
 
             case "DOGA":
@@ -121,10 +112,8 @@ public class ClientMenuCommand {
                 break;
 
             case "INFO":
-                /*Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPCHTmsg("SRVRINFO: " + text.substring(5)));
-
-                 */
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
