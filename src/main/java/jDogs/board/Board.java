@@ -1,6 +1,7 @@
 package jDogs.board;
 
 import jDogs.Alliance;
+import java.util.HashMap;
 
 /**
  * Creates board initial setup
@@ -18,7 +19,10 @@ public class Board {
     TrackTile[] allTrackTiles;
     HeavenTile[][] allHeavenTiles;
 
+    public HashMap<Alliance, HomeTile[]> testHomeMap = new HashMap<>();
+
     public Board(int numOfPlayers) {
+        testHomeMap.put(Alliance.BLACK, createHomeForAlliance(Alliance.BLACK));
         allHomeTiles = createAllHomeTiles(numOfPlayers);
         allTrackTiles = createAllTrackTiles(numOfPlayers);
         allHeavenTiles = createAllHeavenTiles(numOfPlayers);

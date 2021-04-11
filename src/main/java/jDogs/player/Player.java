@@ -24,7 +24,7 @@ public class Player {
         this.alliance = alliance;
         this.board = board;
         pieces = createPieces(startingPosition);
-        setPiecesOnHome();
+        //setPiecesOnHome();
         startingPosition += Board.NUM_TRACK_TILES_X_PLAYER;
     }
 
@@ -43,13 +43,14 @@ public class Player {
     /**
      * Sets the newly created pieces on their home tiles.
      */
+    /*
     private void setPiecesOnHome() {
         HomeTile homeTile = board.getHomeTiles(alliance);
         for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
             homeTile.getHomeTile(i).setPiece(pieces[i]);
         }
     }
-
+*/
     public String getPlayerName() {
         return playerName;
     }

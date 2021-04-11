@@ -1,7 +1,9 @@
 package jDogs;
 
 import jDogs.board.Board;
+import jDogs.board.Tile;
 import jDogs.player.Player;
+import java.util.Arrays;
 
 /**
  * Generates the board and the players for a game.
@@ -14,6 +16,13 @@ public class Main {
 
         // creates the board
         Board board = new Board(NUM_PLAYERS);
+
+        System.out.println(Arrays.toString(board.testHomeMap.get(Alliance.BLACK)));
+
+        for (Tile tile : board.testHomeMap.get(Alliance.BLACK)) {
+            System.out.print(tile);
+        }
+        System.out.println();
 
         // creates all the players (has to be created in the right order,
         // to give them the correct starting position

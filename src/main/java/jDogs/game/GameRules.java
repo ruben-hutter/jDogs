@@ -1,7 +1,7 @@
 package jDogs.game;
 
 //this will check if moves correspond to rules
-
+/*
 import jDogs.board.HeavenTiles;
 import jDogs.board.HomeTiles;
 import jDogs.board.Tile;
@@ -46,3 +46,4 @@ public class GameRules {
         return false;
     }
 }
+*/
