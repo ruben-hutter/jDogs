@@ -25,24 +25,16 @@ public class ServerParser {
             return null;
         }
 
-
-
         String name = gameSetup.substring(0,nameSeparator);
         String total = gameSetup.substring(nameSeparator + 1);
 
 
-
-
         String host = serverConnection.getNickname();
         name = checkName(name);
-        System.out.println(name);
-        System.out.println(total);
-        System.out.println("size " + server.allGamesNotFinished.size());
 
 
-        System.out.println(host);
         if (checkHost(host)) {
-            return new GameFile(name, host, total);}
+            return new GameFile(name, host, total,serverConnection);}
 
         System.err.println("Gamehost " + host + " already exists in server.allGamesNotFinished!");
         return null;

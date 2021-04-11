@@ -22,6 +22,7 @@ public class MessageHandlerServer implements Runnable {
     private ServerMenuCommand serverMenuCommand;
     private SeparateLobbyCommand separateLobbyCommand;
     private String state;
+    private String nickname;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient) {
@@ -118,15 +119,19 @@ public class MessageHandlerServer implements Runnable {
 
     /**
      *
-     * @param joined send messages to separateLobbyCommand
+     * @param gameFile the openGame the client joins
+     * @param nickname the actual nickname he has(could also be omitted)
      */
+    public void setJoinedOpenGame(GameFile gameFile, String nickname) {
+        state = "openGame";
+        Server.getInstance().publicLobbyGuests.remove(nickname);
+        separateLobbyCommand.setJoinedGame(gameFile, nickname);
+        this.nickname = nickname;
+    }
 
-    public void setJoinedOpenGame(boolean joined) {
-        if (joined) {
-            state = "openGame";
-        } else {
-            state = "publicLobby";
-        }
+    public void returnToLobby() {
+        Server.getInstance().publicLobbyGuests.add(nickname);
+        state = "publicLobby";
     }
 
     public ServerMenuCommand getServerMenuCommand() {

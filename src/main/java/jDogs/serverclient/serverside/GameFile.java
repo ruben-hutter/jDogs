@@ -1,6 +1,9 @@
 package jDogs.serverclient.serverside;
 //this class represents information of pendent games(still in lobby) or ongoing games
 
+import java.util.ArrayList;
+import java.util.BitSet;
+
 public class GameFile {
 
     private String nameId;
@@ -10,9 +13,10 @@ public class GameFile {
     private int numberOfConfirmed;
     private int numberParticipants;
     private int total;
+    private ArrayList<ServerConnection> scArrayList = new ArrayList<>();
 
 
-    public GameFile(String nameId, String host,String total) {
+    public GameFile(String nameId, String host,String total, ServerConnection serverConnection) {
 
         this.nameId = nameId;
         this.host = host;
@@ -21,11 +25,13 @@ public class GameFile {
         this.numberParticipants = 1;
         this.confirmedParticipants = host;
         this.numberOfConfirmed = 0;
+        this.scArrayList.add(serverConnection);
 
     }
 
-    public void addParticipants(String newParticipant) {
-        participants += ";" + newParticipant;
+    public void addParticipants(ServerConnection serverConnection) {
+        scArrayList.add(serverConnection);
+        participants += ";" + serverConnection.getNickname();
         numberParticipants++;
     }
 
@@ -90,17 +96,27 @@ public class GameFile {
     }
 
     public boolean startGame() {
+
         return total == numberOfConfirmed;
+    }
+
+    public void start() {
+        Server.getInstance().startGame(new MainGame(this));
+        for (int i = 0; i < scArrayList.size(); i++) {
+            scArrayList.get(i).getMessageHandlerServer().setPlaying(true);
+        }
     }
 
     /**
      *
-     * @param nickName is the participant which should be removed
+     * @param serverConnection is the participant which should be removed
      *                 attention: it doesn`t work for the host
      *                 the host should be removed
      *                 by deleting the whole file
      */
-    public void removeParticipant(String nickName) {
+    public void removeParticipant(ServerConnection serverConnection) {
+        String nickName = serverConnection.getNickname();
+
         if (nickName == host) {
             System.err.println(this.toString() + " tried to delete host as participant. Forbidden!");
         } else {
@@ -109,7 +125,19 @@ public class GameFile {
             int firstChar = sb.indexOf(nickName);
             sb.delete(firstChar - 1,firstChar + nickName.length());
             participants = sb.toString();
+
+            scArrayList.remove(serverConnection);
         }
 
+    }
+
+    public void cancel() {
+        for (int i = 0; i < scArrayList.size(); i++) {
+            scArrayList.get(i).getMessageHandlerServer().returnToLobby();
+        }
+    }
+
+    public ArrayList<ServerConnection> getscArrayList() {
+        return scArrayList;
     }
 }

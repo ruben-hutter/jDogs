@@ -1,13 +1,11 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.serverclient.helpers.Queuejd;
-import java.util.ArrayList;
 
 public class SeparateLobbyCommand {
 
     private Queuejd sendToThisClient;
     private Queuejd sendToAll;
-    private ArrayList<ServerConnection> scArrayList;
     private SendFromServer[] senderArray;
     private ServerConnection serverConnection;
     private GameFile gameFile;
@@ -17,7 +15,6 @@ public class SeparateLobbyCommand {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.serverConnection = serverConnection;
-        this.scArrayList = new ArrayList<>();
         this.gameFile = null;
     }
 
@@ -63,9 +60,10 @@ public class SeparateLobbyCommand {
                 break;
 
         case "PCHT":
-
             //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
-            sendMessageToMembers(text.substring(4));
+            for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
+                gameFile.getscArrayList().get(i).getSender().sendStringToClient(text.substring(5));
+            }
             break;
 
         case "STAR":
@@ -82,8 +80,7 @@ public class SeparateLobbyCommand {
             //set all to game mode
 
             if (gameFile.startGame()) {
-                changeServerConnectionsToPlay(true);
-                Server.getInstance().startGame(new MainGame(gameFile));
+                gameFile.start();
             }
             break;
 
@@ -91,15 +88,11 @@ public class SeparateLobbyCommand {
 
                 System.out.println(nickname + " doesn`t join anymore " + this.gameFile.getNameId());
                 if (this.gameFile.getHost() == nickname) {
+                    this.gameFile.cancel();
                     Server.getInstance().allGamesNotFinished.remove(this.gameFile);
-                    scArrayList.forEach(serverConnection1 -> serverConnection1.getMessageHandlerServer().setPlaying(false));
                     sendToAll.enqueue("DOGA " + this.gameFile.getNameId());
                 } else {
-                    this.gameFile.removeParticipant(nickname);
-                    scArrayList.remove(serverConnection);
-                    //TODO change the following line of code
-                    scArrayList.forEach(serverConnection1 -> serverConnection1.getMessageHandlerServer().getSeparateLobbyCommand().removeParticipant(serverConnection));
-
+                    this.gameFile.removeParticipant(serverConnection);
                     sendToAll.enqueue("DPER " + this.gameFile.getNameId() + " " + nickname);
                 }
                 break;
@@ -109,6 +102,9 @@ public class SeparateLobbyCommand {
                     " finishedGames " + Server.getInstance().finishedGames.size());
             break;
 
+        case "ACTI":
+            sendToThisClient.enqueue("ACTI all joining this game: " + this.gameFile.getParticipants());
+            break;
 
         default:
             sendToThisClient.enqueue("INFO this command " + command + " is not implemented in lobby");
@@ -117,11 +113,6 @@ public class SeparateLobbyCommand {
         }
     }
 
-    private void removeParticipant(ServerConnection exMemberServerConnection) {
-
-        scArrayList.remove(exMemberServerConnection);
-
-    }
 
     private boolean isParticipant(String destiny) {
         for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
@@ -132,32 +123,10 @@ public class SeparateLobbyCommand {
         return false;
     }
 
-    private void sendMessageToMembers(String message) {
-            scArrayList.forEach(ServerConnection1 -> ServerConnection1.getSender().sendStringToClient(message));
-    }
-
-    private void changeServerConnectionsToPlay(boolean boole) {
-        scArrayList.forEach(serverConnection1 -> serverConnection1.getMessageHandlerServer().setPlaying(true));
-
-    }
-
     private GameFile getGame(String gameName) {
         return Server.getInstance().getNotFinishedGame(gameName);
     }
 
-    private void createServerConnectionList() {
-        this.scArrayList = Server.getInstance().getServerConnectionsMap(gameFile);
-        int size = scArrayList.size();
-        for (int i = 0; i < size; i++) {
-            this.scArrayList.get(i).getMessageHandlerServer().getSeparateLobbyCommand().addParticipant(this.serverConnection);
-        }
-        System.out.println("done");
-
-    }
-
-    private void addParticipant(ServerConnection newServerConnection) {
-        scArrayList.add(newServerConnection);
-    }
 
     /**
      *
@@ -169,14 +138,11 @@ public class SeparateLobbyCommand {
     public void setGameFile(GameFile gameFile, String nickname) {
         this.gameFile = gameFile;
         this.nickname = nickname;
-        this.scArrayList = Server.getInstance().getServerConnectionsMap(gameFile);
-
     }
     // if client joined a game
 
     public void setJoinedGame(GameFile gameFile, String nickname) {
         this.gameFile = gameFile;
         this.nickname = nickname;
-        createServerConnectionList();
     }
 }
