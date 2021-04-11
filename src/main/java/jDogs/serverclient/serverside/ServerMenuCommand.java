@@ -132,15 +132,11 @@ public class ServerMenuCommand {
                             sendToThisClient.enqueue("INFO nickname unknown");
                         }
                     }
-
                     break;
 
                 case "PCHT":
-                    // TODO send message to all active clients
-                    //PCHT is now necessary for MessageHandlerClients
-                    if (loggedIn) {
-                        sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
-                    }
+                    // send to all in public lobby
+                    sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
                     break;
 
                 case "OGAM":
