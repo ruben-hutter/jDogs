@@ -28,4 +28,19 @@ public enum SeparateLobbyProtocol {
     STAR;
 
 
+    /**
+     *
+     * @param text check if a string matches the list
+     * @return if matches, else does not match
+     */
+    public static boolean isACommand(String text) {
+        for (ServerMenuProtocol command : ServerMenuProtocol.values()) {
+            if (command.toString().equals(text.substring(0, 4))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
