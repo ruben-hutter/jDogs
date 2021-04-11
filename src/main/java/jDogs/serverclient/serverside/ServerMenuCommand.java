@@ -111,7 +111,7 @@ public class ServerMenuCommand {
 
                     int separator = -1;
                     for (int i = 0; i < text.substring(5).length(); i++) {
-                        if (text.substring(4).toCharArray()[i] == ';') {
+                        if (Character.isWhitespace(text.substring(5).charAt(i))) {
                             separator = i;
                             break;
                         }
@@ -120,8 +120,10 @@ public class ServerMenuCommand {
                     if (separator == -1) {
                         sendToThisClient.enqueue("INFO " + "wrong WCHT format");
                     } else {
-                        String adressor = text.substring(5, 4 + separator);
+                        String adressor = text.substring(5, 5 + separator);
+                        System.out.println("adressor " + adressor);
                         String message = text.substring(5 + separator);
+                        System.out.println("mess " + message);
                         try {
                             server.getSender(adressor)
                                     .sendStringToClient("WCHT " + "@" + nickName + ": " + message);

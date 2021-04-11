@@ -26,12 +26,20 @@ public class GameFile {
         this.confirmedParticipants = host;
         this.numberOfConfirmed = 0;
         this.scArrayList.add(serverConnection);
+        sendMessageToParticipants("OGAM " + getSendReady());
+
+    }
+
+    private void sendMessageToParticipants(String message) {
+        for (int i = 0; i < scArrayList.size(); i++) {
+            scArrayList.get(i).getSender().sendStringToClient(message);
+        }
 
     }
 
     public void addParticipants(ServerConnection serverConnection) {
         scArrayList.add(serverConnection);
-        participants += ";" + serverConnection.getNickname();
+        participants += " " + serverConnection.getNickname();
         numberParticipants++;
     }
 
@@ -40,7 +48,7 @@ public class GameFile {
     }
 
     public String getSendReady() {
-         return nameId + ";" + host + ";" + total;
+         return nameId + " " + host + " " + total;
     }
 
     public String getNameId() {
