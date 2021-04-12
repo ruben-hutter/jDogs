@@ -98,6 +98,8 @@ public class SeparateLobbyCommand {
                         this.gameFile.removeParticipant(serverConnection);
                         sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
                     }
+                    serverConnection.getMessageHandlerServer().returnToLobby();
+                    sendToAll.enqueue("LPUB " + nickname);
                     break;
 
                 case "STAT":

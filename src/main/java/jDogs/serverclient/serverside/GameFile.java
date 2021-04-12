@@ -44,7 +44,10 @@ public class GameFile {
         scArrayList.add(serverConnection);
         participants += " " + serverConnection.getNickname();
         numberParticipants++;
-        sendMessageToParticipants("OGAM " + getSendReady());
+        sendMessageToParticipants("LPUB " + serverConnection.getNickname());
+        for (int i = 0; i < numberParticipants - 1; i++) {
+            serverConnection.getSender().sendStringToClient("LPUB " + getParticipantsArray()[i]);
+        }
     }
 
     public String getParticipants() {
@@ -72,7 +75,7 @@ public class GameFile {
                 int i = separator;
                 while (i < participants.length()) {
 
-                    if (participants.charAt(i) == ';') {
+                    if (Character.isWhitespace(participants.charAt(i))) {
                         array[arrayEntries] = participants.substring(separator, i);
                         separator = i + 1;
                         arrayEntries++;

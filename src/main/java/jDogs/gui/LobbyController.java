@@ -188,6 +188,8 @@ public class LobbyController implements Initializable {
         if(gameId != "") {
             gameId = "";
             new Alert(AlertType.INFORMATION, "you quit game and are public" ).showAndWait();
+            Client.getInstance().sendMessageToServer("QUIT");
+            playersInLobby.removeAll();
         } else {
             new Alert(AlertType.INFORMATION, "Error.you were already public" ).showAndWait();
         }
@@ -340,6 +342,12 @@ public class LobbyController implements Initializable {
         gameDialog.close();
     }
 
+    public void goToSeparateLobbyGame(String game) {
+        gameId = game;
+        displayInfomsg("INFO you joined game " + gameId);
+        //show only players in separate lobby
+        playersInLobby.removeAll();
+    }
 
     public void startGameConfirmation() {
         startGamePossible = true;

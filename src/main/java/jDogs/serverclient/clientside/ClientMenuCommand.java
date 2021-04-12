@@ -92,7 +92,7 @@ public class ClientMenuCommand {
                 //TODO display Information about a user or users who joined a pendent game
 
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayInfomsg("INFO you joined sucessfully" + text.substring(5)));
+                        GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
 
 
                 System.out.println("JOIN: " + text.substring(5));

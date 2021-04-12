@@ -162,9 +162,7 @@ public class ServerMenuCommand {
                     break;
 
                 case "LPUB":
-                    for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
-                        sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
-                    }
+                    sendAllPublicGuests();
                     break;
 
                 case "JOIN":
@@ -177,8 +175,8 @@ public class ServerMenuCommand {
                             sendToThisClient
                                     .enqueue("INFO join not possible,game name does not exist");
                         } else {
-                            game.addParticipants(serverConnection);
                             sendToThisClient.enqueue("JOIN " + game.getNameId());
+                            game.addParticipants(serverConnection);
                             sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
@@ -252,4 +250,9 @@ public class ServerMenuCommand {
         return nickName;
     }
 
+    public void sendAllPublicGuests() {
+        for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
+            sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
+        }
+    }
 }
