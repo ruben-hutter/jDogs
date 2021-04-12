@@ -2,6 +2,8 @@ package jDogs.serverclient.serverside;
 
 
 import jDogs.serverclient.helpers.Queuejd;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This thread processes messages received meaningfully.
@@ -23,6 +25,7 @@ public class MessageHandlerServer implements Runnable {
     private SeparateLobbyCommand separateLobbyCommand;
     private String state;
     private String nickname;
+    private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient) {
@@ -34,7 +37,7 @@ public class MessageHandlerServer implements Runnable {
         this.running = true;
         this.loggedIn = false;
         this.serverMenuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient, sendToAll);
-        this.serverGameCommand = new ServerGameCommand();
+        this.serverGameCommand = new ServerGameCommand(server, serverConnection,this,sendToThisClient, sendToAll);
         this.separateLobbyCommand = new SeparateLobbyCommand(sendToThisClient, sendToAll, serverConnection);
         this.state = "publicLobby";
     }

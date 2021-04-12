@@ -1,5 +1,7 @@
 package jDogs.serverclient.clientside;
 
+import jDogs.serverclient.helpers.Queuejd;
+
 /**
  * ClientGameCommand contains the game
  * commands which are sent from the
@@ -10,8 +12,17 @@ package jDogs.serverclient.clientside;
 //
 
 public class ClientGameCommand {
+    private Client client;
+    private SendFromClient sendFromClient;
+    private Queuejd sendQueue;
+    private Queuejd keyBoardInQueue;
 
-    ClientGameCommand() {
+    ClientGameCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
+        this.client = client;
+        this.sendQueue = sendQueue;
+        this.sendFromClient = sendFromClient;
+        this.sendQueue = sendQueue;
+        this.keyBoardInQueue = keyBoardInQueue;
 
     }
 
