@@ -4,6 +4,7 @@ import jDogs.Alliance;
 import jDogs.Piece;
 import jDogs.board.Board;
 import jDogs.board.HomeTile;
+import jDogs.board.Tile;
 
 /**
  * This class defines a player
@@ -12,20 +13,22 @@ import jDogs.board.HomeTile;
  */
 public class Player {
 
-    private static int startingPosition = 0;
+    private static int startingPositionCounter = 0;
 
     public Piece[] pieces;
     String playerName;
     Alliance alliance;
     Board board;
+    public int startingPosition;
 
     public Player(String playerName, Alliance alliance, Board board) {
         this.playerName = playerName;
         this.alliance = alliance;
         this.board = board;
+        startingPosition = startingPositionCounter;
         pieces = createPieces(startingPosition);
-        //setPiecesOnHome();
-        startingPosition += Board.NUM_TRACK_TILES_X_PLAYER;
+        setPiecesOnHome();
+        startingPositionCounter += Board.NUM_TRACK_TILES_X_PLAYER;
     }
 
     /**
@@ -41,16 +44,15 @@ public class Player {
     }
 
     /**
-     * Sets the newly created pieces on their home tiles.
+     * Put pieces on their home.
      */
-    /*
     private void setPiecesOnHome() {
-        HomeTile homeTile = board.getHomeTiles(alliance);
-        for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
-            homeTile.getHomeTile(i).setPiece(pieces[i]);
+        for (int i = 0; i < pieces.length; i++) {
+            board.allHomeTiles.get(alliance)[i].setPiece(pieces[i]);
+            pieces[i].setPosition(board.allHomeTiles.get(alliance)[i]);
         }
     }
-*/
+
     public String getPlayerName() {
         return playerName;
     }
@@ -59,14 +61,9 @@ public class Player {
         return alliance;
     }
 
-    @Override
-    public String toString() {
-        return getPlayerName() + ": " + getAlliance();
-    }
-
     /**
-     *
-     * @param pieceID
+     * Get the piece you want, giving the id.
+     * @param pieceID a number between 1-4
      * @return Piece with fitting pieceID
      */
     public Piece getPiece(int pieceID) {
@@ -76,5 +73,18 @@ public class Player {
             }
         }
         return null;
+    }
+
+    public void setPiece(int pieceID, Tile newPosition) {
+        Piece pieceToMove = getPiece(pieceID);
+        Tile oldPosition = pieceToMove.getPosition();
+        pieceToMove.setPosition(newPosition);
+        oldPosition.setPiece(null);
+        newPosition.setPiece(pieceToMove);
+    }
+
+    @Override
+    public String toString() {
+        return getPlayerName() + ": " + getAlliance();
     }
 }

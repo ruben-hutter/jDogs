@@ -2,6 +2,7 @@ package jDogs.board;
 
 import jDogs.Alliance;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Creates board initial setup
@@ -15,32 +16,29 @@ public class Board {
     public static final int NUM_HEAVEN_TILES = 4;
     public static final int NUM_HOME_TILES = 4;
 
-    HomeTile[][] allHomeTiles;
-    TrackTile[] allTrackTiles;
-    HeavenTile[][] allHeavenTiles;
-
-    public HashMap<Alliance, HomeTile[]> testHomeMap = new HashMap<>();
+    public HashMap<Alliance, HomeTile[]> allHomeTiles;
+    public TrackTile[] allTrackTiles;
+    public HeavenTile[][] allHeavenTiles;
 
     public Board(int numOfPlayers) {
-        testHomeMap.put(Alliance.BLACK, createHomeForAlliance(Alliance.BLACK));
         allHomeTiles = createAllHomeTiles(numOfPlayers);
         allTrackTiles = createAllTrackTiles(numOfPlayers);
         allHeavenTiles = createAllHeavenTiles(numOfPlayers);
     }
 
-    private HomeTile[][] createAllHomeTiles(int numOfPlayers) {
-        allHomeTiles = new HomeTile[numOfPlayers][];
-        allHomeTiles[0] = createHomeForAlliance(Alliance.YELLOW);
-        allHomeTiles[1] = createHomeForAlliance(Alliance.GREEN);
+    private HashMap<Alliance, HomeTile[]> createAllHomeTiles(int numOfPlayers) {
+        allHomeTiles = new HashMap<>();
+        allHomeTiles.put(Alliance.YELLOW, createHomeForAlliance(Alliance.YELLOW));
+        allHomeTiles.put(Alliance.GREEN, createHomeForAlliance(Alliance.GREEN));
         if (numOfPlayers == 6) {
-            allHomeTiles[2] = createHomeForAlliance(Alliance.WHITE);
-            allHomeTiles[3] = createHomeForAlliance(Alliance.BLUE);
-            allHomeTiles[4] = createHomeForAlliance(Alliance.RED);
-            allHomeTiles[5] = createHomeForAlliance(Alliance.BLACK);
-        } else {
-            allHomeTiles[2] = createHomeForAlliance(Alliance.BLUE);
-            allHomeTiles[3] = createHomeForAlliance(Alliance.RED);
+            allHomeTiles.put(Alliance.WHITE, createHomeForAlliance(Alliance.WHITE));
+            allHomeTiles.put(Alliance.BLUE, createHomeForAlliance(Alliance.BLUE));
+            allHomeTiles.put(Alliance.RED, createHomeForAlliance(Alliance.RED));
+            allHomeTiles.put(Alliance.BLACK, createHomeForAlliance(Alliance.BLACK));
+            return allHomeTiles;
         }
+        allHomeTiles.put(Alliance.BLUE, createHomeForAlliance(Alliance.BLUE));
+        allHomeTiles.put(Alliance.RED, createHomeForAlliance(Alliance.RED));
         return allHomeTiles;
     }
 
@@ -53,7 +51,11 @@ public class Board {
     }
 
     private TrackTile[] createAllTrackTiles(int numOfPlayers) {
-        return new TrackTile[NUM_TRACK_TILES_X_PLAYER * numOfPlayers];
+        TrackTile[] trackTiles = new TrackTile[NUM_TRACK_TILES_X_PLAYER * numOfPlayers];
+        for (int i = 0; i < trackTiles.length; i++) {
+            trackTiles[i] = new TrackTile(i);
+        }
+        return trackTiles;
     }
 
     private HeavenTile[][] createAllHeavenTiles(int numOfPlayers) {
@@ -84,8 +86,8 @@ public class Board {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nHome:\n");
-        for (HomeTile[] allHomeTiles : allHomeTiles) {
-            for (HomeTile homeTile : allHomeTiles) {
+        for (Map.Entry<Alliance, HomeTile[]> homeTiles : allHomeTiles.entrySet()) {
+            for (HomeTile homeTile : homeTiles.getValue()) {
                 sb.append(homeTile);
             }
             sb.append("\n");
