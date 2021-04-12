@@ -77,7 +77,7 @@ public class GuiParser {
         int arrayCount = 0;
         int first = 2;
         for (int i = 2; i < activeUsers.length(); i++) {
-            if(activeUsers.charAt(i) == ';') {
+            if(activeUsers.charAt(i) == ' ') {
                 array[arrayCount] = activeUsers.substring(first,i);
                 arrayCount++;
                 first = i + 1;
