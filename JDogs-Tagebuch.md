@@ -188,3 +188,58 @@ Heute ging es darum, die Aufgaben zu verteilen und einen ersten Überblick über
 Bis zum nächsten Treffen wird sich Ruben um die GameLogic kümmern, Johanna schaut sich die Konzepte zur Qualitätssicherung(JUnit-Test, Mockito..) an, um herauszufinden, wie wir sie benutzen können, Gregor kümmert sich um den WhisperChat und die GUI.
 
 ---
+
+*03.04.2021 10:00, Johanna*
+
+### Protokoll#08 - Protokoll
+
+Gregor berichtete von einem grösseren Problem, das bei ihm in Zusammenhang mit Guava Eventbus auftrat und es ihm praktisch verunmöglichte, weiter an der GUI zu arbeiten. Wir sprachen noch über JUnit-Tests und die Game-Logic. Uns ist noch nicht ganz klar, wie wir JUnit-Tests für komplexere Aufgaben anwenden können. 
+Gregor versucht das Problem mit Eventbus zu lösen. Ruben und Johanna versuchen sich am Nachmittag im Pair-Programming an einer Implementation des Spielbretts und der Positionen der Murmeln. 
+Bericht vom Nachmittag (Spielbrett): Wir überlegten, ob wir das Spielbrett als Murmel-Array darstellen oder ob das Spielbrett getrennt von den Murmeln dargestellt werden sollte. Wir entschieden uns für Letzteres.
+
+**Nächstes Treffen:** Montag, 05.04.21, 16:30 Uhr
+
+---
+
+*05.04.2021 16:00, Johanna*
+
+### Protokoll#09 - Protokoll
+
+Ruben zeigte uns seine Implementation des Spielbretts. Das Spielbrett sowie die Position der Spieler kann auf der Konsole ausgegegeben werden. Wir diskutierten,  ob die Farbe der Karten nötig ist, oder ob der Kartenwert reicht. Wir überlegten, welche externen Libraries wir benutzen könnten und entschieden, dass sich Gregor Log4j, Ruben Guava und Johanna Mockito genauer ansehen soll. Gregor macht sich Gedanken zur Regelübrprüfung. 
+
+**Nächstes Treffen:** Mittwoch, 07.04.21 in der Übungsstunde
+
+---
+
+*07.04.2021 10:00, Johanna*
+
+### Protokoll#10 - Protokoll
+
+Gregor konnte das Problem mit Guava Eventbus glücklicherweise lösen. In der Übungsstunde besprachen wir das Spielbrett, die Karten, GUI und die Anforderungen für den Meilenstein 3.
+- Spielbrett: Wir diskutierten, wie wir das Spielbrett und die Spielfiguren konstruieren sollen, damit wir jeweils den aktuellen Stand der Figuren abfragen können. Gregor schlug vor, eine abstrakte Klasse Tiles zu erstellen,  von der dann die Heaven Tiles, Home Tiles und Track Tiles abgeleitet werden. 
+- Karten: Gregor schlug vor, eine abstrakte Klasse Card zu erstellen, von der dann für jede Karte eine eigene Klasse abgeleitet werden kann.Um den Spielzug zu überprüfen reicht es, wenn lediglich der Wert der Karte übergeben wird. Spezialkarten sind Joker und Ass, die verschiedene Werte einnehmen können. 
+- GUI: Ruben schlug vor, dass ein WhisperChat mit einer anderen Person gestartet werden kann, wenn das Zeichen @ verwendet wird. 
+
+
+Wir fragten Tim, was man alles mit JUnit-Tests testen sollte. Er meinte, hauptsächlich sollte die GameLogic getestet werden, die Verbindung zwischen Client und Server sei schwierig zu testen. 
+
+**Nächstes Treffen:** Freitag, 09.04.21, 10 Uhr. 
+
+Bis dahin kümmert sich Gregor weiter um GUI, GameRules und Logger, Ruben um das Spielbrett und Guava und Johanna um die Karten und Mockito.
+
+---
+
+*09.04.2021 10:00, Johanna*
+
+### Protokoll#11 - Protokoll
+
+Bei der heutigen Sitzung wurden u.a. die Themen Spielbrett, Spielorganisation und Karten besprochen.
+- Spielbrett und -figuren (Pieces): Es kam die Frage auf, ob die HomeTiles überhaupt als Tiles dargestellt werden sollen, da es für die Figure zu Hause keine Rolle spielt, auf welcher Position im Haus sie stehen. Weiterhin ist es wichtig, zu speichern, ob eine Figur das erste Feld nach dem Start blockiert oder nicht (hasMoved).
+- Spielorganisation: Gregor kreierte ein Objekt GameFile, welches die Informationen enthält, die nötig sind, um ein Spiel zu beginnen (GameID, Host, Nicknames der Spieler). Mit dem neu eingeführten Befehl OGAM (Open Game) kann ein Spiel eröffnet werden, wenn die Bedingungen erfüllt sind (z.B. korrekte Spieleranzahl). Wir diskutierten, wie festgestellt werden kann, wann neue Karten verteilt werden sollten. Es reicht nicht aus, nur zu kontrollieren, ob alle Spieler keine Karten mehr haben, denn es könnte sein, dass ein Spieler noch Karten hat, diese aber nicht spielen kann/will. Gregor schlug vor, eine zufällige Karte von der Spielerhand abzuziehen, wenn ein Spieler keine Karte legen kann/will. 
+- Karten: Wenn eine Karte gespielt wird, sollen neben dem Befehl, dass eine Karte gespielt wird, folgende Infos übermittelt werden: Name der Karte; Spielfigur, auf die die Karte angewendet werden soll; Anzahl Schritte, die die Spielfigur laufen respektive die Aktion, die durchgeführt werden soll. Bsp: PCAR KING max-1 13. 
+- Protokoll: Wir legten als Seperator den Leerschlag fest. 
+- Libraries: Wir denken, Log4j wäre sicherlich äusserst hilfreich, aber wir wissen noch nicht genau, wie wir diesen Logger in unserem Projekt konkret einsetzen können. 
+
+**Nächstes Treffen:** Dienstag, 13.04.21, 15:30 Uhr. 
+
+---
