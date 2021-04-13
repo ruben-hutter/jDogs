@@ -1,5 +1,7 @@
 package jDogs.serverclient.clientside;
 
+import jDogs.ClientGame;
+import jDogs.gui.GuiParser;
 import jDogs.serverclient.helpers.Queuejd;
 
 /**
@@ -16,6 +18,8 @@ public class ClientGameCommand {
     private SendFromClient sendFromClient;
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
+    private ClientGame clientGame;
+
 
     ClientGameCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
         this.client = client;
@@ -23,6 +27,7 @@ public class ClientGameCommand {
         this.sendFromClient = sendFromClient;
         this.sendQueue = sendQueue;
         this.keyBoardInQueue = keyBoardInQueue;
+
 
     }
 
@@ -40,10 +45,18 @@ public class ClientGameCommand {
                 }
                 break;
 
+
+            case "GAME":
+                //TODO receive game details when game starts and display in Game GUI
+                clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
+                clientGame.printGameState();
+                //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
+                break;
+
             case "ROUN":
                 //TODO received hand of cards display in Game GUI
+
                 System.out.println("ROUN: " + text.substring(5));
-                break;
 
             default:
                 System.out.println("the command " + command + " is not implemented. Can`t execute " + text);

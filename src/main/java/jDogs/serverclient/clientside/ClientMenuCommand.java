@@ -21,7 +21,6 @@ public class ClientMenuCommand {
     private SendFromClient sendFromClient;
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
-    private ClientGame clientGame;
 
     ClientMenuCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
 
@@ -130,14 +129,6 @@ public class ClientMenuCommand {
                  */
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
-
-            case "GAME":
-                //TODO receive game details when game starts and display in Game GUI
-                clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
-                clientGame.printGameState();
-                //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
-                break;
-
 
             default:
                 System.out.println("received from server " + text + ". This command " + command
