@@ -3,13 +3,18 @@ package jDogs.serverclient.serverside;
 import java.util.Random;
 
 public class MainGame {
+
     private String[] gameArray;
     private GameFile gameFile;
     private int turnNumber;
+    private GameState gameState;
 
 
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
+        GameState gameState = new GameState(gameFile);
+        gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
+                + gameFile.getParticipants());
         startGameRhythm();
     }
 

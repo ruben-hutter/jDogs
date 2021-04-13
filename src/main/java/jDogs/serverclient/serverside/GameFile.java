@@ -30,7 +30,7 @@ public class GameFile {
 
     }
 
-    private void sendMessageToParticipants(String message) {
+    public void sendMessageToParticipants(String message) {
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getSender().sendStringToClient(message);
         }

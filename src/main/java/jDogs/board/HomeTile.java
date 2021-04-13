@@ -1,17 +1,17 @@
 package jDogs.board;
 
-import jDogs.Alliance;
+import jDogs.Alliance_4;
 
 public class HomeTile extends Tile {
 
-    Alliance alliance;
+    Alliance_4 alliance4;
 
-    HomeTile(int tileCoordinate, Alliance alliance) {
+    HomeTile(int tileCoordinate, Alliance_4 alliance4) {
         super(tileCoordinate);
-        this.alliance = alliance;
+        this.alliance4 = alliance4;
     }
 
-    public Alliance getAlliance() {
-        return alliance;
+    public Alliance_4 getAlliance() {
+        return alliance4;
     }
 }

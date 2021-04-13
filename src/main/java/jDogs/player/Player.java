@@ -1,9 +1,8 @@
 package jDogs.player;
 
-import jDogs.Alliance;
+import jDogs.Alliance_4;
 import jDogs.Piece;
 import jDogs.board.Board;
-import jDogs.board.HomeTile;
 import jDogs.board.Tile;
 
 /**
@@ -13,22 +12,26 @@ import jDogs.board.Tile;
  */
 public class Player {
 
-    private static int startingPositionCounter = 0;
-
     public Piece[] pieces;
     String playerName;
-    Alliance alliance;
+    Alliance_4 alliance4;
     Board board;
     public int startingPosition;
 
-    public Player(String playerName, Alliance alliance, Board board) {
+    public Player(String playerName, Alliance_4 alliance4) {
         this.playerName = playerName;
-        this.alliance = alliance;
+        this.alliance4 = alliance4;
+        startingPosition = alliance4.getStartingPosition();
+        pieces = createPieces(startingPosition);
+    }
+
+    public Player(String playerName, Alliance_4 alliance4, Board board) {
+        this.playerName = playerName;
+        this.alliance4 = alliance4;
         this.board = board;
-        startingPosition = startingPositionCounter;
+        startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
         setPiecesOnHome();
-        startingPositionCounter += Board.NUM_TRACK_TILES_X_PLAYER;
     }
 
     /**
@@ -38,7 +41,7 @@ public class Player {
     private Piece[] createPieces(int startingPosition) {
         Piece[] pieces = new Piece[Board.NUM_HOME_TILES];
         for (int i = 0; i < pieces.length; i++) {
-            pieces[i] = new Piece(alliance, startingPosition,i + 1);
+            pieces[i] = new Piece(alliance4, startingPosition,i + 1);
         }
         return pieces;
     }
@@ -48,8 +51,8 @@ public class Player {
      */
     private void setPiecesOnHome() {
         for (int i = 0; i < pieces.length; i++) {
-            board.allHomeTiles.get(alliance)[i].setPiece(pieces[i]);
-            pieces[i].setPosition(board.allHomeTiles.get(alliance)[i]);
+            board.allHomeTiles.get(alliance4)[i].setPiece(pieces[i]);
+            pieces[i].setPosition(board.allHomeTiles.get(alliance4)[i]);
         }
     }
 
@@ -57,8 +60,8 @@ public class Player {
         return playerName;
     }
 
-    public Alliance getAlliance() {
-        return alliance;
+    public Alliance_4 getAlliance() {
+        return alliance4;
     }
 
     /**
