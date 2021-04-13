@@ -34,7 +34,6 @@ public class Main {
 
         players[1].setPiece(1, board.allTrackTiles[players[1].startingPosition]);
         players[1].setPiece(1, board.allTrackTiles[70 % board.allTrackTiles.length]);
-        players[3].setPiece(2, board.allHeavenTiles[3][1]);
         players[3].setPiece(1, board.allHomeTiles.get(players[3].getAlliance())[0]);
 
         //Cards cards = new Cards();

@@ -18,7 +18,7 @@ public class Board {
 
     public HashMap<Alliance, HomeTile[]> allHomeTiles;
     public TrackTile[] allTrackTiles;
-    public HeavenTile[][] allHeavenTiles;
+    public HashMap<Alliance, HeavenTile[]> allHeavenTiles;
 
     public Board(int numOfPlayers) {
         allHomeTiles = createAllHomeTiles(numOfPlayers);
@@ -42,7 +42,7 @@ public class Board {
         return allHomeTiles;
     }
 
-    public HomeTile[] createHomeForAlliance(Alliance alliance) {
+    private HomeTile[] createHomeForAlliance(Alliance alliance) {
         HomeTile[] homeTiles = new HomeTile[Board.NUM_HOME_TILES];
         for (int i = 0; i < homeTiles.length; i++) {
             homeTiles[i] = new HomeTile(i, alliance);
@@ -58,24 +58,24 @@ public class Board {
         return trackTiles;
     }
 
-    private HeavenTile[][] createAllHeavenTiles(int numOfPlayers) {
-        allHeavenTiles = new HeavenTile[numOfPlayers][];
-        allHeavenTiles[0] = createHeavenForAlliance(Alliance.YELLOW);
-        allHeavenTiles[1] = createHeavenForAlliance(Alliance.GREEN);
+    private HashMap<Alliance, HeavenTile[]> createAllHeavenTiles(int numOfPlayers) {
+        allHeavenTiles = new HashMap<>();
+        allHeavenTiles.put(Alliance.YELLOW, createAllHeavenTiles(Alliance.YELLOW));
+        allHeavenTiles.put(Alliance.GREEN, createAllHeavenTiles(Alliance.GREEN));
         if (numOfPlayers == 6) {
-            allHeavenTiles[2] = createHeavenForAlliance(Alliance.WHITE);
-            allHeavenTiles[3] = createHeavenForAlliance(Alliance.BLUE);
-            allHeavenTiles[4] = createHeavenForAlliance(Alliance.RED);
-            allHeavenTiles[5] = createHeavenForAlliance(Alliance.BLACK);
-        } else {
-            allHeavenTiles[2] = createHeavenForAlliance(Alliance.BLUE);
-            allHeavenTiles[3] = createHeavenForAlliance(Alliance.RED);
+            allHeavenTiles.put(Alliance.WHITE, createAllHeavenTiles(Alliance.WHITE));
+            allHeavenTiles.put(Alliance.BLUE, createAllHeavenTiles(Alliance.BLUE));
+            allHeavenTiles.put(Alliance.RED, createAllHeavenTiles(Alliance.RED));
+            allHeavenTiles.put(Alliance.BLACK, createAllHeavenTiles(Alliance.BLACK));
+            return allHeavenTiles;
         }
+        allHeavenTiles.put(Alliance.BLUE, createAllHeavenTiles(Alliance.BLUE));
+        allHeavenTiles.put(Alliance.RED, createAllHeavenTiles(Alliance.RED));
         return allHeavenTiles;
     }
 
-    public HeavenTile[] createHeavenForAlliance(Alliance alliance) {
-        HeavenTile[] heavenTiles = new HeavenTile[Board.NUM_HEAVEN_TILES];
+    private HeavenTile[] createAllHeavenTiles(Alliance alliance) {
+        HeavenTile[] heavenTiles = new HeavenTile[Board.NUM_HOME_TILES];
         for (int i = 0; i < heavenTiles.length; i++) {
             heavenTiles[i] = new HeavenTile(i, alliance);
         }
@@ -98,8 +98,8 @@ public class Board {
         }
         sb.append("\n");
         sb.append("\nHeaven:\n");
-        for (HeavenTile[] allHeavenTiles : allHeavenTiles) {
-            for (HeavenTile heavenTile : allHeavenTiles) {
+        for (Map.Entry<Alliance, HeavenTile[]> heavenTiles : allHeavenTiles.entrySet()) {
+            for (HeavenTile heavenTile : heavenTiles.getValue()) {
                 sb.append(heavenTile);
             }
             sb.append("\n");
