@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 /**
  * An example test class.
- * Checks the output of the {@link HelloWorld} class and makes sure it contains "Hello World"
+ * Checks the output of the {@link //HelloWorld} class and makes sure it contains "Hello World"
  *
  */
 public class HelloWorldTest {
@@ -55,7 +55,7 @@ public class HelloWorldTest {
    */
   @Test
   public void testMain(){
-    HelloWorld.main(new String[0]);
+    //HelloWorld.main(new String[0]);
     String toTest = outStream.toString();
     toTest = removeNewline(toTest);
     assertTrue(toTest.contains("Hello World"));

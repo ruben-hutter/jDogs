@@ -4,11 +4,11 @@ public class GUITile {
 
     private FieldOnBoard field;
     private char type;
-    private Token token;
+    //private Token token;
     private FieldOnBoard[] fieldTracks;
 
-    GUITile(Token token) {
-        this.token = token;
+    GUITile() {
+        //this.token = token;
     }
 
 
