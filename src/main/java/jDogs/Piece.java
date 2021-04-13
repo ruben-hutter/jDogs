@@ -17,17 +17,16 @@ public class Piece {
         hasMoved = false;
     }
 
+    /**
+     * Gives the alliance for this piece in a 4 player game
+     * @return alliance4
+     */
     public Alliance_4 getPieceAlliance() {
         return pieceAlliance4;
     }
 
     public boolean hasMoved() {
         return hasMoved;
-    }
-
-    @Override
-    public String toString() {
-        return getPieceAlliance() + "-" + pieceID + " ";
     }
 
     public int getPieceID() {
@@ -40,5 +39,10 @@ public class Piece {
 
     public Tile getPosition() {
         return position;
+    }
+
+    @Override
+    public String toString() {
+        return getPieceAlliance() + "-" + pieceID + " ";
     }
 }

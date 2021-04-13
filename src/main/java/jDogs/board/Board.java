@@ -21,20 +21,28 @@ public class Board {
     public HashMap<Alliance_4, HeavenTile[]> allHeavenTiles;
 
     public Board(int numOfPlayers) {
-        allHomeTiles = createAllHomeTiles(numOfPlayers);
+        allHomeTiles = createAllHomeTiles();
         allTrackTiles = createAllTrackTiles(numOfPlayers);
-        allHeavenTiles = createAllHeavenTiles(numOfPlayers);
+        allHeavenTiles = createAllHeavenTiles();
     }
 
-    private HashMap<Alliance_4, HomeTile[]> createAllHomeTiles(int numOfPlayers) {
+    /**
+     * Creates 4 home tile arrays in a map
+     * @return hashmap: k = alliance, v = heaven tile array
+     */
+    private HashMap<Alliance_4, HomeTile[]> createAllHomeTiles() {
         allHomeTiles = new HashMap<>();
-        allHomeTiles.put(Alliance_4.YELLOW, createHomeForAlliance(Alliance_4.YELLOW));
-        allHomeTiles.put(Alliance_4.GREEN, createHomeForAlliance(Alliance_4.GREEN));
-        allHomeTiles.put(Alliance_4.BLUE, createHomeForAlliance(Alliance_4.BLUE));
-        allHomeTiles.put(Alliance_4.RED, createHomeForAlliance(Alliance_4.RED));
+        for (Alliance_4 alliance4 : Alliance_4.values()) {
+            allHomeTiles.put(alliance4, createHomeForAlliance(alliance4));
+        }
         return allHomeTiles;
     }
 
+    /**
+     * Creates home tiles for a player
+     * @param alliance4 enum with 4 alliances
+     * @return home tiles array
+     */
     private HomeTile[] createHomeForAlliance(Alliance_4 alliance4) {
         HomeTile[] homeTiles = new HomeTile[Board.NUM_HOME_TILES];
         for (int i = 0; i < homeTiles.length; i++) {
@@ -43,6 +51,11 @@ public class Board {
         return homeTiles;
     }
 
+    /**
+     * Creates the correct number of track tiles
+     * @param numOfPlayers the number of players in the game
+     * @return an array of 64 or 80 track tiles
+     */
     private TrackTile[] createAllTrackTiles(int numOfPlayers) {
         TrackTile[] trackTiles = new TrackTile[NUM_TRACK_TILES_X_PLAYER * numOfPlayers];
         for (int i = 0; i < trackTiles.length; i++) {
@@ -51,15 +64,23 @@ public class Board {
         return trackTiles;
     }
 
-    private HashMap<Alliance_4, HeavenTile[]> createAllHeavenTiles(int numOfPlayers) {
+    /**
+     * Creates 4 heaven tile arrays in a map
+     * @return hashmap: k = alliance, v = heaven tile array
+     */
+    private HashMap<Alliance_4, HeavenTile[]> createAllHeavenTiles() {
         allHeavenTiles = new HashMap<>();
-        allHeavenTiles.put(Alliance_4.YELLOW, createAllHeavenTiles(Alliance_4.YELLOW));
-        allHeavenTiles.put(Alliance_4.GREEN, createAllHeavenTiles(Alliance_4.GREEN));
-        allHeavenTiles.put(Alliance_4.BLUE, createAllHeavenTiles(Alliance_4.BLUE));
-        allHeavenTiles.put(Alliance_4.RED, createAllHeavenTiles(Alliance_4.RED));
+        for (Alliance_4 alliance4 : Alliance_4.values()) {
+            allHeavenTiles.put(alliance4, createAllHeavenTiles(alliance4));
+        }
         return allHeavenTiles;
     }
 
+    /**
+     * Creates heaven tiles for a player
+     * @param alliance4 enum with 4 alliances
+     * @return heaven tiles array
+     */
     private HeavenTile[] createAllHeavenTiles(Alliance_4 alliance4) {
         HeavenTile[] heavenTiles = new HeavenTile[Board.NUM_HEAVEN_TILES];
         for (int i = 0; i < heavenTiles.length; i++) {

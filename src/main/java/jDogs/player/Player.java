@@ -78,7 +78,12 @@ public class Player {
         return null;
     }
 
-    public void setPiece(int pieceID, Tile newPosition) {
+    /**
+     * Change the actual position of a piece to a new one
+     * @param pieceID which of the 4 pieces
+     * @param newPosition the new position tile
+     */
+    public void changePiecePosition(int pieceID, Tile newPosition) {
         Piece pieceToMove = getPiece(pieceID);
         Tile oldPosition = pieceToMove.getPosition();
         pieceToMove.setPosition(newPosition);
