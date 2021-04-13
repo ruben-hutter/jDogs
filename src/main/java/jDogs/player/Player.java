@@ -4,6 +4,7 @@ import jDogs.Alliance_4;
 import jDogs.Piece;
 import jDogs.board.Board;
 import jDogs.board.Tile;
+import jDogs.serverclient.serverside.ServerConnection;
 import java.util.ArrayList;
 
 /**
@@ -19,12 +20,14 @@ public class Player {
     Board board;
     public int startingPosition;
     private ArrayList<String> deck;
+    private ServerConnection serverConnection;
 
-    public Player(String playerName, Alliance_4 alliance4) {
+    public Player(String playerName, Alliance_4 alliance4, ServerConnection serverConnection) {
         this.playerName = playerName;
         this.alliance4 = alliance4;
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
+        this.serverConnection = serverConnection;
     }
 
     public Player(String playerName, Alliance_4 alliance4, Board board) {
@@ -99,6 +102,14 @@ public class Player {
         pieceToMove.setPosition(newPosition);
         oldPosition.setPiece(null);
         newPosition.setPiece(pieceToMove);
+    }
+
+    /**
+     *
+     * @param message to the client concerning this game
+     */
+    public void sendMessageToClient(String message) {
+
     }
 
     @Override
