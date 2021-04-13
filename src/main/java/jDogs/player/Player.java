@@ -4,6 +4,7 @@ import jDogs.Alliance_4;
 import jDogs.Piece;
 import jDogs.board.Board;
 import jDogs.board.Tile;
+import java.util.ArrayList;
 
 /**
  * This class defines a player
@@ -17,6 +18,7 @@ public class Player {
     Alliance_4 alliance4;
     Board board;
     public int startingPosition;
+    private ArrayList<String> deck;
 
     public Player(String playerName, Alliance_4 alliance4) {
         this.playerName = playerName;
@@ -54,6 +56,14 @@ public class Player {
             board.allHomeTiles.get(alliance4)[i].setPiece(pieces[i]);
             pieces[i].setPosition(board.allHomeTiles.get(alliance4)[i]);
         }
+    }
+
+    public void setDeck(ArrayList<String> deck) {
+        this.deck = deck;
+    }
+
+    public ArrayList<String> getDeck() {
+        return deck;
     }
 
     public String getPlayerName() {
