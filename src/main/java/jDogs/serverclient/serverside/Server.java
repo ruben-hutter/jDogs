@@ -97,6 +97,11 @@ public class Server {
         System.exit(-1);
     }
 
+    /**
+     * this method is needed to send messages to clients which are connected by public lobbies or by a common game
+     * @param nickname a new nickname of a client
+     * @param serverConnection is the sC of this client
+     */
     public void addNickname(String nickname, ServerConnection serverConnection) {
         //add to whisperlist
         whisperList.put(nickname, serverConnection.getSender());

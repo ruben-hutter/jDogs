@@ -118,6 +118,13 @@ public class ClientMenuCommand {
                         GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
                 break;
 
+            case "ACTI":
+                System.out.println("ACTI " + text.substring(5));
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
+                break;
+
+
 
             case "INFO":
                 Platform.runLater(()->

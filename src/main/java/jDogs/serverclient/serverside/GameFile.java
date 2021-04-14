@@ -116,7 +116,6 @@ public class GameFile {
     }
 
     public boolean startGame() {
-
         return total == numberOfConfirmed;
     }
 
@@ -140,16 +139,22 @@ public class GameFile {
         String nickName = serverConnection.getNickname();
 
         if (nickName == host) {
-            System.err.println(this.toString() + " tried to delete host as participant. Forbidden!");
+            cancel();
         } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append(participants);
-            int firstChar = sb.indexOf(nickName);
-            sb.delete(firstChar - 1,firstChar + nickName.length());
-            participants = sb.toString();
+            if (isPendent()) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(participants);
+                int firstChar = sb.indexOf(nickName);
+                sb.delete(firstChar - 1, firstChar + nickName.length());
+                participants = sb.toString();
 
-            scArrayList.remove(serverConnection);
-            sendMessageToParticipants("DPER " + nickName);
+                scArrayList.remove(serverConnection);
+                sendMessageToParticipants("DPER " + nickName);
+            } else {
+                // if serverConnection of a client stops while playing the server sends all clients back to public lobby
+                sendMessageToParticipants("INFO " + " connection to " + nickName + " is shutdown");
+                cancel();
+            }
         }
 
     }

@@ -7,8 +7,16 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * This thread processes messages received meaningfully.
- * <li>it distinguishes between messages for server and all clients</li>
- * <li>it handles the login of the client</li>
+ * it distinguishes between messages for server and all clients
+ * it handles the login of the client:
+ *
+ * switch defines which commands are accepted and what they cause
+ *
+ * playing
+ *
+ * openGame(separateLobby)
+ *
+ * public Lobby
  */
 
 public class MessageHandlerServer implements Runnable {
@@ -26,6 +34,7 @@ public class MessageHandlerServer implements Runnable {
     private String state;
     private String nickname;
     private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
+    private GameFile gameFile;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient) {
@@ -114,6 +123,7 @@ public class MessageHandlerServer implements Runnable {
 
     public void setPlaying(boolean playing,GameFile gameFile) {
         if (playing) {
+            this.gameFile = gameFile;
             serverGameCommand.setGameFile(gameFile);
             serverGameCommand.setNickName(nickname);
             state = "playing";
@@ -128,19 +138,42 @@ public class MessageHandlerServer implements Runnable {
      * @param nickname the actual nickname he has(could also be omitted)
      */
     public void setJoinedOpenGame(GameFile gameFile, String nickname) {
+        this.gameFile = gameFile;
         state = "openGame";
-        server.removeSender(serverConnection.getSender());
+        //server.removeSender(serverConnection.getSender());
         server.publicLobbyGuests.remove(nickname);
         separateLobbyCommand.setJoinedGame(gameFile, nickname);
         this.nickname = nickname;
     }
 
+    /**
+     * this method is used to set instructions to public lobby
+     * from game or from separate lobby
+     */
     public void returnToLobby() {
         server.publicLobbyGuests.add(nickname);
-        server.addSender(serverConnection.getSender());
+        //server.addSender(serverConnection.getSender());
         serverMenuCommand.sendAllPublicGuests();
         state = "publicLobby";
 
+    }
+
+    /**
+     *
+     * @return the state which describes the mode in which the client is; is he public
+     * , separated or playing a game?
+     * The state is important for the switch in the run method
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     *
+     * @return gameFile of the game or opened game(not playing yet)
+     */
+    public GameFile getGameFile() {
+        return gameFile;
     }
 
     public ServerMenuCommand getServerMenuCommand() {

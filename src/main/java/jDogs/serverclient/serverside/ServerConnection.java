@@ -96,6 +96,9 @@ public class ServerConnection {
 
 
     synchronized public void kill() {
+        if (!messageHandlerServer.getState().equals("publicLobby")) {
+            messageHandlerServer.getGameFile().removeParticipant(this);
+        }
         try {
              System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName() );
         } catch (UnknownHostException e) {

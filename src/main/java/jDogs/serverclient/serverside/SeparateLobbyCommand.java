@@ -114,8 +114,13 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "ACTI":
-                    sendToThisClient.enqueue(
-                            "ACTI all joining this game: " + this.gameFile.getParticipants());
+                    String list = "INFO all active Players ";
+                    for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
+                        list += "player # " + i + "\n";
+                        list += Server.getInstance().allNickNames.get(i) + " ";
+                        list += "\n";
+                    }
+                    sendToThisClient.enqueue(list);
                     break;
 
                 default:

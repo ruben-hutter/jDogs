@@ -89,7 +89,7 @@ public class ServerMenuCommand {
                     break;
 
                 case "ACTI":
-                    String list = "";
+                    String list = "INFO all active Players ";
                     for (int i = 0; i < server.allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
                         list += server.allNickNames.get(i) + " ";
