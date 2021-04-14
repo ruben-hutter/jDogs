@@ -1,5 +1,6 @@
 package jDogs.serverclient.clientside;
 
+import jDogs.Main;
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class Client {
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
     private static Client instance;
+    private String serveraddress;
+    private int portnumber;
 
     public Client() {
         instance = this;
@@ -54,14 +57,16 @@ public class Client {
      * 5 threads to handle connection are started
      */
     public void setUp() {
+        this.serveraddress = Main.getInstance().getHostAddress();
+        this.portnumber = Main.getInstance().getPort();
         this.receiveQueue = new Queuejd();
         this.sendQueue = new Queuejd();
         this.keyBoardInQueue = new Queuejd();
 
         Socket socket = null;
 
-        String serveraddress = "localhost";
-        int portnumber = 8090;
+        //String serveraddress = "localhost";
+        //int portnumber = 8090;
 
         /*System.out.println("IP-Adresse des Servers:");
         Scanner scanner = new Scanner(System.in);
@@ -152,4 +157,6 @@ public class Client {
     public MessageHandlerClient getMessageHandlerClient() {
         return messageHandlerClient;
     }
+
+
 }

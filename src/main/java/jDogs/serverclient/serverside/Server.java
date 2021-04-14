@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.Main;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -45,9 +46,9 @@ public class Server {
 
     public Server(String[] args) {
         try {
+
             instance = this;
-            // port 8090
-            serverSocket = new ServerSocket(Integer.parseInt(args[1]));
+            serverSocket = new ServerSocket(Main.getInstance().getPort());
             System.out.println("server started...");
             // runs as long as the server is activated
             while(running) {
@@ -184,5 +185,8 @@ public class Server {
             }
         }
         return null;
+    }
+
+    public void setPort(int port) {
     }
 }
