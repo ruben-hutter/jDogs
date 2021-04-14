@@ -17,9 +17,10 @@ public class ServerGameCommand {
     private final Queuejd sendToThisClient;
     private final Queuejd sendToAll;
     private boolean loggedIn;
-    private String nickName;
+    private String nickname;
     private final ServerParser serverParser;
     private String actualGame;
+    private GameFile gameFile;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -29,7 +30,7 @@ public class ServerGameCommand {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.loggedIn = false;
-        this.nickName = null;
+        this.nickname = null;
         this.serverParser = new ServerParser(server,serverConnection);
     }
 
@@ -52,6 +53,20 @@ public class ServerGameCommand {
                 // TODO start CTTP
                 //change cards
                 break;
+
+            case "LCHT":
+                //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
+                System.out.println("LCHT: " + text.substring(5));
+                for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
+                    gameFile.getscArrayList().get(i).getSender()
+                            .sendStringToClient("LCHT " + "<" + nickname + "> " + text.substring(5));
+                }
+                break;
+
+            case "PCHT":
+                //send message to everyone logged in, in lobby, separated or playing
+                sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                break;
         }
 
     }
@@ -72,4 +87,11 @@ public class ServerGameCommand {
         return null;
     }
 
+    public void setGameFile(GameFile gameFile) {
+        this.gameFile = gameFile;
+    }
+
+    public void setNickName(String nickname) {
+        this.nickname = nickname;
+    }
 }

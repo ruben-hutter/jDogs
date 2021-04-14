@@ -53,6 +53,11 @@ public class ClientMenuCommand {
                 }
                 break;
 
+            case "LCHT":
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayLCHTmsg(text.substring(5)));
+                break;
+
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
 

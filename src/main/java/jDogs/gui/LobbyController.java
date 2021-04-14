@@ -266,6 +266,10 @@ public class LobbyController implements Initializable {
         publicChatMessagesLobby.appendText("@PUB " + message + "\n");
     }
 
+    public void displayLCHTmsg(String message) {
+        publicChatMessagesLobby.appendText("@LOBBY " + message + "\n");
+    }
+
 
     public void displayWCHTmsg(String message) {
         publicChatMessagesLobby.appendText(message + "\n");

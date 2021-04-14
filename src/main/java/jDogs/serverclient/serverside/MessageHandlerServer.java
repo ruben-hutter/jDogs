@@ -112,8 +112,10 @@ public class MessageHandlerServer implements Runnable {
      *                false: send messages to public MenuCommand (a game ended)
      */
 
-    public void setPlaying(boolean playing) {
+    public void setPlaying(boolean playing,GameFile gameFile) {
         if (playing) {
+            serverGameCommand.setGameFile(gameFile);
+            serverGameCommand.setNickName(nickname);
             state = "playing";
         } else {
             state = "publicLobby";
@@ -138,6 +140,7 @@ public class MessageHandlerServer implements Runnable {
         server.addSender(serverConnection.getSender());
         serverMenuCommand.sendAllPublicGuests();
         state = "publicLobby";
+
     }
 
     public ServerMenuCommand getServerMenuCommand() {

@@ -122,11 +122,10 @@ public class GameFile {
 
     public void start() {
         pendent = false;
-        Server.getInstance().startGame(new MainGame(this));
+        //Server.getInstance().startGame(new MainGame(this));
         for (int i = 0; i < scArrayList.size(); i++) {
-            scArrayList.get(i).getMessageHandlerServer().setPlaying(true);
+            scArrayList.get(i).getMessageHandlerServer().setPlaying(true,this);
             Server.getInstance().startGame(new MainGame(this));
-            scArrayList.get(i).getSender().sendStringToClient("GAME " + " here will be displayed all the details necessary for the clients");
         }
     }
 

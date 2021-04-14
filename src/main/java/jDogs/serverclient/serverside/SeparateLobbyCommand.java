@@ -61,15 +61,17 @@ public class SeparateLobbyCommand {
 
                 case "LCHT":
                     //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
-                    System.out.println("PCHT: " + text.substring(5));
+                    System.out.println("LCHT: " + text.substring(5));
                     for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
                         gameFile.getscArrayList().get(i).getSender()
-                                .sendStringToClient("PCHT " + "<" + nickname + "> " + text.substring(5));
+                                .sendStringToClient("LCHT " + "<" + nickname + "> " + text.substring(5));
                     }
                     break;
 
                 case "PCHT":
                     //send message to everyone logged in, in lobby, separated or playing
+                    sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                    break;
 
                 case "STAR":
 
