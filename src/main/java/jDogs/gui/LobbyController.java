@@ -48,8 +48,6 @@ public class LobbyController implements Initializable {
 
     private OpenGame selectedGame;
     private String gameId;
-    private String[] activeUsersInPublic;
-    private String[] activeUsersInSeparee;
     private Stage gameDialog;
     boolean startGamePossible;
 
@@ -57,6 +55,7 @@ public class LobbyController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.startGamePossible = false;
+        this.gameId = null;
 
         /**
          * TableViewActiveGames displays all active games
@@ -185,8 +184,8 @@ public class LobbyController implements Initializable {
 
     @FXML
     void setQButtonOnAction(ActionEvent event) {
-        if(gameId != "") {
-            gameId = "";
+        if(gameId != null) {
+            gameId = null;
             new Alert(AlertType.INFORMATION, "you quit game and are public" ).showAndWait();
             Client.getInstance().sendMessageToServer("QUIT");
             playersInLobby.removeAll();
@@ -227,17 +226,27 @@ public class LobbyController implements Initializable {
             System.out.println(message + " : " + message.charAt(0));
             if (message.charAt(0) == '@') {
                 String parsedMsg = null;
-                if ((parsedMsg = GuiParser.sendWcht(message.substring(1))) == null) {
-                    new Alert(AlertType.ERROR,
-                            "wrong Wcht format entered. E.g. '@nickname message' ");
+                // if users are in a separate lobby they can send messages to public with "@PUB"
+                if (parsedMsg.substring(1,4).equals("PUB")) {
+                    Client.getInstance().sendMessageToServer("PCHT " + message.substring(5));
                 } else {
-                    displayWCHTmsg(message);
-                    Client.getInstance().sendMessageToServer("WCHT " + parsedMsg);
+                    if ((parsedMsg = GuiParser.sendWcht(message.substring(1))) == null) {
+                        new Alert(AlertType.ERROR,
+                                "wrong Wcht format entered. E.g. '@nickname message' ");
+                    } else {
+                        displayWCHTmsg(message);
+                        Client.getInstance().sendMessageToServer("WCHT " + parsedMsg);
+                    }
                 }
 
             } else {
-                //Client.getInstance().sendMessageToServer("PCHT" + gameId + message);
-                Client.getInstance().sendMessageToServer("PCHT " + message);
+                if (gameId != null) {
+                    // you send to separate lobby
+                    Client.getInstance().sendMessageToServer("LCHT " + message);
+                } else {
+                    // you are in public lobby
+                    Client.getInstance().sendMessageToServer("PCHT " + message);
+                }
 
             }
         }
@@ -254,7 +263,7 @@ public class LobbyController implements Initializable {
 
     public void displayPCHTmsg(String message) {
         //System.out.println(message);
-        publicChatMessagesLobby.appendText(message + "\n");
+        publicChatMessagesLobby.appendText("@PUB " + message + "\n");
     }
 
 
