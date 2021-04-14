@@ -252,7 +252,6 @@ Gregor und Ruben berichteten von ihrem PairProgramming vom Vormittag. Sie haben 
 Wir haben dann eine Frist am Freitag um 10:00 Uhr gesetzt, um zu überprüfen, ob das Spiel richtig funktioniert, und um mögliche Fehler zu beheben. Die verbleibenden Tage bis zur Auslieferung sind für die Fertigstellung von Tests, Dokumentation und Kommentaren im Code sowie für die Vorbereitung der Präsentation vorgesehen.
 Ein Thema war auch die ungleichmässige Arbeitsverteilung bei Milestone 3. Für die Zukunft möchten wir noch ein zusätzliches Meeting pro Woche festlegen.
 
-
 **Nächstes Treffen:** Mittwoch, 14.04.21, 09:00 Uhr. 
 
 ---
