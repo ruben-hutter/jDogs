@@ -16,7 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
         //client <hostadress>:<port> [<username>] | server <port>
-
+        System.out.println(args[0]);
+        System.out.println(args[1]);
 
         try {
             Main mainInstance = new Main();
@@ -71,7 +72,7 @@ public class Main {
         }
 
         hostAddress = arg.substring(0, separator);
-        parseServerPort(arg.substring(separator));
+        parseServerPort(arg.substring(separator + 1));
     }
 
     public String getHostAddress() {
