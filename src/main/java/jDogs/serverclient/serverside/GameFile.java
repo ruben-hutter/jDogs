@@ -141,15 +141,38 @@ public class GameFile {
         if (nickName == host) {
             cancel();
         } else {
+            }
             if (isPendent()) {
+                int number = -1;
+                String[] array = getParticipantsArray();
+                for (int i = 0; i < array.length; i++) {
+                    if (array[i].equals(nickName)) {
+                        number = i;
+                    }
+                }
+
+                    //get whitespace
+                    int counter = 0;
+                int startPosition = 0;
+                    for (int i = 0; i < participants.length(); i++) {
+                        if (Character.isWhitespace(participants.charAt(i))) {
+                            counter++;
+                            if (counter == number) {
+                                startPosition = i;
+                                break;
+                            }
+                        }
+                    }
+
                 StringBuilder sb = new StringBuilder();
                 sb.append(participants);
-                int firstChar = sb.indexOf(nickName);
-                sb.delete(firstChar - 1, firstChar + nickName.length());
+                sb.delete(startPosition - 1, startPosition + nickName.length());
                 participants = sb.toString();
+                numberParticipants--;
 
                 scArrayList.remove(serverConnection);
                 sendMessageToParticipants("DPER " + nickName);
+                Server.getInstance().getSender(nickName).sendStringToAllClients("OGAM " + getSendReady());
             } else {
                 // if serverConnection of a client stops while playing the server sends all clients back to public lobby
                 sendMessageToParticipants("INFO " + " connection to " + nickName + " is shutdown");
@@ -157,11 +180,24 @@ public class GameFile {
             }
         }
 
-    }
 
     public void cancel() {
+
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getMessageHandlerServer().returnToLobby();
+        }
+        if (pendent) {sendMessageToAll("DOGA " + getSendReady());
+        } else {
+            System.out.println("running game ended no command implemented");
+        }
+
+        Server.getInstance().removeGame(this);
+
+    }
+
+    private void sendMessageToAll(String message) {
+        for (ServerConnection serverConnection1 : Server.getInstance().serverConnections) {
+            serverConnection1.getSender().sendStringToAllClients(message);
         }
     }
 

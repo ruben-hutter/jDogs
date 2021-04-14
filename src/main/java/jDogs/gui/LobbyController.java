@@ -227,7 +227,7 @@ public class LobbyController implements Initializable {
             if (message.charAt(0) == '@') {
                 String parsedMsg = null;
                 // if users are in a separate lobby they can send messages to public with "@PUB"
-                if (parsedMsg.substring(1,4).equals("PUB")) {
+                if (message.length() > 5 && message.substring(1,4).equals("PUB")) {
                     Client.getInstance().sendMessageToServer("PCHT " + message.substring(5));
                 } else {
                     if ((parsedMsg = GuiParser.sendWcht(message.substring(1))) == null) {
@@ -312,6 +312,7 @@ public class LobbyController implements Initializable {
 
     public void removePendentGameInLobby(String substring) {
         OpenGame openGame = GuiParser.getOpenGame(substring);
+        System.out.println("remove game " + substring);
         displayInfomsg("INFO removed game " + openGame.getName());
         openGames.remove(openGame);
     }
@@ -331,9 +332,25 @@ public class LobbyController implements Initializable {
     
     public void removePlayerinPublic(String player) {
         try {
+            System.out.println("removing..." + new Participant(player));
+            for (int i = 0; i < playersInLobby.size(); i++) {
+                System.out.println(playersInLobby.get(i));
+
+            }
+            for (int i = 0; i < playersInLobby.size(); i++) {
+                if (playersInLobby.get(i).getPlayer().equals(player)) {
+                    playersInLobby.remove(i);
+                }
+            }
             playersInLobby.remove(new Participant(player));
+            System.out.println("after ");
+            for (int i = 0; i < playersInLobby.size(); i++) {
+                System.out.println(playersInLobby.get(i));
+
+            }
+
         } catch (Exception e) {
-            System.err.println("tried to remove non existing player");
+            System.err.println("tried to remove non existing player " + player);
         }
     }
 

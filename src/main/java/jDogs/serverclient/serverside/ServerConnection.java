@@ -98,6 +98,7 @@ public class ServerConnection {
     synchronized public void kill() {
         if (!messageHandlerServer.getState().equals("publicLobby")) {
             messageHandlerServer.getGameFile().removeParticipant(this);
+            sendToAll.enqueue("DPER " + nickName);
         }
         try {
              System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName() );
@@ -113,7 +114,6 @@ public class ServerConnection {
         this.sender.kill();
         this.messageHandlerServer.kill();
 
-        running = false;
     }
 
     public void updateNickname(String nickName) {

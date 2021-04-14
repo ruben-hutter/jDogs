@@ -103,8 +103,10 @@ public class SeparateLobbyCommand {
                         this.gameFile.removeParticipant(serverConnection);
                         sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
                     }
+                    System.out.println(2);
                     serverConnection.getMessageHandlerServer().returnToLobby();
                     sendToAll.enqueue("LPUB " + nickname);
+                    System.out.println(3);
                     break;
 
                 case "STAT":

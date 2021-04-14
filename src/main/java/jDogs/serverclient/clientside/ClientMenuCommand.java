@@ -54,12 +54,13 @@ public class ClientMenuCommand {
                 break;
 
             case "LCHT":
+                System.out.println("LCHT " + text.substring(5));
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLCHTmsg(text.substring(5)));
                 break;
 
             case "PCHT":
-                System.out.println("PCHT: " + text.substring(4));
+                System.out.println("PCHT: " + text.substring(5));
 
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
@@ -86,6 +87,7 @@ public class ClientMenuCommand {
                 break;
 
             case "DPER":
+                System.out.println("DPER " + text.substring(5));
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePlayerinPublic(text.substring(5)));
                 break;
@@ -135,13 +137,6 @@ public class ClientMenuCommand {
             case "STAR":
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.startGameConfirmation());
-                break;
-
-            case "GAME":
-                //TODO receive game details when game starts and display in Game GUI
-                //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.startGame(text.substring(5)));
                 break;
 
 

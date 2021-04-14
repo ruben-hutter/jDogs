@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import org.checkerframework.checker.units.qual.A;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -20,15 +21,29 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Server {
 
     private ServerSocket serverSocket;
+    //this list contains all sender objects, but I want to replace by the list of all serverConnection objects
+    //TODO delete it
     ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
+    //this list contains all nicknames used at the moment(to avoid duplicates)
     ArrayList<String> allNickNames = new ArrayList<>();
+    //this map contains the names and the corresponding serverConnections objects
     private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
+    //this map contains the names and the corresponding sender objects, but I want to delete it
+    // and get the sender objects from the server connection
+    //TODO delete it
     private Map<String, SendFromServer> whisperList = new HashMap<>();
+    //this list contains all ongoing games and all pendent games
     ArrayList<GameFile> allGamesNotFinished = new ArrayList<GameFile>();
+    //this list contains all ongoing games
     ArrayList<MainGame> runningGames = new ArrayList<>();
+    //this list contains all public lobby guest names
     ArrayList<String> publicLobbyGuests = new ArrayList<>();
+    //this list contains all serverConnections of active players
     ArrayList<ServerConnection> serverConnections = new ArrayList<>();
+    //this list contains all finished games
     ArrayList<GameFile> finishedGames = new ArrayList<>();
+    //this list contains all server connections active in the public lobby
+    ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
 
     private static Server instance;
 
@@ -189,5 +204,30 @@ public class Server {
             }
         }
         return null;
+    }
+
+    public void removeGame(GameFile gameFile) {
+        allGamesNotFinished.remove(gameFile);
+        MainGame mainGame;
+        if ((mainGame = getMainGame(gameFile)) != null) {
+            runningGames.remove(mainGame);
+        }
+    }
+
+    private MainGame getMainGame(GameFile gameFile) {
+        for (MainGame runningGame1 : runningGames) {
+            if (runningGame1.getGameId().equals(gameFile.getNameId())) {
+                return runningGame1;
+            }
+        }
+        return null;
+    }
+
+    public void sendMessageToAll(String message) {
+
+    }
+
+    public void sendMessageToPublicLobby(String message) {
+
     }
 }
