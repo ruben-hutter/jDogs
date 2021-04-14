@@ -48,23 +48,29 @@ public class ClientMenuCommand {
                     client.setNickname(name);
                     sendFromClient.keyBoardInBlocked = false;
 
-                    Platform.runLater(() -> GUIManager.getInstance().lobbyController.
+                    /*Platform.runLater(() -> GUIManager.getInstance().lobbyController.
                             displayInfomsg("INFO from server. Your new nick is " + name));
+
+                     */
                 }
                 break;
 
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
 
-                Platform.runLater(()->
+                /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
+
+                 */
                 break;
 
             case "WCHT":
                 System.out.println("WCHT: " + text.substring(5));
-
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
+
+                 */
                 break;
 
             case "LPUB":
@@ -72,17 +78,22 @@ public class ClientMenuCommand {
                 //TODO Information update of active users in Public Lobby
                 //just compare to existing String/Array and replace if necessary
 
-
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPlayerinPublic(text.substring(5)));
+
+                 */
 
 
                 System.out.println("LPUB: " + text.substring(5));
                 break;
 
             case "DPER":
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePlayerinPublic(text.substring(5)));
+
+                 */
                 break;
 
 
@@ -90,9 +101,11 @@ public class ClientMenuCommand {
             case "JOIN":
 
                 //TODO display Information about a user or users who joined a pendent game
-
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
+
+                 */
 
 
                 System.out.println("JOIN: " + text.substring(5));
@@ -101,35 +114,50 @@ public class ClientMenuCommand {
             case "OGAM":
 
                 System.out.println("OGAM: " + text.substring(5));
-
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
+
+                 */
                 break;
 
             case "DOGA":
                 //TODO remove openGame from GUI-Lobby-Display
                 System.out.println("DOGA: " + text.substring(5));
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
+
+                 */
                 break;
 
 
             case "INFO":
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
+
+                 */
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
             case "STAR":
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.startGameConfirmation());
+
+                 */
                 break;
 
             case "GAME":
                 //TODO receive game details when game starts and display in Game GUI
                 //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
+
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.startGame(text.substring(5)));
+
+                 */
                 break;
 
 
