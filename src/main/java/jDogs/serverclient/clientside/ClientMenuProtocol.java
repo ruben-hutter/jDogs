@@ -17,7 +17,7 @@ public enum ClientMenuProtocol {
      */
     QUIT,
     /**
-     * Command to show a list of active users.
+     * Command to show a list of all active users.
      */
     ACTI,
     /**
@@ -41,15 +41,12 @@ public enum ClientMenuProtocol {
      */
     STAR,
     /**
-     *Command to show the open games which can be joined.
-     */
-    SESS,
-    /**
      * Information about a new or new active users in Lobby of a pendent game
      */
     JOIN,
     /**
-     * Information update of active users in Public Lobby
+     * Information update of new active user or all active users in lobby(at the beginning)
+     * e.g. "LPUB username"
      */
     LPUB,
     /**

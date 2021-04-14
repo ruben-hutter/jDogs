@@ -64,7 +64,7 @@ public class SeparateLobbyCommand {
                     System.out.println("PCHT: " + text.substring(5));
                     for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
                         gameFile.getscArrayList().get(i).getSender()
-                                .sendStringToClient(text.substring(5));
+                                .sendStringToClient("PCHT " + "<" + nickname + "> " + text.substring(5));
                     }
                     break;
 
@@ -93,11 +93,13 @@ public class SeparateLobbyCommand {
                     if (this.gameFile.getHost() == nickname) {
                         this.gameFile.cancel();
                         Server.getInstance().allGamesNotFinished.remove(this.gameFile);
-                        sendToAll.enqueue("DOGA " + this.gameFile.getNameId());
+                        sendToAll.enqueue("DOGA " + this.gameFile.getSendReady());
                     } else {
                         this.gameFile.removeParticipant(serverConnection);
-                        sendToAll.enqueue("DPER " + this.gameFile.getNameId() + " " + nickname);
+                        sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
                     }
+                    serverConnection.getMessageHandlerServer().returnToLobby();
+                    sendToAll.enqueue("LPUB " + nickname);
                     break;
 
                 case "STAT":

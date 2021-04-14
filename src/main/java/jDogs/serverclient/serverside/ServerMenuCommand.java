@@ -76,9 +76,12 @@ public class ServerMenuCommand {
 
                         if (oldNick != null) {
                             server.removeNickname(oldNick);
+                            sendToAll.enqueue("DPER " + oldNick);
                         }
                         sendToThisClient.enqueue("USER "
                                 + nickName);
+                        sendToAll.enqueue("LPUB " + nickName);
+
 
                         System.out.println("login worked " + "USER " + nickName);
 
@@ -159,35 +162,45 @@ public class ServerMenuCommand {
                     }
                     break;
 
+                case "SESS":
+                    for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
+                        if (server.allGamesNotFinished.get(i).isPendent()) {
+                            sendToThisClient.enqueue("OGAM " + server.allGamesNotFinished.get(i).getSendReady());
+                        }
+                    }
+                    break;
+
+                case "LPUB":
+                    sendAllPublicGuests();
+                    break;
+
                 case "JOIN":
                     //join a game with this command
                     System.out.println("JOIN from " + nickName + " : " + text);
                     try {
                         GameFile game = getGame(text.substring(5));
                         if (game == null) {
+                            System.out.println(-1);
                             sendToThisClient
                                     .enqueue("INFO join not possible,game name does not exist");
                         } else {
+                            sendToThisClient.enqueue("JOIN " + game.getNameId());
                             game.addParticipants(serverConnection);
-                            sendToAll.enqueue("JOIN " + game.getNameId() + " " + nickName);
+                            sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
+                            System.out.println(1);
 
                             // all required players are set, then send start request to client
                             if (game.readyToStart()) {
-                                game.start();
-
-                                String[] array = game.getParticipantsArray();
-                                for (int i = 0; i < game.getNumberOfParticipants(); i++) {
-                                    server.getSender(array[i])
-                                            .sendStringToClient("STAR " + game.getNameId());
-                                }
+                                game.sendConfirmationMessage();
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         sendToThisClient.enqueue("INFO wrong format,you cannot join");
                     }
+                    System.out.println(3);
                     break;
             }
         }
@@ -227,11 +240,11 @@ public class ServerMenuCommand {
     /**
      *
      * @param name nickname to check
-     * @return false, if name contains ';'
+     * @return false, if name contains whitespace
      */
     private boolean validCharacters(String name) {
         for (int i = 0; i < name.length(); i++) {
-            if (name.charAt(i) == ';') {
+            if (Character.isWhitespace(name.charAt(i))) {
                 return false;
             }
         }
@@ -246,4 +259,9 @@ public class ServerMenuCommand {
         return nickName;
     }
 
+    public void sendAllPublicGuests() {
+        for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
+            sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
+        }
+    }
 }

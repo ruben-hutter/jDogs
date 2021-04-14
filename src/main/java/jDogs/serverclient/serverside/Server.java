@@ -20,7 +20,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Server {
 
     private ServerSocket serverSocket;
-    ArrayList<SendFromServer> senderlist = new ArrayList<>();
+    ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
     ArrayList<String> allNickNames = new ArrayList<>();
     private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
     private Map<String, SendFromServer> whisperList = new HashMap<>();
@@ -29,9 +29,6 @@ public class Server {
     ArrayList<String> publicLobbyGuests = new ArrayList<>();
     ArrayList<ServerConnection> serverConnections = new ArrayList<>();
     ArrayList<GameFile> finishedGames = new ArrayList<>();
-    ArrayList<ServerConnection> publicLobbyGuestsSC = new ArrayList<>();
-
-
 
     private static Server instance;
 
@@ -66,7 +63,7 @@ public class Server {
 
                  */
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
-                System.out.println("senderlist size:  " + (senderlist.size() + 1));
+                System.out.println("publicSenderList size:  " + (publicSenderList.size() + 1));
                 try {
                     Thread.sleep(30);
                 } catch (InterruptedException e) {
@@ -111,7 +108,6 @@ public class Server {
         serverConnectionMap.get("maintenance");
         // add to lobbyGuests
         publicLobbyGuests.add(nickname);
-        publicLobbyGuestsSC.add(serverConnection);
 
         //add to nicknamelist
         allNickNames.add(nickname);
@@ -140,11 +136,11 @@ public class Server {
     // add sender object from publicChatList
     public void addSender(SendFromServer connection) {
 
-        senderlist.add(connection);
+        publicSenderList.add(connection);
     }
     // remove sender object from publicChatList
     public void removeSender(SendFromServer connection) {
-        senderlist.remove(connection);
+        publicSenderList.remove(connection);
     }
 
 

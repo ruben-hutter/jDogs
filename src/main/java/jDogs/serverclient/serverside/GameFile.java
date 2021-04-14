@@ -13,7 +13,9 @@ public class GameFile {
     private int numberOfConfirmed;
     private int numberParticipants;
     private int total;
+    private boolean pendent;
     private ArrayList<ServerConnection> scArrayList = new ArrayList<>();
+
 
 
     public GameFile(String nameId, String host,String total, ServerConnection serverConnection) {
@@ -26,11 +28,12 @@ public class GameFile {
         this.confirmedParticipants = host;
         this.numberOfConfirmed = 0;
         this.scArrayList.add(serverConnection);
+        this.pendent = true;
         sendMessageToParticipants("OGAM " + getSendReady());
 
     }
 
-    private void sendMessageToParticipants(String message) {
+    public void sendMessageToParticipants(String message) {
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getSender().sendStringToClient(message);
         }
@@ -41,6 +44,10 @@ public class GameFile {
         scArrayList.add(serverConnection);
         participants += " " + serverConnection.getNickname();
         numberParticipants++;
+        sendMessageToParticipants("LPUB " + serverConnection.getNickname());
+        for (int i = 0; i < numberParticipants - 1; i++) {
+            serverConnection.getSender().sendStringToClient("LPUB " + getParticipantsArray()[i]);
+        }
     }
 
     public String getParticipants() {
@@ -48,7 +55,7 @@ public class GameFile {
     }
 
     public String getSendReady() {
-         return nameId + " " + host + " " + total;
+         return nameId + " " + host + " " + numberParticipants + " " + total;
     }
 
     public String getNameId() {
@@ -68,7 +75,7 @@ public class GameFile {
                 int i = separator;
                 while (i < participants.length()) {
 
-                    if (participants.charAt(i) == ';') {
+                    if (Character.isWhitespace(participants.charAt(i))) {
                         array[arrayEntries] = participants.substring(separator, i);
                         separator = i + 1;
                         arrayEntries++;
@@ -90,6 +97,11 @@ public class GameFile {
         return total == numberParticipants;
     }
 
+    public void sendConfirmationMessage() {
+        sendMessageToParticipants("STAR");
+
+    }
+
     public int getNumberOfParticipants() {
         return numberParticipants;
     }
@@ -109,9 +121,12 @@ public class GameFile {
     }
 
     public void start() {
+        pendent = false;
         Server.getInstance().startGame(new MainGame(this));
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getMessageHandlerServer().setPlaying(true);
+            Server.getInstance().startGame(new MainGame(this));
+            scArrayList.get(i).getSender().sendStringToClient("GAME " + " here will be displayed all the details necessary for the clients");
         }
     }
 
@@ -135,6 +150,7 @@ public class GameFile {
             participants = sb.toString();
 
             scArrayList.remove(serverConnection);
+            sendMessageToParticipants("DPER " + nickName);
         }
 
     }
@@ -147,5 +163,9 @@ public class GameFile {
 
     public ArrayList<ServerConnection> getscArrayList() {
         return scArrayList;
+    }
+
+    public boolean isPendent() {
+        return pendent;
     }
 }

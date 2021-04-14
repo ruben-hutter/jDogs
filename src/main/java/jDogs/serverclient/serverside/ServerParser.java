@@ -27,16 +27,19 @@ public class ServerParser {
 
         String name = gameSetup.substring(0,nameSeparator);
         String total = gameSetup.substring(nameSeparator + 1);
+        int number = Integer.parseInt(total);
+        // allow only games with 4 or 6 players
+        if (number == 4 || number == 6) {
 
+            String host = serverConnection.getNickname();
+            name = checkName(name);
 
-        String host = serverConnection.getNickname();
-        name = checkName(name);
-
-
-        if (checkHost(host)) {
-            return new GameFile(name, host, total,serverConnection);}
-
-        System.err.println("Gamehost " + host + " already exists in server.allGamesNotFinished!");
+            if (checkHost(host)) {
+                return new GameFile(name, host, total, serverConnection);
+            }
+            System.err.println("Gamehost " + host
+                                + " already exists in server.allGamesNotFinished!");
+        }
         return null;
     }
 

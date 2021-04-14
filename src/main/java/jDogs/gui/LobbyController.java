@@ -1,17 +1,31 @@
 package jDogs.gui;
 
 import jDogs.serverclient.clientside.Client;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
+import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.SQLOutput;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -20,6 +34,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class LobbyController implements Initializable {
     @FXML
@@ -28,13 +47,16 @@ public class LobbyController implements Initializable {
     ObservableList<Participant> playersInLobby;
 
     private OpenGame selectedGame;
-    private String lobbyAddress;
+    private String gameId;
     private String[] activeUsersInPublic;
     private String[] activeUsersInSeparee;
+    private Stage gameDialog;
+    boolean startGamePossible;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lobbyAddress = "";
+        this.startGamePossible = false;
 
         /**
          * TableViewActiveGames displays all active games
@@ -90,6 +112,12 @@ public class LobbyController implements Initializable {
 
     }
     @FXML
+    private Button startButton;
+
+    @FXML
+    private Button newGameButton;
+
+    @FXML
     private Button quitButton;
 
     @FXML
@@ -118,10 +146,50 @@ public class LobbyController implements Initializable {
     private TextField textField;
 
     @FXML
+    void startButtonOnAction(ActionEvent event) {
+        if (startGamePossible) {
+            Client.getInstance().sendMessageToServer("STAR " + gameId);
+            //set everything up to game mode
+            startButton.setText("joined");
+            startGamePossible = false;
+        }
+
+    }
+
+    @FXML
+    void newGameButtonOnAction(ActionEvent event) {
+        System.out.println("started new game action");
+        String dialogPath = "src/main/resources/createGameWindow.fxml";
+        URL url = null;
+        try {
+            url = Paths.get(dialogPath).toUri().toURL();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        FXMLLoader dialogPaneGameLoader = new FXMLLoader(url);
+
+        CreateGameWindowController createGameWindowController = dialogPaneGameLoader.getController();
+        DialogPane dialogPane = null;
+        try {
+            dialogPane = dialogPaneGameLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        gameDialog = new Stage();
+        Scene gameScene = new Scene(dialogPane);
+        gameDialog.setScene(gameScene);
+        gameDialog.show();
+
+    }
+
+
+    @FXML
     void setQButtonOnAction(ActionEvent event) {
-        if(lobbyAddress != "") {
-            lobbyAddress = "";
+        if(gameId != "") {
+            gameId = "";
             new Alert(AlertType.INFORMATION, "you quit game and are public" ).showAndWait();
+            Client.getInstance().sendMessageToServer("QUIT");
+            playersInLobby.removeAll();
         } else {
             new Alert(AlertType.INFORMATION, "Error.you were already public" ).showAndWait();
         }
@@ -132,7 +200,8 @@ public class LobbyController implements Initializable {
     void setJButtonOnAction(ActionEvent event) {
         if (selectedGame != null && tableViewActiveGames.getSelectionModel().getSelectedItem()!= null) {
             new Alert(AlertType.INFORMATION, "you joined " + selectedGame.getName()).showAndWait();
-            lobbyAddress = "" + selectedGame.getName();
+            gameId = selectedGame.getName();
+            Client.getInstance().sendMessageToServer("JOIN " + gameId);
 
         } else {
             new Alert(AlertType.INFORMATION, "you did not select a game");
@@ -158,7 +227,7 @@ public class LobbyController implements Initializable {
             System.out.println(message + " : " + message.charAt(0));
             if (message.charAt(0) == '@') {
                 String parsedMsg = null;
-                if ((parsedMsg = GuiParser.sendWcht(message)) == null) {
+                if ((parsedMsg = GuiParser.sendWcht(message.substring(1))) == null) {
                     new Alert(AlertType.ERROR,
                             "wrong Wcht format entered. E.g. '@nickname message' ");
                 } else {
@@ -167,7 +236,9 @@ public class LobbyController implements Initializable {
                 }
 
             } else {
-                Client.getInstance().sendMessageToServer("PCHT" + lobbyAddress + message);
+                //Client.getInstance().sendMessageToServer("PCHT" + gameId + message);
+                Client.getInstance().sendMessageToServer("PCHT " + message);
+
             }
         }
     }
@@ -192,7 +263,7 @@ public class LobbyController implements Initializable {
     }
 
     public void displayInfomsg(String info) {
-
+        publicChatMessagesLobby.appendText(info + "\n");
     }
 
     public void displayPlayersInLobby(String player) {
@@ -202,6 +273,11 @@ public class LobbyController implements Initializable {
 
     public void displayPendentGameInLobby(String game) {
         OpenGame newGame = GuiParser.getOpenGame(game);
+
+        if (newGame.getResponsible().equals(Client.getInstance().getNickname())) {
+            gameId = newGame.getName();
+        }
+
         //look for game by name
         int index = -1;
         for (int i = 0; i < openGames.size(); i++) {
@@ -213,30 +289,93 @@ public class LobbyController implements Initializable {
         // suppose: if name exists, game exists;
         // only refresh enlist number
         if (index > -1) {
-            openGames.get(index).setEnlist(newGame.getEnlist());
-        } else {
+            openGames.remove(index);
+        }
+
             // name doesn`t exist, game doesn`t exist;
             // add game
-            openGames.add(newGame);}
+            openGames.add(newGame);
+    }
 
+    public void removePendentGameInLobby(String substring) {
+        OpenGame openGame = GuiParser.getOpenGame(substring);
+        displayInfomsg("INFO removed game " + openGame.getName());
+        openGames.remove(openGame);
     }
 
     public void displayOnGoingGamesInLobby(String games) {
 
     }
 
-    public void displayPlayersInJDogs(String players) {
+    public void displayPlayerinPublic(String player) {
+        for (int i = 0; i < playersInLobby.size(); i++) {
+            if (playersInLobby.get(i).getPlayer().equals(player)) {
+                return;
+            }
+        }
+        playersInLobby.add(new Participant(player));
+    }
+    
+    public void removePlayerinPublic(String player) {
+        try {
+            playersInLobby.remove(new Participant(player));
+        } catch (Exception e) {
+            System.err.println("tried to remove non existing player");
+        }
+    }
+
+
+    /**
+     *  this method receives from the createGameWindowController
+     * @param gameId this is the game name
+     * @param total the total number of participants till starting the game
+     *
+     */
+    public void sendNewGame(String gameId, String total) {
+        System.out.println("Send new game");
+        Client.getInstance().sendMessageToServer("OGAM " + gameId + " " + total);
+        gameDialog.close();
+    }
+
+    public void closeGameDialog() {
+        System.out.println("close game dialog window");
+        gameDialog.close();
+    }
+
+    public void goToSeparateLobbyGame(String game) {
+        gameId = game;
+        displayInfomsg("INFO you joined game " + gameId);
+        //show only players in separate lobby
+        playersInLobby.removeAll();
+    }
+
+    public void startGameConfirmation() {
+        startGamePossible = true;
+        /**
+         * this code represents a rotating rectangle, that is rotating when the game is ready to start
+         */
+        final Rectangle rotatingRect = new Rectangle(5,5,10,6);
+        rotatingRect.setFill(Color.GREEN);
+
+        final Pane rectHolder = new Pane();
+        rectHolder.setMinSize(20, 16);
+        rectHolder.setPrefSize(20, 16);
+        rectHolder.setMaxSize(20, 16);
+        rectHolder.getChildren().add(rotatingRect);
+
+        final RotateTransition rotate = new RotateTransition(Duration.seconds(4), rotatingRect);
+        rotate.setByAngle(360);
+        rotate.setCycleCount(Animation.INDEFINITE);
+        rotate.setInterpolator(Interpolator.LINEAR);
+
+        startButton.setGraphic(rectHolder);
+
+        rotate.play();
 
     }
 
 
-    public void displayLPUB(String activeUsers) {
-       String[] userArray = GuiParser.getArray(activeUsers);
-
-
-    }
-
-    public void displayLSEP(String activeUsers) {
-        String[] userArray = GuiParser.getArray(activeUsers);
+    public void startGame(String gameInfo) {
+        GUIManager.getInstance().startGame();
     }
 }

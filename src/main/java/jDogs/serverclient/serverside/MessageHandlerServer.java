@@ -136,6 +136,7 @@ public class MessageHandlerServer implements Runnable {
     public void returnToLobby() {
         server.publicLobbyGuests.add(nickname);
         server.addSender(serverConnection.getSender());
+        serverMenuCommand.sendAllPublicGuests();
         state = "publicLobby";
     }
 

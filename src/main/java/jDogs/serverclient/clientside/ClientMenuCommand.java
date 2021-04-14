@@ -47,9 +47,9 @@ public class ClientMenuCommand {
                     name = text.substring(5);
                     client.setNickname(name);
                     sendFromClient.keyBoardInBlocked = false;
-                    /*
-                    Platform.runLater(() -> GUIManager.getInstance().lobbyController.
-                            displayInfomsg("info from server. Your new nick is " + name));
+
+                    /*Platform.runLater(() -> GUIManager.getInstance().lobbyController.
+                            displayInfomsg("INFO from server. Your new nick is " + name));
 
                      */
                 }
@@ -57,8 +57,8 @@ public class ClientMenuCommand {
 
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
-                /*
-                Platform.runLater(()->
+
+                /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
 
                  */
@@ -66,12 +66,11 @@ public class ClientMenuCommand {
 
             case "WCHT":
                 System.out.println("WCHT: " + text.substring(5));
-
-                /*Platform.runLater(()->
+                /*
+                Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
 
                  */
-
                 break;
 
             case "LPUB":
@@ -81,31 +80,43 @@ public class ClientMenuCommand {
 
                 /*
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayLPUB(text.substring(5)));
+                        GUIManager.getInstance().lobbyController.displayPlayerinPublic(text.substring(5)));
 
                  */
+
+
                 System.out.println("LPUB: " + text.substring(5));
                 break;
+
+            case "DPER":
+                /*
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.removePlayerinPublic(text.substring(5)));
+
+                 */
+                break;
+
 
 
             case "JOIN":
 
                 //TODO display Information about a user or users who joined a pendent game
-
-                /*Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayLSEP(text.substring(5)));
+                /*
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
 
                  */
+
+
                 System.out.println("JOIN: " + text.substring(5));
                 break;
 
             case "OGAM":
 
-                //TODO display a new pendent
                 System.out.println("OGAM: " + text.substring(5));
                 /*
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displaynewGame(text.substring(5)));
+                        GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
 
                  */
                 break;
@@ -113,24 +124,40 @@ public class ClientMenuCommand {
             case "DOGA":
                 //TODO remove openGame from GUI-Lobby-Display
                 System.out.println("DOGA: " + text.substring(5));
+                /*
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
+
+                 */
                 break;
 
-            case "DPER":
-                //TODO remove person from open game in lobby
-                System.out.println("DPER: " + text.substring(5));
-                break;
 
             case "INFO":
-                /*Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPCHTmsg("SRVRINFO: " + text.substring(5)));
+                /*
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
 
                  */
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
+            case "STAR":
+                /*
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.startGameConfirmation());
+
+                 */
+                break;
+
             case "GAME":
                 //TODO receive game details when game starts and display in Game GUI
                 //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
+
+                /*
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.startGame(text.substring(5)));
+
+                 */
                 break;
 
 
