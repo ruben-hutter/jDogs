@@ -40,10 +40,6 @@ public class GuiParser {
         }
 
 
-        System.out.println(idSeparator);
-        System.out.println(responsibleSeparator);
-        System.out.println(sumSeparator);
-
         if (idSeparator == -1 || responsibleSeparator == -1 || sumSeparator == -1) {
             System.out.println("couldn t parse message " + message + ". has wrong format..");
             return null;

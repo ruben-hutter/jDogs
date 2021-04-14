@@ -6,15 +6,17 @@ public class SeparateLobbyCommand {
 
     private Queuejd sendToThisClient;
     private Queuejd sendToAll;
+    private Queuejd sendToPub;
     private SendFromServer[] senderArray;
     private ServerConnection serverConnection;
     private GameFile gameFile;
     private String nickname;
 
-    SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, ServerConnection serverConnection) {
+    SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, Queuejd sendToPub, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.serverConnection = serverConnection;
+        this.sendToPub = sendToPub;
         this.gameFile = null;
     }
 
@@ -105,7 +107,7 @@ public class SeparateLobbyCommand {
                     }
                     System.out.println(2);
                     serverConnection.getMessageHandlerServer().returnToLobby();
-                    sendToAll.enqueue("LPUB " + nickname);
+                    sendToPub.enqueue("LPUB " + nickname);
                     System.out.println(3);
                     break;
 

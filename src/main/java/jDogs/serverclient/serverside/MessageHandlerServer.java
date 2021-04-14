@@ -24,6 +24,7 @@ public class MessageHandlerServer implements Runnable {
     private final Queuejd sendToAll;
     private final Queuejd sendToThisClient;
     private final Queuejd receivedFromClient;
+    private final Queuejd sendToPub;
     private boolean running;
     private boolean loggedIn;
     private final Server server;
@@ -37,7 +38,8 @@ public class MessageHandlerServer implements Runnable {
     private GameFile gameFile;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
-            Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient) {
+            Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient, Queuejd sendToPub) {
+        this.sendToPub = sendToPub;
         this.sendToAll = sendToAll;
         this.sendToThisClient = sendToThisClient;
         this.receivedFromClient = receivedFromClient;
@@ -47,7 +49,7 @@ public class MessageHandlerServer implements Runnable {
         this.loggedIn = false;
         this.serverMenuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient, sendToAll);
         this.serverGameCommand = new ServerGameCommand(server, serverConnection,this,sendToThisClient, sendToAll);
-        this.separateLobbyCommand = new SeparateLobbyCommand(sendToThisClient, sendToAll, serverConnection);
+        this.separateLobbyCommand = new SeparateLobbyCommand(sendToThisClient, sendToAll, sendToPub, serverConnection);
         this.state = "publicLobby";
     }
 
@@ -62,6 +64,7 @@ public class MessageHandlerServer implements Runnable {
         while (running) {
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
+                System.out.println("messHandlerServer: " + text);
                 if (text.length() >= 4) {
 
                 switch(state) {
@@ -86,7 +89,7 @@ public class MessageHandlerServer implements Runnable {
 
                 } else {
 
-                    System.err.println("message did not match menu or game protocol:  " + text);
+                    System.err.println("message did not match public, separate or game protocol:  " + text);
                 }
             } else {
                 try {
@@ -139,6 +142,7 @@ public class MessageHandlerServer implements Runnable {
      */
     public void setJoinedOpenGame(GameFile gameFile, String nickname) {
         server.removeFromLobby(serverConnection);
+        sendToPub.enqueue("DPER " + nickname);
         this.gameFile = gameFile;
         state = "openGame";
         //server.removeSender(serverConnection.getSender());
@@ -154,6 +158,8 @@ public class MessageHandlerServer implements Runnable {
     public void returnToLobby() {
         server.addToLobby(serverConnection);
         server.publicLobbyGuests.add(nickname);
+        sendToPub.enqueue("LPUB " + nickname);
+
         //server.addSender(serverConnection.getSender());
         serverMenuCommand.sendAllPublicGuests();
         state = "publicLobby";

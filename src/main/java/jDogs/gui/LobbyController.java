@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -39,6 +40,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.checkerframework.checker.units.qual.A;
 
 public class LobbyController implements Initializable {
     @FXML
@@ -310,11 +312,14 @@ public class LobbyController implements Initializable {
             openGames.add(newGame);
     }
 
+    //TODO method doesn t remove object from sight
+
     public void removePendentGameInLobby(String substring) {
         OpenGame openGame = GuiParser.getOpenGame(substring);
         System.out.println("remove game " + substring);
         displayInfomsg("INFO removed game " + openGame.getName());
         openGames.remove(openGame);
+
     }
 
     public void displayOnGoingGamesInLobby(String games) {
@@ -329,14 +334,12 @@ public class LobbyController implements Initializable {
         }
         playersInLobby.add(new Participant(player));
     }
-    
+
+    //TODO method doesn t remove player
     public void removePlayerinPublic(String player) {
         try {
-            System.out.println("removing..." + new Participant(player));
-            for (int i = 0; i < playersInLobby.size(); i++) {
-                System.out.println(playersInLobby.get(i));
 
-            }
+
             for (int i = 0; i < playersInLobby.size(); i++) {
                 if (playersInLobby.get(i).getPlayer().equals(player)) {
                     playersInLobby.remove(i);
@@ -353,6 +356,7 @@ public class LobbyController implements Initializable {
             System.err.println("tried to remove non existing player " + player);
         }
     }
+
 
 
     /**

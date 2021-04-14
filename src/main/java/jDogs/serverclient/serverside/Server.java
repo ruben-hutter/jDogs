@@ -23,7 +23,7 @@ public class Server {
     private ServerSocket serverSocket;
     //this list contains all sender objects, but I want to replace by the list of all serverConnection objects
     //TODO delete it
-    ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
+    //ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
     //this list contains all nicknames used at the moment(to avoid duplicates)
     ArrayList<String> allNickNames = new ArrayList<>();
     //this map contains the names and the corresponding serverConnections objects
@@ -44,6 +44,8 @@ public class Server {
     ArrayList<GameFile> finishedGames = new ArrayList<>();
     //this list contains all server connections active in the public lobby
     ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
+    //this list exists only to store all serverConnections to enable more ServerConnections
+    ArrayList<ServerConnection> basicConnectionList = new ArrayList<>();
 
     private static Server instance;
 
@@ -69,7 +71,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 ServerConnection sc = new ServerConnection(socket, this);
                 sc.createConnection();
-                //serverConnections.add(sc);
+                basicConnectionList.add(sc);
 
                 /*
                 // new threads to maintain connection to the individual clients
@@ -78,7 +80,6 @@ public class Server {
 
                  */
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
-                System.out.println("publicSenderList size:  " + (publicSenderList.size() + 1));
                 try {
                     Thread.sleep(30);
                 } catch (InterruptedException e) {
@@ -113,7 +114,7 @@ public class Server {
     }
 
     /**
-     * this method is needed to send messages to clients which are connected by public lobbies or by a common game
+     * this methlod is needed to send messages to clients which are connected by public lobbies or by a common game
      * @param nickname a new nickname of a client
      * @param serverConnection is the sC of this client
      */
@@ -156,9 +157,7 @@ public class Server {
     // add sender object from publicChatList
 
     // remove sender object from publicChatList
-    public void removeSender(SendFromServer connection) {
-        publicSenderList.remove(connection);
-    }
+
 
 
     public void startGame(MainGame mainGame) {
@@ -248,5 +247,9 @@ public class Server {
 
     public void removeFromLobby(ServerConnection serverConnection) {
         publicLobbyConnections.remove(serverConnection);
+    }
+
+    public void removeServerConnection(ServerConnection serverConnection) {
+        serverConnections.remove(serverConnection);
     }
 }

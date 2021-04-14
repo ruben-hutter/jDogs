@@ -32,6 +32,7 @@ public class ServerConnection {
     private final Queuejd sendToAll;
     private final Queuejd sendToThisClient;
     private final Queuejd receivedFromClient;
+    private final Queuejd sendToPub;
     private SendFromServer sender;
     private ReceiveFromClient listeningToClient;
     private MessageHandlerServer messageHandlerServer;
@@ -47,6 +48,7 @@ public class ServerConnection {
         this.socket = socket;
         this.server = server;
         this.sendToAll = new Queuejd();
+        this.sendToPub = new Queuejd();
         this.sendToThisClient = new Queuejd();
         this.receivedFromClient = new Queuejd();
         this.running = true;
@@ -60,7 +62,7 @@ public class ServerConnection {
 
         // sender thread
         sender = new SendFromServer(socket, server, sendToAll, sendToThisClient,
-                this);
+                sendToPub,this);
         Thread senderThread = new Thread(sender);
         senderThread.start();
         System.out.println("thread sender name: " + senderThread.toString());
@@ -80,7 +82,7 @@ public class ServerConnection {
 
         // messageHandlerServer Thread
         messageHandlerServer = new MessageHandlerServer(server,
-                this, sendToThisClient, sendToAll, receivedFromClient);
+                this, sendToThisClient, sendToAll, receivedFromClient, sendToPub);
         Thread messenger = new Thread(messageHandlerServer);
         messenger.start();
     }
@@ -108,7 +110,7 @@ public class ServerConnection {
         scheduledExecutorService.shutdown();
         System.out.println(scheduledExecutorService.toString() + " stops now");
 
-        server.removeSender(sender);
+        server.removeServerConnection(this);
         server.removeNickname(messageHandlerServer.getNickName());
         this.listeningToClient.kill();
         this.sender.kill();
