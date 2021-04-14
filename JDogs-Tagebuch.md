@@ -248,7 +248,7 @@ Bei der heutigen Sitzung wurden u.a. die Themen Spielbrett, Spielorganisation un
 
 ### Protokoll#12 - Protokoll
 
-Gregor und Ruben berichteten von ihrem PairProgramming am Vormittag. Ein Thema war auch die ungleichmässige Arbeitsverteilung bei Milestone 3. Für die Zukunft möchten wir noch ein zusätzliches Meeting pro Woche festlegen. 
+Gregor und Ruben berichteten von ihrem PairProgramming vom Vormittag. Ein Thema war auch die ungleichmässige Arbeitsverteilung bei Milestone 3. Für die Zukunft möchten wir noch ein zusätzliches Meeting pro Woche festlegen.
 
 **Nächstes Treffen:** Mittwoch, 14.04.21, 09:00 Uhr. 
 
