@@ -248,9 +248,13 @@ Bei der heutigen Sitzung wurden u.a. die Themen Spielbrett, Spielorganisation un
 
 ### Protokoll#12 - Protokoll
 
-Gregor und Ruben berichteten von ihrem PairProgramming vom Vormittag. Ein Thema war auch die ungleichmässige Arbeitsverteilung bei Milestone 3. Für die Zukunft möchten wir noch ein zusätzliches Meeting pro Woche festlegen.
+Gregor und Ruben berichteten von ihrem PairProgramming vom Vormittag. Sie haben damit begonnen, den in den letzten Tagen erstellten Code zusammenzufügen, um den Spielbrettteil und die Karten einzubinden und alles zwischen dem Server und den Clients in Verbindung zu bringen. Auf diese Weise kann das Spiel, das bisher nur lokal zu sehen war, nun mit einem Befehl über die Konsole gestartet werden. Auf diese Weise startet das Spiel auf dem Server, der eine Nachricht an die beteiligten Clients (die sich in der für dieses Spiel eingerichteten Lobby befanden) sendet, so dass die verschiedenen Clients das Spiel ebenfalls sehen und mit dem Spielen beginnen können.
+Wir haben dann eine Frist am Freitag um 10:00 Uhr gesetzt, um zu überprüfen, ob das Spiel richtig funktioniert, und um mögliche Fehler zu beheben. Die verbleibenden Tage bis zur Auslieferung sind für die Fertigstellung von Tests, Dokumentation und Kommentaren im Code sowie für die Vorbereitung der Präsentation vorgesehen.
+Ein Thema war auch die ungleichmässige Arbeitsverteilung bei Milestone 3. Für die Zukunft möchten wir noch ein zusätzliches Meeting pro Woche festlegen.
+
 
 **Nächstes Treffen:** Mittwoch, 14.04.21, 09:00 Uhr. 
 
-
 ---
+
+
