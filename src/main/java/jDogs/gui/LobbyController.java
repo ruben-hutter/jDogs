@@ -90,6 +90,7 @@ public class LobbyController implements Initializable {
 
         tableViewActiveGames.setItems((ObservableList)openGames);
 
+
         tableViewActiveGames.setOnMousePressed ((MouseEvent event) -> {
             if (event.getClickCount() == 1 &&
                     ((tableViewActiveGames.getSelectionModel().getSelectedItem() != null))) {
@@ -318,7 +319,11 @@ public class LobbyController implements Initializable {
         OpenGame openGame = GuiParser.getOpenGame(substring);
         System.out.println("remove game " + substring);
         displayInfomsg("INFO removed game " + openGame.getName());
-        openGames.remove(openGame);
+
+        tableViewActiveGames.getSelectionModel().select(0);
+        Object object = tableViewActiveGames.getSelectionModel().getSelectedItem();
+        OpenGame openGame1 = (OpenGame) object;
+        tableViewActiveGames.getItems().remove(openGame1);
 
     }
 
@@ -340,17 +345,21 @@ public class LobbyController implements Initializable {
         try {
 
 
-            for (int i = 0; i < playersInLobby.size(); i++) {
-                if (playersInLobby.get(i).getPlayer().equals(player)) {
-                    playersInLobby.remove(i);
+                for (int i = 0; i < playersInLobby.size(); i++) {
+                    if (playersInLobby.get(i).getPlayer().equals(player)) {
+                        //playersInLobby.remove(i);
+                        //Participant player1 = playersInLobby.get(i);
+                        //tableViewActPlayers.getItems().remove(player1);
+                        //System.out.println(tableViewActPlayers.getItems().remove(playersInLobby.get(i)));
+                    }
                 }
-            }
-            playersInLobby.remove(new Participant(player));
-            System.out.println("after ");
-            for (int i = 0; i < playersInLobby.size(); i++) {
-                System.out.println(playersInLobby.get(i));
+                //tableViewActPlayers.getItems().clear();
+                //playersInLobby.remove(new Participant(player));
+                System.out.println("after ");
+                for (int i = 0; i < playersInLobby.size(); i++) {
+                    System.out.println(playersInLobby.get(i));
 
-            }
+                }
 
         } catch (Exception e) {
             System.err.println("tried to remove non existing player " + player);
