@@ -61,7 +61,7 @@ public class Player {
         }
     }
 
-    public void setDeck(ArrayList<String> deck) {
+    public void setDeck (ArrayList<String> deck) {
         this.deck = deck;
     }
 
@@ -109,7 +109,7 @@ public class Player {
      * @param message to the client concerning this game
      */
     public void sendMessageToClient(String message) {
-
+        serverConnection.getSender().sendStringToClient(message);
     }
 
     @Override

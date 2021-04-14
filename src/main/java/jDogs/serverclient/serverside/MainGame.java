@@ -9,6 +9,8 @@ public class MainGame {
     private int turnNumber;
     private GameState gameState;
     private int numbDealOut;
+    private ArrayList<String> deck;
+    private Random random = new Random();
 
 
 
@@ -27,6 +29,8 @@ public class MainGame {
         setRandomBeginner();
         turnNumber = 0;
         this.numbDealOut = 6;
+        //first deck
+        deck = getDeck();
         dealOutCards(numbDealOut);
         nextTurn();
     }
@@ -67,9 +71,6 @@ public class MainGame {
     private void dealOutCards(int number) {
         //deal out cards from here by using a certain procedure
 
-        ArrayList<String> deck = getDeck();
-        Random random = new Random();
-
         String newHand;
         ArrayList<String> newHandArray;
 
@@ -78,18 +79,14 @@ public class MainGame {
             newHand = "ROUN " + turnNumber + " " + number;
 
             for (int j = 0; j < number; j++) {
-                System.out.println(deck.size());
                 int randomNumber = random.nextInt(deck.size());
                 newHand += " " + deck.get(randomNumber);
                 newHandArray.add(deck.get(randomNumber));
                 deck.remove(randomNumber);
-                System.out.println(deck.size());
             }
             // send newHand to player and to client here
             gameState.playersState[i].setDeck(newHandArray);
             gameState.playersState[i].sendMessageToClient(newHand);
-            System.out.println(newHand);
-
         }
 
     }
@@ -130,13 +127,13 @@ public class MainGame {
             newDeck.add("TENN");
         }
         for (int i = 72; i < 80; i++) {
-            newDeck.add("ELVN");
+            newDeck.add("ACEE");
         }
         for (int i = 80; i < 88; i++) {
             newDeck.add("KING");
         }
         for (int i = 88; i < 96; i++) {
-            newDeck.add("DAME");
+            newDeck.add("QUEN");
         }
         for (int i = 96; i < 104; i++) {
             newDeck.add("JACK");
@@ -163,6 +160,8 @@ public class MainGame {
         if (turnNumber == numbDealOut) {
             if (numbDealOut == 2) {
                 numbDealOut = 6;
+                // anew deck
+                deck = getDeck();
             } else {
                 numbDealOut--;
             }
