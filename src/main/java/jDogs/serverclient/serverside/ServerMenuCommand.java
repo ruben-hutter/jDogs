@@ -231,11 +231,11 @@ public class ServerMenuCommand {
     /**
      *
      * @param name nickname to check
-     * @return false, if name contains ';'
+     * @return false, if name contains whitespace
      */
     private boolean validCharacters(String name) {
         for (int i = 0; i < name.length(); i++) {
-            if (name.charAt(i) == ';') {
+            if (Character.isWhitespace(name.charAt(i))) {
                 return false;
             }
         }
