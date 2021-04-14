@@ -1,30 +1,38 @@
 package jDogs.serverclient.serverside;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MainGame {
     private String[] gameArray;
     private GameFile gameFile;
-    private int cardsToDealOut;
     private int turnNumber;
-    private ArrayList<String> deck;
+    private GameState gameState;
+    private int numbDealOut;
+
+
 
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
-        this.cardsToDealOut = 6;
+        GameState gameState = new GameState(gameFile);
+        gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
+                + gameFile.getParticipants());
         startGameRhythm();
     }
 
+    /**
+     * this method initializes the game
+     */
     private void startGameRhythm() {
         setRandomBeginner();
         turnNumber = 0;
-        dealOutCards(cardsToDealOut);
-        cardsToDealOut--;
+        this.numbDealOut = 6;
+        dealOutCards(numbDealOut);
         nextTurn();
     }
 
-
+    /**
+     * this method sets a random beginner to play the game in a random order
+     */
     private void setRandomBeginner() {
         int random = new Random().nextInt(gameFile.getNumberOfParticipants());
 
@@ -43,48 +51,57 @@ public class MainGame {
         }
     }
 
+    /**
+     * this method sends a request to the next player to make a move
+     */
     private void nextTurn() {
-        //sendRequest to next player to make a move
-
-
-        if (cardsToDealOut == 2) {
-            cardsToDealOut = 6;
-        }
 
         Server.getInstance().getSender(gameArray[turnNumber]).sendStringToClient("TURN");
+        // System.out.println(turnNumber);
+        // System.out.println(gameArray[turnNumber]);
 
-        System.out.println(turnNumber);
-        System.out.println(gameArray[turnNumber]);
-
-        System.out.println("TURN");
+        // System.out.println("TURN");
     }
 
     private void dealOutCards(int number) {
-        deck = getDeck();
+        //deal out cards from here by using a certain procedure
+
+        ArrayList<String> deck = getDeck();
         Random random = new Random();
 
-        String newHand = "" + number;
+        String newHand;
+        ArrayList<String> newHandArray;
+
         for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
+            newHandArray = new ArrayList<>();
+            newHand = "ROUN " + turnNumber + " " + number;
+
             for (int j = 0; j < number; j++) {
                 System.out.println(deck.size());
                 int randomNumber = random.nextInt(deck.size());
                 newHand += " " + deck.get(randomNumber);
+                newHandArray.add(deck.get(randomNumber));
                 deck.remove(randomNumber);
                 System.out.println(deck.size());
             }
             // send newHand to player and to client here
+            gameState.playersState[i].setDeck(newHandArray);
+            gameState.playersState[i].sendMessageToClient(newHand);
             System.out.println(newHand);
-            newHand = "" + number;
-        }
 
+        }
 
     }
 
+    /**
+     *
+     * @return a deck of 110 cards to send messages to clients
+     */
     private ArrayList<String> getDeck() {
         ArrayList<String> newDeck = new ArrayList<>();
 
         for (int i = 0; i < 8; i++) {
-           newDeck.add("TWOO");
+            newDeck.add("TWOO");
         }
         for (int i = 8; i < 16; i++) {
             newDeck.add("THRE");
@@ -131,18 +148,27 @@ public class MainGame {
 
     }
 
-
+    /**
+     * this method gets called if a player completed his turn
+     * (i.e.: he has sent a valid card to server)
+     * @param nickname maybe not necessary to send the nickname
+     *                 t
+     */
     public void turnComplete(String nickname) {
         System.out.println(nickname + " finished his turn");
         turnNumber++;
         // new round
         //no cards in any player`s hand
-        // if turnNumber == numberOfCardsDealtOut
-        if (true) {
-            //how many? set number correctly
-            dealOutCards(6);
+        if (turnNumber == numbDealOut) {
+            if (numbDealOut == 2) {
+                numbDealOut = 6;
+            } else {
+                numbDealOut--;
+            }
+            dealOutCards(numbDealOut);
         }
 
+        nextTurn();
     }
 
     public String getGameId() {
@@ -153,5 +179,4 @@ public class MainGame {
     public GameFile getGameFile() {
         return gameFile;
     }
-
 }

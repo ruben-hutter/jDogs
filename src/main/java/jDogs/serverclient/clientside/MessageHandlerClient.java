@@ -31,7 +31,7 @@ public class MessageHandlerClient implements Runnable{
         this.sendFromClient = sendFromClient;
         this.client = client;
         this.clientMenuCommand = new ClientMenuCommand(client, sendFromClient,sendQueue,keyBoardInQueue);
-        this.clientGameCommand = new ClientGameCommand();
+        this.clientGameCommand = new ClientGameCommand(client, sendFromClient,sendQueue,keyBoardInQueue);
 
     }
 

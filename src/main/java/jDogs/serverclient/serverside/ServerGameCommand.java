@@ -1,5 +1,7 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.serverclient.helpers.Queuejd;
+
 /**
  * ServerGameCommand contains the game
  * commands which are sent from the
@@ -9,9 +11,26 @@ package jDogs.serverclient.serverside;
  */
 
 public class ServerGameCommand {
+    private final Server server;
+    private final ServerConnection serverConnection;
+    private final MessageHandlerServer messageHandlerServer;
+    private final Queuejd sendToThisClient;
+    private final Queuejd sendToAll;
+    private boolean loggedIn;
+    private String nickName;
+    private final ServerParser serverParser;
+    private String actualGame;
 
-    public ServerGameCommand() {
-        // TODO
+    public ServerGameCommand(Server server, ServerConnection serverConnection,
+            MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
+        this.server = server;
+        this.serverConnection = serverConnection;
+        this.messageHandlerServer = messageHandlerServer;
+        this.sendToThisClient = sendToThisClient;
+        this.sendToAll = sendToAll;
+        this.loggedIn = false;
+        this.nickName = null;
+        this.serverParser = new ServerParser(server,serverConnection);
     }
 
     public void execute(String text) {
