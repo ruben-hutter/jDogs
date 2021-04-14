@@ -7,7 +7,6 @@ public class AdaptToGui {
 
     public AdaptToGui(int boardSize) {
         this.boardSize = boardSize;
-       fieldsOnTrack = new FieldOnBoard[this.boardSize * 16];
        createFieldsOnTrack(boardSize);
        instance = this;
     }
@@ -17,44 +16,45 @@ public class AdaptToGui {
     }
 
     private void createFieldsOnTrack(int boardSize) {
-        //side one above (2/3,2/4.....2/18)
-        // last position is a new startingPosition
+        // board size is 4 or 6
+        fieldsOnTrack = new FieldOnBoard[this.boardSize * 16];
+
+        // first position is a new starting position
+
         int trackCounter = 0;
         int leftestPoint = 2;
         int rightestPoint = 18;
         int highestPoint = 2;
         int lowestPoint = 18;
 
-        //side up (2/3,2/4...2/18)
+        //side up (2/2,2/3...2/17)
 
-        for (int i = 1; i < 17; i++) {
+        for (int i = 0; i < 16; i++) {
             fieldsOnTrack[trackCounter] = new FieldOnBoard(highestPoint, leftestPoint + i);
-            System.out.println(fieldsOnTrack[trackCounter].getX() + " " + fieldsOnTrack[trackCounter].getY());
             trackCounter++;
 
         }
 
-        //right side(3/18, 4/18.....18/18)
+        //right side(2/18, 3/18.....18/17)
 
-        for (int i = 1; i < 17; i++) {
+        for (int i = 0; i < 16; i++) {
             fieldsOnTrack[trackCounter] = new FieldOnBoard(highestPoint + i, rightestPoint);
-            System.out.println(fieldsOnTrack[trackCounter].getX() + " " + fieldsOnTrack[trackCounter].getY());
             trackCounter++;
         }
 
-        //side down (18/17, 18/16,...18/2)
+        //side down (18/18, 18/16,...18/3)
 
-        for (int i = 1; i < 17; i++) {
+        for (int i = 0; i < 16; i++) {
+
             fieldsOnTrack[trackCounter] = new FieldOnBoard(lowestPoint, rightestPoint - i);
-            System.out.println(fieldsOnTrack[trackCounter].getX() + " " + fieldsOnTrack[trackCounter].getY());
             trackCounter++;
+
         }
 
-        // left side (17/2, 16/2...2/2)
+        // left side (18/2, 17/2...3/2)
 
-        for (int i = 1; i < 17; i++) {
+        for (int i = 0; i < 16; i++) {
             fieldsOnTrack[trackCounter] = new FieldOnBoard(lowestPoint - i, leftestPoint);
-            System.out.println(fieldsOnTrack[trackCounter].getX() + " " + fieldsOnTrack[trackCounter].getY());
             trackCounter++;
         }
     }
@@ -63,7 +63,6 @@ public class AdaptToGui {
        if (number > fieldsOnTrack.length) {
            return null;
        }
-
        return fieldsOnTrack[number];
     }
 }

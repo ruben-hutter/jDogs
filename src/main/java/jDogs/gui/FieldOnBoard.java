@@ -4,7 +4,7 @@ public class FieldOnBoard {
     private int x;
     private int y;
 
-    FieldOnBoard(int x,int y) {
+   public FieldOnBoard(int x,int y) {
         this.x = x;
         this.y = y;
     }
