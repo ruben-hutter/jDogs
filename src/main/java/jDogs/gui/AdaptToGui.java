@@ -3,6 +3,9 @@ package jDogs.gui;
 public class AdaptToGui {
     private int boardSize;
     private FieldOnBoard[] fieldsOnTrack;
+    private FieldOnBoard[][] fieldsOnHeaven;
+    private FieldOnBoard[][] fieldsOnHome;
+
     private static AdaptToGui instance;
 
     public AdaptToGui(int boardSize) {
@@ -57,6 +60,22 @@ public class AdaptToGui {
             fieldsOnTrack[trackCounter] = new FieldOnBoard(lowestPoint - i, leftestPoint);
             trackCounter++;
         }
+    }
+
+   public void createFieldsOnHeaven (int boardSize) {
+
+       switch(boardSize) {
+
+           case 4:
+               fieldsOnHeaven = new FieldOnBoard[boardSize][4];
+
+               break;
+
+
+           case 6:
+
+               break;
+       }
     }
 
     public FieldOnBoard getTrack(int number) {

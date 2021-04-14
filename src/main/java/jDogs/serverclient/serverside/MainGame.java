@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MainGame {
