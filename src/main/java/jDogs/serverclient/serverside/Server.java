@@ -69,7 +69,7 @@ public class Server {
                 Socket socket = serverSocket.accept();
                 ServerConnection sc = new ServerConnection(socket, this);
                 sc.createConnection();
-                serverConnections.add(sc);
+                //serverConnections.add(sc);
 
                 /*
                 // new threads to maintain connection to the individual clients
@@ -150,14 +150,11 @@ public class Server {
 
     //returns sender object to send private message
     public SendFromServer getSender(String nickname) {
-        return whisperList.get(nickname);
+        return serverConnectionMap.get(nickname).getSender();
     }
 
     // add sender object from publicChatList
-    public void addSender(SendFromServer connection) {
 
-        publicSenderList.add(connection);
-    }
     // remove sender object from publicChatList
     public void removeSender(SendFromServer connection) {
         publicSenderList.remove(connection);
@@ -223,11 +220,33 @@ public class Server {
         return null;
     }
 
+    /**
+     *
+     * @param message to clients wherever they are
+     */
     public void sendMessageToAll(String message) {
+        for (ServerConnection activeServerConnection1 : serverConnections) {
+            activeServerConnection1.getSender().sendStringToClient(message);
+        }
 
     }
 
+    /**
+     *
+     * @param message to clients in public lobby explicitly
+     */
     public void sendMessageToPublicLobby(String message) {
+        for (ServerConnection publicLobbyConnection1 : publicLobbyConnections) {
+            publicLobbyConnection1.getSender().sendStringToClient(message);
+        }
 
+    }
+
+    public void addToLobby(ServerConnection serverConnection) {
+        publicLobbyConnections.add(serverConnection);
+    }
+
+    public void removeFromLobby(ServerConnection serverConnection) {
+        publicLobbyConnections.remove(serverConnection);
     }
 }

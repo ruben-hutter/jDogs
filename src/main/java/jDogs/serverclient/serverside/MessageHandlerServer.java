@@ -138,6 +138,7 @@ public class MessageHandlerServer implements Runnable {
      * @param nickname the actual nickname he has(could also be omitted)
      */
     public void setJoinedOpenGame(GameFile gameFile, String nickname) {
+        server.removeFromLobby(serverConnection);
         this.gameFile = gameFile;
         state = "openGame";
         //server.removeSender(serverConnection.getSender());
@@ -151,6 +152,7 @@ public class MessageHandlerServer implements Runnable {
      * from game or from separate lobby
      */
     public void returnToLobby() {
+        server.addToLobby(serverConnection);
         server.publicLobbyGuests.add(nickname);
         //server.addSender(serverConnection.getSender());
         serverMenuCommand.sendAllPublicGuests();

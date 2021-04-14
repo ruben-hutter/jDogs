@@ -78,8 +78,10 @@ public class ServerMenuCommand {
 
                         System.out.println("login worked " + "USER " + nickName);
 
+                        // if you are not logged in you are not added to the serverConnections lists
                         if (!loggedIn) {
-                            server.addSender(serverConnection.getSender());
+                            server.addToLobby(serverConnection);
+                            server.serverConnections.add(serverConnection);
                         }
                         server.addNickname(nickName, serverConnection);
                         serverConnection.updateNickname(nickName);
