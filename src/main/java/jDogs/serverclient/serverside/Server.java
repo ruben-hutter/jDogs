@@ -35,7 +35,7 @@ public class Server {
     boolean running = true;
 
     public static void main(String[] args) {
-        new Server();
+        new Server(args);
     }
 
     // return Singleton
@@ -43,11 +43,11 @@ public class Server {
         return instance;
     }
 
-    public Server() {
+    public Server(String[] args) {
         try {
             instance = this;
             // port 8090
-            serverSocket = new ServerSocket(8090);
+            serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             System.out.println("server started...");
             // runs as long as the server is activated
             while(running) {

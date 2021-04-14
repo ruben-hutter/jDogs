@@ -12,7 +12,7 @@ javafx {
 
 group 'ch.unibas.dmi.dbis'
 version '0.0.1-ALPHA'
-mainClassName = 'jDogs/serverClientEnvironment/clientSide/Client'
+mainClassName = 'jDogs/Main'
 
 //specifies source compatibility to Java 11
 sourceCompatibility = 1.11
@@ -62,7 +62,7 @@ The following block adds both compile and runtime dependencies to the jar
 jar {
     manifest {
         attributes(
-                'Main-Class': 'jDogs/serverClientEnvironment/clientSide/Client'
+            'Main-Class': 'jDogs/Main'
         )
     }
     from {
