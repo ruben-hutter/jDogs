@@ -191,20 +191,37 @@ public class ServerGameCommand {
                     return true;
                 }
             }
-            return false;
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // go heaven
-            int difference = startingPosition - actualPosition2 + newPosition2 + 1;
-            // sets the difference to a possible card value
-            if (difference < 0) {
-                difference += 64;
-            }
-            for (int cardValue : cardValues) {
-                if (cardValue == difference) {
-                    return true;
+            int difference;
+            if (card.equals("JACK")) {
+                return false;
+            } else if (card.equals("FOUR")) {
+                for (int cardValue : cardValues) {
+                    if (cardValue == 4) {
+                        difference = startingPosition - actualPosition2;
+                        if (difference < 0) {
+                            difference = difference + 64 + newPosition2 + 1;
+                        } else {
+                            difference = difference + newPosition2 + 1;
+                        }
+                        return cardValue == difference;
+                    } else if (cardValue == -4) {
+                        difference = startingPosition - actualPosition2 - newPosition2 - 1;
+                        return cardValue == difference;
+                    }
+                }
+            } else {
+                difference = startingPosition - actualPosition2;
+                if (difference < 0) {
+                    difference = difference + 64 + newPosition2 + 1;
+                } else {
+                    difference = difference + newPosition2 + 1;
+                }
+                for (int cardValue : cardValues) {
+                    return cardValue == difference;
                 }
             }
-            return false;
         }
         return false;
     }
@@ -256,7 +273,7 @@ public class ServerGameCommand {
     }
 
     private boolean checkWhichMove() {
-        // TODO not kill yourself; no block going heaven of passing track
+        // TODO not kill yourself; no block going heaven of passing track; -4 with has not moved
         return false;
     }
 
