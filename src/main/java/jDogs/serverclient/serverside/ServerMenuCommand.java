@@ -185,7 +185,7 @@ public class ServerMenuCommand {
                                     .enqueue("INFO join not possible,game name does not exist");
                         } else {
                             sendToThisClient.enqueue("JOIN " + game.getNameId());
-                            game.addParticipants(serverConnection);
+                            game.addParticipant(serverConnection);
                             sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);

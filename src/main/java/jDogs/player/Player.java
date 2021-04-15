@@ -21,13 +21,16 @@ public class Player {
     public int startingPosition;
     private ArrayList<String> deck;
     private ServerConnection serverConnection;
+    private int personalTeamID;
+    private int teamID;
 
-    public Player(String playerName, Alliance_4 alliance4, ServerConnection serverConnection) {
+    public Player(String playerName,int personalTeamID, ServerConnection serverConnection) {
         this.playerName = playerName;
-        this.alliance4 = alliance4;
-        startingPosition = alliance4.getStartingPosition();
-        pieces = createPieces(startingPosition);
         this.serverConnection = serverConnection;
+        this.personalTeamID = personalTeamID;
+        this.teamID = personalTeamID;
+
+
     }
 
     public Player(String playerName, Alliance_4 alliance4, Board board) {
@@ -37,6 +40,12 @@ public class Player {
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
         setPiecesOnHome();
+    }
+
+    public void setUpPlayerOnServer( Alliance_4 alliance4) {
+        this.alliance4 = alliance4;
+        startingPosition = alliance4.getStartingPosition();
+        pieces = createPieces(startingPosition);
     }
 
     /**
@@ -104,6 +113,23 @@ public class Player {
         newPosition.setPiece(pieceToMove);
     }
 
+    public int getPersonalTeamID() {
+        return personalTeamID;
+    }
+
+    public void setTeamID(int newID) {
+        teamID = newID;
+    }
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+
+    public void setTeamIDToPersID() {
+        teamID = personalTeamID;
+    }
+
     /**
      *
      * @param message to the client concerning this game
@@ -115,5 +141,9 @@ public class Player {
     @Override
     public String toString() {
         return getPlayerName() + ": " + getAlliance();
+    }
+
+    public ServerConnection getServerConnection() {
+        return serverConnection;
     }
 }

@@ -35,7 +35,8 @@ public class ServerParser {
             name = checkName(name);
 
             if (checkHost(host)) {
-                return new GameFile(name, host, total, serverConnection);
+               // TODO change this
+               // return new GameFile(name, host, total, serverConnection, );
             }
             System.err.println("Gamehost " + host
                                 + " already exists in server.allGamesNotFinished!");

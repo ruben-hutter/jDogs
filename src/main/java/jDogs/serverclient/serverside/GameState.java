@@ -6,23 +6,25 @@ import java.util.ArrayList;
 
 public class GameState {
 
+    private final GameFile gameFile;
     String[] playerNames;
     Player[] playersState;
-    ArrayList<ServerConnection> serverConnectionArrayList;
     int numPlayers;
 
     public GameState(GameFile gameFile) {
+        this.gameFile = gameFile;
         this.numPlayers = gameFile.getNumberOfParticipants();
         this.playerNames = gameFile.getParticipantsArray();
+
         playersState = createPlayers();
-        this.serverConnectionArrayList = gameFile.getscArrayList();
     }
 
     private Player[] createPlayers() {
         Player[] players = new Player[numPlayers];
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            players[counter] = new Player(playerNames[counter], alliance_4,serverConnectionArrayList.get(counter));
+            players[counter] = gameFile.getPlayersArray()[counter];
+            players[counter].setUpPlayerOnServer(alliance_4);
             counter++;
         }
         return players;
@@ -35,5 +37,11 @@ public class GameState {
             }
         }
         return null;
+    }
+
+    public void sendMessageToPlayers(String message) {
+        for (Player player : playersState) {
+            player.getServerConnection().getSender().sendStringToClient(message);
+        }
     }
 }

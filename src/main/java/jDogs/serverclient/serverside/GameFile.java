@@ -1,8 +1,9 @@
 package jDogs.serverclient.serverside;
 //this class represents information of pendent games(still in lobby) or ongoing games
 
+import jDogs.gui.GuiParser;
+import jDogs.player.Player;
 import java.util.ArrayList;
-import java.util.BitSet;
 
 public class GameFile {
 
@@ -12,14 +13,15 @@ public class GameFile {
     private String confirmedParticipants;
     private int numberOfConfirmed;
     private int numberParticipants;
+    private int IDCounter;
     private int total;
     private boolean pendent;
-    private ArrayList<ServerConnection> scArrayList = new ArrayList<>();
     private MainGame mainGame;
+    private boolean teamMode;
+    private ArrayList<Player> players = new ArrayList<>();
 
-
-    public GameFile(String nameId, String host,String total, ServerConnection serverConnection) {
-
+    public GameFile(String nameId, String host,String total, boolean teamMode, ServerConnection serverConnection) {
+        this.IDCounter = 0;
         this.nameId = nameId;
         this.host = host;
         this.total = Integer.parseInt(total);
@@ -27,35 +29,87 @@ public class GameFile {
         this.numberParticipants = 1;
         this.confirmedParticipants = host;
         this.numberOfConfirmed = 0;
-        this.scArrayList.add(serverConnection);
         this.pendent = true;
+        this.teamMode = teamMode;
+        players.add(new Player(host,IDCounter++, serverConnection));
+
+
         sendMessageToParticipants("OGAM " + getSendReady());
 
     }
 
-    public void sendMessageToParticipants(String message) {
-        for (int i = 0; i < scArrayList.size(); i++) {
-            scArrayList.get(i).getSender().sendStringToClient(message);
+    /**
+     * a team consists of those participants
+     * at even or odd positions
+     */
+    public void changeTeam(String applicant, String subject) {
+        if (total == 4) {
+            getPlayer(applicant).setTeamIDToPersID();
+            getPlayer(subject).setTeamID(getPlayer(applicant).getPersonalTeamID());
         }
+
+        if (total == 6) {
+            //not implemented check with parseMessage
+        }
+
 
     }
 
-    public void addParticipants(ServerConnection serverConnection) {
-        scArrayList.add(serverConnection);
-        participants += " " + serverConnection.getNickname();
-        numberParticipants++;
+    private Player getPlayer(String applicant) {
+        for (Player player : players) {
+            if (player.getPlayerName().equals(applicant)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    private String[] parseNames(int size, String message) {
+        String[] array = new String[size];
+        int position = 0;
+        int i = 0;
+        int count = 1;
+        while (count < size) {
+
+            if (Character.isWhitespace(message.charAt(i))) {
+                array[count] = message.substring(position, i);
+                position = i + 1;
+                count++;
+            }
+            i++;
+        }
+        array[count - 1] = message.substring(position);
+        return array;
+    }
+
+
+    public void sendMessageToParticipants(String message) {
+        for (Player player : players) {
+            player.getServerConnection().getSender().sendStringToClient(message);
+        }
+    }
+
+    public void addParticipant(ServerConnection serverConnection) {
+        players.add(new Player(serverConnection.getNickname(),IDCounter++, serverConnection));
+
         sendMessageToParticipants("LPUB " + serverConnection.getNickname());
         for (int i = 0; i < numberParticipants - 1; i++) {
-            serverConnection.getSender().sendStringToClient("LPUB " + getParticipantsArray()[i]);
+            players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
         }
     }
 
     public String getParticipants() {
+        String participants = "";
+
+        for (Player player : players) {
+            participants += player.getPlayerName();
+        }
+
         return participants;
     }
 
     public String getSendReady() {
-         return nameId + " " + host + " " + numberParticipants + " " + total;
+         return nameId + " " + host + " " + numberParticipants + " " + total + " " + teamMode;
     }
 
     public String getNameId() {
@@ -68,27 +122,10 @@ public class GameFile {
 
     public String[] getParticipantsArray() {
         String[] array = new String[numberParticipants];
-        int arrayEntries = 0;
-        int separator = 0;
-        if (numberParticipants > 1) {
-            while (arrayEntries < numberParticipants - 1) {
-                int i = separator;
-                while (i < participants.length()) {
-
-                    if (Character.isWhitespace(participants.charAt(i))) {
-                        array[arrayEntries] = participants.substring(separator, i);
-                        separator = i + 1;
-                        arrayEntries++;
-                        i = participants.length();
-                    }
-                    i++;
-                }
-
-                array[arrayEntries] = participants.substring(separator);
-            }
-        } else {
-            array[0] = participants;
-            System.out.println("array: " + array[0] + " " + array.length);
+        int count = 0;
+        for (Player player : players) {
+            array[count] = player.getPlayerName();
+            count++;
         }
         return array;
     }
@@ -99,7 +136,6 @@ public class GameFile {
 
     public void sendConfirmationMessage() {
         sendMessageToParticipants("STAR");
-
     }
 
     public int getNumberOfParticipants() {
@@ -122,8 +158,8 @@ public class GameFile {
     public void start() {
         pendent = false;
         //Server.getInstance().startGame(new MainGame(this));
-        for (int i = 0; i < scArrayList.size(); i++) {
-            scArrayList.get(i).getMessageHandlerServer().setPlaying(true,this);
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
             mainGame = new MainGame(this);
             Server.getInstance().startGame(mainGame);
         }
@@ -141,61 +177,33 @@ public class GameFile {
      *                 by deleting the whole file
      */
     public void removeParticipant(ServerConnection serverConnection) {
-        String nickName = serverConnection.getNickname();
+        String nickname = serverConnection.getNickname();
 
-        if (nickName == host) {
-            cancel();
-        } else {
-            }
-            if (isPendent()) {
-                int number = -1;
-                String[] array = getParticipantsArray();
-                for (int i = 0; i < array.length; i++) {
-                    if (array[i].equals(nickName)) {
-                        number = i;
-                    }
-                }
-
-                    //get whitespace
-                    int counter = 0;
-                int startPosition = 0;
-                    for (int i = 0; i < participants.length(); i++) {
-                        if (Character.isWhitespace(participants.charAt(i))) {
-                            counter++;
-                            if (counter == number) {
-                                startPosition = i;
-                                break;
-                            }
-                        }
-                    }
-
-                StringBuilder sb = new StringBuilder();
-                sb.append(participants);
-                sb.delete(startPosition - 1, startPosition + nickName.length());
-                participants = sb.toString();
-                numberParticipants--;
-
-                scArrayList.remove(serverConnection);
-                sendMessageToParticipants("DPER " + nickName);
-                Server.getInstance().getSender(nickName).sendStringToAllClients("OGAM " + getSendReady());
-            } else {
-                // if serverConnection of a client stops while playing the server sends all clients back to public lobby
-                sendMessageToParticipants("INFO " + " connection to " + nickName + " is shutdown");
-                cancel();
-            }
+        if (pendent) {
+            Player player = getPlayer(nickname);
+            players.remove(player);
+            numberParticipants--;
+            sendMessageToParticipants("DPER " + nickname);
+            Server.getInstance().getSender(nickname)
+                    .sendStringToAllClients("OGAM " + getSendReady());
+        }  else {
+        // if serverConnection of a client stops while playing the server sends all clients back to public lobby
+        sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
+        cancel();
         }
+    }
 
 
     public void cancel() {
 
-        for (int i = 0; i < scArrayList.size(); i++) {
-            scArrayList.get(i).getMessageHandlerServer().returnToLobby();
+        for (Player player : players) {
+            player.getServerConnection().getMessageHandlerServer().returnToLobby();
         }
         if (pendent) {sendMessageToAll("DOGA " + getSendReady());
         } else {
-            System.out.println("running game ended no command implemented");
+            Server.getInstance().finishedGames.add(this);
+            System.out.println("INFO game finished");
         }
-
         Server.getInstance().removeGame(this);
 
     }
@@ -206,11 +214,17 @@ public class GameFile {
         }
     }
 
-    public ArrayList<ServerConnection> getscArrayList() {
-        return scArrayList;
-    }
-
     public boolean isPendent() {
         return pendent;
+    }
+
+    public Player[] getPlayersArray() {
+        Player[] array = new Player[players.size()];
+        int count = 0;
+        for (Player player : players) {
+            array[count] = player;
+            count++;
+        }
+        return array;
     }
 }
