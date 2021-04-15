@@ -1,6 +1,7 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.Alliance_4;
+import jDogs.player.Piece;
 import jDogs.player.Player;
 import jDogs.serverclient.helpers.Queuejd;
 import java.lang.reflect.Array;
@@ -223,6 +224,8 @@ public class ServerGameCommand {
                     return cardValue == difference;
                 }
             }
+        } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
+            // TODO verify moves intern heaven
         }
         return false;
     }
@@ -270,7 +273,7 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("Invalid card!");
                 return null;
         }
-        return new int[0];//possibleValues;
+        return possibleValues;
     }
 
     /**
@@ -358,11 +361,10 @@ public class ServerGameCommand {
                 && !otherHasMoved)) {
             sendToThisClient.enqueue("You can't switch this pieces!");
         } else {
-            // TODO change position on client and server
             assert ownPlayer != null;
-            ownPlayer.changePositionServer(ownPieceID, otherActualPosition1, otherActualPosition2);
+            simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
             assert otherPlayer != null;
-            otherPlayer.changePositionServer(otherPieceID, ownActualPosition1, ownActualPosition2);
+            simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
         }
     }
 
@@ -372,36 +374,16 @@ public class ServerGameCommand {
     }
 
     /**
-     * Move a piece without changing position of a third piece of eliminating someone
-     * @param pieceAndDestination substring of MOVE command, example: YELO-1 B23
+     * Move a piece without eliminating any
      */
-    private void simpleMove(String pieceAndDestination) {
-        String alliance = pieceAndDestination.substring(0,4);
-        int pieceID = Integer.parseInt(pieceAndDestination.substring(5, 6));
-        String newPosition1 = pieceAndDestination.substring(7, 8);
-        int newPosition2 = Integer.parseInt(pieceAndDestination.substring(8));
-        Alliance_4 alliance4;
-        switch(alliance) {
-            case "YELO":
-                alliance4 = Alliance_4.YELLOW;
-                break;
-            case "REDD":
-                alliance4 = Alliance_4.RED;
-                break;
-            case "BLUE":
-                alliance4 = Alliance_4.BLUE;
-                break;
-            case "GREN":
-                alliance4 = Alliance_4.GREEN;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + alliance);
+    private void simpleMove(Player player, int pieceID, String newPosition1, int newPosition2) {
+        player.changePositionServer(pieceID, newPosition1, newPosition2);
+        Piece piece = player.getPiece(pieceID);
+        if (gameState.isPieceOnTrack(piece)) {
+            // TODO check hasMoved or not, change pos or remove and call updatePiecesOnTrack()
         }
-        for (Player player : gameState.playersState) {
-            if (player.getAlliance() == alliance4) {
-                player.changePositionServer(pieceID, newPosition1, newPosition2);
-            }
-        }
+        // TODO add to piecesOnTrack and update
+        gameState.updatePiecesOnTrack(piece);
     }
 
     /**

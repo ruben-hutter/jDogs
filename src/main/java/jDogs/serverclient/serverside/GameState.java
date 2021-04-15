@@ -38,12 +38,20 @@ public class GameState {
         return piecesOnTrack;
     }
 
+    public boolean isPieceOnTrack(Piece piece) {
+        for (Piece p : piecesOnTrack) {
+            if (p.getPieceAlliance() == piece.getPieceAlliance()
+                    && p.getPieceID() == piece.getPieceID()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Updates ArrayList when a move is done
      */
-    public void updatePiecesOnTrack() {
-        // in sorted order int serverPosition2
-        // TODO to concatenate with changePositionServer() / setPositionServer()
+    public void updatePiecesOnTrack(Piece piece) {
         piecesOnTrack = getSortedPiecesOnTrack();
     }
 

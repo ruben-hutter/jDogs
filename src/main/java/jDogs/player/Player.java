@@ -103,7 +103,7 @@ public class Player {
      * @param pieceID a number between 1-4
      * @return Piece with fitting pieceID
      */
-    private Piece getPiece(int pieceID) {
+    public Piece getPiece(int pieceID) {
         for (Piece piece : pieces) {
             if (piece.getPieceID() == pieceID) {
                 return piece;
