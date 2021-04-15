@@ -15,7 +15,7 @@ public class GameFile {
     private int total;
     private boolean pendent;
     private ArrayList<ServerConnection> scArrayList = new ArrayList<>();
-
+    private MainGame mainGame;
 
 
     public GameFile(String nameId, String host,String total, ServerConnection serverConnection) {
@@ -124,8 +124,13 @@ public class GameFile {
         //Server.getInstance().startGame(new MainGame(this));
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getMessageHandlerServer().setPlaying(true,this);
-            Server.getInstance().startGame(new MainGame(this));
+            mainGame = new MainGame(this);
+            Server.getInstance().startGame(mainGame);
         }
+    }
+
+    public MainGame getMainGame() {
+        return mainGame;
     }
 
     /**

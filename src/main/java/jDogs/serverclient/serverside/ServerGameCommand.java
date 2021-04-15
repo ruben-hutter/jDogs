@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.player.Player;
 import jDogs.serverclient.helpers.Queuejd;
 
 /**
@@ -46,7 +47,6 @@ public class ServerGameCommand {
                 break;
             case "MOVE":
                 // TODO startMove()
-                // Server: give it to GameEngine if move is according to the rules
                 break;
 
             case "CTTP":

@@ -79,8 +79,10 @@ public class ClientMenuCommand {
                 //just compare to existing String/Array and replace if necessary
 
 
-                Platform.runLater(()->
+               Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPlayerinPublic(text.substring(5)));
+
+
 
 
                 System.out.println("LPUB: " + text.substring(5));

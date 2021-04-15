@@ -27,4 +27,13 @@ public class GameState {
         }
         return players;
     }
+
+    public Player getPlayer(String nickname) {
+        for (Player player : playersState) {
+            if (player.getPlayerName().equals(nickname)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

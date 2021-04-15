@@ -41,15 +41,21 @@ public class SendFromServer implements Runnable {
         while (running) {
             if (!sendToThisClient.isEmpty()) {
                 String message = sendToThisClient.dequeue();
-
+                System.out.println("send to this " + message);
                     sendStringToClient(message);
             }
             if (!sendToAll.isEmpty()) {
-                sendStringToAllClients(sendToAll.dequeue());
+                String message = sendToAll.dequeue();
+                System.out.println("send to all " + message);
+
+                sendStringToAllClients(message);
             }
 
             if (!sendToPub.isEmpty()) {
-                sendStringToPublicLobbyGuests(sendToPub.dequeue());
+                String message = sendToPub.dequeue();
+                System.out.println("send to pub " + message);
+
+                sendStringToPublicLobbyGuests(message);
             }
 
             try {

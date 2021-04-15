@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.player.Player;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -178,5 +179,10 @@ public class MainGame {
 
     public GameFile getGameFile() {
         return gameFile;
+    }
+
+    public Player getPlayer(String nickname) {
+        return gameState.getPlayer(nickname);
+
     }
 }
