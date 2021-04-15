@@ -25,7 +25,7 @@ public class Main {
             if (args[0].equals("client")) {
                     mainInstance.parseHostaddressAndPort(args[1]);
 
-                    if (args[2] != null) {
+                    if (args.length == 3 && args[2] != null) {
                         mainInstance.setUsername(args[2]);
                     }
                     GUILauncher.main(args);
