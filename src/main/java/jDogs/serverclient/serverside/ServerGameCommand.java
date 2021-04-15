@@ -48,9 +48,10 @@ public class ServerGameCommand {
                 // TODO startExit();
                 //finish game
                 break;
-            case "MOVE": // MOVE SEVE 2 YELO-1 B23 YELO-2 B50
+            case "MOVE":
                 // if checkCard() == true, continue
-                // checkMove();
+
+                // special cases (move command syntax different from normal)
                 String card = text.substring(5, 9);
                 switch(card) {
                     case "SEVE":
@@ -62,6 +63,7 @@ public class ServerGameCommand {
                         }
                         break;
                     case "JACK":
+                        checkMoveJack(text.substring(5));
                         break;
                     case "JOKE":
                         break;
@@ -122,7 +124,7 @@ public class ServerGameCommand {
         int actualPosition2 = -1;
         boolean hasMoved = false;
         int startingPosition = -1;
-        Alliance_4 alliance4 = null;
+        Alliance_4 alliance4;
         switch(alliance) {
             case "YELO":
                 alliance4 = Alliance_4.YELLOW;
@@ -157,6 +159,7 @@ public class ServerGameCommand {
             return;
         }
 
+        // TODO maybe switch case for next step check (seve, jack, joke, normal)
         // check if there are pieces between actualPosition and newPosition (if on track)
         if (!checkWhichMove()) {
             sendToThisClient.enqueue("You eliminate yourself!");
@@ -167,7 +170,7 @@ public class ServerGameCommand {
     }
 
     /**
-     * Checks if newPosition - actualPosition is ok with played card
+     * Checks if newPosition is ok with played card
      */
     private boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition) {
@@ -194,9 +197,7 @@ public class ServerGameCommand {
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // go heaven
             int difference;
-            if (card.equals("JACK")) {
-                return false;
-            } else if (card.equals("FOUR")) {
+            if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
                     if (cardValue == 4) {
                         difference = startingPosition - actualPosition2;
@@ -230,46 +231,139 @@ public class ServerGameCommand {
         int[] possibleValues;
         switch(card) {
             case "ACE1":
+                possibleValues = new int[]{1};
                 break;
             case "AC11":
+                possibleValues = new int[]{11};
                 break;
             case "TWOO":
+                possibleValues = new int[]{2};
                 break;
             case "THRE":
+                possibleValues = new int[]{3};
                 break;
             case "FOUR":
+                possibleValues = new int[]{4, -4};
                 break;
             case "FIVE":
+                possibleValues = new int[]{5};
                 break;
             case "SIXX":
-                break;
-            case "SEVE":
-                //int piecesToMove = Integer.parseInt(text.substring(10, 11));
-                //int startIndex = 12;
-                //for (int i = 0; i < piecesToMove; i++) {
-                    //simpleMove(text.substring(startIndex, startIndex + 10));
-                    //startIndex += 11;
-                //}
+                possibleValues = new int[]{6};
                 break;
             case "EIGT":
+                possibleValues = new int[]{8};
                 break;
             case "NINE":
+                possibleValues = new int[]{9};
                 break;
             case "TENN":
-                break;
-            case "JACK":
+                possibleValues = new int[]{10};
                 break;
             case "QUEN":
+                possibleValues = new int[]{12};
                 break;
             case "KING":
-                break;
-            case "JOKE":
+                possibleValues = new int[]{13};
                 break;
             default:
                 sendToThisClient.enqueue("Invalid card!");
                 return null;
         }
         return new int[0];//possibleValues;
+    }
+
+    /**
+     * Checks move when card JACK is played
+     * @param twoPieces pieces to switch position
+     */
+    private void checkMoveJack(String twoPieces) { // JACK YELO-1 BLUE-2
+        String ownAlliance = twoPieces.substring(5, 9);
+        int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
+        String ownActualPosition1 = "";
+        int ownActualPosition2 = -1;
+        boolean ownHasMoved = false;
+        int ownStartingPosition = -1;
+        Player ownPlayer = null;
+        Alliance_4 ownAlliance4;
+
+        String otherAlliance = twoPieces.substring(12, 16);
+        int otherPieceID = Integer.parseInt(twoPieces.substring(17));
+        String otherActualPosition1 = "";
+        int otherActualPosition2 = -1;
+        boolean otherHasMoved = false;
+        int otherStartingPosition = -1;
+        Player otherPlayer = null;
+        Alliance_4 otherAlliance4;
+
+        switch(ownAlliance) {
+            case "YELO":
+                ownAlliance4 = Alliance_4.YELLOW;
+                break;
+            case "REDD":
+                ownAlliance4 = Alliance_4.RED;
+                break;
+            case "BLUE":
+                ownAlliance4 = Alliance_4.BLUE;
+                break;
+            case "GREN":
+                ownAlliance4 = Alliance_4.GREEN;
+                break;
+            default:
+                // if command piece not correct, return to client
+                sendToThisClient.enqueue("Piece isn't entered correctly");
+                return;
+        }
+        for (Player player : gameState.playersState) {
+            if (player.getAlliance() == ownAlliance4) {
+                ownPlayer = player;
+                ownActualPosition1 = player.recivePosition1Server(ownPieceID);
+                ownActualPosition2 = player.recivePosition2Server(ownPieceID);
+                ownHasMoved = player.reciveHasMoved(ownPieceID);
+                ownStartingPosition = player.getStartingPosition();
+            }
+        }
+
+        switch(otherAlliance) {
+            case "YELO":
+                otherAlliance4 = Alliance_4.YELLOW;
+                break;
+            case "REDD":
+                otherAlliance4 = Alliance_4.RED;
+                break;
+            case "BLUE":
+                otherAlliance4 = Alliance_4.BLUE;
+                break;
+            case "GREN":
+                otherAlliance4 = Alliance_4.GREEN;
+                break;
+            default:
+                // if command piece not correct, return to client
+                sendToThisClient.enqueue("Piece isn't entered correctly");
+                return;
+        }
+        for (Player player : gameState.playersState) {
+            if (player.getAlliance() == otherAlliance4) {
+                otherPlayer = player;
+                otherActualPosition1 = player.recivePosition1Server(otherPieceID);
+                otherActualPosition2 = player.recivePosition2Server(otherPieceID);
+                otherHasMoved = player.reciveHasMoved(otherPieceID);
+                otherStartingPosition = player.getStartingPosition();
+            }
+        }
+
+        if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
+                || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
+                || (otherActualPosition1.equals("B") && otherActualPosition2 == otherStartingPosition
+                && !otherHasMoved)) {
+            sendToThisClient.enqueue("You can't switch this pieces!");
+        } else {
+            // TODO change position on client and server
+            assert ownPlayer != null;
+            ownPlayer.changePositionServer(ownPieceID, otherActualPosition1, otherActualPosition2);
+            assert otherPlayer != null;
+            otherPlayer.changePositionServer(otherPieceID, ownActualPosition1, ownActualPosition2);
+        }
     }
 
     private boolean checkWhichMove() {
@@ -284,7 +378,8 @@ public class ServerGameCommand {
     private void simpleMove(String pieceAndDestination) {
         String alliance = pieceAndDestination.substring(0,4);
         int pieceID = Integer.parseInt(pieceAndDestination.substring(5, 6));
-        String newPosition = pieceAndDestination.substring(7);
+        String newPosition1 = pieceAndDestination.substring(7, 8);
+        int newPosition2 = Integer.parseInt(pieceAndDestination.substring(8));
         Alliance_4 alliance4;
         switch(alliance) {
             case "YELO":
@@ -304,7 +399,7 @@ public class ServerGameCommand {
         }
         for (Player player : gameState.playersState) {
             if (player.getAlliance() == alliance4) {
-                player.changePositionServer(pieceID, newPosition);
+                player.changePositionServer(pieceID, newPosition1, newPosition2);
             }
         }
     }

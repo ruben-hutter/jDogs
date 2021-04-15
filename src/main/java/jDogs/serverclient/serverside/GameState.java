@@ -51,9 +51,9 @@ public class GameState {
         Piece piece1 = new Piece(Alliance_4.BLUE, 1 , 1);
         Piece piece2 = new Piece(Alliance_4.YELLOW, 1 , 1);
         Piece piece3 = new Piece(Alliance_4.GREEN, 1 , 1);
-        piece1.setPositionServer("B00");
-        piece2.setPositionServer("B10");
-        piece3.setPositionServer("B63");
+        piece1.setPositionServer("B", 0);
+        piece2.setPositionServer("B", 10);
+        piece3.setPositionServer("B", 63);
         ArrayList<Piece> test = new ArrayList<>();
         test.add(piece1);
         test.add(piece2);

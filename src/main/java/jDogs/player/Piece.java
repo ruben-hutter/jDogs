@@ -39,10 +39,9 @@ public class Piece implements Comparable<Piece> {
         return pieceID;
     }
 
-    public void setPositionServer(String position) {
-        positionServer1 = position.substring(0, 1);
-        // TODO with number of track tiles instead of 64
-        positionServer2 = Integer.parseInt(position.substring(1)) % 64;
+    public void setPositionServer(String position1, int position2) {
+        positionServer1 = position1;
+        positionServer2 = position2;
         // TODO hasMoved
     }
 

@@ -32,7 +32,7 @@ public class Player {
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
         for (Piece piece : pieces) {
-            piece.setPositionServer("A" + (piece.getPieceID() - 1));
+            piece.setPositionServer("A", piece.getPieceID() - 1);
         }
         this.serverConnection = serverConnection;
     }
@@ -129,12 +129,11 @@ public class Player {
     /**
      * Change the actual position of a piece on server side
      * @param pieceID which of the 4 pieces
-     * @param newPosition the new position
      */
-    public void changePositionServer(int pieceID, String newPosition) {
+    public void changePositionServer(int pieceID, String newPosition1, int newPosition2) {
         Piece pieceToMove = getPiece(pieceID);
         assert pieceToMove != null;
-        pieceToMove.setPositionServer(newPosition);
+        pieceToMove.setPositionServer(newPosition1, newPosition2);
     }
 
     public String recivePosition1Server(int pieceID) {
