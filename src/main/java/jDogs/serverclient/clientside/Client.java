@@ -58,12 +58,14 @@ public class Client {
      * 5 threads to handle connection are started
      */
     public void setUp() {
-        this.serveraddress = Main.getInstance().getHostAddress();
-        this.portnumber = Main.getInstance().getPort();
+        //this.serveraddress = Main.getInstance().getHostAddress();
+        //this.portnumber = Main.getInstance().getPort();
+        this.serveraddress = "localhost";
+        this.portnumber = 8090;
         this.receiveQueue = new Queuejd();
         this.sendQueue = new Queuejd();
         this.keyBoardInQueue = new Queuejd();
-        this.username = Main.getInstance().getUsername();
+        //this.username = Main.getInstance().getUsername();
         Socket socket = null;
 
         //String serveraddress = "localhost";

@@ -66,8 +66,8 @@ public class LobbyController implements Initializable {
         TableColumn responsible = new TableColumn("responsible");
         TableColumn enlist = new TableColumn("enlist");
         TableColumn total = new TableColumn("total");
-        TableColumn signIn = new TableColumn("signIn");
-        tableViewActiveGames.getColumns().addAll(name,responsible,enlist,total,signIn);
+        TableColumn TeamMode = new TableColumn("Team");
+        tableViewActiveGames.getColumns().addAll(name,responsible,enlist,total,TeamMode);
 
         openGames = FXCollections.observableArrayList();
 
@@ -79,8 +79,8 @@ public class LobbyController implements Initializable {
                 new PropertyValueFactory<OpenGame, String>("enlist"));
         total.setCellValueFactory(
                 new PropertyValueFactory<OpenGame, String>("total"));
-        signIn.setCellValueFactory(
-                new PropertyValueFactory<OpenGame, String>("button")
+        TeamMode.setCellValueFactory(
+                new PropertyValueFactory<OpenGame, String>("TeamMode")
         );
 
 

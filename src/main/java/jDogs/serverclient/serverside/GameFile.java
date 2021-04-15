@@ -17,10 +17,10 @@ public class GameFile {
     private int total;
     private boolean pendent;
     private MainGame mainGame;
-    private boolean teamMode;
+    private int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
 
-    public GameFile(String nameId, String host,String total, boolean teamMode, ServerConnection serverConnection) {
+    public GameFile(String nameId, String host,String total, int teamMode, ServerConnection serverConnection) {
         this.IDCounter = 0;
         this.nameId = nameId;
         this.host = host;
@@ -212,6 +212,14 @@ public class GameFile {
         for (ServerConnection serverConnection1 : Server.getInstance().serverConnections) {
             serverConnection1.getSender().sendStringToAllClients(message);
         }
+    }
+
+    /**
+     *
+     * @return true if int teamMode is 1
+     */
+    public boolean isTeamMode() {
+        return teamMode == 1;
     }
 
     public boolean isPendent() {

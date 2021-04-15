@@ -10,14 +10,14 @@ public class OpenGame {
     private final SimpleStringProperty responsible;
     private SimpleStringProperty enlist;
     private final SimpleStringProperty total;
-    private Button button;
+    private SimpleStringProperty teamMode;
 
-    OpenGame(String name, String responsible, String enlist, String total) {
+    OpenGame(String name, String responsible, String enlist, String total, String teamMode) {
         this.name = new SimpleStringProperty(name);
         this.responsible = new SimpleStringProperty(responsible);
         this.enlist = new SimpleStringProperty(enlist);
         this.total = new SimpleStringProperty(total);
-        this.button = new Button("signIn");
+        this.teamMode = new SimpleStringProperty(teamMode);
     }
 
     public String getName() {
@@ -52,11 +52,11 @@ public class OpenGame {
         return total.get();
     }
 
-    public void setButton(Button button) {
-        this.button = button;
+    public void setTeamMode(String teamMode) {
+        this.teamMode.set(teamMode);
     }
 
-    public Button getButton() {
-        return button;
+    public String getTeamMode() {
+        return teamMode.get();
     }
 }
