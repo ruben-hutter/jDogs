@@ -44,4 +44,41 @@ public class ClientGame {
         }
         System.out.println(board);
     }
+
+    /**
+     * Gives the player for a given alliance
+     * @param alliance4 players alliance
+     * @return a player
+     */
+    public Player getPlayer(Alliance_4 alliance4) {
+        for (Player player : players) {
+            if (player.getAlliance() == alliance4) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Changes the position of a piece on client side
+     * @param player the player that changes a piece position
+     * @param pieceID witch of the 4 pieces
+     * @param newPosition where to put the piece
+     */
+    public void changePiecePosition(Player player, int pieceID, String newPosition) {
+        switch(newPosition.charAt(0)) {
+            case 'A':
+                player.changePositionClient(pieceID, board.allHomeTiles.
+                        get(player.getAlliance())[pieceID - 1]);
+                break;
+            case 'B':
+                player.changePositionClient(pieceID, board.allTrackTiles[Integer
+                        .parseInt(newPosition.substring(1)) % board.allTrackTiles.length]);
+                break;
+            case 'C':
+                player.changePositionClient(pieceID, board.allHeavenTiles.
+                        get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
+                break;
+        }
+    }
 }

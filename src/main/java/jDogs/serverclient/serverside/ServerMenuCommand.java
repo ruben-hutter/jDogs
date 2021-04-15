@@ -85,8 +85,10 @@ public class ServerMenuCommand {
 
                         System.out.println("login worked " + "USER " + nickName);
 
+                        // if you are not logged in you are not added to the serverConnections lists
                         if (!loggedIn) {
-                            server.addSender(serverConnection.getSender());
+                            server.addToLobby(serverConnection);
+                            server.serverConnections.add(serverConnection);
                         }
                         server.addNickname(nickName, serverConnection);
                         serverConnection.updateNickname(nickName);
@@ -96,7 +98,7 @@ public class ServerMenuCommand {
                     break;
 
                 case "ACTI":
-                    String list = "";
+                    String list = "INFO all active Players ";
                     for (int i = 0; i < server.allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
                         list += server.allNickNames.get(i) + " ";
@@ -106,7 +108,6 @@ public class ServerMenuCommand {
                     break;
 
                 case "QUIT":
-
                     sendToThisClient.enqueue("INFO logout now");
                     serverConnection.kill();
                     break;
@@ -180,7 +181,6 @@ public class ServerMenuCommand {
                     try {
                         GameFile game = getGame(text.substring(5));
                         if (game == null) {
-                            System.out.println(-1);
                             sendToThisClient
                                     .enqueue("INFO join not possible,game name does not exist");
                         } else {
@@ -189,7 +189,6 @@ public class ServerMenuCommand {
                             sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
-                            System.out.println(1);
 
                             // all required players are set, then send start request to client
                             if (game.readyToStart()) {
@@ -200,7 +199,6 @@ public class ServerMenuCommand {
                         e.printStackTrace();
                         sendToThisClient.enqueue("INFO wrong format,you cannot join");
                     }
-                    System.out.println(3);
                     break;
             }
         }

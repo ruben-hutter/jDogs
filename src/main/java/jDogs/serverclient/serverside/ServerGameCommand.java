@@ -1,26 +1,30 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.Main;
+import jDogs.Alliance_4;
+import jDogs.player.Player;
 import jDogs.serverclient.helpers.Queuejd;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * ServerGameCommand contains the game
  * commands which are sent from the
  * clients to communicate with the
  * server.
- *
  */
-
 public class ServerGameCommand {
+
     private final Server server;
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
     private final Queuejd sendToThisClient;
     private final Queuejd sendToAll;
     private boolean loggedIn;
-    private String nickName;
+    private String nickname;
     private final ServerParser serverParser;
     private String actualGame;
+    private GameFile gameFile;
+    private GameState gameState;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -30,7 +34,7 @@ public class ServerGameCommand {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.loggedIn = false;
-        this.nickName = null;
+        this.nickname = null;
         this.serverParser = new ServerParser(server,serverConnection);
     }
 
@@ -44,8 +48,26 @@ public class ServerGameCommand {
                 // TODO startExit();
                 //finish game
                 break;
-            case "MOVE":
-                // TODO startMove()
+            case "MOVE": // MOVE SEVE 2 YELO-1 B23 YELO-2 B50
+                // if checkCard() == true, continue
+                // checkMove()
+                String card = text.substring(5, 9);
+                switch(card) {
+                    case "SEVE":
+                        int piecesToMove = Integer.parseInt(text.substring(10, 11));
+                        int startIndex = 12;
+                        for (int i = 0; i < piecesToMove; i++) {
+                            //simpleMove(text.substring(startIndex, startIndex + 10));
+                            //startIndex += 11;
+                        }
+                        break;
+                    case "JACK":
+                        break;
+                    case "JOKE":
+                        break;
+                    default:
+                        checkMove(text.substring(5));
+                }
                 // Server: give it to GameEngine if move is according to the rules
                 break;
 
@@ -53,24 +75,180 @@ public class ServerGameCommand {
                 // TODO start CTTP
                 //change cards
                 break;
+
+            case "LCHT":
+                //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
+                System.out.println("LCHT: " + text.substring(5));
+                for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
+                    gameFile.getscArrayList().get(i).getSender()
+                            .sendStringToClient("LCHT " + "<" + nickname + "> " + text.substring(5));
+                }
+                break;
+
+            case "PCHT":
+                //send message to everyone logged in, in lobby, separated or playing
+                sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                break;
         }
+    }
+
+    /**
+     * Checks if the given card is in the players hand
+     * @param player
+     * @param card
+     * @return
+     */
+    private boolean checkCard(Player player, String card){
+        //TODO: Get playerfrom serverconnection?
+        ArrayList<String> deck = player.getDeck();
+        return deck.contains(card);
 
     }
 
+
+    /**
+     * Checks:
+     * <li>if for the given card you can go to the desired position</li>
+     * <li>if somebody is eliminated by the action</li>
+     * @param completeMove card piece destination
+     */
+    private void checkMove(String completeMove) { // TWOO YELO-1 B04
+        String card = completeMove.substring(0, 4);
+        String alliance = completeMove.substring(5, 9);
+        int pieceID = Integer.parseInt(completeMove.substring(10, 11));
+        String newPosition1 = completeMove.substring(12);
+        int newPosition2 = Integer.parseInt(completeMove.substring(13).
+                replaceFirst("^0+(?!$)", ""));
+        String actualPosition1 = "";
+        int actualPosition2 = -1;
+        boolean hasMoved;
+        Alliance_4 alliance4 = null;
+        switch(alliance) {
+            case "YELO":
+                alliance4 = Alliance_4.YELLOW;
+                break;
+            case "REDD":
+                alliance4 = Alliance_4.RED;
+                break;
+            case "BLUE":
+                alliance4 = Alliance_4.BLUE;
+                break;
+            case "GREN":
+                alliance4 = Alliance_4.GREEN;
+                break;
+            default:
+                sendToThisClient.enqueue("Piece isn't entered correctly");
+                return;
+        }
+        for (Player player : gameState.playersState) {
+            if (player.getAlliance() == alliance4) {
+                actualPosition1 = player.recivePosition1Server(pieceID);
+                actualPosition2 = player.recivePosition2Server(pieceID);
+                hasMoved = player.reciveHasMoved(pieceID);
+            }
+        }
+
+        // if command piece not correct, return to client
+        if (actualPosition1.equals("")) {
+            sendToThisClient.enqueue("Piece isn't entered correctly");
+        }
+
+        // if card not ok with destination, return to client
+        if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
+                newPosition2)) {
+            sendToThisClient.enqueue("Check the card value with your desired destination");
+        }
+
+        // check if there are pieces between actualPosition and newPosition (if on track)
+
+
+        switch(card) {
+            case "ACE1":
+                break;
+            case "AC11":
+                break;
+            case "TWOO":
+                break;
+            case "THRE":
+                break;
+            case "FOUR":
+                break;
+            case "FIVE":
+                break;
+            case "SIXX":
+                break;
+            case "EIGT":
+                break;
+            case "NINE":
+                break;
+            case "TENN":
+                break;
+            case "QUEN":
+                break;
+            case "KING":
+                break;
+        }
+    }
+
+    /**
+     * Checks if newPosition - actualPosition is ok with played card
+     */
+    private boolean checkCardWithNewPosition(String card, String actualPosition1,
+            int actualPosition2, String newPosition1, int newPosition2) {
+        int cardValue;
+        if (actualPosition1.equals("A") && newPosition1.equals("B")) {
+            // exit home case
+        } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
+            // continue on track
+        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+            // go heaven
+        }
+        return false;
+    }
+
+    /**
+     * Move a piece without changing position of a third piece of eliminating someone
+     * @param pieceAndDestination substring of MOVE command, example: YELO-1 B23
+     */
+    private void simpleMove(String pieceAndDestination) {
+        String alliance = pieceAndDestination.substring(0,4);
+        int pieceID = Integer.parseInt(pieceAndDestination.substring(5, 6));
+        String newPosition = pieceAndDestination.substring(7);
+        Alliance_4 alliance4;
+        switch(alliance) {
+            case "YELO":
+                alliance4 = Alliance_4.YELLOW;
+                break;
+            case "REDD":
+                alliance4 = Alliance_4.RED;
+                break;
+            case "BLUE":
+                alliance4 = Alliance_4.BLUE;
+                break;
+            case "GREN":
+                alliance4 = Alliance_4.GREEN;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + alliance);
+        }
+        for (Player player : gameState.playersState) {
+            if (player.getAlliance() == alliance4) {
+                player.changePositionServer(pieceID, newPosition);
+            }
+        }
+    }
 
     /**
      *
      * @param actualGame is the ongoing game which should be found
      * @return the game or null
      */
-
     private MainGame getRunningGame(String actualGame) {
         for (int i = 0; i < Server.getInstance().runningGames.size(); i++) {
-            if (Server.getInstance().runningGames.get(i).getGameId() == actualGame) {
+            if (Server.getInstance().runningGames.get(i).getGameId().equals(actualGame)) {
                 return Server.getInstance().runningGames.get(i);
             }
         }
         return null;
     }
-
 }
