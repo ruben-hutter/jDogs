@@ -86,12 +86,15 @@ public class ServerMenuCommand {
                         System.out.println("login worked " + "USER " + nickName);
 
                         if (!loggedIn) {
+                            logger.debug("Not logged in.");
                             server.addSender(serverConnection.getSender());
                         }
                         server.addNickname(nickName, serverConnection);
                         serverConnection.updateNickname(nickName);
+                        logger.debug("Added nickname.");
 
                         loggedIn = true;
+                        logger.debug("Logged in now.");
                     }
                     break;
 
@@ -99,7 +102,9 @@ public class ServerMenuCommand {
                     String list = "";
                     for (int i = 0; i < server.allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
+                        logger.debug("player # " + i );
                         list += server.allNickNames.get(i) + " ";
+                        logger.debug("nickname of player # " + i );
                         list += "\n";
                     }
                     sendToThisClient.enqueue(list);
@@ -108,11 +113,14 @@ public class ServerMenuCommand {
                 case "QUIT":
 
                     sendToThisClient.enqueue("INFO logout now");
+                    logger.debug("logged out");
                     serverConnection.kill();
                     break;
 
                 case "STAT":
                     sendToThisClient.enqueue("STAT " + "runningGames " + server.runningGames.size()
+                            + " finishedGames " + server.finishedGames.size());
+                    logger.debug("runningGames " + server.runningGames.size()
                             + " finishedGames " + server.finishedGames.size());
                     break;
 
@@ -156,6 +164,7 @@ public class ServerMenuCommand {
                     try {
                         setUpGame(text.substring(5));
                     } catch (Exception e) {
+                        logger.error("Error while building up new game file.");
                         e.printStackTrace();
                         sendToThisClient.enqueue("INFO error while building up new game file");
 
@@ -166,6 +175,7 @@ public class ServerMenuCommand {
                     for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
                         if (server.allGamesNotFinished.get(i).isPendent()) {
                             sendToThisClient.enqueue("OGAM " + server.allGamesNotFinished.get(i).getSendReady());
+                            logger.debug("not finished games: " + server.allGamesNotFinished.get(i).getSendReady());
                         }
                     }
                     break;
@@ -180,6 +190,7 @@ public class ServerMenuCommand {
                     try {
                         GameFile game = getGame(text.substring(5));
                         if (game == null) {
+                            logger.debug("Game " + text.substring(5) + " doesn't exist");
                             System.out.println(-1);
                             sendToThisClient
                                     .enqueue("INFO join not possible,game name does not exist");
@@ -189,6 +200,7 @@ public class ServerMenuCommand {
                             sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
+                            logger.debug("User " + nickName + " has joined game " + actualGame);
                             System.out.println(1);
 
                             // all required players are set, then send start request to client
