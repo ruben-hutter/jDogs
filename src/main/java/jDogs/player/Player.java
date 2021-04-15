@@ -94,6 +94,10 @@ public class Player {
         return getPiece(pieceID).getHasMoved();
     }
 
+    public int getStartingPosition() {
+        return startingPosition;
+    }
+
     /**
      * Get the piece you want, giving the id.
      * @param pieceID a number between 1-4

@@ -65,6 +65,7 @@ public class ClientGame {
      * @param pieceID witch of the 4 pieces
      * @param newPosition where to put the piece
      */
+    // TODO hasMoved
     public void changePiecePosition(Player player, int pieceID, String newPosition) {
         switch(newPosition.charAt(0)) {
             case 'A':

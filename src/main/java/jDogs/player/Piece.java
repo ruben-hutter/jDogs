@@ -1,6 +1,8 @@
 package jDogs.player;
 
 import jDogs.Alliance_4;
+import jDogs.ClientGame;
+import jDogs.board.Board;
 import jDogs.board.Tile;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,10 +41,9 @@ public class Piece implements Comparable<Piece> {
 
     public void setPositionServer(String position) {
         positionServer1 = position.substring(0, 1);
-        positionServer2 = Integer.parseInt(position.substring(1));
-        if (positionServer1.equals("B")) {
-            // TODO
-        }
+        // TODO with number of track tiles instead of 64
+        positionServer2 = Integer.parseInt(position.substring(1)) % 64;
+        // TODO hasMoved
     }
 
     public void setPositionClient(Tile position) {

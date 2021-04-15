@@ -42,28 +42,24 @@ public class Client {
         return instance;
     }
 
- //maintenance only
-  /*  public static void main(String[] args) {
+    //maintenance only
+    public static void main(String[] args) {
         Client c = new Client();
         c.setNickname("maintenance");
     }
 
-   */
-
-
-
-    /**
+      /**
      * Sets up connection to Server
      * Messages are saved in specific queues
      * 5 threads to handle connection are started
      */
     public void setUp() {
-        this.serveraddress = Main.getInstance().getHostAddress();
-        this.portnumber = Main.getInstance().getPort();
+        this.serveraddress = "localhost"; //Main.getInstance().getHostAddress();
+        this.portnumber = 8090; //Main.getInstance().getPort();
         this.receiveQueue = new Queuejd();
         this.sendQueue = new Queuejd();
         this.keyBoardInQueue = new Queuejd();
-        this.username = Main.getInstance().getUsername();
+        this.username = "test"; //Main.getInstance().getUsername();
         Socket socket = null;
 
         //String serveraddress = "localhost";

@@ -126,7 +126,8 @@ public class GameFile {
         for (int i = 0; i < scArrayList.size(); i++) {
             scArrayList.get(i).getMessageHandlerServer().setPlaying(true);
             Server.getInstance().startGame(new MainGame(this));
-            scArrayList.get(i).getSender().sendStringToClient("GAME " + " here will be displayed all the details necessary for the clients");
+            scArrayList.get(i).getSender().sendStringToClient("GAME "
+                    + " here will be displayed all the details necessary for the clients");
         }
     }
 

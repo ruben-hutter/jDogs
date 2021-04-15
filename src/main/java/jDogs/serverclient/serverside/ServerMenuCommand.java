@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
  * communicate with the server.
  *
  */
-
 public class ServerMenuCommand {
     private final Server server;
     private final ServerConnection serverConnection;
@@ -85,10 +84,8 @@ public class ServerMenuCommand {
 
                         System.out.println("login worked " + "USER " + nickName);
 
-                        // if you are not logged in you are not added to the serverConnections lists
                         if (!loggedIn) {
-                            server.addToLobby(serverConnection);
-                            server.serverConnections.add(serverConnection);
+                            server.addSender(serverConnection.getSender());
                         }
                         server.addNickname(nickName, serverConnection);
                         serverConnection.updateNickname(nickName);
@@ -98,7 +95,7 @@ public class ServerMenuCommand {
                     break;
 
                 case "ACTI":
-                    String list = "INFO all active Players ";
+                    String list = "";
                     for (int i = 0; i < server.allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
                         list += server.allNickNames.get(i) + " ";
@@ -108,6 +105,7 @@ public class ServerMenuCommand {
                     break;
 
                 case "QUIT":
+
                     sendToThisClient.enqueue("INFO logout now");
                     serverConnection.kill();
                     break;
@@ -181,6 +179,7 @@ public class ServerMenuCommand {
                     try {
                         GameFile game = getGame(text.substring(5));
                         if (game == null) {
+                            System.out.println(-1);
                             sendToThisClient
                                     .enqueue("INFO join not possible,game name does not exist");
                         } else {
@@ -189,6 +188,7 @@ public class ServerMenuCommand {
                             sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
+                            System.out.println(1);
 
                             // all required players are set, then send start request to client
                             if (game.readyToStart()) {
@@ -199,6 +199,7 @@ public class ServerMenuCommand {
                         e.printStackTrace();
                         sendToThisClient.enqueue("INFO wrong format,you cannot join");
                     }
+                    System.out.println(3);
                     break;
             }
         }
@@ -223,16 +224,16 @@ public class ServerMenuCommand {
      */
 
     private void setUpGame(String game) {
-       GameFile gameFile = serverParser.setUpGame(game);
-       if (gameFile == null) {
-           System.err.println("ERROR setUpGame");
-           sendToThisClient.enqueue("INFO wrong game file format");
-       } else {
-           System.out.println("set up game <" + gameFile.getNameId() + "> worked");
-           server.allGamesNotFinished.add(gameFile);
-           messageHandlerServer.setJoinedOpenGame(gameFile, nickName);
-           sendToAll.enqueue("OGAM " + gameFile.getSendReady());
-       }
+        GameFile gameFile = serverParser.setUpGame(game);
+        if (gameFile == null) {
+            System.err.println("ERROR setUpGame");
+            sendToThisClient.enqueue("INFO wrong game file format");
+        } else {
+            System.out.println("set up game <" + gameFile.getNameId() + "> worked");
+            server.allGamesNotFinished.add(gameFile);
+            messageHandlerServer.setJoinedOpenGame(gameFile, nickName);
+            sendToAll.enqueue("OGAM " + gameFile.getSendReady());
+        }
     }
 
     /**

@@ -51,18 +51,16 @@ public class GameState {
         Piece piece1 = new Piece(Alliance_4.BLUE, 1 , 1);
         Piece piece2 = new Piece(Alliance_4.YELLOW, 1 , 1);
         Piece piece3 = new Piece(Alliance_4.GREEN, 1 , 1);
-        piece1.setPositionServer("B20");
+        piece1.setPositionServer("B00");
         piece2.setPositionServer("B10");
-        piece3.setPositionServer("B70");
+        piece3.setPositionServer("B63");
         ArrayList<Piece> test = new ArrayList<>();
         test.add(piece1);
         test.add(piece2);
-
         test.add(piece3);
 
         System.out.println(test);
         Collections.sort(test);
         System.out.println(test);
-
     }
 }
