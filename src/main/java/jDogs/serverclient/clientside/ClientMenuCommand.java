@@ -87,6 +87,10 @@ public class ClientMenuCommand {
                 System.out.println("LPUB: " + text.substring(5));
                 break;
 
+            case "LCHT":
+                Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayLCHTmsg(text.substring(5)));
+
             case "DPER":
 
                 Platform.runLater(()->

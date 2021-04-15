@@ -374,9 +374,9 @@ public class LobbyController implements Initializable {
      * @param total the total number of participants till starting the game
      *
      */
-    public void sendNewGame(String gameId, String total) {
+    public void sendNewGame(String gameId, String total, String teamMode) {
         System.out.println("Send new game");
-        Client.getInstance().sendMessageToServer("OGAM " + gameId + " " + total);
+        Client.getInstance().sendMessageToServer("OGAM " + gameId + " " + total + " " + teamMode);
         gameDialog.close();
     }
 
