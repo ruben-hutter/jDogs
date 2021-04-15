@@ -33,7 +33,7 @@ public class Main {
             }
 
             if (args[0].equals("server")) {
-                mainInstance.parseServerPort(args[1]);
+                //mainInstance.parseServerPort(args[1]);
                 Server.main(args);
 
             } else {
@@ -81,5 +81,10 @@ public class Main {
 
     public static Main getInstance() {
         return instance;
+    }
+
+
+    public String getUsername() {
+        return username;
     }
 }

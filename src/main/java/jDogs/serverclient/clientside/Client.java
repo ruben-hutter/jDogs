@@ -29,6 +29,7 @@ public class Client {
     private Queuejd keyBoardInQueue;
     private static Client instance;
     private String serveraddress;
+    private String username;
     private int portnumber;
 
     public Client() {
@@ -62,7 +63,7 @@ public class Client {
         this.receiveQueue = new Queuejd();
         this.sendQueue = new Queuejd();
         this.keyBoardInQueue = new Queuejd();
-
+        this.username = Main.getInstance().getUsername();
         Socket socket = null;
 
         //String serveraddress = "localhost";

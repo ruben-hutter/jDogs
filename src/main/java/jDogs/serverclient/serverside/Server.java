@@ -48,7 +48,7 @@ public class Server {
         try {
 
             instance = this;
-            serverSocket = new ServerSocket(Main.getInstance().getPort());
+            serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             System.out.println("server started...");
             // runs as long as the server is activated
             while(running) {

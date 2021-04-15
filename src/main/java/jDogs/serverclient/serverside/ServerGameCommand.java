@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.Main;
 import jDogs.serverclient.helpers.Queuejd;
 
 /**
