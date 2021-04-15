@@ -55,9 +55,9 @@ public class GameFile {
 
     }
 
-    private Player getPlayer(String applicant) {
+    public Player getPlayer(String name) {
         for (Player player : players) {
-            if (player.getPlayerName().equals(applicant)) {
+            if (player.getPlayerName().equals(name)) {
                 return player;
             }
         }

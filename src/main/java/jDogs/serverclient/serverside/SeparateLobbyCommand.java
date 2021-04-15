@@ -74,6 +74,14 @@ public class SeparateLobbyCommand {
                     sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                     break;
 
+                case "TEAM":
+                    if (gameFile.getPlayer(text.substring(5)) != null) {
+                        gameFile.changeTeam(nickname, text.substring(5));
+                    } else {
+                        sendToThisClient.enqueue("INFO error client doesn`t exist");
+                    }
+                    break;
+
                 case "STAR":
 
                     // client confirms to start the game
