@@ -3,6 +3,9 @@ package jDogs.serverclient.serverside;
 
 import jDogs.serverclient.helpers.Queuejd;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 
 /**
  * ServerMenuCommand contains the menu/lobby
@@ -21,6 +24,7 @@ public class ServerMenuCommand {
     private String nickName;
     private final ServerParser serverParser;
     private String actualGame;
+    private static final Logger logger = LogManager.getLogger(ServerMenuCommand.class);
 
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -50,16 +54,19 @@ public class ServerMenuCommand {
                     } else {
                         String oldNick = nickName;
                         nickName = text.substring(5);
+                        logger.debug("Nickname is: " + nickName);
 
                         if (!validCharacters(nickName)) {
                             serverConnection.getDefaultName();
                         }
 
                         if (!server.isValidNickName(nickName)) {
+                            logger.debug("Nickname " + nickName + " is already used.");
                             int number = 2;
                             while (true) {
                                 if (server.isValidNickName(nickName + number)) {
                                     nickName = nickName + number;
+                                    logger.debug("New nickname is " + nickName);
                                     break;
                                 } else {
                                     number++;
@@ -125,8 +132,10 @@ public class ServerMenuCommand {
                         sendToThisClient.enqueue("INFO " + "wrong WCHT format");
                     } else {
                         String adressor = text.substring(5, 5 + separator);
+                        logger.debug("adressor: " + adressor);
                         System.out.println("adressor " + adressor);
                         String message = text.substring(5 + separator);
+                        logger.debug("message: " + message);
                         System.out.println("mess " + message);
                         try {
                             server.getSender(adressor)

@@ -235,7 +235,7 @@ Bis dahin kümmert sich Gregor weiter um GUI, GameRules und Logger, Ruben um das
 
 Bei der heutigen Sitzung wurden u.a. die Themen Spielbrett, Spielorganisation und Karten besprochen.
 - Spielbrett und -figuren (Pieces): Es kam die Frage auf, ob die HomeTiles überhaupt als Tiles dargestellt werden sollen, da es für die Figure zu Hause keine Rolle spielt, auf welcher Position im Haus sie stehen. Weiterhin ist es wichtig, zu speichern, ob eine Figur das erste Feld nach dem Start blockiert oder nicht (hasMoved).
-- Spielorganisation: Gregor kreierte ein Objekt GameFile, welches die Informationen enthält, die nötig sind, um ein Spiel zu beginnen (GameID, Host, Nicknames der Spieler). Mit dem neu eingeführten Befehl OGAM (Open Game) kann ein Spiel eröffnet werden, wenn die Bedingungen erfüllt sind (z.B. korrekte Spieleranzahl). Wir diskutierten, wie festgestellt werden kann, wann neue Karten verteilt werden sollten. Es reicht nicht aus, nur zu kontrollieren, ob alle Spieler keine Karten mehr haben, denn es könnte sein, dass ein Spieler noch Karten hat, diese aber nicht spielen kann/will. Gregor schlug vor, eine zufällige Karte von der Spielerhand abzuziehen, wenn ein Spieler keine Karte legen kann/will. 
+- Spielorganisation: Gregor kreierte ein Objekt GameFile, welches die Informationen enthält, die nötig sind, um ein Spiel zu beginnen (GameID, Host, Nicknames der Spieler). Mit dem neu eingeführten Befehl OGAM (Open Game) kann ein Spiel eröffnet werden, wenn die Bedingungen erfüllt sind (z.B. korrekte Spieleranzahl). Wir diskutierten, wie festgestellt werden kann, wann neue Karten verteilt werden sollten. Es reicht nicht aus, nur zu kontrollieren, ob alle Spieler keine Karten mehr haben, denn es könnte sein, dass ein Spieler noch Karten hat, diese aber nicht spielen kann. Gregor schlug vor, eine zufällige Karte von der Spielerhand abzuziehen, wenn ein Spieler keine Karte legen kann. 
 - Karten: Wenn eine Karte gespielt wird, sollen neben dem Befehl, dass eine Karte gespielt wird, folgende Infos übermittelt werden: Name der Karte; Spielfigur, auf die die Karte angewendet werden soll; Anzahl Schritte, die die Spielfigur laufen respektive die Aktion, die durchgeführt werden soll. Bsp: PCAR KING max-1 13. 
 - Protokoll: Wir legten als Seperator den Leerschlag fest. 
 - Libraries: Wir denken, Log4j wäre sicherlich äusserst hilfreich, aber wir wissen noch nicht genau, wie wir diesen Logger in unserem Projekt konkret einsetzen können. 
@@ -243,3 +243,17 @@ Bei der heutigen Sitzung wurden u.a. die Themen Spielbrett, Spielorganisation un
 **Nächstes Treffen:** Dienstag, 13.04.21, 15:30 Uhr. 
 
 ---
+
+*13.04.2021 15:30, Johanna*
+
+### Protokoll#12 - Protokoll
+
+Gregor und Ruben berichteten von ihrem PairProgramming vom Vormittag. Sie haben damit begonnen, den in den letzten Tagen erstellten Code zusammenzufügen, um den Spielbrettteil und die Karten einzubinden und alles zwischen dem Server und den Clients in Verbindung zu bringen. Auf diese Weise kann das Spiel, das bisher nur lokal zu sehen war, nun mit einem Befehl über die Konsole gestartet werden. Auf diese Weise startet das Spiel auf dem Server, der eine Nachricht an die beteiligten Clients (die sich in der für dieses Spiel eingerichteten Lobby befanden) sendet, so dass die verschiedenen Clients das Spiel ebenfalls sehen und mit dem Spielen beginnen können.
+Wir haben dann eine Frist am Freitag um 10:00 Uhr gesetzt, um zu überprüfen, ob das Spiel richtig funktioniert, und um mögliche Fehler zu beheben. Die verbleibenden Tage bis zur Auslieferung sind für die Fertigstellung von Tests, Dokumentation und Kommentaren im Code sowie für die Vorbereitung der Präsentation vorgesehen.
+Ein Thema war auch die ungleichmässige Arbeitsverteilung bei Milestone 3. Für die Zukunft möchten wir noch ein zusätzliches Meeting pro Woche festlegen.
+
+**Nächstes Treffen:** Mittwoch, 14.04.21, 09:00 Uhr. 
+
+---
+
+

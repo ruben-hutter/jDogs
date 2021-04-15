@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.Main;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
-import org.checkerframework.checker.units.qual.A;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -52,7 +52,7 @@ public class Server {
     boolean running = true;
 
     public static void main(String[] args) {
-        new Server();
+        new Server(args);
     }
 
     // return Singleton
@@ -60,10 +60,11 @@ public class Server {
         return instance;
     }
 
-    public Server() {
+    public Server(String[] args) {
         try {
+
             instance = this;
-            // port 8090
+            //serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             serverSocket = new ServerSocket(8090);
             System.out.println("server started...");
             // runs as long as the server is activated
