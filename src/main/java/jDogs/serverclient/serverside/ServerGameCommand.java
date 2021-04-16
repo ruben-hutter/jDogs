@@ -163,12 +163,12 @@ public class ServerGameCommand {
             return;
         }
 
-        // TODO switch case for next step check (seve, joke, normal)?
-        // check if there are pieces between actualPosition and newPosition (if on track)
-        if (!checkWhichMove(ownPlayer, newPosition1, newPosition2)) {
+        // check if there is a piece on destination
+        if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
             sendToThisClient.enqueue("You eliminate yourself!");
-            return;
         }
+
+        // TODO eliminate played card
     }
 
     /**
@@ -376,16 +376,26 @@ public class ServerGameCommand {
      * Checks if on the destination is already a piece
      * @return
      */
-    private boolean checkWhichMove(Player player, String newPosition1, int newPosition2) {
+    private boolean checkWhichMove(Player player, int pieceID, String newPosition1,
+            int newPosition2) {
         Piece pieceOnNewPosition = gameState.newPositionOccupied(player, newPosition1, newPosition2);
         if (pieceOnNewPosition != null) {
-            if (player.getAlliance() != pieceOnNewPosition.getPieceAlliance()) {
+            if (player.getAlliance() == pieceOnNewPosition.getPieceAlliance()) {
                 return false;
             } else {
-                // TODO suicide!
+                attackMove(player, pieceID, newPosition1, newPosition2, pieceOnNewPosition);
             }
         }
-        return false;
+        simpleMove(player, pieceID, newPosition1, newPosition2);
+        return true;
+    }
+
+    /**
+     * Move a piece and eliminate enemy
+     */
+    private void attackMove(Player player, int pieceID, String newPosition1, int newPosition2,
+            Piece toEliminate) {
+        // TODO where to put eliminated piece exactly
     }
 
     // TODO no block going heaven or passing track
