@@ -85,26 +85,24 @@ public class ServerMenuCommand {
 
                         System.out.println("login worked " + "USER " + nickName);
 
+                        // if you are not logged in you are not added to the serverConnections lists
                         if (!loggedIn) {
-                            logger.debug("Not logged in.");
-                            server.addSender(serverConnection.getSender());
+                            server.addToLobby(serverConnection);
+                            server.serverConnections.add(serverConnection);
                         }
                         server.addNickname(nickName, serverConnection);
                         serverConnection.updateNickname(nickName);
                         logger.debug("Added nickname.");
 
                         loggedIn = true;
-                        logger.debug("Logged in now.");
                     }
                     break;
 
                 case "ACTI":
-                    String list = "";
+                    String list = "INFO all active Players ";
                     for (int i = 0; i < server.allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
-                        logger.debug("player # " + i );
                         list += server.allNickNames.get(i) + " ";
-                        logger.debug("nickname of player # " + i );
                         list += "\n";
                     }
                     sendToThisClient.enqueue(list);
@@ -175,7 +173,6 @@ public class ServerMenuCommand {
                     for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
                         if (server.allGamesNotFinished.get(i).isPendent()) {
                             sendToThisClient.enqueue("OGAM " + server.allGamesNotFinished.get(i).getSendReady());
-                            logger.debug("not finished games: " + server.allGamesNotFinished.get(i).getSendReady());
                         }
                     }
                     break;
@@ -190,20 +187,18 @@ public class ServerMenuCommand {
                     try {
                         GameFile game = getGame(text.substring(5));
                         if (game == null) {
-                            logger.debug("Game " + text.substring(5) + " doesn't exist");
                             System.out.println(-1);
                             sendToThisClient
                                     .enqueue("INFO join not possible,game name does not exist");
                         } else {
                             sendToThisClient.enqueue("JOIN " + game.getNameId());
-                            game.addParticipants(serverConnection);
+                            game.addParticipant(serverConnection);
                             sendToAll.enqueue("OGAM " + game.getSendReady());
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
                             logger.debug("User " + nickName + " has joined game " + actualGame);
-                            System.out.println(1);
 
-                            // all required players are set, then send start request to client
+                            // all required players are set, then send start request to host
                             if (game.readyToStart()) {
                                 game.sendConfirmationMessage();
                             }
@@ -212,7 +207,6 @@ public class ServerMenuCommand {
                         e.printStackTrace();
                         sendToThisClient.enqueue("INFO wrong format,you cannot join");
                     }
-                    System.out.println(3);
                     break;
             }
         }

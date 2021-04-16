@@ -6,15 +6,17 @@ public class SeparateLobbyCommand {
 
     private Queuejd sendToThisClient;
     private Queuejd sendToAll;
+    private Queuejd sendToPub;
     private SendFromServer[] senderArray;
     private ServerConnection serverConnection;
     private GameFile gameFile;
     private String nickname;
 
-    SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, ServerConnection serverConnection) {
+    SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, Queuejd sendToPub, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.serverConnection = serverConnection;
+        this.sendToPub = sendToPub;
         this.gameFile = null;
     }
 
@@ -59,29 +61,29 @@ public class SeparateLobbyCommand {
                     }
                     break;
 
-                case "PCHT":
+                case "LCHT":
                     //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
-                    System.out.println("PCHT: " + text.substring(5));
-                    for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
-                        gameFile.getscArrayList().get(i).getSender()
-                                .sendStringToClient("PCHT " + "<" + nickname + "> " + text.substring(5));
-                    }
+
+                    System.out.println("LCHT: " + text.substring(5));
+                    gameFile.sendMessageToParticipants("LCHT " + "<" + nickname + "> " + text.substring(5));
+                    break;
+
+                case "PCHT":
+                    //send message to everyone logged in, in lobby, separated or playing
+
+                    sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                    break;
+
+                case "TEAM":
+                    gameFile.changeTeam(text.substring(5));
+                    sendToThisClient.enqueue("INFO error client doesn`t exist");
                     break;
 
                 case "STAR":
-
                     // client confirms to start the game
 
-                    GameFile gameFile = getGame(text.substring(5));
-                    if (gameFile == null) {
-                        sendToThisClient.enqueue("INFO game name does not exist on server");
-                        break;
-                    }
-                    gameFile.confirmStart(nickname);
-
-                    //set all to game mode
-
-                    if (gameFile.startGame()) {
+                    if (gameFile.readyToStart() && gameFile.getHost().equals(nickname)) {
+                        System.out.println("starting game ");
                         gameFile.start();
                     }
                     break;
@@ -98,8 +100,10 @@ public class SeparateLobbyCommand {
                         this.gameFile.removeParticipant(serverConnection);
                         sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
                     }
+                    System.out.println(2);
                     serverConnection.getMessageHandlerServer().returnToLobby();
-                    sendToAll.enqueue("LPUB " + nickname);
+                    sendToPub.enqueue("LPUB " + nickname);
+                    System.out.println(3);
                     break;
 
                 case "STAT":
@@ -109,8 +113,13 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "ACTI":
-                    sendToThisClient.enqueue(
-                            "ACTI all joining this game: " + this.gameFile.getParticipants());
+                    String list = "INFO all active Players ";
+                    for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
+                        list += "player # " + i + "\n";
+                        list += Server.getInstance().allNickNames.get(i) + " ";
+                        list += "\n";
+                    }
+                    sendToThisClient.enqueue(list);
                     break;
 
                 default:

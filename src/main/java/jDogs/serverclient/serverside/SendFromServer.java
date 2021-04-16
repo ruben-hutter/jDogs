@@ -17,13 +17,15 @@ public class SendFromServer implements Runnable {
     private final Server server;
     private final Queuejd sendToAll;
     private final Queuejd sendToThisClient;
+    private final Queuejd sendToPub;
     private final ServerConnection serverConnection;
 
-    public SendFromServer(Socket socket, Server server, Queuejd sendToAll, Queuejd sendToThisClient,
+    public SendFromServer(Socket socket, Server server, Queuejd sendToAll, Queuejd sendToThisClient,Queuejd sendToPub,
             ServerConnection serverConnection) {
         this.socket = socket;
         this.server = server;
         this.sendToAll = sendToAll;
+        this.sendToPub = sendToPub;
         this.sendToThisClient = sendToThisClient;
         this.running = true;
         this.serverConnection = serverConnection;
@@ -39,12 +41,23 @@ public class SendFromServer implements Runnable {
         while (running) {
             if (!sendToThisClient.isEmpty()) {
                 String message = sendToThisClient.dequeue();
-
+                System.out.println("send to this " + message);
                     sendStringToClient(message);
             }
             if (!sendToAll.isEmpty()) {
-                sendStringToAllClients(sendToAll.dequeue());
+                String message = sendToAll.dequeue();
+                System.out.println("send to all " + message);
+
+                sendStringToAllClients(message);
             }
+
+            if (!sendToPub.isEmpty()) {
+                String message = sendToPub.dequeue();
+                System.out.println("send to pub " + message);
+
+                sendStringToPublicLobbyGuests(message);
+            }
+
             try {
                 Thread.sleep(30);
             } catch (InterruptedException e) {
@@ -71,7 +84,6 @@ public class SendFromServer implements Runnable {
             // e.printStackTrace();
             System.out.println("ServerConnection error 1: send String to Client error....");
             // kill this serverConnection:
-            server.removeSender(this);
             running = false;
             serverConnection.kill();
             // here: error handling needed, when Server can t be reached, program gets stuck here
@@ -83,9 +95,13 @@ public class SendFromServer implements Runnable {
      * @param text a String message
      */
     synchronized public void sendStringToAllClients(String text) {
-        for (int index = 0; index < server.publicSenderList.size(); index++) {
-            server.publicSenderList.get(index).sendStringToClient(text);
+        for (int index = 0; index < server.serverConnections.size(); index++) {
+            server.serverConnections.get(index).getSender().sendStringToClient(text);
         }
+    }
+
+    synchronized public void sendStringToPublicLobbyGuests(String text) {
+        Server.getInstance().sendMessageToPublicLobby(text);
     }
 
     /**

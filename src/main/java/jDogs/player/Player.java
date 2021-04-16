@@ -6,6 +6,7 @@ import jDogs.board.Board;
 import jDogs.board.Tile;
 import jDogs.serverclient.serverside.ServerConnection;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * This class defines a player
@@ -21,13 +22,14 @@ public class Player {
     public int startingPosition;
     private ArrayList<String> deck;
     private ServerConnection serverConnection;
+    private int teamID;
 
-    public Player(String playerName, Alliance_4 alliance4, ServerConnection serverConnection) {
+    public Player(String playerName, ServerConnection serverConnection) {
         this.playerName = playerName;
-        this.alliance4 = alliance4;
-        startingPosition = alliance4.getStartingPosition();
-        pieces = createPieces(startingPosition);
         this.serverConnection = serverConnection;
+        teamID = -1;
+
+
     }
 
     public Player(String playerName, Alliance_4 alliance4, Board board) {
@@ -38,6 +40,22 @@ public class Player {
         pieces = createPieces(startingPosition);
         setPiecesOnHome();
     }
+
+    public void setUpPlayerOnServer( Alliance_4 alliance4) {
+        this.alliance4 = alliance4;
+        startingPosition = alliance4.getStartingPosition();
+        pieces = createPieces(startingPosition);
+        this.deck = null;
+    }
+
+    public static Comparator<Player> TeamIdComparator = new Comparator<Player>() {
+        @Override
+        public int compare(Player player1, Player player2) {
+            int teamIdPlayer1 = player1.getTeamID();
+            int teamIdPlayer2 = player2.getTeamID();
+            return teamIdPlayer1 - teamIdPlayer2;
+        }
+    };
 
     /**
      * Creates 4 pieces for a player
@@ -104,6 +122,16 @@ public class Player {
         newPosition.setPiece(pieceToMove);
     }
 
+    public void setTeamID(int newID) {
+
+        teamID = newID;
+    }
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+
     /**
      *
      * @param message to the client concerning this game
@@ -115,5 +143,9 @@ public class Player {
     @Override
     public String toString() {
         return getPlayerName() + ": " + getAlliance();
+    }
+
+    public ServerConnection getServerConnection() {
+        return serverConnection;
     }
 }

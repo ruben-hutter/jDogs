@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -39,6 +40,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.checkerframework.checker.units.qual.A;
 
 public class LobbyController implements Initializable {
     @FXML
@@ -48,8 +50,6 @@ public class LobbyController implements Initializable {
 
     private OpenGame selectedGame;
     private String gameId;
-    private String[] activeUsersInPublic;
-    private String[] activeUsersInSeparee;
     private Stage gameDialog;
     boolean startGamePossible;
 
@@ -57,6 +57,7 @@ public class LobbyController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.startGamePossible = false;
+        this.gameId = null;
 
         /**
          * TableViewActiveGames displays all active games
@@ -65,8 +66,8 @@ public class LobbyController implements Initializable {
         TableColumn responsible = new TableColumn("responsible");
         TableColumn enlist = new TableColumn("enlist");
         TableColumn total = new TableColumn("total");
-        TableColumn signIn = new TableColumn("signIn");
-        tableViewActiveGames.getColumns().addAll(name,responsible,enlist,total,signIn);
+        TableColumn TeamMode = new TableColumn("Team");
+        tableViewActiveGames.getColumns().addAll(name,responsible,enlist,total,TeamMode);
 
         openGames = FXCollections.observableArrayList();
 
@@ -78,8 +79,8 @@ public class LobbyController implements Initializable {
                 new PropertyValueFactory<OpenGame, String>("enlist"));
         total.setCellValueFactory(
                 new PropertyValueFactory<OpenGame, String>("total"));
-        signIn.setCellValueFactory(
-                new PropertyValueFactory<OpenGame, String>("button")
+        TeamMode.setCellValueFactory(
+                new PropertyValueFactory<OpenGame, String>("TeamMode")
         );
 
 
@@ -88,6 +89,7 @@ public class LobbyController implements Initializable {
 
 
         tableViewActiveGames.setItems((ObservableList)openGames);
+
 
         tableViewActiveGames.setOnMousePressed ((MouseEvent event) -> {
             if (event.getClickCount() == 1 &&
@@ -185,8 +187,8 @@ public class LobbyController implements Initializable {
 
     @FXML
     void setQButtonOnAction(ActionEvent event) {
-        if(gameId != "") {
-            gameId = "";
+        if(gameId != null) {
+            gameId = null;
             new Alert(AlertType.INFORMATION, "you quit game and are public" ).showAndWait();
             Client.getInstance().sendMessageToServer("QUIT");
             playersInLobby.removeAll();
@@ -227,17 +229,27 @@ public class LobbyController implements Initializable {
             System.out.println(message + " : " + message.charAt(0));
             if (message.charAt(0) == '@') {
                 String parsedMsg = null;
-                if ((parsedMsg = GuiParser.sendWcht(message.substring(1))) == null) {
-                    new Alert(AlertType.ERROR,
-                            "wrong Wcht format entered. E.g. '@nickname message' ");
+                // if users are in a separate lobby they can send messages to public with "@PUB"
+                if (message.length() > 5 && message.substring(1,4).equals("PUB")) {
+                    Client.getInstance().sendMessageToServer("PCHT " + message.substring(5));
                 } else {
-                    displayWCHTmsg(message);
-                    Client.getInstance().sendMessageToServer("WCHT " + parsedMsg);
+                    if ((parsedMsg = GuiParser.sendWcht(message.substring(1))) == null) {
+                        new Alert(AlertType.ERROR,
+                                "wrong Wcht format entered. E.g. '@nickname message' ");
+                    } else {
+                        displayWCHTmsg(message);
+                        Client.getInstance().sendMessageToServer("WCHT " + parsedMsg);
+                    }
                 }
 
             } else {
-                //Client.getInstance().sendMessageToServer("PCHT" + gameId + message);
-                Client.getInstance().sendMessageToServer("PCHT " + message);
+                if (gameId != null) {
+                    // you send to separate lobby
+                    Client.getInstance().sendMessageToServer("LCHT " + message);
+                } else {
+                    // you are in public lobby
+                    Client.getInstance().sendMessageToServer("PCHT " + message);
+                }
 
             }
         }
@@ -254,7 +266,11 @@ public class LobbyController implements Initializable {
 
     public void displayPCHTmsg(String message) {
         //System.out.println(message);
-        publicChatMessagesLobby.appendText(message + "\n");
+        publicChatMessagesLobby.appendText("@PUB " + message + "\n");
+    }
+
+    public void displayLCHTmsg(String message) {
+        publicChatMessagesLobby.appendText("@LOBBY " + message + "\n");
     }
 
 
@@ -297,10 +313,18 @@ public class LobbyController implements Initializable {
             openGames.add(newGame);
     }
 
+    //TODO method doesn t remove object from sight
+
     public void removePendentGameInLobby(String substring) {
         OpenGame openGame = GuiParser.getOpenGame(substring);
+        System.out.println("remove game " + substring);
         displayInfomsg("INFO removed game " + openGame.getName());
-        openGames.remove(openGame);
+
+        tableViewActiveGames.getSelectionModel().select(0);
+        Object object = tableViewActiveGames.getSelectionModel().getSelectedItem();
+        OpenGame openGame1 = (OpenGame) object;
+        tableViewActiveGames.getItems().remove(openGame1);
+
     }
 
     public void displayOnGoingGamesInLobby(String games) {
@@ -315,14 +339,33 @@ public class LobbyController implements Initializable {
         }
         playersInLobby.add(new Participant(player));
     }
-    
+
+    //TODO method doesn t remove player
     public void removePlayerinPublic(String player) {
         try {
-            playersInLobby.remove(new Participant(player));
+
+
+                for (int i = 0; i < playersInLobby.size(); i++) {
+                    if (playersInLobby.get(i).getPlayer().equals(player)) {
+                        //playersInLobby.remove(i);
+                        //Participant player1 = playersInLobby.get(i);
+                        //tableViewActPlayers.getItems().remove(player1);
+                        //System.out.println(tableViewActPlayers.getItems().remove(playersInLobby.get(i)));
+                    }
+                }
+                //tableViewActPlayers.getItems().clear();
+                //playersInLobby.remove(new Participant(player));
+                System.out.println("after ");
+                for (int i = 0; i < playersInLobby.size(); i++) {
+                    System.out.println(playersInLobby.get(i));
+
+                }
+
         } catch (Exception e) {
-            System.err.println("tried to remove non existing player");
+            System.err.println("tried to remove non existing player " + player);
         }
     }
+
 
 
     /**
@@ -331,9 +374,9 @@ public class LobbyController implements Initializable {
      * @param total the total number of participants till starting the game
      *
      */
-    public void sendNewGame(String gameId, String total) {
+    public void sendNewGame(String gameId, String total, String teamMode) {
         System.out.println("Send new game");
-        Client.getInstance().sendMessageToServer("OGAM " + gameId + " " + total);
+        Client.getInstance().sendMessageToServer("OGAM " + gameId + " " + total + " " + teamMode);
         gameDialog.close();
     }
 
