@@ -1,7 +1,6 @@
 package jDogs.player;
 
 import jDogs.Alliance_4;
-import jDogs.Piece;
 import jDogs.board.Board;
 import jDogs.board.Tile;
 import jDogs.serverclient.serverside.ServerConnection;
@@ -28,8 +27,6 @@ public class Player {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
         teamID = -1;
-
-
     }
 
     /**
