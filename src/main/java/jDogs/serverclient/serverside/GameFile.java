@@ -212,7 +212,6 @@ public class GameFile {
         }
     }
 
-
     public String getParticipants() {
 
         String participants = "";

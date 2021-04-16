@@ -51,6 +51,12 @@ public class ClientGameCommand {
                 //TODO receive game details when game starts and display in Game GUI
                 clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
                 clientGame.printGameState();
+
+              /*  Platform.runLater(()->
+                        GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
+
+               */
+
                 //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
                 break;
 

@@ -177,20 +177,6 @@ public class ClientMenuCommand {
 
                 break;
 
-            case "GAME":
-                //TODO receive game details when game starts and display in Game GUI
-                //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
-
-                /*
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.startGame(text.substring(5)));
-
-                 */
-
-                System.out.println("New Game " + text.substring(5));
-                break;
-
-
             default:
                 System.out.println("received from server " + text + ". This command " + command
                         + " is not implemented");

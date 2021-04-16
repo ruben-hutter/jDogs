@@ -62,10 +62,6 @@ public enum ClientMenuProtocol {
      */
     DPER,
     /**
-     * A new Game with this Client is started, get required data of game from server
-     */
-    GAME,
-    /**
      * Common Information from Server
      */
     INFO;
