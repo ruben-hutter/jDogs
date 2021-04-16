@@ -41,8 +41,11 @@ public class ServerGameCommand {
         switch(command) {
             case "QUIT":
                 // TODO stop ServerConnection and Client
+                gameFile.cancel();
             case "EXIT":
                 // TODO startExit();
+                gameFile.cancel();
+                serverConnection.kill();
                 //finish game
                 break;
             case "MOVE":
@@ -67,6 +70,9 @@ public class ServerGameCommand {
 
                 sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
+
+            case "WCHT":
+                sendToThisClient.enqueue("INFO not allowed to use WCHT while playing");
 
         }
 

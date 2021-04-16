@@ -75,8 +75,8 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "TEAM":
+                    System.out.println("team " + text.substring(5));
                     gameFile.changeTeam(text.substring(5));
-                    sendToThisClient.enqueue("INFO error client doesn`t exist");
                     break;
 
                 case "STAR":

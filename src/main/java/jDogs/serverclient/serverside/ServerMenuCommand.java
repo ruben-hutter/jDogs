@@ -174,7 +174,7 @@ public class ServerMenuCommand {
                     if (count == -1) {sendToThisClient.enqueue("INFO no pendent games to display");}
 
                     break;
-
+                //sends all names of ongoing games
                 case "RUNN":
                     count = -1;
                     for (int i = 0; i < server.runningGames.size(); i++) {
@@ -201,6 +201,7 @@ public class ServerMenuCommand {
                             sendToThisClient.enqueue("JOIN " + game.getNameId());
                             game.addParticipant(serverConnection);
                             sendToAll.enqueue("OGAM " + game.getSendReady());
+                            removePublicLobbyUsers();
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
 
@@ -217,6 +218,13 @@ public class ServerMenuCommand {
             }
         }
     }
+
+    private void removePublicLobbyUsers() {
+       for (ServerConnection serverConnection : server.getPublicLobbyConnections()) {
+           sendToThisClient.enqueue("DPER " + serverConnection.getNickname());
+       }
+    }
+
     /**
      *
       * @param gameName is the name of the game which was sent to the server
@@ -273,6 +281,7 @@ public class ServerMenuCommand {
 
     public void sendAllPublicGuests() {
         for (int i = 0; i < server.publicLobbyConnections.size(); i++) {
+            System.out.println("servernames public " + server.publicLobbyConnections.get(i).getNickname() + " " + i);
             sendToThisClient.enqueue("LPUB " + server.publicLobbyConnections.get(i).getNickname());
         }
     }
