@@ -13,11 +13,8 @@ import java.util.Collections;
  */
 public class GameFile {
 
-    private String nameId;
-    private String host;
-    private String participants;
-    private String confirmedParticipants;
-    private int numberOfConfirmed;
+    private final String nameId;
+    private final String host;
     private int numberParticipants;
     private int total;
     private boolean pendent;
@@ -31,10 +28,7 @@ public class GameFile {
         this.nameId = nameId;
         this.host = host;
         this.total = Integer.parseInt(total);
-        this.participants = host;
         this.numberParticipants = 1;
-        this.confirmedParticipants = host;
-        this.numberOfConfirmed = 0;
         this.pendent = true;
         this.teamMode = teamMode;
         setUpTeamMode();
@@ -220,7 +214,7 @@ public class GameFile {
         }
 
         if (teamsIncomplete) {
-            changeTeam("2 " + numberParticipants + participants);
+            changeTeam("2 " + numberParticipants + getParticipants());
         }
     }
 
