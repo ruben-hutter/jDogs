@@ -104,7 +104,6 @@ public class MainGame {
         }
         for (int i = 8; i < 16; i++) {
             newDeck.add("THRE");
-
         }
         for (int i = 16; i < 24; i++) {
             newDeck.add("FOUR");

@@ -1,10 +1,15 @@
 package jDogs.serverclient.serverside;
-//this class represents information of pendent games(still in lobby) or ongoing games
 
-import jDogs.gui.GuiParser;
 import jDogs.player.Player;
 import java.util.ArrayList;
 
+
+/**
+ * an object of this class is instantiated when a client
+ * wants to create a new game in the lobby, after enough
+ * people joined the object of this class
+ * is transferred to main game
+ */
 public class GameFile {
 
     private String nameId;
@@ -39,20 +44,30 @@ public class GameFile {
     }
 
     /**
-     * a team consists of those participants
-     * at even or odd positions
+     *
+     * @param applicant client who wants to change a team
+     * @param subject subject who is added to the team with applicant
      */
     public void changeTeam(String applicant, String subject) {
-        if (total == 4) {
-            getPlayer(applicant).setTeamIDToPersID();
-            getPlayer(subject).setTeamID(getPlayer(applicant).getPersonalTeamID());
+        if (teamMode <= 1) {
+            if (numberParticipants % 2 == 0) {
+
+
+                if (total == 6) {
+
+                    if (teamMode < 1) {
+                        //check with teams of three
+                    } else {
+                        //check with teams of two
+                    }
+                }
+            } else {
+                getPlayer(applicant).getServerConnection().getSender().sendStringToClient(
+                        "INFO odd number of participants, cannot change teams now");
+            }
+        } else {
+            getPlayer(applicant).getServerConnection().getSender().sendStringToClient("INFO team mode not activated");
         }
-
-        if (total == 6) {
-            //not implemented check with parseMessage
-        }
-
-
     }
 
     public Player getPlayer(String name) {
@@ -98,6 +113,16 @@ public class GameFile {
         for (int i = 0; i < numberParticipants - 1; i++) {
             players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
         }
+
+        if (teamMode == 1 && readyToStart()) {
+            setTeamsAutomatically();
+        }
+
+    }
+
+    private void setTeamsAutomatically() {
+
+
     }
 
     public String getParticipants() {

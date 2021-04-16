@@ -118,6 +118,7 @@ public class Player {
     }
 
     public void setTeamID(int newID) {
+
         teamID = newID;
     }
 
@@ -129,6 +130,7 @@ public class Player {
     public void setTeamIDToPersID() {
         teamID = personalTeamID;
     }
+
 
     /**
      *
