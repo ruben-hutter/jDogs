@@ -55,6 +55,8 @@ public class MainGame {
         int players = 0;
 
         System.out.println("RANDOM beginner is " + oldArray[random]);
+        gameFile.sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
+        logger.debug("Random beginner is: " +  oldArray[random]);
 
         for (int i = random; i < oldArray.length; i++) {
             gameArray[players] = oldArray[i];
@@ -72,6 +74,7 @@ public class MainGame {
     private void nextTurn() {
 
         Server.getInstance().getSender(gameArray[turnNumber]).sendStringToClient("TURN");
+        logger.debug("Next turn is player: " + Server.getInstance().getSender(gameArray[turnNumber]));
     }
 
     private void dealOutCards(int number) {
@@ -94,7 +97,8 @@ public class MainGame {
             // send newHand to player and to client here
             players.get(i).setDeck(newHandArray);
             players.get(i).sendMessageToClient(newHand);
-            logger.debug("Player " + players.get(i) + " has cards " + newHand);
+            logger.debug("Player " + players.get(i) + " has cards " + newHandArray);
+            logger.debug("Client get the cards as: " + newHand);
         }
 
     }

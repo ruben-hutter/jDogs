@@ -87,6 +87,9 @@ public class SeparateLobbyCommand {
                     // client confirms to start the game
 
                     if (gameFile.readyToStart() && gameFile.getHost().equals(nickname)) {
+                        logger.debug("gamefile ready to start? " + gameFile.readyToStart());
+                        logger.debug("nickname: " + nickname);
+                        logger.debug("host: " +gameFile.getHost());
                         System.out.println("starting game ");
                         gameFile.start();
                         logger.debug("Game started");

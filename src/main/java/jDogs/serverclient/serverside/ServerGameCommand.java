@@ -60,10 +60,13 @@ public class ServerGameCommand {
             case "MOVE":
 
                 String playerName = serverConnection.getNickname();
+                logger.debug("Player nickname: " + playerName);
                 Player player = gameState.getPlayer(playerName);
+                logger.debug("Player: " + player);
                 String toCheckMove = checkCard(player, text);
                 if(toCheckMove == null){
                     //return
+                    logger.debug("Invalid card");
                 }
                 //String card = text.substring(5, 9);
                 String card = toCheckMove.substring(5, 9);
@@ -130,8 +133,10 @@ public class ServerGameCommand {
      */
     private String checkCard(Player player, String text){
         String card = text.substring(5, 9);
+        logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
         ArrayList<String> deck = player.getDeck();
+        logger.debug("Player's hand: " + deck);
         if(deck.contains(card)){
             switch (card){
                 case "JOKE":
@@ -189,9 +194,12 @@ public class ServerGameCommand {
         }
         for (Player player : gameState.playersState) {
             if (player.getAlliance() == alliance4) {
+                logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;
                 actualPosition1 = player.recivePosition1Server(pieceID);
+                logger.debug("actual position1: " + actualPosition1);
                 actualPosition2 = player.recivePosition2Server(pieceID);
+                logger.debug("actual position2: " + actualPosition2);
                 hasMoved = player.reciveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
             }
