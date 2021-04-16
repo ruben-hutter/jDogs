@@ -3,6 +3,8 @@ package jDogs.serverclient.serverside;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import java.util.Collections;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -25,6 +27,7 @@ public class GameFile {
     private int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
     private int teamIDs;
+    private static final Logger logger = LogManager.getLogger(GameFile.class);
 
     public GameFile(String nameId, String host, String total, int teamMode,
             ServerConnection serverConnection) {
@@ -266,6 +269,8 @@ public class GameFile {
             players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
             mainGame = new MainGame(this);
             Server.getInstance().startGame(mainGame);
+            logger.debug(Server.getInstance());
+            logger.debug("mainGame: " + mainGame);
         }
     }
 

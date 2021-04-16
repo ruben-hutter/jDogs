@@ -1,7 +1,11 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
+import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
+import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ServerGameCommand contains the game
@@ -22,6 +26,8 @@ public class ServerGameCommand {
     private final ServerParser serverParser;
     private String actualGame;
     private GameFile gameFile;
+    private GameState gameState;
+    private static final Logger logger = LogManager.getLogger(ClientMenuCommand.class);
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -46,6 +52,12 @@ public class ServerGameCommand {
                 //finish game
                 break;
             case "MOVE":
+                String playername = serverConnection.getNickname();
+                Player player = gameState.getPlayer(playername);
+                logger.debug("Player: " + nickname);
+                String toCheckMove = checkCard(player, text);
+                logger.debug("toCheckMove: " + toCheckMove);
+
                 // TODO startMove()
                 break;
 
@@ -72,6 +84,25 @@ public class ServerGameCommand {
 
     }
 
+
+
+    private String checkCard(Player player, String text){
+        String card = text.substring(5, 9);
+        String toCheckMove = "";
+        ArrayList<String> deck = player.getDeck();
+        if(deck.contains(card)){
+            switch (card){
+                case "JOKE":
+                    String value = text.substring(10,13);
+                    toCheckMove = "MOVE" + " " + value + " " + text.substring(15);
+                    break;
+                default:
+                    toCheckMove =  "MOVE" + " " + card + " " + text.substring(10);
+            }
+        }
+        return toCheckMove;
+
+    }
 
     /**
      *

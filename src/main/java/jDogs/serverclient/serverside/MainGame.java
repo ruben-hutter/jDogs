@@ -1,8 +1,11 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
+import jDogs.serverclient.clientside.ClientGameCommand;
 import java.util.ArrayList;
 import java.util.Random;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainGame {
     private String[] gameArray;
@@ -13,6 +16,7 @@ public class MainGame {
     private ArrayList<String> deck;
     private Random random = new Random();
     private ArrayList<Player> players;
+    private static final Logger logger = LogManager.getLogger(ClientGameCommand.class);
 
 
 
@@ -52,6 +56,7 @@ public class MainGame {
         int players = 0;
 
         System.out.println("RANDOM beginner is " + oldArray[random]);
+        logger.debug("Random beginner is: " + oldArray[random]);
 
         for (int i = random; i < oldArray.length; i++) {
             gameArray[players] = oldArray[i];

@@ -48,7 +48,7 @@ public class MessageHandlerClient implements Runnable{
                 } else {
                     if (reply.length() >= 4 && ClientGameProtocol
                             .isACommand(reply.substring(0, 4))) {
-                        clientMenuCommand.execute(reply);
+                        clientGameCommand.execute(reply);
                     } else {
                         System.out.println("message doesn't match Menu or GameProtocol: " + reply);
                     }

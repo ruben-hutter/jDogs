@@ -3,8 +3,11 @@ package jDogs.serverclient.clientside;
 
 import jDogs.gui.GUIManager;
 import jDogs.serverclient.helpers.Queuejd;
+import jDogs.serverclient.serverside.ServerMenuCommand;
 import java.sql.SQLOutput;
 import javafx.application.Platform;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ClientMenuCommand contains the menu/lobby
@@ -19,6 +22,7 @@ public class ClientMenuCommand {
     private SendFromClient sendFromClient;
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
+    private static final Logger logger = LogManager.getLogger(ClientMenuCommand.class);
 
     ClientMenuCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
 
@@ -31,6 +35,7 @@ public class ClientMenuCommand {
     }
 
     public void execute (String text) {
+        logger.debug("Entered ClientMenuCommand with: " + text);
         System.out.println("text " + text);
         String command = text.substring(0,4);
 

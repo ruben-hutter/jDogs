@@ -3,6 +3,9 @@ package jDogs.serverclient.clientside;
 import jDogs.ClientGame;
 import jDogs.gui.GuiParser;
 import jDogs.serverclient.helpers.Queuejd;
+import jDogs.serverclient.serverside.SeparateLobbyCommand;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ClientGameCommand contains the game
@@ -19,6 +22,7 @@ public class ClientGameCommand {
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
     private ClientGame clientGame;
+    private static final Logger logger = LogManager.getLogger(ClientGameCommand.class);
 
 
     ClientGameCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
@@ -32,6 +36,7 @@ public class ClientGameCommand {
     }
 
     public void execute(String text) {
+        logger.debug("Entered ClientGameCommand with: " + text);
 
         String command = text.substring(0,4);
 
@@ -43,9 +48,8 @@ public class ClientGameCommand {
                 } else {
                     System.out.println("it is " + text.substring(5) + "`s turn");
                 }
+                System.out.println("Which card do you want to play?");
                 break;
-
-
             case "GAME":
                 //TODO receive game details when game starts and display in Game GUI
                 clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
@@ -55,8 +59,10 @@ public class ClientGameCommand {
 
             case "ROUN":
                 //TODO received hand of cards display in Game GUI
+                logger.debug("In command ROUND");
 
                 System.out.println("ROUN: " + text.substring(5));
+                //System.out.println("Which card do you want to play?");
 
             default:
                 System.out.println("the command " + command + " is not implemented. Can`t execute " + text);
