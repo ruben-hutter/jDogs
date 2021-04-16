@@ -1,6 +1,7 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.Alliance_4;
+import jDogs.ClientGame;
 import jDogs.player.Piece;
 import jDogs.player.Player;
 import jDogs.serverclient.helpers.Queuejd;
@@ -391,7 +392,26 @@ public class ServerGameCommand {
         Piece piece = player.getPiece(pieceID);
         gameState.updatePiecesOnTrack(piece, newPosition1);
 
-        // TODO add to piecesOnTrack and update
+        String pieceAlliance = "";
+        switch(piece.getPieceAlliance()) {
+            case YELLOW:
+                pieceAlliance = "YELO";
+                break;
+            case GREEN:
+                pieceAlliance = "GREN";
+                break;
+            case BLUE:
+                pieceAlliance = "BLUE";
+                break;
+            case RED:
+                pieceAlliance = "REDD";
+                break;
+        }
+        // updates client side
+        sendToThisClient.enqueue("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
+                + newPosition2);
+        // TODO test if the right message is given to the client
+        //System.out.println("MOVE " + player + " " + newPosition1 + newPosition2);
     }
 
     /**

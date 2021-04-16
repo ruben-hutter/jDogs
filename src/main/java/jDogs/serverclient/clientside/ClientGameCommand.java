@@ -57,6 +57,7 @@ public class ClientGameCommand {
             case "MOVE": // MOVE YELO-1 B20
                 String piece = text.substring(5, 9);
                 switch(piece) {
+                    // TODO case JACK (piece piece)
                     case "YELO":
                         clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.YELLOW),
                                 Integer.parseInt(text.substring(10, 11)), text.substring(12));
