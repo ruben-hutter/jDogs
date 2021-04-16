@@ -31,20 +31,17 @@ public class Server {
     //this map contains the names and the corresponding sender objects, but I want to delete it
     // and get the sender objects from the server connection
     //TODO delete it
-    private Map<String, SendFromServer> whisperList = new HashMap<>();
     //this list contains all ongoing games and all pendent games
     ArrayList<GameFile> allGamesNotFinished = new ArrayList<GameFile>();
     //this list contains all ongoing games
     ArrayList<MainGame> runningGames = new ArrayList<>();
-    //this list contains all public lobby guest names
-    ArrayList<String> publicLobbyGuests = new ArrayList<>();
     //this list contains all serverConnections of active players
     ArrayList<ServerConnection> serverConnections = new ArrayList<>();
     //this list contains all finished games
     ArrayList<GameFile> finishedGames = new ArrayList<>();
     //this list contains all server connections active in the public lobby
     ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
-    //this list exists only to store all serverConnections to enable more ServerConnections
+    //this list exists only to store all serverConnections to enable to start multiple ServerConnections
     ArrayList<ServerConnection> basicConnectionList = new ArrayList<>();
 
     private static Server instance;
@@ -120,31 +117,20 @@ public class Server {
      * @param serverConnection is the sC of this client
      */
     public void addNickname(String nickname, ServerConnection serverConnection) {
-        //add to whisperlist
-        whisperList.put(nickname, serverConnection.getSender());
-
         //scMap
 
         serverConnectionMap.put(nickname,serverConnection);
-        System.out.println("added to serverConnection " + nickname + nickname.length());
-        serverConnectionMap.get("maintenance");
-        // add to lobbyGuests
-        publicLobbyGuests.add(nickname);
 
         //add to nicknamelist
         allNickNames.add(nickname);
     }
 
     public void removeNickname(String nickname) {
-        //remove nickname from whisperlist
-        whisperList.remove(nickname);
 
         //remove nickname from sConnectionNicknameMap
 
         serverConnectionMap.remove(nickname);
 
-        //remove nickname from lobbyGuests
-        publicLobbyGuests.remove(nickname);
 
         //remove nickname from nicknamelist
         allNickNames.remove(nickname);
@@ -165,22 +151,13 @@ public class Server {
         runningGames.add(mainGame);
     }
 
-    public ServerConnection getServerConnectionsMap(String nickname) {
-
-        for (int i = 0; i < serverConnections.size(); i++) {
-            if (serverConnections.get(i).getNickname() == nickname) {
-                return serverConnections.get(i);
-            }
-        }
-        return null;
-    }
 
     /**
      *
      * @param gameFile
      * @return list of server connection objects of clients who participate in this opened game or started game
      */
-    public ArrayList<ServerConnection> getServerConnectionsMap(GameFile gameFile) {
+    public ArrayList<ServerConnection> getServerConnectionsArray(GameFile gameFile) {
 
         ArrayList<ServerConnection> aList = new ArrayList<>();
         System.out.println(gameFile.getParticipants());
@@ -228,7 +205,6 @@ public class Server {
         for (ServerConnection activeServerConnection1 : serverConnections) {
             activeServerConnection1.getSender().sendStringToClient(message);
         }
-
     }
 
     /**
@@ -244,13 +220,23 @@ public class Server {
 
     public void addToLobby(ServerConnection serverConnection) {
         publicLobbyConnections.add(serverConnection);
+        sendMessageToPublicLobby("LPUB " + serverConnection.getNickname());
     }
 
     public void removeFromLobby(ServerConnection serverConnection) {
         publicLobbyConnections.remove(serverConnection);
+        sendMessageToPublicLobby("DPER " + serverConnection.getNickname());
     }
 
     public void removeServerConnection(ServerConnection serverConnection) {
         serverConnections.remove(serverConnection);
+    }
+
+    public ArrayList<ServerConnection> getPublicLobbyConnections() {
+        return publicLobbyConnections;
+    }
+
+    public Map<String, ServerConnection> getServerConnectionMap() {
+        return serverConnectionMap;
     }
 }

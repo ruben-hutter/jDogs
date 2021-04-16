@@ -146,7 +146,6 @@ public class MessageHandlerServer implements Runnable {
         this.gameFile = gameFile;
         state = "openGame";
         //server.removeSender(serverConnection.getSender());
-        server.publicLobbyGuests.remove(nickname);
         separateLobbyCommand.setJoinedGame(gameFile, nickname);
         this.nickname = nickname;
     }
@@ -157,8 +156,7 @@ public class MessageHandlerServer implements Runnable {
      */
     public void returnToLobby() {
         server.addToLobby(serverConnection);
-        server.publicLobbyGuests.add(nickname);
-        sendToPub.enqueue("LPUB " + nickname);
+        sendToPub.enqueue("DPER " + nickname);
 
         //server.addSender(serverConnection.getSender());
         serverMenuCommand.sendAllPublicGuests();

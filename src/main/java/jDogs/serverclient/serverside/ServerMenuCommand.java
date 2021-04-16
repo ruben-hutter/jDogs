@@ -164,12 +164,26 @@ public class ServerMenuCommand {
                     break;
 
                 case "SESS":
+                    int count = -1;
                     for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
                         if (server.allGamesNotFinished.get(i).isPendent()) {
                             sendToThisClient.enqueue("OGAM " + server.allGamesNotFinished.get(i).getSendReady());
+                            count++;
                         }
                     }
+                    if (count == -1) {sendToThisClient.enqueue("INFO no pendent games to display");}
+
                     break;
+
+                case "RUNN":
+                    count = -1;
+                    for (int i = 0; i < server.runningGames.size(); i++) {
+
+                        sendToThisClient.enqueue("RUNN " + server.runningGames.get(i).getGameId());
+                        count++;
+                    }
+                if (count == -1) {sendToThisClient.enqueue("INFO no pendent games to display");}
+                break;
 
                 case "LPUB":
                     sendAllPublicGuests();
@@ -258,8 +272,8 @@ public class ServerMenuCommand {
     }
 
     public void sendAllPublicGuests() {
-        for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
-            sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
+        for (int i = 0; i < server.publicLobbyConnections.size(); i++) {
+            sendToThisClient.enqueue("LPUB " + server.publicLobbyConnections.get(i).getNickname());
         }
     }
 }

@@ -41,7 +41,6 @@ public class SendFromServer implements Runnable {
         while (running) {
             if (!sendToThisClient.isEmpty()) {
                 String message = sendToThisClient.dequeue();
-                System.out.println("send to this " + message);
                     sendStringToClient(message);
             }
             if (!sendToAll.isEmpty()) {
@@ -91,7 +90,7 @@ public class SendFromServer implements Runnable {
     }
 
     /**
-     * Sends a message to all clients
+     * Sends a message to all clients active
      * @param text a String message
      */
     synchronized public void sendStringToAllClients(String text) {
@@ -101,7 +100,9 @@ public class SendFromServer implements Runnable {
     }
 
     synchronized public void sendStringToPublicLobbyGuests(String text) {
-        Server.getInstance().sendMessageToPublicLobby(text);
+        for (ServerConnection serverConnection : server.getPublicLobbyConnections()) {
+            serverConnection.getSender().sendStringToClient(text);
+        }
     }
 
     /**

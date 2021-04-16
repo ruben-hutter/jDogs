@@ -29,15 +29,19 @@ public enum ClientMenuProtocol {
      */
     STAT,
     /**
-     * Command to send a public chat message to all players
+     * Information that client received a public chat message to all players.
      */
     PCHT,
     /**
-     * Command to send a private message to a player.
+     * Information that client received a private message from a player.
      */
     WCHT,
     /**
-     * Command to start a new game.
+     * Information that client received a message from a separate lobby he joins.
+     */
+    LCHT,
+    /**
+     * Information for host to start a new game.
      */
     STAR,
     /**
