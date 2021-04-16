@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.player.Piece;
@@ -13,9 +14,10 @@ import java.util.ArrayList;
  * commands which are sent from the
  * clients to communicate with the
  * server.
+ *
  */
-public class ServerGameCommand {
 
+public class ServerGameCommand {
     private final Server server;
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
@@ -55,7 +57,7 @@ public class ServerGameCommand {
 
                 // special cases (move command syntax different from normal)
                 String card = text.substring(5, 9);
-                switch(card) {
+                switch (card) {
                     case "SEVE":
                         int piecesToMove = Integer.parseInt(text.substring(10, 11));
                         int startIndex = 12;
@@ -82,18 +84,28 @@ public class ServerGameCommand {
 
             case "LCHT":
                 //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
+
                 System.out.println("LCHT: " + text.substring(5));
-                for (int i = 0; i < gameFile.getscArrayList().size(); i++) {
-                    gameFile.getscArrayList().get(i).getSender()
-                            .sendStringToClient("LCHT " + "<" + nickname + "> " + text.substring(5));
-                }
+                gameFile.sendMessageToParticipants(
+                        "LCHT " + "<" + nickname + "> " + text.substring(5));
+
                 break;
 
             case "PCHT":
                 //send message to everyone logged in, in lobby, separated or playing
+
                 sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
         }
+
+        }
+
+    /**
+     * Move a piece and eliminate enemy
+     */
+    private void attackMove(Player player, int pieceID, String newPosition1, int newPosition2,
+            Piece toEliminate) {
+        // TODO where to put eliminated piece exactly
     }
 
     /**
@@ -390,14 +402,6 @@ public class ServerGameCommand {
         return true;
     }
 
-    /**
-     * Move a piece and eliminate enemy
-     */
-    private void attackMove(Player player, int pieceID, String newPosition1, int newPosition2,
-            Piece toEliminate) {
-        // TODO where to put eliminated piece exactly
-    }
-
     // TODO no block going heaven or passing track
 
     /**
@@ -437,6 +441,7 @@ public class ServerGameCommand {
      * @param actualGame is the ongoing game which should be found
      * @return the game or null
      */
+
     private MainGame getRunningGame(String actualGame) {
         for (int i = 0; i < Server.getInstance().runningGames.size(); i++) {
             if (Server.getInstance().runningGames.get(i).getGameId().equals(actualGame)) {
@@ -444,5 +449,13 @@ public class ServerGameCommand {
             }
         }
         return null;
+    }
+
+    public void setGameFile(GameFile gameFile) {
+        this.gameFile = gameFile;
+    }
+
+    public void setNickName(String nickname) {
+        this.nickname = nickname;
     }
 }

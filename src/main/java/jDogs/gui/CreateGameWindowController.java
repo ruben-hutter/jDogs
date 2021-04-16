@@ -15,10 +15,14 @@ public class CreateGameWindowController {
     private TextField gameTotalField;
 
     @FXML
+    private TextField teamModeField;
+
+    @FXML
     private Button createButton;
 
     @FXML
     private Button cancelButton;
+
 
     @FXML
     void cancelButtonOnAction(ActionEvent event) {
@@ -28,7 +32,15 @@ public class CreateGameWindowController {
 
     @FXML
     void createButtonOnAction(ActionEvent event) {
-        GUIManager.getInstance().lobbyController.sendNewGame(gameNameField.getText(), gameTotalField.getText());
+        String teamMode = teamModeField.getText();
+
+        if (teamMode.equals("yes")) {
+            teamMode = "1";
+        } else {
+            teamMode = "0";
+        }
+        System.out.println("teamMode " + teamMode);
+        GUIManager.getInstance().lobbyController.sendNewGame(gameNameField.getText(), gameTotalField.getText(), teamMode);
     }
 
 }

@@ -21,15 +21,31 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Server {
 
     private ServerSocket serverSocket;
-    ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
+    //this list contains all sender objects, but I want to replace by the list of all serverConnection objects
+    //TODO delete it
+    //ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
+    //this list contains all nicknames used at the moment(to avoid duplicates)
     ArrayList<String> allNickNames = new ArrayList<>();
+    //this map contains the names and the corresponding serverConnections objects
     private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
+    //this map contains the names and the corresponding sender objects, but I want to delete it
+    // and get the sender objects from the server connection
+    //TODO delete it
     private Map<String, SendFromServer> whisperList = new HashMap<>();
+    //this list contains all ongoing games and all pendent games
     ArrayList<GameFile> allGamesNotFinished = new ArrayList<GameFile>();
+    //this list contains all ongoing games
     ArrayList<MainGame> runningGames = new ArrayList<>();
+    //this list contains all public lobby guest names
     ArrayList<String> publicLobbyGuests = new ArrayList<>();
+    //this list contains all serverConnections of active players
     ArrayList<ServerConnection> serverConnections = new ArrayList<>();
+    //this list contains all finished games
     ArrayList<GameFile> finishedGames = new ArrayList<>();
+    //this list contains all server connections active in the public lobby
+    ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
+    //this list exists only to store all serverConnections to enable more ServerConnections
+    ArrayList<ServerConnection> basicConnectionList = new ArrayList<>();
 
     private static Server instance;
 
@@ -48,14 +64,15 @@ public class Server {
         try {
 
             instance = this;
-            serverSocket = new ServerSocket(Integer.parseInt(args[1]));
+            //serverSocket = new ServerSocket(Integer.parseInt(args[1]));
+            serverSocket = new ServerSocket(8090);
             System.out.println("server started...");
             // runs as long as the server is activated
             while(running) {
                 Socket socket = serverSocket.accept();
                 ServerConnection sc = new ServerConnection(socket, this);
                 sc.createConnection();
-                serverConnections.add(sc);
+                basicConnectionList.add(sc);
 
                 /*
                 // new threads to maintain connection to the individual clients
@@ -64,7 +81,6 @@ public class Server {
 
                  */
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
-                System.out.println("publicSenderList size:  " + (publicSenderList.size() + 1));
                 try {
                     Thread.sleep(30);
                 } catch (InterruptedException e) {
@@ -98,6 +114,11 @@ public class Server {
         System.exit(-1);
     }
 
+    /**
+     * this methlod is needed to send messages to clients which are connected by public lobbies or by a common game
+     * @param nickname a new nickname of a client
+     * @param serverConnection is the sC of this client
+     */
     public void addNickname(String nickname, ServerConnection serverConnection) {
         //add to whisperlist
         whisperList.put(nickname, serverConnection.getSender());
@@ -131,18 +152,13 @@ public class Server {
 
     //returns sender object to send private message
     public SendFromServer getSender(String nickname) {
-        return whisperList.get(nickname);
+        return serverConnectionMap.get(nickname).getSender();
     }
 
     // add sender object from publicChatList
-    public void addSender(SendFromServer connection) {
 
-        publicSenderList.add(connection);
-    }
     // remove sender object from publicChatList
-    public void removeSender(SendFromServer connection) {
-        publicSenderList.remove(connection);
-    }
+
 
 
     public void startGame(MainGame mainGame) {
@@ -187,6 +203,54 @@ public class Server {
         return null;
     }
 
-    public void setPort(int port) {
+    public void removeGame(GameFile gameFile) {
+        allGamesNotFinished.remove(gameFile);
+        MainGame mainGame;
+        if ((mainGame = getMainGame(gameFile)) != null) {
+            runningGames.remove(mainGame);
+        }
+    }
+
+    private MainGame getMainGame(GameFile gameFile) {
+        for (MainGame runningGame1 : runningGames) {
+            if (runningGame1.getGameId().equals(gameFile.getNameId())) {
+                return runningGame1;
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param message to clients wherever they are
+     */
+    public void sendMessageToAll(String message) {
+        for (ServerConnection activeServerConnection1 : serverConnections) {
+            activeServerConnection1.getSender().sendStringToClient(message);
+        }
+
+    }
+
+    /**
+     *
+     * @param message to clients in public lobby explicitly
+     */
+    public void sendMessageToPublicLobby(String message) {
+        for (ServerConnection publicLobbyConnection1 : publicLobbyConnections) {
+            publicLobbyConnection1.getSender().sendStringToClient(message);
+        }
+
+    }
+
+    public void addToLobby(ServerConnection serverConnection) {
+        publicLobbyConnections.add(serverConnection);
+    }
+
+    public void removeFromLobby(ServerConnection serverConnection) {
+        publicLobbyConnections.remove(serverConnection);
+    }
+
+    public void removeServerConnection(ServerConnection serverConnection) {
+        serverConnections.remove(serverConnection);
     }
 }

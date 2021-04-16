@@ -39,6 +39,7 @@ public class ReceiveFromServer implements Runnable {
                         client.monitorMsg(System.currentTimeMillis());
                         //connectionToServerMonitor.sendSignal();
                     } else {
+                        System.out.println("received from server " + message);
                         receiveQueue.enqueue(message);
                     }
                 }

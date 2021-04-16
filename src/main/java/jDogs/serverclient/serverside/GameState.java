@@ -8,26 +8,26 @@ import java.util.Collections;
 
 public class GameState {
 
+    private final GameFile gameFile;
     String[] playerNames;
     Player[] playersState;
     ArrayList<Piece> piecesOnTrack;
-    ArrayList<ServerConnection> serverConnectionArrayList;
     int numPlayers;
 
     public GameState(GameFile gameFile) {
+        this.gameFile = gameFile;
         this.numPlayers = gameFile.getNumberOfParticipants();
         this.playerNames = gameFile.getParticipantsArray();
         playersState = createPlayers();
-        this.serverConnectionArrayList = gameFile.getscArrayList();
         piecesOnTrack = new ArrayList<>();
     }
 
     private Player[] createPlayers() {
         Player[] players = new Player[numPlayers];
         int counter = 0;
+        players = gameFile.getPlayersArray();
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            players[counter] = new Player(playerNames[counter], alliance_4,
-                    serverConnectionArrayList.get(counter));
+            players[counter].setUpPlayerOnServer(alliance_4);
             counter++;
         }
         return players;
@@ -137,5 +137,24 @@ public class GameState {
             }
         }
         return false;
+    }
+
+    public Player getPlayer(String nickname) {
+        for (Player player : playersState) {
+            if (player.getPlayerName().equals(nickname)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Player[] getPlayersState() {
+        return playersState;
+    }
+
+    public void sendMessageToPlayers(String message) {
+        for (Player player : playersState) {
+            player.getServerConnection().getSender().sendStringToClient(message);
+        }
     }
 }

@@ -40,7 +40,6 @@ public class GUIManager extends Application {
         this.primaryStage = primaryStage;
 
         setLoginScene();
-        setGameScene();
     }
 
     private void setLoginScene() {
@@ -74,7 +73,6 @@ public class GUIManager extends Application {
 
         primaryStage.show();
 
-        setGameScene();
     }
 
 
@@ -145,10 +143,6 @@ public class GUIManager extends Application {
         gameWindowController = gameLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
-
-
-
-
 
     }
 
