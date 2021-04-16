@@ -137,11 +137,11 @@ public class Player {
     }
 
     public String recivePosition1Server(int pieceID) {
-        return pieces[pieceID - 1].getPosition1Server();
+        return pieces[pieceID - 1].getPositionServer1();
     }
 
     public int recivePosition2Server(int pieceID) {
-        return pieces[pieceID - 1].getPosition2Server();
+        return pieces[pieceID - 1].getPositionServer2();
     }
 
     /**

@@ -67,6 +67,39 @@ public class GameState {
         piecesOnTrack = getSortedPiecesOnTrack();
     }
 
+    public Piece newPositionOccupied(Player player, String newPosition1, int newPosition2) {
+        Piece otherPiece = null;
+        if (newPosition1.equals("A")) {
+            otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2, otherPiece);
+        } else if (newPosition1.equals("B")) {
+        } else if (newPosition1.equals("C")) {
+            otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2, otherPiece);
+        }
+
+        // destination = track
+            // check if given track is empty, if not, if ownAlliance (check piecesOnTrack)
+
+        // destination = heaven
+            // check if given heaven is empty (check the players pieces)
+        return otherPiece;
+    }
+
+    private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2,
+            Piece otherPiece) {
+        for (Player pl : playersState) {
+            if (pl.equals(player)) {
+                for (Piece p : player.pieces) {
+                    if (p.getPositionServer1().equals(newPosition1)
+                            && p.getPositionServer2() == newPosition2) {
+                        otherPiece = p;
+                    }
+                }
+            }
+            break;
+        }
+        return otherPiece;
+    }
+
     public static void main(String[] args) {
         Piece piece1 = new Piece(Alliance_4.BLUE, 1 , 1);
         Piece piece2 = new Piece(Alliance_4.YELLOW, 1 , 1);

@@ -46,18 +46,17 @@ public class Piece implements Comparable<Piece> {
     public void setPositionServer(String position1, int position2) {
         positionServer1 = position1;
         positionServer2 = position2;
-        // TODO hasMoved
     }
 
     public void setPositionClient(Tile position) {
         this.position = position;
     }
 
-    public String getPosition1Server() {
+    public String getPositionServer1() {
         return positionServer1;
     }
 
-    public int getPosition2Server() {
+    public int getPositionServer2() {
         return positionServer2;
     }
 

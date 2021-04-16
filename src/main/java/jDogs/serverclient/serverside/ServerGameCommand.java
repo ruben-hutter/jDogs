@@ -126,6 +126,7 @@ public class ServerGameCommand {
         int actualPosition2 = -1;
         boolean hasMoved = false;
         int startingPosition = -1;
+        Player ownPlayer = null;
         Alliance_4 alliance4;
         switch(alliance) {
             case "YELO":
@@ -147,6 +148,7 @@ public class ServerGameCommand {
         }
         for (Player player : gameState.playersState) {
             if (player.getAlliance() == alliance4) {
+                ownPlayer = player;
                 actualPosition1 = player.recivePosition1Server(pieceID);
                 actualPosition2 = player.recivePosition2Server(pieceID);
                 hasMoved = player.reciveHasMoved(pieceID);
@@ -161,9 +163,9 @@ public class ServerGameCommand {
             return;
         }
 
-        // TODO maybe switch case for next step check (seve, joke, normal)
+        // TODO switch case for next step check (seve, joke, normal)?
         // check if there are pieces between actualPosition and newPosition (if on track)
-        if (!checkWhichMove()) {
+        if (!checkWhichMove(ownPlayer, newPosition1, newPosition2)) {
             sendToThisClient.enqueue("You eliminate yourself!");
             return;
         }
@@ -374,8 +376,8 @@ public class ServerGameCommand {
      * Checks if on the destination is already a piece
      * @return
      */
-    private boolean checkWhichMove() {
-        // TODO not kill yourself
+    private boolean checkWhichMove(Player player, String newPosition1, int newPosition2) {
+        gameState.newPositionOccupied(player, newPosition1, newPosition2);
         return false;
     }
 
@@ -411,7 +413,6 @@ public class ServerGameCommand {
         sendToThisClient.enqueue("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
                 + newPosition2);
         // TODO test if the right message is given to the client
-        //System.out.println("MOVE " + player + " " + newPosition1 + newPosition2);
     }
 
     /**

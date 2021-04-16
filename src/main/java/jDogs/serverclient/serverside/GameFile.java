@@ -18,7 +18,7 @@ public class GameFile {
 
 
 
-    public GameFile(String nameId, String host,String total, ServerConnection serverConnection) {
+    public GameFile(String nameId, String host, String total, ServerConnection serverConnection) {
 
         this.nameId = nameId;
         this.host = host;
