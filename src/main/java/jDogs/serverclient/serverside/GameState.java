@@ -69,20 +69,21 @@ public class GameState {
 
     public Piece newPositionOccupied(Player player, String newPosition1, int newPosition2) {
         Piece otherPiece = null;
-        if (newPosition1.equals("A")) {
-            otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2, otherPiece);
+        if (newPosition1.equals("A") || newPosition1.equals("C")) {
+            otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2);
         } else if (newPosition1.equals("B")) {
             for (Piece p : piecesOnTrack) {
-                // TODO piece is on track
+                if (p.getPositionServer1().equals(newPosition1)
+                        && p.getPositionServer2() == newPosition2) {
+                    otherPiece = p;
+                }
             }
-        } else if (newPosition1.equals("C")) {
-            otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2, otherPiece);
         }
         return otherPiece;
     }
 
-    private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2,
-            Piece otherPiece) {
+    private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2) {
+        Piece otherPiece = null;
         for (Player pl : playersState) {
             if (pl.equals(player)) {
                 for (Piece p : player.pieces) {
