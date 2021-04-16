@@ -431,7 +431,7 @@ public class ServerGameCommand {
                 break;
         }
         // updates client side
-        sendToAll.enqueue("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
+        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
                 + newPosition2);
         // TODO test if the right message is given to the client
     }
