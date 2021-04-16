@@ -38,7 +38,7 @@ public class GameFile {
         this.teamMode = teamMode;
         setUpTeamMode();
 
-        //players.add(new Player(host, serverConnection));
+        players.add(new Player(host, serverConnection));
 
 
         sendMessageToParticipants("OGAM " + getSendReady());
@@ -137,7 +137,7 @@ public class GameFile {
     }
 
     public void addParticipant(ServerConnection serverConnection) {
-        //players.add(new Player(serverConnection.getNickname(),serverConnection));
+        players.add(new Player(serverConnection.getNickname(),serverConnection));
 
         sendMessageToParticipants("LPUB " + serverConnection.getNickname());
         for (int i = 0; i < numberParticipants - 1; i++) {
@@ -247,6 +247,10 @@ public class GameFile {
         return numberParticipants;
     }
 
+    /**
+     *
+     * @param nickName is the client who confirmed to start game
+     */
     public void confirmStart(String nickName) {
         if (numberOfConfirmed == 0) {
             confirmedParticipants = nickName;
@@ -256,10 +260,17 @@ public class GameFile {
         numberOfConfirmed++;
     }
 
+    /**
+     *
+     * @return true if everyone confirmed starting the game
+     */
     public boolean startGame() {
         return total == numberOfConfirmed;
     }
 
+    /**
+     * starts game
+     */
     public void start() {
         pendent = false;
         //Server.getInstance().startGame(new MainGame(this));
@@ -270,6 +281,11 @@ public class GameFile {
         }
     }
 
+    /**
+     *
+     * @return MainGame file,
+     * which only exists if game started
+     */
     public MainGame getMainGame() {
         return mainGame;
     }
@@ -298,7 +314,11 @@ public class GameFile {
         }
     }
 
-
+    /**
+     * deletes this game, because it ended or
+     * because it is deleted by the host or a player
+     * did quit the game while playing
+     */
     public void cancel() {
 
         for (Player player : players) {
@@ -313,6 +333,11 @@ public class GameFile {
 
     }
 
+    /**
+     *
+     * @param message message to every active player
+     *                in lobby, separate lobby or games
+     */
     private void sendMessageToAll(String message) {
         for (ServerConnection serverConnection1 : Server.getInstance().serverConnections) {
             serverConnection1.getSender().sendStringToAllClients(message);
@@ -327,10 +352,18 @@ public class GameFile {
         return teamMode == 1;
     }
 
+    /**
+     *
+     * @return true if the game is not started but an "open game file"
+     */
     public boolean isPendent() {
         return pendent;
     }
 
+    /**
+     *
+     * @return Array of the player objects
+     */
     public Player[] getPlayersArray() {
         Player[] array = new Player[players.size()];
         int count = 0;
