@@ -45,162 +45,170 @@ public class ServerMenuCommand {
             sendToThisClient.enqueue("INFO please log in first");
 
         } else {
+            try {
+                switch (command) {
+                    case "USER":
+                        if (text.length() < 6) {
+                            sendToThisClient.enqueue("INFO No username entered");
+                        } else {
+                            String oldNick = nickName;
+                            nickName = text.substring(5);
+                            logger.debug("Nickname is: " + nickName);
 
-            switch (command) {
-                case "USER":
-                    if (text.length() < 6) {
-                        sendToThisClient.enqueue("INFO No username entered");
-                    } else {
-                        String oldNick = nickName;
-                        nickName = text.substring(5);
-                        logger.debug("Nickname is: " + nickName);
+                            if (!validCharacters(nickName)) {
+                                serverConnection.getDefaultName();
+                            }
 
-                        if (!validCharacters(nickName)) {
-                            serverConnection.getDefaultName();
-                        }
-
-                        if (!server.isValidNickName(nickName)) {
-                            logger.debug("Nickname " + nickName + " is already used.");
-                            int number = 2;
-                            while (true) {
-                                if (server.isValidNickName(nickName + number)) {
-                                    nickName = nickName + number;
-                                    logger.debug("New nickname is " + nickName);
-                                    break;
-                                } else {
-                                    number++;
+                            if (!server.isValidNickName(nickName)) {
+                                logger.debug("Nickname " + nickName + " is already used.");
+                                int number = 2;
+                                while (true) {
+                                    if (server.isValidNickName(nickName + number)) {
+                                        nickName = nickName + number;
+                                        logger.debug("New nickname is " + nickName);
+                                        break;
+                                    } else {
+                                        number++;
+                                    }
                                 }
                             }
+
+                            if (oldNick != null) {
+                                server.removeNickname(oldNick);
+                                sendToAll.enqueue("DPER " + oldNick);
+                            }
+                            sendToThisClient.enqueue("USER "
+                                    + nickName);
+                            sendToAll.enqueue("LPUB " + nickName);
+
+                            System.out.println("login worked " + "USER " + nickName);
+
+                            if (!loggedIn) {
+                                server.addSender(serverConnection.getSender());
+                            }
+                            server.addNickname(nickName, serverConnection);
+                            serverConnection.updateNickname(nickName);
+
+                            loggedIn = true;
                         }
+                        break;
 
-                        if (oldNick != null) {
-                            server.removeNickname(oldNick);
-                            sendToAll.enqueue("DPER " + oldNick);
+                    case "ACTI":
+                        String list = "";
+                        for (int i = 0; i < server.allNickNames.size(); i++) {
+                            list += "player # " + i + "\n";
+                            list += server.allNickNames.get(i) + " ";
+                            list += "\n";
                         }
-                        sendToThisClient.enqueue("USER "
-                                + nickName);
-                        sendToAll.enqueue("LPUB " + nickName);
+                        sendToThisClient.enqueue(list);
+                        break;
 
+                    case "QUIT":
 
-                        System.out.println("login worked " + "USER " + nickName);
+                        sendToThisClient.enqueue("INFO logout now");
+                        serverConnection.kill();
+                        break;
 
-                        if (!loggedIn) {
-                            server.addSender(serverConnection.getSender());
-                        }
-                        server.addNickname(nickName, serverConnection);
-                        serverConnection.updateNickname(nickName);
+                    case "STAT":
+                        sendToThisClient
+                                .enqueue("STAT " + "runningGames " + server.runningGames.size()
+                                        + " finishedGames " + server.finishedGames.size());
+                        break;
 
-                        loggedIn = true;
-                    }
-                    break;
+                    case "WCHT":
+                        //send private message
 
-                case "ACTI":
-                    String list = "";
-                    for (int i = 0; i < server.allNickNames.size(); i++) {
-                        list += "player # " + i + "\n";
-                        list += server.allNickNames.get(i) + " ";
-                        list += "\n";
-                    }
-                    sendToThisClient.enqueue(list);
-                    break;
-
-                case "QUIT":
-
-                    sendToThisClient.enqueue("INFO logout now");
-                    serverConnection.kill();
-                    break;
-
-                case "STAT":
-                    sendToThisClient.enqueue("STAT " + "runningGames " + server.runningGames.size()
-                            + " finishedGames " + server.finishedGames.size());
-                    break;
-
-                case "WCHT":
-                    //send private message
-
-                    int separator = -1;
-                    for (int i = 0; i < text.substring(5).length(); i++) {
-                        if (Character.isWhitespace(text.substring(5).charAt(i))) {
-                            separator = i;
-                            break;
-                        }
-                    }
-
-                    if (separator == -1) {
-                        sendToThisClient.enqueue("INFO " + "wrong WCHT format");
-                    } else {
-                        String adressor = text.substring(5, 5 + separator);
-                        logger.debug("adressor: " + adressor);
-                        System.out.println("adressor " + adressor);
-                        String message = text.substring(5 + separator);
-                        logger.debug("message: " + message);
-                        System.out.println("mess " + message);
-                        try {
-                            server.getSender(adressor)
-                                    .sendStringToClient("WCHT " + "@" + nickName + ": " + message);
-                        } catch (Exception e) {
-                            //prevent shutdown if nickname doesn`t exist in hashmap
-                            sendToThisClient.enqueue("INFO nickname unknown");
-                        }
-                    }
-                    break;
-
-                case "PCHT":
-                    // send to all in public lobby
-                    sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
-                    break;
-
-                case "OGAM":
-                    //set new game up with this command
-                    try {
-                        setUpGame(text.substring(5));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        sendToThisClient.enqueue("INFO error while building up new game file");
-
-                    }
-                    break;
-
-                case "SESS":
-                    for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
-                        if (server.allGamesNotFinished.get(i).isPendent()) {
-                            sendToThisClient.enqueue("OGAM " + server.allGamesNotFinished.get(i).getSendReady());
-                        }
-                    }
-                    break;
-
-                case "LPUB":
-                    sendAllPublicGuests();
-                    break;
-
-                case "JOIN":
-                    //join a game with this command
-                    System.out.println("JOIN from " + nickName + " : " + text);
-                    try {
-                        GameFile game = getGame(text.substring(5));
-                        if (game == null) {
-                            System.out.println(-1);
-                            sendToThisClient
-                                    .enqueue("INFO join not possible,game name does not exist");
-                        } else {
-                            sendToThisClient.enqueue("JOIN " + game.getNameId());
-                            game.addParticipants(serverConnection);
-                            sendToAll.enqueue("OGAM " + game.getSendReady());
-                            actualGame = game.getNameId();
-                            messageHandlerServer.setJoinedOpenGame(game, nickName);
-                            System.out.println(1);
-
-                            // all required players are set, then send start request to client
-                            if (game.readyToStart()) {
-                                game.sendConfirmationMessage();
+                        int separator = -1;
+                        for (int i = 0; i < text.substring(5).length(); i++) {
+                            if (Character.isWhitespace(text.substring(5).charAt(i))) {
+                                separator = i;
+                                break;
                             }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        sendToThisClient.enqueue("INFO wrong format,you cannot join");
-                    }
-                    System.out.println(3);
-                    break;
+
+                        if (separator == -1) {
+                            sendToThisClient.enqueue("INFO " + "wrong WCHT format");
+                        } else {
+                            String adressor = text.substring(5, 5 + separator);
+                            logger.debug("adressor: " + adressor);
+                            System.out.println("adressor " + adressor);
+                            String message = text.substring(5 + separator);
+                            logger.debug("message: " + message);
+                            System.out.println("mess " + message);
+                            try {
+                                server.getSender(adressor)
+                                        .sendStringToClient(
+                                                "WCHT " + "@" + nickName + ": " + message);
+                            } catch (Exception e) {
+                                //prevent shutdown if nickname doesn`t exist in hashmap
+                                sendToThisClient.enqueue("INFO nickname unknown");
+                            }
+                        }
+                        break;
+
+                    case "PCHT":
+                        // send to all in public lobby
+                        sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
+                        break;
+
+                    case "OGAM":
+                        //set new game up with this command
+                        try {
+                            setUpGame(text.substring(5));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            sendToThisClient.enqueue("INFO error while building up new game file");
+
+                        }
+                        break;
+
+                    case "SESS":
+                        for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
+                            if (server.allGamesNotFinished.get(i).isPendent()) {
+                                sendToThisClient.enqueue(
+                                        "OGAM " + server.allGamesNotFinished.get(i).getSendReady());
+                            }
+                        }
+                        break;
+
+                    case "LPUB":
+                        sendAllPublicGuests();
+                        break;
+
+                    case "JOIN":
+                        //join a game with this command
+                        System.out.println("JOIN from " + nickName + " : " + text);
+                        try {
+                            GameFile game = getGame(text.substring(5));
+                            if (game == null) {
+                                System.out.println(-1);
+                                sendToThisClient
+                                        .enqueue("INFO join not possible,game name does not exist");
+                            } else {
+                                sendToThisClient.enqueue("JOIN " + game.getNameId());
+                                game.addParticipants(serverConnection);
+                                sendToAll.enqueue("OGAM " + game.getSendReady());
+                                actualGame = game.getNameId();
+                                messageHandlerServer.setJoinedOpenGame(game, nickName);
+                                System.out.println(1);
+
+                                // all required players are set, then send start request to client
+                                System.out.println("Game ready to start: " + game.readyToStart());
+                                System.out.println(
+                                        "number participants " + game.getNumberOfParticipants());
+                                if (game.readyToStart()) {
+                                    game.sendConfirmationMessage();
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            sendToThisClient.enqueue("INFO wrong format,you cannot join");
+                        }
+                        System.out.println(3);
+                        break;
+                }
+            } catch (Exception e) {
+                sendToThisClient.enqueue("INFO invalid message");
             }
         }
     }
