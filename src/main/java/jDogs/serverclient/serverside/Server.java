@@ -51,8 +51,13 @@ public class Server {
 
     boolean running = true;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         new Server(args);
+    }
+
+     */
+    public static void main(String[] args) {
+        new Server();
     }
 
     // return Singleton
@@ -60,7 +65,8 @@ public class Server {
         return instance;
     }
 
-    public Server(String[] args) {
+    //public Server(String[] args) {
+    public Server() {
         try {
 
             instance = this;
