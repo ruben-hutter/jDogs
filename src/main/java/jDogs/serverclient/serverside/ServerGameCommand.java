@@ -51,7 +51,7 @@ public class ServerGameCommand {
                 //finish game
                 break;
             case "MOVE":
-                // if checkCard() == true, continue
+                // if String test = checkCard("MOVE JOKE TWOO YELO-1 B20") MOVE TWOO YEL...
 
                 // special cases (move command syntax different from normal)
                 String card = text.substring(5, 9);
@@ -377,7 +377,14 @@ public class ServerGameCommand {
      * @return
      */
     private boolean checkWhichMove(Player player, String newPosition1, int newPosition2) {
-        gameState.newPositionOccupied(player, newPosition1, newPosition2);
+        Piece pieceOnNewPosition = gameState.newPositionOccupied(player, newPosition1, newPosition2);
+        if (pieceOnNewPosition != null) {
+            if (player.getAlliance() != pieceOnNewPosition.getPieceAlliance()) {
+                return false;
+            } else {
+                // TODO suicide!
+            }
+        }
         return false;
     }
 
@@ -410,7 +417,7 @@ public class ServerGameCommand {
                 break;
         }
         // updates client side
-        sendToThisClient.enqueue("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
+        sendToAll.enqueue("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
                 + newPosition2);
         // TODO test if the right message is given to the client
     }

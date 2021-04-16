@@ -72,15 +72,12 @@ public class GameState {
         if (newPosition1.equals("A")) {
             otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2, otherPiece);
         } else if (newPosition1.equals("B")) {
+            for (Piece p : piecesOnTrack) {
+                // TODO piece is on track
+            }
         } else if (newPosition1.equals("C")) {
             otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2, otherPiece);
         }
-
-        // destination = track
-            // check if given track is empty, if not, if ownAlliance (check piecesOnTrack)
-
-        // destination = heaven
-            // check if given heaven is empty (check the players pieces)
         return otherPiece;
     }
 
