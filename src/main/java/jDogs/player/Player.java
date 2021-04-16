@@ -24,7 +24,7 @@ public class Player {
     private ServerConnection serverConnection;
     private int teamID;
 
-    public Player(String playerName,ServerConnection serverConnection) {
+    public Player(String playerName) {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
         teamID = -1;

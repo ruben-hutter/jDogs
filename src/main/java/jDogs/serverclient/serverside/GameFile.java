@@ -38,7 +38,7 @@ public class GameFile {
         this.teamMode = teamMode;
         setUpTeamMode();
 
-        players.add(new Player(host, serverConnection));
+        //players.add(new Player(host, serverConnection));
 
 
         sendMessageToParticipants("OGAM " + getSendReady());
@@ -137,7 +137,7 @@ public class GameFile {
     }
 
     public void addParticipant(ServerConnection serverConnection) {
-        players.add(new Player(serverConnection.getNickname(),serverConnection));
+        //players.add(new Player(serverConnection.getNickname(),serverConnection));
 
         sendMessageToParticipants("LPUB " + serverConnection.getNickname());
         for (int i = 0; i < numberParticipants - 1; i++) {
@@ -146,10 +146,60 @@ public class GameFile {
 
         if (teamMode == 1 && readyToStart()) {
 
-            //check for teams
+            checkforTeams();
+            OrderArrayListToPlayGame();
             // get players arraylist in definitive order
         }
 
+    }
+
+    /**
+     * this method orders the arrayList of players
+     * so that team members don`t sit next to each other
+     */
+    private void OrderArrayListToPlayGame() {
+
+        ArrayList<Player> newList = new ArrayList<>();
+
+        int counter = players.get(0).getTeamID();
+        int teamSize = numberParticipants/teamIDs;
+        int sizeAllEntries = players.size();
+
+        while (newList.size() < sizeAllEntries - 1) {
+            for (int j = 0; j < players.size() && j < teamSize; j++) {
+                if (players.get(j).getTeamID() == counter) {
+                    System.out.println(players.get(j));
+                    newList.add(players.get(j));
+                    players.remove(j);
+                    counter++;
+                }
+            }
+            counter = 0;
+        }
+        newList.add(players.get(0));
+
+        players = newList;
+
+        }
+
+
+    /**
+     * checks that teams are complete when
+     * starting game and sets random teams
+     * if some players aren`t part of a team
+     */
+    private void checkforTeams() {
+        boolean teamsIncomplete = false;
+        for (Player player : players) {
+            if (player.getTeamID() == -1) {
+                teamsIncomplete = true;
+                break;
+            }
+        }
+
+        if (teamsIncomplete) {
+            changeTeam("2 " + numberParticipants + participants);
+        }
     }
 
 
