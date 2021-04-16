@@ -155,26 +155,25 @@ public class ServerGameCommand {
 
         // if card not ok with destination, return to client
         if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition)) {
+                newPosition2, startingPosition, hasMoved)) {
             sendToThisClient.enqueue("Check the card value with your desired destination");
             return;
         }
 
-        // TODO maybe switch case for next step check (seve, jack, joke, normal)
+        // TODO maybe switch case for next step check (seve, joke, normal)
         // check if there are pieces between actualPosition and newPosition (if on track)
         if (!checkWhichMove()) {
             sendToThisClient.enqueue("You eliminate yourself!");
             return;
         }
-
-
     }
 
     /**
      * Checks if newPosition is ok with played card
      */
     private boolean checkCardWithNewPosition(String card, String actualPosition1,
-            int actualPosition2, String newPosition1, int newPosition2, int startingPosition) {
+            int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
+            boolean hasMoved) {
         int[] cardValues = getCardValues(card);
         if (cardValues == null) {
             return false;
@@ -198,7 +197,9 @@ public class ServerGameCommand {
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // go heaven
             int difference;
-            if (card.equals("FOUR")) {
+            if (!hasMoved) {
+                return false;
+            } else if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
                     if (cardValue == 4) {
                         difference = startingPosition - actualPosition2;
@@ -225,7 +226,7 @@ public class ServerGameCommand {
                 }
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-            // TODO verify moves intern heaven
+            return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
         }
         return false;
     }
@@ -368,16 +369,25 @@ public class ServerGameCommand {
         }
     }
 
+    /**
+     * Checks if on the destination is already a piece
+     * @return
+     */
     private boolean checkWhichMove() {
-        // TODO not kill yourself; no block going heaven of passing track; -4 with has not moved
+        // TODO not kill yourself
         return false;
     }
+
+    // TODO no block going heaven or passing track
 
     /**
      * Move a piece without eliminating any
      */
     private void simpleMove(Player player, int pieceID, String newPosition1, int newPosition2) {
+        // updates piece position server
         player.changePositionServer(pieceID, newPosition1, newPosition2);
+
+        // updates piecesOnTrack in gameState
         Piece piece = player.getPiece(pieceID);
         if (gameState.isPieceOnTrack(piece)) {
             // TODO check hasMoved or not, change pos or remove and call updatePiecesOnTrack()
