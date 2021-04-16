@@ -6,6 +6,7 @@ import jDogs.board.Board;
 import jDogs.board.Tile;
 import jDogs.serverclient.serverside.ServerConnection;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * This class defines a player
@@ -21,14 +22,12 @@ public class Player {
     public int startingPosition;
     private ArrayList<String> deck;
     private ServerConnection serverConnection;
-    private int personalTeamID;
     private int teamID;
 
-    public Player(String playerName,int personalTeamID, ServerConnection serverConnection) {
+    public Player(String playerName,ServerConnection serverConnection) {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
-        this.personalTeamID = personalTeamID;
-        this.teamID = personalTeamID;
+        teamID = -1;
 
 
     }
@@ -47,6 +46,15 @@ public class Player {
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
     }
+
+    public static Comparator<Player> TeamIdComparator = new Comparator<Player>() {
+        @Override
+        public int compare(Player player1, Player player2) {
+            int teamIdPlayer1 = player1.getTeamID();
+            int teamIdPlayer2 = player2.getTeamID();
+            return teamIdPlayer1 - teamIdPlayer2;
+        }
+    };
 
     /**
      * Creates 4 pieces for a player
@@ -113,10 +121,6 @@ public class Player {
         newPosition.setPiece(pieceToMove);
     }
 
-    public int getPersonalTeamID() {
-        return personalTeamID;
-    }
-
     public void setTeamID(int newID) {
 
         teamID = newID;
@@ -124,11 +128,6 @@ public class Player {
 
     public int getTeamID() {
         return teamID;
-    }
-
-
-    public void setTeamIDToPersID() {
-        teamID = personalTeamID;
     }
 
 

@@ -2,6 +2,7 @@ package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -18,15 +19,14 @@ public class GameFile {
     private String confirmedParticipants;
     private int numberOfConfirmed;
     private int numberParticipants;
-    private int IDCounter;
     private int total;
     private boolean pendent;
     private MainGame mainGame;
     private int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
+    private int teamIDs;
 
     public GameFile(String nameId, String host,String total, int teamMode, ServerConnection serverConnection) {
-        this.IDCounter = 0;
         this.nameId = nameId;
         this.host = host;
         this.total = Integer.parseInt(total);
@@ -36,37 +36,67 @@ public class GameFile {
         this.numberOfConfirmed = 0;
         this.pendent = true;
         this.teamMode = teamMode;
-        players.add(new Player(host,IDCounter++, serverConnection));
+        setUpTeamMode();
+
+        players.add(new Player(host, serverConnection));
 
 
         sendMessageToParticipants("OGAM " + getSendReady());
+    }
 
+    /**
+     * if team mode is activated it is bigger than one,
+     * and to get the team Ids divide total by teamMode
+     */
+    private void setUpTeamMode() {
+
+        if (teamMode > 0) {
+            this.teamIDs = total / teamMode;
+        }
     }
 
     /**
      *
-     * @param applicant client who wants to change a team
-     * @param subject subject who is added to the team with applicant
+     * @param combination is a string with the teamsize, number of names
+     *                    transmitted and with the names which
+     *                    should be together in a team
      */
-    public void changeTeam(String applicant, String subject) {
-        if (teamMode <= 1) {
-            if (numberParticipants % 2 == 0) {
+    public void changeTeam(String combination) {
+        //e.g. format of combination 2 4 Gregor Ruben Johanna Joe
+        // teams of two
+        //Gregor - Ruben & Johanna - Joe
+        int teamSize = combination.charAt(0);
+        int sizeNames = combination.charAt(1);
+        if (sizeNames == numberParticipants) {
 
+           String[] array = parseNames(sizeNames,combination.substring(3));
+           int teamID = 0;
+           while (teamID < sizeNames / teamSize) {
+               for (int i = 0; i < teamSize; i++) {
+                   getPlayer(array[i]).setTeamID(teamID);
+               }
+               teamID++;
+           }
 
-                if (total == 6) {
+           orderByTeamId();
 
-                    if (teamMode < 1) {
-                        //check with teams of three
-                    } else {
-                        //check with teams of two
-                    }
-                }
-            } else {
-                getPlayer(applicant).getServerConnection().getSender().sendStringToClient(
-                        "INFO odd number of participants, cannot change teams now");
-            }
         } else {
-            getPlayer(applicant).getServerConnection().getSender().sendStringToClient("INFO team mode not activated");
+            // do nothing
+        }
+    }
+
+    private void orderByTeamId() {
+        Collections.sort(players, Player.TeamIdComparator);
+    }
+
+
+    public void setTeams() {
+        if (teamMode == 1) {
+            for (int i = 0; i < players.size(); i++) {
+
+            }
+
+
         }
     }
 
@@ -107,7 +137,7 @@ public class GameFile {
     }
 
     public void addParticipant(ServerConnection serverConnection) {
-        players.add(new Player(serverConnection.getNickname(),IDCounter++, serverConnection));
+        players.add(new Player(serverConnection.getNickname(),serverConnection));
 
         sendMessageToParticipants("LPUB " + serverConnection.getNickname());
         for (int i = 0; i < numberParticipants - 1; i++) {
@@ -115,15 +145,13 @@ public class GameFile {
         }
 
         if (teamMode == 1 && readyToStart()) {
-            setTeamsAutomatically();
+
+            //check for teams
+            // get players arraylist in definitive order
         }
 
     }
 
-    private void setTeamsAutomatically() {
-
-
-    }
 
     public String getParticipants() {
         String participants = "";

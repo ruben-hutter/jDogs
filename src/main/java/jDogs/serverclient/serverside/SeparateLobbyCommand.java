@@ -75,17 +75,12 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "TEAM":
-                    if (gameFile.getPlayer(text.substring(5)) != null) {
-                        gameFile.changeTeam(nickname, text.substring(5));
-                    } else {
-                        sendToThisClient.enqueue("INFO error client doesn`t exist");
-                    }
+                    gameFile.changeTeam(text.substring(5));
+                    sendToThisClient.enqueue("INFO error client doesn`t exist");
                     break;
 
                 case "STAR":
-
                     // client confirms to start the game
-
                     GameFile gameFile = getGame(text.substring(5));
                     if (gameFile == null) {
                         sendToThisClient.enqueue("INFO game name does not exist on server");
