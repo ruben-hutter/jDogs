@@ -11,7 +11,7 @@ public class Piece implements Comparable<Piece> {
     protected final Alliance_4 pieceAlliance4;
     protected final int pieceID;
     protected final int startingPosition;
-    protected final boolean hasMoved;
+    protected boolean hasMoved;
     private Tile position;
     private String positionServer1;
     private int positionServer2;
@@ -33,6 +33,10 @@ public class Piece implements Comparable<Piece> {
 
     public boolean getHasMoved() {
         return hasMoved;
+    }
+
+    public void changeHasMoved() {
+        hasMoved = !hasMoved;
     }
 
     public int getPieceID() {

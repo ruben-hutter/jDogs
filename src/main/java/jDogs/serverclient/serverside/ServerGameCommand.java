@@ -389,11 +389,9 @@ public class ServerGameCommand {
 
         // updates piecesOnTrack in gameState
         Piece piece = player.getPiece(pieceID);
-        if (gameState.isPieceOnTrack(piece)) {
-            // TODO check hasMoved or not, change pos or remove and call updatePiecesOnTrack()
-        }
+        gameState.updatePiecesOnTrack(piece, newPosition1);
+
         // TODO add to piecesOnTrack and update
-        gameState.updatePiecesOnTrack(piece);
     }
 
     /**
