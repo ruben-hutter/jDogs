@@ -12,49 +12,54 @@ public class ServerParser {
 
     public GameFile setUpGame(String gameSetup) {
 
-        int nameSeparator = 0;
+        try {
+            int nameSeparator = 0;
 
-        for (int i = 0; i < gameSetup.length(); i++) {
-            if (Character.isWhitespace(gameSetup.charAt(i))) {
-                nameSeparator = i;
-                break;
+            for (int i = 0; i < gameSetup.length(); i++) {
+                if (Character.isWhitespace(gameSetup.charAt(i))) {
+                    nameSeparator = i;
+                    break;
+                }
             }
-        }
 
-        if (nameSeparator == 0) {
+            if (nameSeparator == 0) {
+                return null;
+            }
+
+            int totalSeparator = 0;
+
+            for (int i = nameSeparator + 1; i < gameSetup.length(); i++) {
+                if (Character.isWhitespace(gameSetup.charAt(i))) {
+                    totalSeparator = i;
+                    break;
+                }
+            }
+
+            String name = gameSetup.substring(0,nameSeparator);
+            String total = gameSetup.substring(nameSeparator + 1, totalSeparator);
+
+            // team mode 0 == false
+            // team mode 1 == true
+            int teamMode = Integer.parseInt(gameSetup.substring(totalSeparator + 1));
+
+            int number = Integer.parseInt(total);
+            // allow only games with 4 or 6 players
+            if (number == 4 || number == 6) {
+
+                String host = serverConnection.getNickname();
+                name = checkName(name);
+
+                if (checkHost(host)) {
+                   return new GameFile(name, host, total, teamMode, serverConnection);
+                }
+                System.err.println("Gamehost " + host
+                                    + " already exists in server.allGamesNotFinished!");
+            }
+            return null;
+        } catch (Exception e) {
+
             return null;
         }
-
-        int totalSeparator = 0;
-
-        for (int i = nameSeparator + 1; i < gameSetup.length(); i++) {
-            if (Character.isWhitespace(gameSetup.charAt(i))) {
-                totalSeparator = i;
-                break;
-            }
-        }
-
-        String name = gameSetup.substring(0,nameSeparator);
-        String total = gameSetup.substring(nameSeparator + 1, totalSeparator);
-
-        // team mode 0 == false
-        // team mode 1 == true
-        int teamMode = Integer.parseInt(gameSetup.substring(totalSeparator + 1));
-
-        int number = Integer.parseInt(total);
-        // allow only games with 4 or 6 players
-        if (number == 4 || number == 6) {
-
-            String host = serverConnection.getNickname();
-            name = checkName(name);
-
-            if (checkHost(host)) {
-               return new GameFile(name, host, total, teamMode, serverConnection);
-            }
-            System.err.println("Gamehost " + host
-                                + " already exists in server.allGamesNotFinished!");
-        }
-        return null;
     }
 
     private boolean checkHost(String host) {
@@ -83,8 +88,4 @@ public class ServerParser {
         }
         return name;
     }
-
-
-
-
 }

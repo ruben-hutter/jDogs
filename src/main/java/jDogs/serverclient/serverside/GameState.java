@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class GameState {
 
     private final GameFile gameFile;
-    String[] playerNames;
-    Player[] playersState;
+    private String[] playerNames;
+   private Player[] playersState;
     int numPlayers;
 
     public GameState(GameFile gameFile) {
@@ -22,11 +22,13 @@ public class GameState {
     private Player[] createPlayers() {
         Player[] players = new Player[numPlayers];
         int counter = 0;
+        players = gameFile.getPlayersArray();
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            players[counter] = gameFile.getPlayersArray()[counter];
+            System.out.println("players " + players[counter].getPlayerName());
             players[counter].setUpPlayerOnServer(alliance_4);
             counter++;
         }
+        System.out.println("all players set up");
         return players;
     }
 
@@ -37,6 +39,10 @@ public class GameState {
             }
         }
         return null;
+    }
+
+    public Player[] getPlayersState() {
+        return playersState;
     }
 
     public void sendMessageToPlayers(String message) {

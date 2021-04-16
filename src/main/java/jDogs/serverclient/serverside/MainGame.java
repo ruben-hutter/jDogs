@@ -12,6 +12,7 @@ public class MainGame {
     private int numbDealOut;
     private ArrayList<String> deck;
     private Random random = new Random();
+    private ArrayList<Player> players;
 
 
 
@@ -20,6 +21,9 @@ public class MainGame {
         GameState gameState = new GameState(gameFile);
         gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
                 + gameFile.getParticipants());
+
+        players = gameFile.getPlayers();
+
         startGameRhythm();
     }
 
@@ -47,6 +51,8 @@ public class MainGame {
         gameArray = new String[oldArray.length];
         int players = 0;
 
+        System.out.println("RANDOM beginner is " + oldArray[random]);
+
         for (int i = random; i < oldArray.length; i++) {
             gameArray[players] = oldArray[i];
             players++;
@@ -63,10 +69,6 @@ public class MainGame {
     private void nextTurn() {
 
         Server.getInstance().getSender(gameArray[turnNumber]).sendStringToClient("TURN");
-        // System.out.println(turnNumber);
-        // System.out.println(gameArray[turnNumber]);
-
-        // System.out.println("TURN");
     }
 
     private void dealOutCards(int number) {
@@ -81,13 +83,14 @@ public class MainGame {
 
             for (int j = 0; j < number; j++) {
                 int randomNumber = random.nextInt(deck.size());
-                newHand += " " + deck.get(randomNumber);
-                newHandArray.add(deck.get(randomNumber));
-                deck.remove(randomNumber);
+                String card = deck.remove(randomNumber);
+                System.out.println("Card " + card);
+                newHand += " " + card;
+                newHandArray.add(card);
             }
             // send newHand to player and to client here
-            gameState.playersState[i].setDeck(newHandArray);
-            gameState.playersState[i].sendMessageToClient(newHand);
+            players.get(i).setDeck(newHandArray);
+            players.get(i).sendMessageToClient(newHand);
         }
 
     }

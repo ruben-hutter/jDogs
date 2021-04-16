@@ -81,16 +81,9 @@ public class SeparateLobbyCommand {
 
                 case "STAR":
                     // client confirms to start the game
-                    GameFile gameFile = getGame(text.substring(5));
-                    if (gameFile == null) {
-                        sendToThisClient.enqueue("INFO game name does not exist on server");
-                        break;
-                    }
-                    gameFile.confirmStart(nickname);
 
-                    //set all to game mode
-
-                    if (gameFile.startGame()) {
+                    if (gameFile.readyToStart() && gameFile.getHost().equals(nickname)) {
+                        System.out.println("starting game ");
                         gameFile.start();
                     }
                     break;

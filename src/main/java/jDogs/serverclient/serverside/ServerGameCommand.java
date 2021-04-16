@@ -67,6 +67,7 @@ public class ServerGameCommand {
 
                 sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
+
         }
 
     }

@@ -26,7 +26,8 @@ public class GameFile {
     private ArrayList<Player> players = new ArrayList<>();
     private int teamIDs;
 
-    public GameFile(String nameId, String host,String total, int teamMode, ServerConnection serverConnection) {
+    public GameFile(String nameId, String host, String total, int teamMode,
+            ServerConnection serverConnection) {
         this.nameId = nameId;
         this.host = host;
         this.total = Integer.parseInt(total);
@@ -40,13 +41,12 @@ public class GameFile {
 
         players.add(new Player(host, serverConnection));
 
-
         sendMessageToParticipants("OGAM " + getSendReady());
     }
 
     /**
-     * if team mode is activated it is bigger than one,
-     * and to get the team Ids divide total by teamMode
+     * if team mode is activated it is bigger than one, and to get the team Ids divide total by
+     * teamMode
      */
     private void setUpTeamMode() {
 
@@ -56,10 +56,8 @@ public class GameFile {
     }
 
     /**
-     *
-     * @param combination is a string with the teamsize, number of names
-     *                    transmitted and with the names which
-     *                    should be together in a team
+     * @param combination is a string with the teamsize, number of names transmitted and with the
+     *                    names which should be together in a team
      */
     public void changeTeam(String combination) {
         //e.g. format of combination 2 4 Gregor Ruben Johanna Joe
@@ -69,16 +67,16 @@ public class GameFile {
         int sizeNames = combination.charAt(1);
         if (sizeNames == numberParticipants) {
 
-           String[] array = parseNames(sizeNames,combination.substring(3));
-           int teamID = 0;
-           while (teamID < sizeNames / teamSize) {
-               for (int i = 0; i < teamSize; i++) {
-                   getPlayer(array[i]).setTeamID(teamID);
-               }
-               teamID++;
-           }
+            String[] array = parseNames(sizeNames, combination.substring(3));
+            int teamID = 0;
+            while (teamID < sizeNames / teamSize) {
+                for (int i = 0; i < teamSize; i++) {
+                    getPlayer(array[i]).setTeamID(teamID);
+                }
+                teamID++;
+            }
 
-           orderByTeamId();
+            orderByTeamId();
 
         } else {
             // do nothing
@@ -87,18 +85,9 @@ public class GameFile {
 
     private void orderByTeamId() {
         Collections.sort(players, Player.TeamIdComparator);
+        System.out.println("NEW TEAM combination " + participants);
     }
 
-
-    public void setTeams() {
-        if (teamMode == 1) {
-            for (int i = 0; i < players.size(); i++) {
-
-            }
-
-
-        }
-    }
 
     public Player getPlayer(String name) {
         for (Player player : players) {
@@ -137,8 +126,8 @@ public class GameFile {
     }
 
     public void addParticipant(ServerConnection serverConnection) {
-        players.add(new Player(serverConnection.getNickname(),serverConnection));
-
+        players.add(new Player(serverConnection.getNickname(), serverConnection));
+        numberParticipants++;
         sendMessageToParticipants("LPUB " + serverConnection.getNickname());
         for (int i = 0; i < numberParticipants - 1; i++) {
             players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
@@ -154,15 +143,36 @@ public class GameFile {
     }
 
     /**
-     * this method orders the arrayList of players
-     * so that team members don`t sit next to each other
+     * @param serverConnection is the participant which should be removed attention: it doesn`t work
+     *                         for the host the host should be removed by deleting the whole file
+     */
+    public void removeParticipant(ServerConnection serverConnection) {
+        String nickname = serverConnection.getNickname();
+
+        if (pendent) {
+            Player player = getPlayer(nickname);
+            players.remove(player);
+            numberParticipants--;
+            sendMessageToParticipants("DPER " + nickname);
+            Server.getInstance().getSender(nickname)
+                    .sendStringToAllClients("OGAM " + getSendReady());
+        } else {
+            // if serverConnection of a client stops while playing the server sends all clients back to public lobby
+            sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
+            cancel();
+        }
+    }
+
+    /**
+     * this method orders the arrayList of players so that team members don`t sit next to each
+     * other
      */
     private void OrderArrayListToPlayGame() {
 
         ArrayList<Player> newList = new ArrayList<>();
 
         int counter = players.get(0).getTeamID();
-        int teamSize = numberParticipants/teamIDs;
+        int teamSize = numberParticipants / teamIDs;
         int sizeAllEntries = players.size();
 
         while (newList.size() < sizeAllEntries - 1) {
@@ -180,13 +190,12 @@ public class GameFile {
 
         players = newList;
 
-        }
+    }
 
 
     /**
-     * checks that teams are complete when
-     * starting game and sets random teams
-     * if some players aren`t part of a team
+     * checks that teams are complete when starting game and sets random teams if some players
+     * aren`t part of a team
      */
     private void checkforTeams() {
         boolean teamsIncomplete = false;
@@ -214,7 +223,7 @@ public class GameFile {
     }
 
     public String getSendReady() {
-         return nameId + " " + host + " " + numberParticipants + " " + total + " " + teamMode;
+        return nameId + " " + host + " " + numberParticipants + " " + total + " " + teamMode;
     }
 
     public String getNameId() {
@@ -240,32 +249,11 @@ public class GameFile {
     }
 
     public void sendConfirmationMessage() {
-        sendMessageToParticipants("STAR");
+        getPlayer(host).sendMessageToClient("STAR");
     }
 
     public int getNumberOfParticipants() {
         return numberParticipants;
-    }
-
-    /**
-     *
-     * @param nickName is the client who confirmed to start game
-     */
-    public void confirmStart(String nickName) {
-        if (numberOfConfirmed == 0) {
-            confirmedParticipants = nickName;
-        } else {
-            confirmedParticipants += nickName;
-        }
-        numberOfConfirmed++;
-    }
-
-    /**
-     *
-     * @return true if everyone confirmed starting the game
-     */
-    public boolean startGame() {
-        return total == numberOfConfirmed;
     }
 
     /**
@@ -282,49 +270,24 @@ public class GameFile {
     }
 
     /**
-     *
-     * @return MainGame file,
-     * which only exists if game started
+     * @return MainGame file, which only exists if game started
      */
     public MainGame getMainGame() {
         return mainGame;
     }
 
-    /**
-     *
-     * @param serverConnection is the participant which should be removed
-     *                 attention: it doesn`t work for the host
-     *                 the host should be removed
-     *                 by deleting the whole file
-     */
-    public void removeParticipant(ServerConnection serverConnection) {
-        String nickname = serverConnection.getNickname();
-
-        if (pendent) {
-            Player player = getPlayer(nickname);
-            players.remove(player);
-            numberParticipants--;
-            sendMessageToParticipants("DPER " + nickname);
-            Server.getInstance().getSender(nickname)
-                    .sendStringToAllClients("OGAM " + getSendReady());
-        }  else {
-        // if serverConnection of a client stops while playing the server sends all clients back to public lobby
-        sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
-        cancel();
-        }
-    }
 
     /**
-     * deletes this game, because it ended or
-     * because it is deleted by the host or a player
-     * did quit the game while playing
+     * deletes this game, because it ended or because it is deleted by the host or a player did quit
+     * the game while playing
      */
     public void cancel() {
 
         for (Player player : players) {
             player.getServerConnection().getMessageHandlerServer().returnToLobby();
         }
-        if (pendent) {sendMessageToAll("DOGA " + getSendReady());
+        if (pendent) {
+            sendMessageToAll("DOGA " + getSendReady());
         } else {
             Server.getInstance().finishedGames.add(this);
             System.out.println("INFO game finished");
@@ -334,9 +297,7 @@ public class GameFile {
     }
 
     /**
-     *
-     * @param message message to every active player
-     *                in lobby, separate lobby or games
+     * @param message message to every active player in lobby, separate lobby or games
      */
     private void sendMessageToAll(String message) {
         for (ServerConnection serverConnection1 : Server.getInstance().serverConnections) {
@@ -345,7 +306,6 @@ public class GameFile {
     }
 
     /**
-     *
      * @return true if int teamMode is 1
      */
     public boolean isTeamMode() {
@@ -353,7 +313,6 @@ public class GameFile {
     }
 
     /**
-     *
      * @return true if the game is not started but an "open game file"
      */
     public boolean isPendent() {
@@ -361,7 +320,6 @@ public class GameFile {
     }
 
     /**
-     *
      * @return Array of the player objects
      */
     public Player[] getPlayersArray() {
@@ -373,4 +331,9 @@ public class GameFile {
         }
         return array;
     }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
 }

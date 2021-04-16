@@ -190,7 +190,7 @@ public class ServerMenuCommand {
                             actualGame = game.getNameId();
                             messageHandlerServer.setJoinedOpenGame(game, nickName);
 
-                            // all required players are set, then send start request to client
+                            // all required players are set, then send start request to host
                             if (game.readyToStart()) {
                                 game.sendConfirmationMessage();
                             }

@@ -45,6 +45,7 @@ public class Player {
         this.alliance4 = alliance4;
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
+        this.deck = null;
     }
 
     public static Comparator<Player> TeamIdComparator = new Comparator<Player>() {
