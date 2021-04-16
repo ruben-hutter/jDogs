@@ -3,6 +3,8 @@ package jDogs.serverclient.serverside;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import java.util.Random;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainGame {
     private String[] gameArray;
@@ -13,6 +15,7 @@ public class MainGame {
     private ArrayList<String> deck;
     private Random random = new Random();
     private ArrayList<Player> players;
+    private static final Logger logger = LogManager.getLogger(MainGame.class);
 
 
 
@@ -91,6 +94,7 @@ public class MainGame {
             // send newHand to player and to client here
             players.get(i).setDeck(newHandArray);
             players.get(i).sendMessageToClient(newHand);
+            logger.debug("Player " + players.get(i) + " has cards " + newHand);
         }
 
     }

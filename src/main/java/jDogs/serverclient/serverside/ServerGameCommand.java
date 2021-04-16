@@ -5,9 +5,12 @@ import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.player.Piece;
 import jDogs.player.Player;
+import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ServerGameCommand contains the game
@@ -29,6 +32,7 @@ public class ServerGameCommand {
     private String actualGame;
     private GameFile gameFile;
     private GameState gameState;
+    private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -43,6 +47,7 @@ public class ServerGameCommand {
     }
 
     public void execute(String text) {
+        logger.debug("Entered ServerGameCommand with: " + text);
         String command = text.substring(0,4);
 
         switch(command) {

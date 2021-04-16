@@ -1,6 +1,8 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.serverclient.helpers.Queuejd;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SeparateLobbyCommand {
 
@@ -11,6 +13,7 @@ public class SeparateLobbyCommand {
     private ServerConnection serverConnection;
     private GameFile gameFile;
     private String nickname;
+    private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
 
     SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, Queuejd sendToPub, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;
@@ -21,6 +24,7 @@ public class SeparateLobbyCommand {
     }
 
     public void execute(String text) {
+        logger.debug("Entered SeparateLobbyCommand with: " + text);
 
         String command = text.substring(0, 4);
 
@@ -85,6 +89,7 @@ public class SeparateLobbyCommand {
                     if (gameFile.readyToStart() && gameFile.getHost().equals(nickname)) {
                         System.out.println("starting game ");
                         gameFile.start();
+                        logger.debug("Game started");
                     }
                     break;
 
