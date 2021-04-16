@@ -9,28 +9,27 @@ import java.util.Collections;
 public class GameState {
 
     private final GameFile gameFile;
-    String[] playerNames;
-    Player[] playersState;
-    ArrayList<Piece> piecesOnTrack;
+    private String[] playerNames;
+    private ArrayList<Player> playersState;
+    private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
 
     public GameState(GameFile gameFile) {
         this.gameFile = gameFile;
         this.numPlayers = gameFile.getNumberOfParticipants();
         this.playerNames = gameFile.getParticipantsArray();
-        playersState = createPlayers();
+        playersState = gameFile.getPlayers();
+        createPlayers();
         piecesOnTrack = new ArrayList<>();
     }
 
-    private Player[] createPlayers() {
-        Player[] players = new Player[numPlayers];
+    private void createPlayers() {
         int counter = 0;
-        players = gameFile.getPlayersArray();
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            players[counter].setUpPlayerOnServer(alliance_4);
+            playersState.get(counter).setUpPlayerOnServer(alliance_4);
+            System.out.println(playersState.get(counter).getAlliance());
             counter++;
         }
-        return players;
     }
 
     public ArrayList<Piece> getSortedPiecesOnTrack() {
@@ -148,7 +147,7 @@ public class GameState {
         return null;
     }
 
-    public Player[] getPlayersState() {
+    public ArrayList<Player> getPlayersState() {
         return playersState;
     }
 

@@ -33,6 +33,7 @@ public class ServerGameCommand {
     private GameFile gameFile;
     private GameState gameState;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
+    private ArrayList<Player> players;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -44,6 +45,7 @@ public class ServerGameCommand {
         this.loggedIn = false;
         this.nickname = null;
         this.serverParser = new ServerParser(server,serverConnection);
+        this.players = null;
     }
 
     public void execute(String text) {
@@ -192,7 +194,8 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("Piece isn't entered correctly");
                 return;
         }
-        for (Player player : gameState.playersState) {
+
+        for (Player player : players) {
             if (player.getAlliance() == alliance4) {
                 logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;
@@ -208,7 +211,7 @@ public class ServerGameCommand {
         // if card not ok with destination, return to client
         if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
                 newPosition2, startingPosition, hasMoved)) {
-            sendToThisClient.enqueue("Check the card value with your desired destination");
+            sendToThisClient.enqueue("INFO Check the card value with your desired destination");
             return;
         }
 
@@ -228,6 +231,7 @@ public class ServerGameCommand {
             boolean hasMoved) {
         int[] cardValues = getCardValues(card);
         if (cardValues == null) {
+            System.out.println("wrong card value " + card);
             return false;
         }
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
@@ -370,7 +374,7 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("Piece isn't entered correctly");
                 return;
         }
-        for (Player player : gameState.playersState) {
+        for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == ownAlliance4) {
                 ownPlayer = player;
                 ownActualPosition1 = player.recivePosition1Server(ownPieceID);
@@ -398,7 +402,7 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("Piece isn't entered correctly");
                 return;
         }
-        for (Player player : gameState.playersState) {
+        for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == otherAlliance4) {
                 otherPlayer = player;
                 otherActualPosition1 = player.recivePosition1Server(otherPieceID);

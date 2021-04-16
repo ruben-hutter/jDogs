@@ -29,11 +29,12 @@ public class ClientGame {
         players = new Player[numPlayers];
         int counter = 0;
         for (Alliance_4 alliance4 : Alliance_4.values()) {
+
             players[counter] = new Player(playerNames[counter], alliance4, board);
+            System.out.println("client game " + players[counter].getPlayerName());
             counter++;
         }
     }
-
     /**
      * Prints the actual game state
      */
