@@ -53,10 +53,19 @@ public class ServerGameCommand {
                 //finish game
                 break;
             case "MOVE":
+
+                String playerName = serverConnection.getNickname();
+                Player player = gameState.getPlayer(playerName);
+                String toCheckMove = checkCard(player, text);
+                if(toCheckMove == null){
+                    //return
+                }
+                //String card = text.substring(5, 9);
+                String card = toCheckMove.substring(5, 9);
                 // if String test = checkCard("MOVE JOKE TWOO YELO-1 B20") MOVE TWOO YEL...
 
                 // special cases (move command syntax different from normal)
-                String card = text.substring(5, 9);
+
                 switch (card) {
                     case "SEVE":
                         int piecesToMove = Integer.parseInt(text.substring(10, 11));
@@ -111,13 +120,28 @@ public class ServerGameCommand {
     /**
      * Checks if the given card is in the players hand
      * @param player
-     * @param card
+     * @param text
      * @return
      */
-    private boolean checkCard(Player player, String card){
-        // TODO: Get player from server connection?
+    private String checkCard(Player player, String text){
+        String card = text.substring(5, 9);
+        String toCheckMove = null;
         ArrayList<String> deck = player.getDeck();
-        return deck.contains(card);
+        if(deck.contains(card)){
+            switch (card){
+                case "JOKE":
+                    String value = text.substring(10,14);
+                    toCheckMove = "MOVE" + " " + value + " " + text.substring(15);
+                    break;
+                case "JACK":
+                    String piece1 = text.substring(10,16);
+                    String piece2 = text.substring(17,22);
+                    toCheckMove = "MOVE" + " " + piece1 + " " + piece2;
+                default:
+                    toCheckMove =  "MOVE" + " " + card + " " + text.substring(10);
+            }
+        }
+        return toCheckMove;
 
     }
 
