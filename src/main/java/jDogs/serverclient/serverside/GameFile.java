@@ -262,11 +262,10 @@ public class GameFile {
      */
     public void start() {
         pendent = false;
-        //Server.getInstance().startGame(new MainGame(this));
+        mainGame = new MainGame(this);
+        Server.getInstance().startGame(mainGame);
         for (int i = 0; i < players.size(); i++) {
             players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
-            mainGame = new MainGame(this);
-            Server.getInstance().startGame(mainGame);
         }
     }
 
