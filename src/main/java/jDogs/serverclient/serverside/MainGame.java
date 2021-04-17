@@ -44,7 +44,6 @@ public class MainGame {
      */
     private void startGameRhythm() {
         setRandomBeginner();
-        //TODO test method
         this.numberOfRounds = 0;
         turnNumber = 0;
         this.numbDealOut = 6;

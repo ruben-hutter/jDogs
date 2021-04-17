@@ -85,7 +85,6 @@ public class ClientMenuCommand {
 
             case "LPUB":
 
-                //TODO Information update of active users in Public Lobby
                 //just compare to existing String/Array and replace if necessary
 
 
@@ -122,7 +121,6 @@ public class ClientMenuCommand {
 
             case "JOIN":
 
-                //TODO display Information about a user or users who joined a pendent game
 /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
@@ -149,7 +147,6 @@ public class ClientMenuCommand {
                 break;
 
             case "DOGA":
-                //TODO remove openGame from GUI-Lobby-Display
                 System.out.println("DOGA: " + text.substring(5));
                 /*
                 Platform.runLater(()->

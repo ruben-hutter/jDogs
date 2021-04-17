@@ -313,7 +313,6 @@ public class LobbyController implements Initializable {
             openGames.add(newGame);
     }
 
-    //TODO method doesn t remove object from sight
 
     public void removePendentGameInLobby(String substring) {
         OpenGame openGame = GuiParser.getOpenGame(substring);
@@ -340,7 +339,6 @@ public class LobbyController implements Initializable {
         playersInLobby.add(new Participant(player));
     }
 
-    //TODO method doesn t remove player
     public void removePlayerinPublic(String player) {
         try {
 

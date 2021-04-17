@@ -83,7 +83,6 @@ public class ServerGameCommand {
                     // special cases (move command syntax different from normal)
                     String card = toCheckMove.substring(0, 4);
                     switch (card) {
-                        // TODO substitute sub 5 with new command from checkCard()
                         case "SEVE":
                             checkMoveSeven(
                                     toCheckMove); // TODO difference between mod 0 and 1 (teams or not)
@@ -225,6 +224,8 @@ public class ServerGameCommand {
             //eliminate card
             gameFile.getPlayer(nickname).getDeck().remove(cardToEliminate);
             cardToEliminate = null;
+            mainGame.turnComplete(nickname);
+
         } else {
             sendToThisClient.enqueue("INFO entered command does`t fit the length(15) for checkmove()");
         }
@@ -546,8 +547,6 @@ public class ServerGameCommand {
         // updates client side
         gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
                 + newPosition2);
-        mainGame.turnComplete(nickname);
-        // TODO eliminate card!!
     }
 
     private void eliminatePiece(Piece piece) {

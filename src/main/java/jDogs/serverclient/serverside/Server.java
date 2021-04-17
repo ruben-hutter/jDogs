@@ -22,8 +22,6 @@ public class Server {
 
     private ServerSocket serverSocket;
     //this list contains all sender objects, but I want to replace by the list of all serverConnection objects
-    //TODO delete it
-    //ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
     //this list contains all nicknames used at the moment(to avoid duplicates)
     ArrayList<String> allNickNames = new ArrayList<>();
     //this map contains the names and the corresponding serverConnections objects
