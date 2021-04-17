@@ -22,8 +22,6 @@ public class Server {
 
     private ServerSocket serverSocket;
     //this list contains all sender objects, but I want to replace by the list of all serverConnection objects
-    //TODO delete it
-    //ArrayList<SendFromServer> publicSenderList = new ArrayList<>();
     //this list contains all nicknames used at the moment(to avoid duplicates)
     ArrayList<String> allNickNames = new ArrayList<>();
     //this map contains the names and the corresponding serverConnections objects
@@ -51,8 +49,13 @@ public class Server {
 
     boolean running = true;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         new Server(args);
+    }
+
+     */
+    public static void main(String[] args) {
+        new Server();
     }
 
     // return Singleton
@@ -60,7 +63,8 @@ public class Server {
         return instance;
     }
 
-    public Server(String[] args) {
+    //public Server(String[] args) {
+    public Server() {
         try {
 
             instance = this;

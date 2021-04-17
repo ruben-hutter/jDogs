@@ -1,5 +1,8 @@
 <<<<<<< HEAD
 
+
+.idea
+.settings
 # Created by https://www.toptal.com/developers/gitignore/api/gradle,intellij,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=gradle,intellij,java
 
@@ -132,7 +135,7 @@ fabric.properties
 hs_err_pid*
 
 ### Gradle ###
-*.gradle
+.gradle
 build/
 
 # Ignore Gradle GUI config

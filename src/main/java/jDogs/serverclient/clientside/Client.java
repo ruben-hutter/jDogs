@@ -48,11 +48,7 @@ public class Client {
         c.setNickname("maintenance");
     }
 
-
-
-
-
-    /**
+      /**
      * Sets up connection to Server
      * Messages are saved in specific queues
      * 5 threads to handle connection are started

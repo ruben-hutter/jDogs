@@ -1,7 +1,6 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
-import jDogs.serverclient.clientside.ClientGameCommand;
 import java.util.ArrayList;
 import java.util.Random;
 import org.apache.logging.log4j.LogManager;
@@ -16,19 +15,28 @@ public class MainGame {
     private ArrayList<String> deck;
     private Random random = new Random();
     private ArrayList<Player> players;
-    private static final Logger logger = LogManager.getLogger(ClientGameCommand.class);
-
+    private static final Logger logger = LogManager.getLogger(MainGame.class);
+    private int numberOfRounds;
 
 
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
-        GameState gameState = new GameState(gameFile);
-        gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
-                + gameFile.getParticipants());
+        this.gameState = new GameState(gameFile);
+        setUp();
+        startGameRhythm();
+    }
 
+    public void setUp() {
+        gameState.createPlayers();
         players = gameFile.getPlayers();
 
-        startGameRhythm();
+
+        for (Player player : players) {
+            player.getServerConnection().getMessageHandlerServer().setPlaying(true, this);
+            player.getServerConnection().getSender().sendStringToClient("GAME " + gameFile.getNumberOfParticipants() + " "
+                    + gameFile.getParticipants());
+            logger.debug("Player   ServerConnection " + player.getServerConnection());
+        }
     }
 
     /**
@@ -36,6 +44,7 @@ public class MainGame {
      */
     private void startGameRhythm() {
         setRandomBeginner();
+        this.numberOfRounds = 0;
         turnNumber = 0;
         this.numbDealOut = 6;
         //first deck
@@ -56,7 +65,8 @@ public class MainGame {
         int players = 0;
 
         System.out.println("RANDOM beginner is " + oldArray[random]);
-        logger.debug("Random beginner is: " + oldArray[random]);
+        gameFile.sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
+        logger.debug("Random beginner is: " +  oldArray[random]);
 
         for (int i = random; i < oldArray.length; i++) {
             gameArray[players] = oldArray[i];
@@ -72,8 +82,13 @@ public class MainGame {
      * this method sends a request to the next player to make a move
      */
     private void nextTurn() {
+        int numb = turnNumber % players.size();
 
-        Server.getInstance().getSender(gameArray[turnNumber]).sendStringToClient("TURN");
+        if (gameFile.getPlayer(gameArray[numb]).isAllowedToPlay()) {
+            Server.getInstance().getSender((gameArray[numb])).sendStringToClient("TURN");
+        } else {
+            turnComplete((gameArray[numb]));
+        }
     }
 
     private void dealOutCards(int number) {
@@ -81,7 +96,7 @@ public class MainGame {
 
         String newHand;
         ArrayList<String> newHandArray;
-
+/*
         for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
             newHandArray = new ArrayList<>();
             newHand = "ROUN " + turnNumber + " " + number;
@@ -96,6 +111,35 @@ public class MainGame {
             // send newHand to player and to client here
             players.get(i).setDeck(newHandArray);
             players.get(i).sendMessageToClient(newHand);
+            logger.debug("Player " + players.get(i) + " has cards " + newHandArray);
+            logger.debug("Client get the cards as: " + newHand);
+        }
+
+ */
+
+
+        newHandArray = new ArrayList<>();
+        //damit checkCard funktioniert, müssen die Strings einzeln hinzugefügt werden
+        //newHandArray.add("ACEE KING JOKE SIXX FOUR JACK");
+        newHand = "ROUN " + turnNumber + " " + number;
+
+        String hand = "ROUN " + turnNumber  + number + "ACEE ACEE TENN TWOO EIGT NINE";
+        String a = "ACEE";
+        String b = "TENN";
+        String c = "TWOO";
+        String d = "EIGT";
+        String e = "NINE";
+        String f = "ACEE";
+        newHandArray.add(a);
+        newHandArray.add(b);
+        newHandArray.add(c);
+        newHandArray.add(d);
+        newHandArray.add(e);
+        newHandArray.add(f);
+
+        for (Player player : players) {
+            player.sendMessageToClient(hand);
+            player.setDeck(newHandArray);
         }
 
     }
@@ -163,13 +207,15 @@ public class MainGame {
     public void turnComplete(String nickname) {
         System.out.println(nickname + " finished his turn");
         turnNumber++;
+        numberOfRounds++;
         // new round
         //no cards in any player`s hand
-        if (turnNumber == numbDealOut) {
+        if (numberOfRounds / gameFile.getNumberOfParticipants() == numbDealOut) {
             if (numbDealOut == 2) {
                 numbDealOut = 6;
                 // anew deck
                 deck = getDeck();
+                numberOfRounds = 0;
             } else {
                 numbDealOut--;
             }
@@ -188,8 +234,8 @@ public class MainGame {
         return gameFile;
     }
 
-    public Player getPlayer(String nickname) {
-        return gameState.getPlayer(nickname);
 
+    public GameState getGameState() {
+        return gameState;
     }
 }

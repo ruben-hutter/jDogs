@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
  */
 
 public class ServerMenuCommand {
+
     private final Server server;
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
@@ -27,7 +28,8 @@ public class ServerMenuCommand {
     private static final Logger logger = LogManager.getLogger(ServerMenuCommand.class);
 
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
-            MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
+            MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient,
+            Queuejd sendToAll) {
         this.server = server;
         this.serverConnection = serverConnection;
         this.messageHandlerServer = messageHandlerServer;
@@ -35,18 +37,18 @@ public class ServerMenuCommand {
         this.sendToAll = sendToAll;
         this.loggedIn = false;
         this.nickName = null;
-        this.serverParser = new ServerParser(server,serverConnection);
+        this.serverParser = new ServerParser(server, serverConnection);
     }
 
-    public void execute (String text) {
+    public void execute(String text) {
         //execute commands
-        String command = text.substring(0,4);
+
+        String command = text.substring(0, 4);
         // do not receive any commands but USER before logged in
         if (!loggedIn && !command.equals("USER")) {
             sendToThisClient.enqueue("INFO please log in first");
 
         } else {
-
             switch (command) {
                 case "USER":
                     if (text.length() < 6) {
@@ -82,7 +84,6 @@ public class ServerMenuCommand {
                                 + nickName);
                         sendToAll.enqueue("LPUB " + nickName);
 
-
                         System.out.println("login worked " + "USER " + nickName);
 
                         // if you are not logged in you are not added to the serverConnections lists
@@ -116,8 +117,9 @@ public class ServerMenuCommand {
                     break;
 
                 case "STAT":
-                    sendToThisClient.enqueue("STAT " + "runningGames " + server.runningGames.size()
-                            + " finishedGames " + server.finishedGames.size());
+                    sendToThisClient
+                            .enqueue("STAT " + "runningGames " + server.runningGames.size()
+                                    + " finishedGames " + server.finishedGames.size());
                     logger.debug("runningGames " + server.runningGames.size()
                             + " finishedGames " + server.finishedGames.size());
                     break;
@@ -144,7 +146,8 @@ public class ServerMenuCommand {
                         System.out.println("mess " + message);
                         try {
                             server.getSender(adressor)
-                                    .sendStringToClient("WCHT " + "@" + nickName + ": " + message);
+                                    .sendStringToClient(
+                                            "WCHT " + "@" + nickName + ": " + message);
                         } catch (Exception e) {
                             //prevent shutdown if nickname doesn`t exist in hashmap
                             sendToThisClient.enqueue("INFO nickname unknown");
@@ -172,7 +175,8 @@ public class ServerMenuCommand {
                 case "SESS":
                     for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
                         if (server.allGamesNotFinished.get(i).isPendent()) {
-                            sendToThisClient.enqueue("OGAM " + server.allGamesNotFinished.get(i).getSendReady());
+                            sendToThisClient.enqueue(
+                                    "OGAM " + server.allGamesNotFinished.get(i).getSendReady());
                         }
                     }
                     break;
@@ -213,13 +217,13 @@ public class ServerMenuCommand {
     }
     /**
      *
-      * @param gameName is the name of the game which was sent to the server
+     * @param gameName is the name of the game which was sent to the server
      * @return returns a game if it exists in the server ArrayList of unfinished games
      */
-    private GameFile getGame(String gameName) {
+    private GameFile getGame (String gameName){
         for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
             if (server.allGamesNotFinished.get(i).getNameId().equals(gameName)) {
-               return server.allGamesNotFinished.get(i);
+                return server.allGamesNotFinished.get(i);
             }
         }
         return null;
@@ -230,17 +234,17 @@ public class ServerMenuCommand {
      * @param game sets up a game if someone sends the command "OGAM" with the fitting parameters
      */
 
-    private void setUpGame(String game) {
-       GameFile gameFile = serverParser.setUpGame(game);
-       if (gameFile == null) {
-           System.err.println("ERROR setUpGame");
-           sendToThisClient.enqueue("INFO wrong game file format");
-       } else {
-           System.out.println("set up game <" + gameFile.getNameId() + "> worked");
-           server.allGamesNotFinished.add(gameFile);
-           messageHandlerServer.setJoinedOpenGame(gameFile, nickName);
-           sendToAll.enqueue("OGAM " + gameFile.getSendReady());
-       }
+    private void setUpGame (String game){
+        GameFile gameFile = serverParser.setUpGame(game);
+        if (gameFile == null) {
+            System.err.println("ERROR setUpGame");
+            sendToThisClient.enqueue("INFO wrong game file format");
+        } else {
+            System.out.println("set up game <" + gameFile.getNameId() + "> worked");
+            server.allGamesNotFinished.add(gameFile);
+            messageHandlerServer.setJoinedOpenGame(gameFile, nickName);
+            sendToAll.enqueue("OGAM " + gameFile.getSendReady());
+        }
     }
 
     /**
@@ -248,7 +252,7 @@ public class ServerMenuCommand {
      * @param name nickname to check
      * @return false, if name contains whitespace
      */
-    private boolean validCharacters(String name) {
+    private boolean validCharacters (String name){
         for (int i = 0; i < name.length(); i++) {
             if (Character.isWhitespace(name.charAt(i))) {
                 return false;
@@ -261,11 +265,11 @@ public class ServerMenuCommand {
      * Returns the nickName of the user
      * @return nickName
      */
-    public String getNickName() {
+    public String getNickName () {
         return nickName;
     }
 
-    public void sendAllPublicGuests() {
+    public void sendAllPublicGuests () {
         for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
             sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
         }

@@ -1,4 +1,5 @@
 package jDogs.serverclient.serverside;
+//this class represents information of pendent games(still in lobby) or ongoing games
 
 import jDogs.player.Player;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class GameFile {
     private void setUpTeamMode() {
 
         if (teamMode > 0) {
-            this.teamIDs = total / teamMode;
+            this.teamIDs = total / teamMode + 1;
         }
     }
 
@@ -214,13 +215,15 @@ public class GameFile {
         }
     }
 
-
     public String getParticipants() {
+
         String participants = "";
 
-        for (Player player : players) {
-            participants += player.getPlayerName();
+        for (int i = 0; i < players.size() - 1; i++) {
+            participants += players.get(i).getPlayerName() + " ";
         }
+        participants += players.get(players.size() - 1).getPlayerName();
+        logger.debug("Participants: " + participants);
 
         return participants;
     }
@@ -264,14 +267,8 @@ public class GameFile {
      */
     public void start() {
         pendent = false;
-        //Server.getInstance().startGame(new MainGame(this));
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
-            mainGame = new MainGame(this);
-            Server.getInstance().startGame(mainGame);
-            logger.debug(Server.getInstance());
-            logger.debug("mainGame: " + mainGame);
-        }
+        mainGame = new MainGame(this);
+        Server.getInstance().startGame(mainGame);
     }
 
     /**
