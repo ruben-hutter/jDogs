@@ -97,37 +97,6 @@ public class GameState {
         return otherPiece;
     }
 
-    public static void main(String[] args) {
-        Piece piece1 = new Piece(Alliance_4.BLUE, 1 , 1);
-        Piece piece2 = new Piece(Alliance_4.YELLOW, 1 , 1);
-        Piece piece3 = new Piece(Alliance_4.GREEN, 1 , 1);
-        piece1.setPositionServer("A", 0);
-        piece2.setPositionServer("B", 10);
-        piece3.setPositionServer("B", 63);
-        ArrayList<Piece> test = new ArrayList<>();
-        test.add(piece2);
-        test.add(piece3);
-
-        String newPosition1 = "B";
-        if (isInTest(test, piece1)) {
-            if (!newPosition1.equals("B")) {
-                test.remove(piece1);
-                if (newPosition1.equals("A")) {
-                    piece1.changeHasMoved();
-                }
-            }
-        } else if (!isInTest(test, piece1)) {
-            if (newPosition1.equals("B")) {
-                test.add(piece1);
-            }
-        }
-
-
-        Collections.sort(test);
-        System.out.println(test);
-        System.out.println(piece1.getHasMoved());
-    }
-
     private static boolean isInTest(ArrayList<Piece> test, Piece piece) {
         for (Piece p : test) {
             if (p.getPieceAlliance() == piece.getPieceAlliance()

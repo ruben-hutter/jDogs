@@ -69,26 +69,19 @@ public class ServerGameCommand {
                 if(toCheckMove == null){
                     //return
                     logger.debug("Invalid card");
+                    return;
                 }
                 //String card = text.substring(5, 9);
                 String card = toCheckMove.substring(5, 9);
-                // if String test = checkCard("MOVE JOKE TWOO YELO-1 B20") MOVE TWOO YEL...
 
                 // special cases (move command syntax different from normal)
 
                 switch (card) {
                     case "SEVE":
-                        int piecesToMove = Integer.parseInt(text.substring(10, 11));
-                        int startIndex = 12;
-                        for (int i = 0; i < piecesToMove; i++) {
-                            //simpleMove(text.substring(startIndex, startIndex + 10));
-                            //startIndex += 11;
-                        }
+                        checkMoveSeven(text.substring(5)); // TODO difference between mod 0 and 1 (teams or not)
                         break;
                     case "JACK":
                         checkMoveJack(text.substring(5));
-                        break;
-                    case "JOKE":
                         break;
                     default:
                         checkMove(text.substring(5));
@@ -116,15 +109,6 @@ public class ServerGameCommand {
                 sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
         }
-
-        }
-
-    /**
-     * Move a piece and eliminate enemy
-     */
-    private void attackMove(Player player, int pieceID, String newPosition1, int newPosition2,
-            Piece toEliminate) {
-        // TODO where to put eliminated piece exactly
     }
 
     /**
@@ -220,7 +204,7 @@ public class ServerGameCommand {
             sendToThisClient.enqueue("You eliminate yourself!");
         }
 
-        // TODO eliminate played card
+        // TODO eliminate played card in simpleMove()
     }
 
     /**
@@ -236,8 +220,8 @@ public class ServerGameCommand {
         }
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
             // you play an exit card and you exit on your starting position
-            return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING")
-                    || card.equals("JOKE")) && newPosition2 == startingPosition;
+            return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING"))
+                    && newPosition2 == startingPosition;
         } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
             int difference = newPosition2 - actualPosition2;
@@ -425,6 +409,15 @@ public class ServerGameCommand {
         }
     }
 
+    private void checkMoveSeven(String completeMove) {
+        int piecesToMove = Integer.parseInt(text.substring(10, 11));
+        int startIndex = 12;
+        for (int i = 0; i < piecesToMove; i++) {
+            (text.substring(startIndex, startIndex + 10));
+            startIndex += 11;
+        }
+    }
+
     /**
      * Checks if on the destination is already a piece
      * @return
@@ -444,6 +437,16 @@ public class ServerGameCommand {
     }
 
     // TODO no block going heaven or passing track
+
+    /**
+     * Move a piece and eliminate enemy
+     */
+    private void attackMove(Player player, int pieceID, String newPosition1, int newPosition2,
+            Piece toEliminate) {
+        simpleMove(player, pieceID, newPosition1, newPosition2);
+        eliminatePiece(toEliminate);
+        // card is eliminated in simpleMove()
+    }
 
     /**
      * Move a piece without eliminating any
@@ -474,7 +477,36 @@ public class ServerGameCommand {
         // updates client side
         gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
                 + newPosition2);
-        // TODO test if the right message is given to the client
+
+        // TODO eliminate card!!
+    }
+
+    private void eliminatePiece(Piece piece) {
+        int pieceID = piece.getPieceID();
+        String newPosition1 = "A";
+        int newPosition2 = pieceID - 1;
+
+        piece.setPositionServer(newPosition1, newPosition2);
+        gameState.updatePiecesOnTrack(piece, "A");
+
+        String pieceAlliance = "";
+        switch(piece.getPieceAlliance()) {
+            case YELLOW:
+                pieceAlliance = "YELO";
+                break;
+            case GREEN:
+                pieceAlliance = "GREN";
+                break;
+            case BLUE:
+                pieceAlliance = "BLUE";
+                break;
+            case RED:
+                pieceAlliance = "REDD";
+                break;
+        }
+        // updates client side
+        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
+                + newPosition2);
     }
 
     /**
