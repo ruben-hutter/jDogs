@@ -30,6 +30,7 @@ public class ServerGameCommand {
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
     private ArrayList<Player> players;
     private MainGame mainGame;
+    private String cardToEliminate;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -41,6 +42,7 @@ public class ServerGameCommand {
         this.loggedIn = false;
         this.serverParser = new ServerParser(server,serverConnection);
         this.players = null;
+        this.cardToEliminate = null;
     }
 
     public void execute(String text) {
@@ -58,13 +60,21 @@ public class ServerGameCommand {
             case "MOVE":
                 if (text.length() >= 9) {
 
+                    if (text.substring(5,9).equals("SURR")) {
+                        gameFile.getPlayer(nickname).excludeForRound();
+                        sendToThisClient.enqueue("INFO excluded for this round");
+                        mainGame.turnComplete(nickname);
+                        break;
+                    }
+
                     String playerName = serverConnection.getNickname();
                     logger.debug("Player nickname: " + playerName);
                     Player player = gameFile.getPlayer(playerName);
                     logger.debug("Player: " + player);
+                    cardToEliminate = text.substring(5,9);
                     String toCheckMove = checkCard(player, text);
                     if (toCheckMove == null) {
-                        sendToThisClient.enqueue("Invalid card");
+                        sendToThisClient.enqueue("Invalid card or no hand");
                         logger.debug("You don't have this card on your hand");
                         return;
                     }
@@ -80,11 +90,6 @@ public class ServerGameCommand {
                             break;
                         case "JACK":
                             checkMoveJack(toCheckMove);
-                            break;
-                        case "SURR":
-                            // TODO eliminate player for round
-                            gameFile.getPlayer(nickname).excludeForRound();
-                            sendToThisClient.enqueue("INFO SURR excluded for this round");
                             break;
                         default:
                             checkMove(toCheckMove);
@@ -116,21 +121,28 @@ public class ServerGameCommand {
      */
     private String checkCard(Player player, String text){
         String card = text.substring(5, 9);
+        if (card.equals("ACE1") || card.equals("AC11")) {
+            card = "ACEE";
+        }
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
-        ArrayList<String> deck = player.getDeck();
-        logger.debug("Player's hand: " + deck);
-        logger.debug("Deck contains card? " + deck.contains(card));
-        if(deck.contains(card)){
-            switch (card){
+        ArrayList<String> hand = player.getDeck();
+        if (hand == null) {
+            return null;
+        }
+        logger.debug("Player's hand: " + hand);
+        logger.debug("Deck contains card? " + hand.contains(card));
+        if(hand.contains(card)){
+            switch (card) {
                 case "JOKE":
                     String value = text.substring(10,14);
                     toCheckMove = value + " " + text.substring(15);
                     logger.debug("This string is send to checkMove (without Joker): " + toCheckMove);
                     break;
                 case "ACEE":
-                    String ass = text.substring(10,14);
-                    toCheckMove = ass + " " + text.substring(15);
+                    String ass = text.substring(5,9);
+                    cardToEliminate = "ACEE";
+                    toCheckMove = ass + " " + text.substring(10);
                     logger.debug("This string is send to checkMove (without ACEE): " + toCheckMove);
                     break;
                 default:
@@ -203,20 +215,20 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("INFO Check the card value with your desired destination");
                 return;
             }
-
             // TODO no block going heaven or passing track
 
             // check if there is a piece on destination
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
                 sendToThisClient.enqueue("You eliminate yourself!");
+                return;
             }
+            //eliminate card
+            gameFile.getPlayer(nickname).getDeck().remove(cardToEliminate);
+            cardToEliminate = null;
         } else {
             sendToThisClient.enqueue("INFO entered command does`t fit the length(15) for checkmove()");
         }
-
-        // TODO eliminate played card in simpleMove()
     }
-
     /**
      * Checks if newPosition is ok with played card
      */
@@ -488,6 +500,7 @@ public class ServerGameCommand {
                 return false;
             } else {
                 attackMove(player, pieceID, newPosition1, newPosition2, pieceOnNewPosition);
+                return true;
             }
         }
         simpleMove(player, pieceID, newPosition1, newPosition2);
@@ -541,10 +554,10 @@ public class ServerGameCommand {
         int pieceID = piece.getPieceID();
         String newPosition1 = "A";
         int newPosition2 = pieceID - 1;
-
+        System.out.println("new pos2 " + newPosition2);
         piece.setPositionServer(newPosition1, newPosition2);
         gameState.updatePiecesOnTrack(piece, "A");
-
+        System.out.println("newpos1 " + newPosition1);
         String pieceAlliance = "";
         switch(piece.getPieceAlliance()) {
             case YELLOW:
@@ -560,8 +573,9 @@ public class ServerGameCommand {
                 pieceAlliance = "REDD";
                 break;
         }
+        System.out.println("pieceAlli " + pieceAlliance);
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
+        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
                 + newPosition2);
     }
 

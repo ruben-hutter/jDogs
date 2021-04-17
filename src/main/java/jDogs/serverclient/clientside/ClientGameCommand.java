@@ -45,6 +45,8 @@ public class ClientGameCommand {
             case "ROUN":
                 //TODO received hand of cards display in Game GUI
                 System.out.println("ROUN: " + text.substring(5));
+                //TODO client game setCards()
+                //clientGame.setCards(text.substring(5));
                 break;
 
             case "GAME":

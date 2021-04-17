@@ -97,7 +97,7 @@ public class MainGame {
 
         String newHand;
         ArrayList<String> newHandArray;
-
+/*
         for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
             newHandArray = new ArrayList<>();
             newHand = "ROUN " + turnNumber + " " + number;
@@ -116,17 +116,32 @@ public class MainGame {
             logger.debug("Client get the cards as: " + newHand);
         }
 
+ */
 
-        /*newHandArray = new ArrayList<>();
+
+        newHandArray = new ArrayList<>();
         //damit checkCard funktioniert, müssen die Strings einzeln hinzugefügt werden
-        newHandArray.add("ACEE KING JOKE SIXX FOUR JACK");
+        //newHandArray.add("ACEE KING JOKE SIXX FOUR JACK");
         newHand = "ROUN " + turnNumber + " " + number;
 
-        String hand = "ROUN " + turnNumber  + number + "ACEE KING JOKE SIXX FOUR JACK";
+        String hand = "ROUN " + turnNumber  + number + "ACEE ACEE TENN TWOO EIGT NINE";
+        String a = "ACEE";
+        String b = "TENN";
+        String c = "TWOO";
+        String d = "EIGT";
+        String e = "NINE";
+        String f = "ACEE";
+        newHandArray.add(a);
+        newHandArray.add(b);
+        newHandArray.add(c);
+        newHandArray.add(d);
+        newHandArray.add(e);
+        newHandArray.add(f);
+
         for (Player player : players) {
             player.sendMessageToClient(hand);
             player.setDeck(newHandArray);
-        }*/
+        }
 
     }
 
