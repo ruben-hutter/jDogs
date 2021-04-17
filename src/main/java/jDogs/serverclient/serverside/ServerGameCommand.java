@@ -202,7 +202,6 @@ public class ServerGameCommand {
             boolean hasMoved) {
         int[] cardValues = getCardValues(card);
         if (cardValues == null) {
-            System.out.println("wrong card value " + card); // TODO ??
             return false;
         }
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
@@ -439,6 +438,7 @@ public class ServerGameCommand {
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             // heaven -> heaven
         }
+        return 0;
     }
 
     /**

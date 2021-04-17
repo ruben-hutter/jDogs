@@ -10,7 +10,6 @@ public class GameState {
 
     private final GameFile gameFile;
     private String[] playerNames;
-    private ArrayList<Player> playersState;
     private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
 
@@ -18,7 +17,6 @@ public class GameState {
         this.gameFile = gameFile;
         this.numPlayers = gameFile.getNumberOfParticipants();
         this.playerNames = gameFile.getParticipantsArray();
-        playersState = gameFile.getPlayers();
         createPlayers();
         piecesOnTrack = new ArrayList<>();
     }
@@ -26,8 +24,8 @@ public class GameState {
     private void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            playersState.get(counter).setUpPlayerOnServer(alliance_4);
-            System.out.println(playersState.get(counter).getAlliance());
+            gameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
+            System.out.println(gameFile.getPlayers().get(counter).getAlliance());
             counter++;
         }
     }
@@ -83,7 +81,7 @@ public class GameState {
 
     private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2) {
         Piece otherPiece = null;
-        for (Player pl : playersState) {
+        for (Player pl : gameFile.getPlayers()) {
             if (pl.equals(player)) {
                 for (Piece p : player.pieces) {
                     if (p.getPositionServer1().equals(newPosition1)
@@ -108,7 +106,7 @@ public class GameState {
     }
 
     public Player getPlayer(String nickname) {
-        for (Player player : playersState) {
+        for (Player player : gameFile.getPlayers()) {
             if (player.getPlayerName().equals(nickname)) {
                 return player;
             }
@@ -117,11 +115,11 @@ public class GameState {
     }
 
     public ArrayList<Player> getPlayersState() {
-        return playersState;
+        return gameFile.getPlayers();
     }
 
     public void sendMessageToPlayers(String message) {
-        for (Player player : playersState) {
+        for (Player player : gameFile.getPlayers()) {
             player.getServerConnection().getSender().sendStringToClient(message);
         }
     }
