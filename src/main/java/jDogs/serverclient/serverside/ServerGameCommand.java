@@ -4,9 +4,6 @@ import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.serverclient.helpers.Queuejd;
-import java.awt.datatransfer.SystemFlavorMap;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,9 +45,9 @@ public class ServerGameCommand {
 
     public void execute(String text) {
         logger.debug("Entered ServerGameCommand with: " + text);
-        String command = text.substring(0,4);
+        String command = text.substring(0, 4);
 
-        switch(command) {
+        switch (command) {
             case "QUIT":
                 // TODO stop ServerConnection and Client
             case "EXIT":
@@ -59,44 +56,45 @@ public class ServerGameCommand {
                 break;
             case "MOVE":
                 if (text.length() >= 9) {
-/*
-                String playerName = serverConnection.getNickname();
-                logger.debug("Player nickname: " + playerName);
-                Player player = gameFile.getPlayer(playerName);
-                logger.debug("Player: " + player);
-                String toCheckMove = checkCard(player, text);
-                if(toCheckMove == null){
-                    sendToThisClient.enqueue("Invalid card");
-                    logger.debug("You don't have this card on your hand");
-                    return;
-                }
-                //String card = text.substring(5, 9);
 
-                // special cases (move command syntax different from normal)
-                String card = toCheckMove.substring(0, 4);
-                switch (card) {
-                    // TODO substitute sub 5 with new command from checkCard()
-                    case "SEVE":
-                        checkMoveSeven(toCheckMove); // TODO difference between mod 0 and 1 (teams or not)
-                        break;
-                    case "JACK":
-                        checkMoveJack(toCheckMove);
-                        break;
-                    case "SURR":
-                        // TODO eliminate player for round
-                        break;
-                    default:
-                        checkMove(toCheckMove);
-                }
-                    // Server: give it to GameEngine if move is according to the rules
-                    break;
+                    String playerName = serverConnection.getNickname();
+                    logger.debug("Player nickname: " + playerName);
+                    Player player = gameFile.getPlayer(playerName);
+                    logger.debug("Player: " + player);
+                    String toCheckMove = checkCard(player, text);
+                    if (toCheckMove == null) {
+                        sendToThisClient.enqueue("Invalid card");
+                        logger.debug("You don't have this card on your hand");
+                        return;
+                    }
+                    //String card = text.substring(5, 9);
 
-                    case "CTTP":
+                    // special cases (move command syntax different from normal)
+                    String card = toCheckMove.substring(0, 4);
+                    switch (card) {
+                        // TODO substitute sub 5 with new command from checkCard()
+                        case "SEVE":
+                            checkMoveSeven(
+                                    toCheckMove); // TODO difference between mod 0 and 1 (teams or not)
+                            break;
+                        case "JACK":
+                            checkMoveJack(toCheckMove);
+                            break;
+                        case "SURR":
+                            // TODO eliminate player for round
+                            break;
+                        default:
+                            checkMove(toCheckMove);
+                    }
+                }
+                break;
+
+                case "CTTP":
                         // TODO start CTTP
                         //change cards
                         break;
 
-                    case "LCHT":
+                        case "LCHT":
                         //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
 
                 System.out.println("LCHT: " + text.substring(5));
@@ -104,10 +102,9 @@ public class ServerGameCommand {
                         "LCHT " + "<" + nickname + "> " + text.substring(5));
 
                 break;
+            //send message to everyone logged in, in lobby, separated or playing
 
             case "PCHT":
-                //send message to everyone logged in, in lobby, separated or playing
-
                 sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
         }
