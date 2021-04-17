@@ -50,6 +50,7 @@ public class ServerGameCommand {
         switch (command) {
             case "QUIT":
                 // TODO stop ServerConnection and Client
+                break;
             case "EXIT":
                 // TODO startExit();
                 //finish game
@@ -90,22 +91,17 @@ public class ServerGameCommand {
                     }
                 }
                 break;
-
-                case "CTTP":
-                        // TODO start CTTP
-                        //change cards
-                        break;
-
-                        case "LCHT":
-
-                            //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
-                            System.out.println("LCHT: " + text.substring(5));
+            case "CTTP":
+                // TODO start CTTP
+                //change cards
+                break;
+            case "LCHT":
+                //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
+                System.out.println("LCHT: " + text.substring(5));
                 gameFile.sendMessageToParticipants(
                         "LCHT " + "<" + nickname + "> " + text.substring(5));
-
                 break;
-            //send message to everyone logged in, in lobby, separated or playing
-
+                //send message to everyone logged in, in lobby, separated or playing
             case "PCHT":
                 sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
