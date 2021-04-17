@@ -118,25 +118,22 @@ public class ServerGameCommand {
      */
     private String checkCard(Player player, String text){
         String card = text.substring(5, 9);
-        String ass1 = "ACE1";
-        String ass11 = "AC11";
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
         ArrayList<String> deck = player.getDeck();
         logger.debug("Player's hand: " + deck);
-        if (card.equals("ACE1") || card.equals("AC11")) {
-        deck.add(ass1);
-        deck.add(ass11);
-        logger.debug("Player's hand (with special ass): " + deck);
-        }
-
         logger.debug("Deck contains card? " + deck.contains(card));
         if(deck.contains(card)){
             switch (card){
                 case "JOKE":
                     String value = text.substring(10,14);
                     toCheckMove = value + " " + text.substring(15);
-                    logger.debug("This string is send to checkMove: " + toCheckMove);
+                    logger.debug("This string is send to checkMove (without Joker): " + toCheckMove);
+                    break;
+                case "ACEE":
+                    String ass = text.substring(10,14);
+                    toCheckMove = ass + " " + text.substring(15);
+                    logger.debug("This string is send to checkMove (without ACEE): " + toCheckMove);
                     break;
                 default:
                     toCheckMove =  card + " " + text.substring(10);
