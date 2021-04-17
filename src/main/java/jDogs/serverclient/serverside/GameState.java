@@ -10,7 +10,6 @@ public class GameState {
 
     private final GameFile gameFile;
     private String[] playerNames;
-    private ArrayList<Player> playersState;
     private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
 
@@ -18,16 +17,14 @@ public class GameState {
         this.gameFile = gameFile;
         this.numPlayers = gameFile.getNumberOfParticipants();
         this.playerNames = gameFile.getParticipantsArray();
-        playersState = gameFile.getPlayers();
-        createPlayers();
-        piecesOnTrack = new ArrayList<>();
+        this.piecesOnTrack = new ArrayList<>();
     }
 
-    private void createPlayers() {
+    public void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            playersState.get(counter).setUpPlayerOnServer(alliance_4);
-            System.out.println(playersState.get(counter).getAlliance());
+            gameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
+            System.out.println(gameFile.getPlayers().get(counter).getAlliance());
             counter++;
         }
     }
@@ -67,14 +64,19 @@ public class GameState {
     }
 
     public Piece newPositionOccupied(Player player, String newPosition1, int newPosition2) {
+        System.out.println("player " + player.getPlayerName());
+        System.out.println("newpos1 " + newPosition1);
+        System.out.println("newpos2 " + newPosition2);
         Piece otherPiece = null;
         if (newPosition1.equals("A") || newPosition1.equals("C")) {
             otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2);
         } else if (newPosition1.equals("B")) {
             for (Piece p : piecesOnTrack) {
+                System.out.println("pieceID on Track " + p.getPieceID());
                 if (p.getPositionServer1().equals(newPosition1)
                         && p.getPositionServer2() == newPosition2) {
                     otherPiece = p;
+                    System.out.println("otherPieceID " + otherPiece.getPieceID());
                 }
             }
         }
@@ -83,7 +85,7 @@ public class GameState {
 
     private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2) {
         Piece otherPiece = null;
-        for (Player pl : playersState) {
+        for (Player pl : gameFile.getPlayers()) {
             if (pl.equals(player)) {
                 for (Piece p : player.pieces) {
                     if (p.getPositionServer1().equals(newPosition1)
@@ -139,21 +141,15 @@ public class GameState {
     }
 
     public Player getPlayer(String nickname) {
-        for (Player player : playersState) {
-            if (player.getPlayerName().equals(nickname)) {
-                return player;
-            }
-        }
-        return null;
+       return gameFile.getPlayer(nickname);
     }
 
     public ArrayList<Player> getPlayersState() {
-        return playersState;
+        return gameFile.getPlayers();
     }
 
     public void sendMessageToPlayers(String message) {
-        for (Player player : playersState) {
-            player.getServerConnection().getSender().sendStringToClient(message);
-        }
+        gameFile.sendMessageToParticipants(message);
     }
 }
+

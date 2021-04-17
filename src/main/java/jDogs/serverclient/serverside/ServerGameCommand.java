@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.Main;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.ClientGame;
@@ -8,6 +9,7 @@ import jDogs.player.Player;
 import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +36,7 @@ public class ServerGameCommand {
     private GameState gameState;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
     private ArrayList<Player> players;
+    private MainGame mainGame;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -43,7 +46,6 @@ public class ServerGameCommand {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.loggedIn = false;
-        this.nickname = null;
         this.serverParser = new ServerParser(server,serverConnection);
         this.players = null;
     }
@@ -60,7 +62,7 @@ public class ServerGameCommand {
                 //finish game
                 break;
             case "MOVE":
-
+/*
                 String playerName = serverConnection.getNickname();
                 logger.debug("Player nickname: " + playerName);
                 Player player = gameState.getPlayer(playerName);
@@ -70,12 +72,16 @@ public class ServerGameCommand {
                     //return
                     logger.debug("Invalid card");
                 }
-                //String card = text.substring(5, 9);
+
+                String card = text.substring(5, 9);
                 String card = toCheckMove.substring(5, 9);
                 // if String test = checkCard("MOVE JOKE TWOO YELO-1 B20") MOVE TWOO YEL...
 
-                // special cases (move command syntax different from normal)
+ */
 
+                // special cases (move command syntax different from normal)
+                String card = text.substring(5, 9);
+                System.out.println("Card" + card);
                 switch (card) {
                     case "SEVE":
                         int piecesToMove = Integer.parseInt(text.substring(10, 11));
@@ -168,7 +174,7 @@ public class ServerGameCommand {
         String card = completeMove.substring(0, 4);
         String alliance = completeMove.substring(5, 9);
         int pieceID = Integer.parseInt(completeMove.substring(10, 11));
-        String newPosition1 = completeMove.substring(12);
+        String newPosition1 = completeMove.substring(12,13);
         int newPosition2 = Integer.parseInt(completeMove.substring(13));
         String actualPosition1 = "";
         int actualPosition2 = -1;
@@ -196,6 +202,7 @@ public class ServerGameCommand {
         }
 
         for (Player player : players) {
+            System.out.println("players entered " + player.getAlliance());
             if (player.getAlliance() == alliance4) {
                 logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;
@@ -209,6 +216,14 @@ public class ServerGameCommand {
         }
 
         // if card not ok with destination, return to client
+        System.out.println("alliance " + alliance + " alliance4 " + alliance4);
+        System.out.println("card " + card);
+        System.out.println("actuPos1 " + actualPosition1);
+        System.out.println("actuPos2 " + actualPosition2);
+        System.out.println("newPos1 " + newPosition1);
+        System.out.println("newPos2 " + newPosition2);
+        System.out.println("startPos " + startingPosition);
+
         if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
                 newPosition2, startingPosition, hasMoved)) {
             sendToThisClient.enqueue("INFO Check the card value with your desired destination");
@@ -216,6 +231,7 @@ public class ServerGameCommand {
         }
 
         // check if there is a piece on destination
+        System.out.println("GO to check which move ");
         if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
             sendToThisClient.enqueue("You eliminate yourself!");
         }
@@ -231,10 +247,11 @@ public class ServerGameCommand {
             boolean hasMoved) {
         int[] cardValues = getCardValues(card);
         if (cardValues == null) {
-            System.out.println("wrong card value " + card);
+            System.out.println("card values false");
             return false;
         }
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
+            System.out.println("move from BOX to tracks with " + card + "act.Pos1 " + actualPosition1);
             // you play an exit card and you exit on your starting position
             return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING")
                     || card.equals("JOKE")) && newPosition2 == startingPosition;
@@ -284,6 +301,7 @@ public class ServerGameCommand {
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
         }
+        System.out.println("special case couldn t parse");
         return false;
     }
 
@@ -431,8 +449,12 @@ public class ServerGameCommand {
      */
     private boolean checkWhichMove(Player player, int pieceID, String newPosition1,
             int newPosition2) {
+        System.out.println("player " + player.toString() + " pieceID " + pieceID + " newPos1 " + newPosition1);
         Piece pieceOnNewPosition = gameState.newPositionOccupied(player, newPosition1, newPosition2);
         if (pieceOnNewPosition != null) {
+            System.out.println("playerAlliance " + player.getAlliance());
+            System.out.println(pieceOnNewPosition.getPieceID());
+            System.out.println(pieceOnNewPosition.getPieceAlliance());
             if (player.getAlliance() == pieceOnNewPosition.getPieceAlliance()) {
                 return false;
             } else {
@@ -491,12 +513,22 @@ public class ServerGameCommand {
         }
         return null;
     }
-
-    public void setGameFile(GameFile gameFile) {
-        this.gameFile = gameFile;
+/*
+    public void setMainGame(MainGame mainGame) {
+        this.mainGame = mainGame;
+        players = this.gameFile.getPlayers();
     }
 
-    public void setNickName(String nickname) {
-        this.nickname = nickname;
+ */
+
+
+
+
+
+    public void setMainGame(MainGame mainGame) {
+        this.gameFile = mainGame.getGameFile();
+        this.gameState = mainGame.getGameState();
+        players = mainGame.getGameFile().getPlayers();
+        this.nickname = serverConnection.getNickname();
     }
 }

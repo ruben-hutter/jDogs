@@ -18,16 +18,27 @@ public class MainGame {
     private static final Logger logger = LogManager.getLogger(MainGame.class);
 
 
-
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
-        GameState gameState = new GameState(gameFile);
-        gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
-                + gameFile.getParticipants());
+        this.gameState = new GameState(gameFile);
+
+        setUp();
+
+
+        startGameRhythm();
+    }
+
+    public void setUp() {
+        gameState.createPlayers();
 
         players = gameFile.getPlayers();
 
-        startGameRhythm();
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
+            players.get(i).getServerConnection().getSender().sendStringToClient("GAME " + gameFile.getNumberOfParticipants() + " "
+                    + gameFile.getParticipants());
+            logger.debug("Player " + i + " ServerConnection " + players.get(i).getServerConnection());
+        }
     }
 
     /**
@@ -83,7 +94,7 @@ public class MainGame {
         String newHand;
         ArrayList<String> newHandArray;
 
-        for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
+        /*for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
             newHandArray = new ArrayList<>();
             newHand = "ROUN " + turnNumber + " " + number;
 
@@ -99,6 +110,14 @@ public class MainGame {
             players.get(i).sendMessageToClient(newHand);
             logger.debug("Player " + players.get(i) + " has cards " + newHandArray);
             logger.debug("Client get the cards as: " + newHand);
+        }
+
+         */
+        newHandArray = new ArrayList<>();
+        newHandArray.add("ACEE ACEE ACEE ACEE ACEE ACEE");
+        for (Player pl : players) {
+            pl.sendMessageToClient("ROUN " + turnNumber + " " + 6 + "ACEE ACEE ACEE ACEE ACEE ACEE");
+            pl.setDeck(newHandArray);
         }
 
     }
@@ -194,5 +213,10 @@ public class MainGame {
     public Player getPlayer(String nickname) {
         return gameState.getPlayer(nickname);
 
+    }
+
+    public GameState getGameState() {
+        System.out.println("GAME STATE in maingame " + gameState == null);
+        return gameState;
     }
 }
