@@ -165,6 +165,11 @@ public class ServerGameCommand {
         Player ownPlayer = null;
         Alliance_4 alliance4;
 
+        if (newPosition1.equals("A")) {
+            sendToThisClient.enqueue("INFO You can't move a piece in home.");
+            return;
+        }
+
         alliance4 = convertAlliance(alliance);
 
         for (Player player : players) {
@@ -403,6 +408,7 @@ public class ServerGameCommand {
             }
             startIndex += 11;
         }
+
     }
 
     private int checkSingleSeven(String move) { // YELO-1 B20

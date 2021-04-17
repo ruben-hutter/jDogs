@@ -65,7 +65,7 @@ public class GameState {
 
     public Piece newPositionOccupied(Player player, String newPosition1, int newPosition2) {
         Piece otherPiece = null;
-        if (newPosition1.equals("A") || newPosition1.equals("C")) {
+        if (newPosition1.equals("C")) {
             otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2);
         } else if (newPosition1.equals("B")) {
             for (Piece p : piecesOnTrack) {
