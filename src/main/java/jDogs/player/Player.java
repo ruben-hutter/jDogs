@@ -44,7 +44,7 @@ public class Player {
         setPiecesOnHome();
     }
 
-    public void setUpPlayerOnServer( Alliance_4 alliance4) {
+    public void setUpPlayerOnServer(Alliance_4 alliance4) {
         this.alliance4 = alliance4;
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
