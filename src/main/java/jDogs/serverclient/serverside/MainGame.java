@@ -211,7 +211,7 @@ public class MainGame {
         numberOfRounds++;
         // new round
         //no cards in any player`s hand
-        if (numberOfRounds / 4 == numbDealOut) {
+        if (numberOfRounds / gameFile.getNumberOfParticipants() == numbDealOut) {
             if (numbDealOut == 2) {
                 numbDealOut = 6;
                 // anew deck
