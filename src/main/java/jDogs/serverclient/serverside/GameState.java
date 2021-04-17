@@ -21,7 +21,7 @@ public class GameState {
         this.piecesOnTrack = new ArrayList<>();
     }
 
-    private void createPlayers() {
+    public void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
             playersState.get(counter).setUpPlayerOnServer(alliance_4);

@@ -79,7 +79,7 @@ public class ServerGameCommand {
  */
 
                 // special cases (move command syntax different from normal)
-
+                String card = text.substring(5, 9);
                 switch (card) {
                     // TODO substitute sub 5 with new command from checkCard()
                     case "SEVE":

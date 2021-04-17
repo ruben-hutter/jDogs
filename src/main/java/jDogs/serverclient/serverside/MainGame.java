@@ -22,10 +22,7 @@ public class MainGame {
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
         this.gameState = new GameState(gameFile);
-
         setUp();
-
-
         startGameRhythm();
     }
 
@@ -33,18 +30,13 @@ public class MainGame {
         gameState.createPlayers();
         players = gameFile.getPlayers();
 
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
-            players.get(i).getServerConnection().getSender().sendStringToClient("GAME " + gameFile.getNumberOfParticipants() + " "
-                    + gameFile.getParticipants());
-            logger.debug("Player " + i + " ServerConnection " + players.get(i).getServerConnection());
-        }
-        players = gameFile.getPlayers();
-        gameState = new GameState(gameFile);
-        gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
-                + gameFile.getParticipants());
 
-        startGameRhythm();
+        for (Player player : players) {
+            player.getServerConnection().getMessageHandlerServer().setPlaying(true, this);
+            player.getServerConnection().getSender().sendStringToClient("GAME " + gameFile.getNumberOfParticipants() + " "
+                    + gameFile.getParticipants());
+            logger.debug("Player   ServerConnection " + player.getServerConnection());
+        }
     }
 
     /**
@@ -117,6 +109,8 @@ public class MainGame {
             logger.debug("Player " + players.get(i) + " has cards " + newHandArray);
             logger.debug("Client get the cards as: " + newHand);
         }
+
+         */
 
     }
 
@@ -208,8 +202,9 @@ public class MainGame {
         return gameFile;
     }
 
-    public Player getPlayer(String nickname) {
-        return gameState.getPlayer(nickname);
 
+    public GameState getGameState() {
+        return gameState;
     }
 }
+
