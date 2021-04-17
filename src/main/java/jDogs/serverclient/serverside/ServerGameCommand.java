@@ -82,6 +82,8 @@ public class ServerGameCommand {
                             break;
                         case "SURR":
                             // TODO eliminate player for round
+                            gameFile.getPlayer(nickname).excludeForRound();
+                            sendToThisClient.enqueue("INFO SURR excluded for this round");
                             break;
                         default:
                             checkMove(toCheckMove);
@@ -95,9 +97,9 @@ public class ServerGameCommand {
                         break;
 
                         case "LCHT":
-                        //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
 
-                System.out.println("LCHT: " + text.substring(5));
+                            //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
+                            System.out.println("LCHT: " + text.substring(5));
                 gameFile.sendMessageToParticipants(
                         "LCHT " + "<" + nickname + "> " + text.substring(5));
 

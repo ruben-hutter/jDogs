@@ -83,8 +83,13 @@ public class MainGame {
      * this method sends a request to the next player to make a move
      */
     private void nextTurn() {
+        int numb = turnNumber % players.size();
 
-        Server.getInstance().getSender(gameArray[turnNumber % players.size()]).sendStringToClient("TURN");
+        if (gameFile.getPlayer(gameArray[numb]).isAllowedToPlay()) {
+            Server.getInstance().getSender((gameArray[numb])).sendStringToClient("TURN");
+        } else {
+            turnComplete((gameArray[numb]));
+        }
     }
 
     private void dealOutCards(int number) {
@@ -220,13 +225,6 @@ public class MainGame {
         return gameState;
     }
 
-    /**
-     *
-     * @param add number of cards not used
-     *            by a client(added after command "MOVE SURR")
-     */
-    public void addToNumberOfRounds(int add) {
-        numberOfRounds += add;
-    }
+
 }
 

@@ -22,10 +22,12 @@ public class Player {
     private ArrayList<String> deck;
     private ServerConnection serverConnection;
     private int teamID;
+    private boolean allowedToPlay;
 
     public Player(String playerName, ServerConnection serverConnection) {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
+        this.allowedToPlay = false;
         teamID = -1;
     }
 
@@ -86,7 +88,9 @@ public class Player {
     }
 
     public void setDeck (ArrayList<String> deck) {
+
         this.deck = deck;
+        this.allowedToPlay = true;
     }
 
     public ArrayList<String> getDeck() {
@@ -170,7 +174,7 @@ public class Player {
      * @param message to the client concerning this game
      */
     public void sendMessageToClient(String message) {
-        serverConnection.getSender().sendStringToClient(message);
+        this.serverConnection.getSender().sendStringToClient(message);
     }
 
     @Override
@@ -180,5 +184,16 @@ public class Player {
 
     public ServerConnection getServerConnection() {
         return serverConnection;
+    }
+
+    /**
+     * excludes player from game till this round finished
+     */
+    public void excludeForRound() {
+        this.deck = null;
+    }
+
+    public boolean isAllowedToPlay() {
+       return this.deck != null;
     }
 }
