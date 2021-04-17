@@ -1,15 +1,9 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.Main;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
-import jDogs.ClientGame;
 import jDogs.player.Piece;
-import jDogs.player.Player;
-import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +25,6 @@ public class ServerGameCommand {
     private boolean loggedIn;
     private String nickname;
     private final ServerParser serverParser;
-    private String actualGame;
     private GameFile gameFile;
     private GameState gameState;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
@@ -52,6 +45,7 @@ public class ServerGameCommand {
 
     public void execute(String text) {
         logger.debug("Entered ServerGameCommand with: " + text);
+
         String command = text.substring(0,4);
 
         switch(command) {
@@ -62,6 +56,7 @@ public class ServerGameCommand {
                 //finish game
                 break;
             case "MOVE":
+                if (text.length() >= 9) {
 /*
                 String playerName = serverConnection.getNickname();
                 logger.debug("Player nickname: " + playerName);
@@ -78,46 +73,53 @@ public class ServerGameCommand {
 
  */
 
-                // special cases (move command syntax different from normal)
-                String card = text.substring(5, 9);
-                switch (card) {
-                    // TODO substitute sub 5 with new command from checkCard()
-                    case "SEVE":
-                        checkMoveSeven(text.substring(5)); // TODO difference between mod 0 and 1 (teams or not)
-                        break;
-                    case "JACK":
-                        checkMoveJack(text.substring(5));
-                        break;
-                    case "SURR":
-                        // TODO eliminate player for round
-                        break;
-                    default:
-                        checkMove(text.substring(5));
+                    // special cases (move command syntax different from normal)
+
+                    String card = text.substring(5, 9);
+                    switch (card) {
+                        // TODO substitute sub 5 with new command from checkCard()
+                        case "SEVE":
+                            checkMoveSeven(text.substring(
+                                    5)); // TODO difference between mod 0 and 1 (teams or not)
+                            break;
+                        case "JACK":
+                            checkMoveJack(text.substring(5));
+                            break;
+                        case "SURR":
+                            //gameFile.getPlayer(nickname).ExcludeForRound();
+                            // TODO eliminate player for round
+                            break;
+                        default:
+                            checkMove(text.substring(5));
+                    }
+                } else {
+                    sendToThisClient.enqueue("INFO entered command too short for MOVE");
                 }
-                // Server: give it to GameEngine if move is according to the rules
-                break;
+                    // Server: give it to GameEngine if move is according to the rules
+                    break;
 
-            case "CTTP":
-                // TODO start CTTP
-                //change cards
-                break;
+                    case "CTTP":
+                        // TODO start CTTP
+                        //change cards
+                        break;
 
-            case "LCHT":
-                //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
+                    case "LCHT":
+                        //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
 
-                System.out.println("LCHT: " + text.substring(5));
-                gameFile.sendMessageToParticipants(
-                        "LCHT " + "<" + nickname + "> " + text.substring(5));
+                        System.out.println("LCHT: " + text.substring(5));
+                        gameFile.sendMessageToParticipants(
+                                "LCHT " + "<" + nickname + "> " + text.substring(5));
 
-                break;
+                        break;
 
-            case "PCHT":
-                //send message to everyone logged in, in lobby, separated or playing
+                    case "PCHT":
+                        //send message to everyone logged in, in lobby, separated or playing
 
-                sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
-                break;
+                        sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                        break;
+                }
         }
-    }
+
 
     /**
      * Checks if the given card is in the players hand
@@ -157,50 +159,68 @@ public class ServerGameCommand {
      * @param completeMove card piece destination
      */
     private void checkMove(String completeMove) { // TWOO YELO-1 B04
-        String card = completeMove.substring(0, 4);
-        String alliance = completeMove.substring(5, 9);
-        int pieceID = Integer.parseInt(completeMove.substring(10, 11));
-        String newPosition1 = completeMove.substring(12, 13);
-        int newPosition2 = Integer.parseInt(completeMove.substring(13));
-        String actualPosition1 = "";
-        int actualPosition2 = -1;
-        boolean hasMoved = false;
-        int startingPosition = -1;
-        Player ownPlayer = null;
-        Alliance_4 alliance4;
+        if (completeMove.length() == 15) {
+            String card = null;
+            int pieceID = 0;
+            String newPosition1 = null;
+            int newPosition2 = 0;
+            String actualPosition1 = null;
+            int actualPosition2 = 0;
+            boolean hasMoved = false;
+            int startingPosition = 0;
+            Player ownPlayer = null;
+            try {
+                card = completeMove.substring(0, 4);
+                String alliance = completeMove.substring(5, 9);
+                pieceID = Integer.parseInt(completeMove.substring(10, 11));
+                newPosition1 = completeMove.substring(12, 13);
+                newPosition2 = Integer.parseInt(completeMove.substring(13));
+                actualPosition1 = "";
+                actualPosition2 = -1;
+                hasMoved = false;
+                startingPosition = -1;
+                ownPlayer = null;
+                Alliance_4 alliance4;
 
-        if (newPosition1.equals("A")) {
-            sendToThisClient.enqueue("INFO You can't move a piece in home.");
-            return;
-        }
+                if (newPosition1.equals("A")) {
+                    sendToThisClient.enqueue("INFO You can't move a piece in home.");
+                    return;
+                }
 
-        alliance4 = convertAlliance(alliance);
+                alliance4 = convertAlliance(alliance);
 
-        for (Player player : players) {
-            if (player.getAlliance() == alliance4) {
-                logger.debug("Alliance Player: " + player.getAlliance());
-                ownPlayer = player;
-                actualPosition1 = player.recivePosition1Server(pieceID);
-                logger.debug("actual position1: " + actualPosition1);
-                actualPosition2 = player.recivePosition2Server(pieceID);
-                logger.debug("actual position2: " + actualPosition2);
-                hasMoved = player.reciveHasMoved(pieceID);
-                startingPosition = player.getStartingPosition();
+                for (Player player : players) {
+                    if (player.getAlliance() == alliance4) {
+                        logger.debug("Alliance Player: " + player.getAlliance());
+                        ownPlayer = player;
+                        actualPosition1 = player.recivePosition1Server(pieceID);
+                        logger.debug("actual position1: " + actualPosition1);
+                        actualPosition2 = player.recivePosition2Server(pieceID);
+                        logger.debug("actual position2: " + actualPosition2);
+                        hasMoved = player.reciveHasMoved(pieceID);
+                        startingPosition = player.getStartingPosition();
+                    }
+                }
+            } catch (Exception e) {
+                sendToThisClient.enqueue("INFO format exception in checkMove");
+                return;
             }
-        }
 
-        // if card not ok with destination, return to client
-        if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved)) {
-            sendToThisClient.enqueue("INFO Check the card value with your desired destination");
-            return;
-        }
+            // if card not ok with destination, return to client
+            if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
+                    newPosition2, startingPosition, hasMoved)) {
+                sendToThisClient.enqueue("INFO Check the card value with your desired destination");
+                return;
+            }
 
-        // TODO no block going heaven or passing track
+            // TODO no block going heaven or passing track
 
-        // check if there is a piece on destination
-        if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
-            sendToThisClient.enqueue("You eliminate yourself!");
+            // check if there is a piece on destination
+            if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
+                sendToThisClient.enqueue("You eliminate yourself!");
+            }
+        } else {
+            sendToThisClient.enqueue("INFO entered command does`t fit the length(15) for checkmove()");
         }
 
         // TODO eliminate played card in simpleMove()
@@ -212,61 +232,62 @@ public class ServerGameCommand {
     private boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
             boolean hasMoved) {
-        int[] cardValues = getCardValues(card);
-        if (cardValues == null) {
-            return false;
-        }
-        if (actualPosition1.equals("A") && newPosition1.equals("B")) {
-            // you play an exit card and you exit on your starting position
-            return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING"))
-                    && newPosition2 == startingPosition;
-        } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
-            // continue on track
-            int difference = newPosition2 - actualPosition2;
-            // sets the difference to a possible card value
-            if (difference < 0) {
-                difference += 64;
-            }
-            for (int cardValue : cardValues) {
-                if (cardValue == difference) {
-                    return true;
-                }
-            }
-        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
-            // go heaven
-            int difference;
-            if (!hasMoved) {
+
+            int[] cardValues = getCardValues(card);
+            if (cardValues == null) {
                 return false;
-            } else if (card.equals("FOUR")) {
+            }
+            if (actualPosition1.equals("A") && newPosition1.equals("B")) {
+                // you play an exit card and you exit on your starting position
+                return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING"))
+                        && newPosition2 == startingPosition;
+            } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
+                // continue on track
+                int difference = newPosition2 - actualPosition2;
+                // sets the difference to a possible card value
+                if (difference < 0) {
+                    difference += 64;
+                }
                 for (int cardValue : cardValues) {
-                    if (cardValue == 4) {
-                        difference = startingPosition - actualPosition2;
-                        if (difference < 0) {
-                            difference = difference + 64 + newPosition2 + 1;
-                        } else {
-                            difference = difference + newPosition2 + 1;
+                    if (cardValue == difference) {
+                        return true;
+                    }
+                }
+            } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+                // go heaven
+                int difference;
+                if (!hasMoved) {
+                    return false;
+                } else if (card.equals("FOUR")) {
+                    for (int cardValue : cardValues) {
+                        if (cardValue == 4) {
+                            difference = startingPosition - actualPosition2;
+                            if (difference < 0) {
+                                difference = difference + 64 + newPosition2 + 1;
+                            } else {
+                                difference = difference + newPosition2 + 1;
+                            }
+                            return cardValue == difference;
+                        } else if (cardValue == -4) {
+                            difference = startingPosition - actualPosition2 - newPosition2 - 1;
+                            return cardValue == difference;
                         }
-                        return cardValue == difference;
-                    } else if (cardValue == -4) {
-                        difference = startingPosition - actualPosition2 - newPosition2 - 1;
+                    }
+                } else {
+                    difference = startingPosition - actualPosition2;
+                    if (difference < 0) {
+                        difference = difference + 64 + newPosition2 + 1;
+                    } else {
+                        difference = difference + newPosition2 + 1;
+                    }
+                    for (int cardValue : cardValues) {
                         return cardValue == difference;
                     }
                 }
-            } else {
-                difference = startingPosition - actualPosition2;
-                if (difference < 0) {
-                    difference = difference + 64 + newPosition2 + 1;
-                } else {
-                    difference = difference + newPosition2 + 1;
-                }
-                for (int cardValue : cardValues) {
-                    return cardValue == difference;
-                }
+            } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
+                return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
             }
-        } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-            return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
-        }
-        return false;
+            return false;
     }
 
     private int[] getCardValues(String card) {

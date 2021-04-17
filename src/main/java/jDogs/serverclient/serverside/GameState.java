@@ -9,14 +9,12 @@ import java.util.Collections;
 public class GameState {
 
     private final GameFile gameFile;
-    private String[] playerNames;
     private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
 
     public GameState(GameFile gameFile) {
         this.gameFile = gameFile;
         this.numPlayers = gameFile.getNumberOfParticipants();
-        this.playerNames = gameFile.getParticipantsArray();
         this.piecesOnTrack = new ArrayList<>();
     }
 

@@ -121,7 +121,6 @@ public class MainGame {
             player.sendMessageToClient(hand);
             player.setDeck(newHandArray);
         }
-
     }
 
     /**
@@ -195,6 +194,7 @@ public class MainGame {
                 numbDealOut = 6;
                 // anew deck
                 deck = getDeck();
+                numberOfRounds = 0;
             } else {
                 numbDealOut--;
             }
