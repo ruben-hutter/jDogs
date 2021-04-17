@@ -4,6 +4,9 @@ import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.serverclient.helpers.Queuejd;
+import java.awt.datatransfer.SystemFlavorMap;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +48,6 @@ public class ServerGameCommand {
 
     public void execute(String text) {
         logger.debug("Entered ServerGameCommand with: " + text);
-
         String command = text.substring(0,4);
 
         switch(command) {
@@ -60,40 +62,31 @@ public class ServerGameCommand {
 /*
                 String playerName = serverConnection.getNickname();
                 logger.debug("Player nickname: " + playerName);
-                Player player = gameState.getPlayer(playerName);
+                Player player = gameFile.getPlayer(playerName);
                 logger.debug("Player: " + player);
                 String toCheckMove = checkCard(player, text);
                 if(toCheckMove == null){
-                    //return
-                    logger.debug("Invalid card");
+                    sendToThisClient.enqueue("Invalid card");
+                    logger.debug("You don't have this card on your hand");
                     return;
                 }
                 //String card = text.substring(5, 9);
-                String card = toCheckMove.substring(5, 9);
 
- */
-
-                    // special cases (move command syntax different from normal)
-
-                    String card = text.substring(5, 9);
-                    switch (card) {
-                        // TODO substitute sub 5 with new command from checkCard()
-                        case "SEVE":
-                            checkMoveSeven(text.substring(
-                                    5)); // TODO difference between mod 0 and 1 (teams or not)
-                            break;
-                        case "JACK":
-                            checkMoveJack(text.substring(5));
-                            break;
-                        case "SURR":
-                            //gameFile.getPlayer(nickname).ExcludeForRound();
-                            // TODO eliminate player for round
-                            break;
-                        default:
-                            checkMove(text.substring(5));
-                    }
-                } else {
-                    sendToThisClient.enqueue("INFO entered command too short for MOVE");
+                // special cases (move command syntax different from normal)
+                String card = toCheckMove.substring(0, 4);
+                switch (card) {
+                    // TODO substitute sub 5 with new command from checkCard()
+                    case "SEVE":
+                        checkMoveSeven(toCheckMove); // TODO difference between mod 0 and 1 (teams or not)
+                        break;
+                    case "JACK":
+                        checkMoveJack(toCheckMove);
+                        break;
+                    case "SURR":
+                        // TODO eliminate player for round
+                        break;
+                    default:
+                        checkMove(toCheckMove);
                 }
                     // Server: give it to GameEngine if move is according to the rules
                     break;
@@ -106,20 +99,19 @@ public class ServerGameCommand {
                     case "LCHT":
                         //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
 
-                        System.out.println("LCHT: " + text.substring(5));
-                        gameFile.sendMessageToParticipants(
-                                "LCHT " + "<" + nickname + "> " + text.substring(5));
+                System.out.println("LCHT: " + text.substring(5));
+                gameFile.sendMessageToParticipants(
+                        "LCHT " + "<" + nickname + "> " + text.substring(5));
 
-                        break;
+                break;
 
-                    case "PCHT":
-                        //send message to everyone logged in, in lobby, separated or playing
+            case "PCHT":
+                //send message to everyone logged in, in lobby, separated or playing
 
-                        sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
-                        break;
-                }
+                sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                break;
         }
-
+    }
 
     /**
      * Checks if the given card is in the players hand
@@ -129,22 +121,29 @@ public class ServerGameCommand {
      */
     private String checkCard(Player player, String text){
         String card = text.substring(5, 9);
+        String ass1 = "ACE1";
+        String ass11 = "AC11";
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
         ArrayList<String> deck = player.getDeck();
         logger.debug("Player's hand: " + deck);
+        if (card.equals("ACE1") || card.equals("AC11")) {
+        deck.add(ass1);
+        deck.add(ass11);
+        logger.debug("Player's hand (with special ass): " + deck);
+        }
+
+        logger.debug("Deck contains card? " + deck.contains(card));
         if(deck.contains(card)){
             switch (card){
                 case "JOKE":
                     String value = text.substring(10,14);
-                    toCheckMove = "MOVE" + " " + value + " " + text.substring(15);
+                    toCheckMove = value + " " + text.substring(15);
+                    logger.debug("This string is send to checkMove: " + toCheckMove);
                     break;
-                case "JACK":
-                    String piece1 = text.substring(10,16);
-                    String piece2 = text.substring(17,22);
-                    toCheckMove = "MOVE" + " " + piece1 + " " + piece2;
                 default:
-                    toCheckMove =  "MOVE" + " " + card + " " + text.substring(10);
+                    toCheckMove =  card + " " + text.substring(10);
+                    logger.debug("This string is send to checkMove: " + toCheckMove);
             }
         }
         return toCheckMove;
