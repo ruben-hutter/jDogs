@@ -21,11 +21,10 @@ public class MainGame {
 
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
-        GameState gameState = new GameState(gameFile);
+        players = gameFile.getPlayers();
+        gameState = new GameState(gameFile);
         gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
                 + gameFile.getParticipants());
-
-        players = gameFile.getPlayers();
 
         startGameRhythm();
     }

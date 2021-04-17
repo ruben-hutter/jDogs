@@ -84,6 +84,9 @@ public class ServerGameCommand {
                     case "JACK":
                         checkMoveJack(text.substring(5));
                         break;
+                    case "SURR":
+                        // TODO eliminate player for round
+                        break;
                     default:
                         checkMove(text.substring(5));
                 }
@@ -153,7 +156,7 @@ public class ServerGameCommand {
         String card = completeMove.substring(0, 4);
         String alliance = completeMove.substring(5, 9);
         int pieceID = Integer.parseInt(completeMove.substring(10, 11));
-        String newPosition1 = completeMove.substring(12);
+        String newPosition1 = completeMove.substring(12, 13);
         int newPosition2 = Integer.parseInt(completeMove.substring(13));
         String actualPosition1 = "";
         int actualPosition2 = -1;
@@ -390,6 +393,7 @@ public class ServerGameCommand {
         for (int i = 0; i < piecesToMove; i++) {
             moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
             if (moveValue < 0) {
+                sendToThisClient.enqueue("INFO At least one invalid destination!");
                 return;
             }
             countToSeven += moveValue;
@@ -428,17 +432,25 @@ public class ServerGameCommand {
             }
         }
 
-        if ((actualPosition1.equals("A") || newPosition1.equals("A"))
-                || (actualPosition1.equals("C") && newPosition1.equals("B"))) {
-            return -1;
-        } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
-            // track -> track
+        if (actualPosition1.equals("B") && newPosition1.equals("B")
+                || (actualPosition1.equals("C") && newPosition1.equals("C"))) {
+            // track -> track or heaven -> heaven
+            return newPosition2 - actualPosition2;
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+            int difference;
             // track -> heaven
-        } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-            // heaven -> heaven
+            if (!hasMoved) {
+                return -1;
+            }
+            difference = startingPosition - actualPosition2;
+            if (difference < 0) {
+                difference = difference + 64 + newPosition2 + 1;
+            } else {
+                difference = difference + newPosition2 + 1;
+            }
+            return difference;
         }
-        return 0;
+        return -1;
     }
 
     /**

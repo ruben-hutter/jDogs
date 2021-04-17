@@ -25,7 +25,6 @@ public class GameState {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
             gameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
-            System.out.println(gameFile.getPlayers().get(counter).getAlliance());
             counter++;
         }
     }
