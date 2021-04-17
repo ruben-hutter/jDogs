@@ -74,19 +74,22 @@ public class ClientGame {
      */
     // TODO hasMoved
     public void changePiecePosition(Player player, int pieceID, String newPosition) {
-        switch(newPosition.charAt(0)) {
-            case 'A':
+        System.out.println(newPosition);
+        System.out.println("char " + newPosition.charAt(0));
+        switch(newPosition.substring(0,1)) {
+            case "A":
                 player.changePositionClient(pieceID, board.allHomeTiles.
                         get(player.getAlliance())[pieceID - 1]);
                 break;
-            case 'B':
+            case "B":
                 player.changePositionClient(pieceID, board.allTrackTiles[Integer
-                        .parseInt(newPosition.substring(1)) % board.allTrackTiles.length]);
+                        .parseInt(newPosition.substring(1))]);
                 break;
-            case 'C':
+            case "C":
                 player.changePositionClient(pieceID, board.allHeavenTiles.
                         get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
                 break;
         }
+        printGameState();
     }
 }

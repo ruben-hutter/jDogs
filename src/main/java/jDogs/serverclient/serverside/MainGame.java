@@ -16,7 +16,7 @@ public class MainGame {
     private Random random = new Random();
     private ArrayList<Player> players;
     private static final Logger logger = LogManager.getLogger(MainGame.class);
-
+    private int numberOfRounds;
 
 
     MainGame(GameFile gameFile) {
@@ -44,6 +44,8 @@ public class MainGame {
      */
     private void startGameRhythm() {
         setRandomBeginner();
+        //TODO test method
+        this.numberOfRounds = 0;
         turnNumber = 0;
         this.numbDealOut = 6;
         //first deck
@@ -82,8 +84,7 @@ public class MainGame {
      */
     private void nextTurn() {
 
-        Server.getInstance().getSender(gameArray[turnNumber]).sendStringToClient("TURN");
-        logger.debug("Next turn is player: " + Server.getInstance().getSender(gameArray[turnNumber]));
+        Server.getInstance().getSender(gameArray[turnNumber % players.size()]).sendStringToClient("TURN");
     }
 
     private void dealOutCards(int number) {
@@ -111,6 +112,15 @@ public class MainGame {
         }
 
          */
+        newHandArray = new ArrayList<>();
+        newHandArray.add("ACEE KING JOKE SIXX FOUR JACK");
+        newHand = "ROUN " + turnNumber + " " + number;
+
+        String hand = "ROUN " + turnNumber  + number + "ACEE KING JOKE SIXX FOUR JACK";
+        for (Player player : players) {
+            player.sendMessageToClient(hand);
+            player.setDeck(newHandArray);
+        }
 
     }
 
@@ -177,9 +187,10 @@ public class MainGame {
     public void turnComplete(String nickname) {
         System.out.println(nickname + " finished his turn");
         turnNumber++;
+        numberOfRounds++;
         // new round
         //no cards in any player`s hand
-        if (turnNumber == numbDealOut) {
+        if (numberOfRounds / 4 == numbDealOut) {
             if (numbDealOut == 2) {
                 numbDealOut = 6;
                 // anew deck
@@ -205,6 +216,15 @@ public class MainGame {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    /**
+     *
+     * @param add number of cards not used
+     *            by a client(added after command "MOVE SURR")
+     */
+    public void addToNumberOfRounds(int add) {
+        numberOfRounds += add;
     }
 }
 

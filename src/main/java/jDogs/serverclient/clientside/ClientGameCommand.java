@@ -80,11 +80,6 @@ public class ClientGameCommand {
                                 Integer.parseInt(text.substring(10, 11)), text.substring(12));
                         break;
                 }
-
-            default:
-                System.out.println("the command " + command
-                        + " is not implemented. Can`t execute " + text);
-
         }
     }
 }

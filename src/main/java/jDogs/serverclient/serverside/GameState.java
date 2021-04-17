@@ -10,7 +10,6 @@ public class GameState {
 
     private final GameFile gameFile;
     private String[] playerNames;
-    private ArrayList<Player> playersState;
     private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
 
@@ -24,7 +23,7 @@ public class GameState {
     public void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            playersState.get(counter).setUpPlayerOnServer(alliance_4);
+            gameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
             counter++;
         }
     }
@@ -118,7 +117,7 @@ public class GameState {
     }
 
     public void sendMessageToPlayers(String message) {
-        for (Player player : playersState) {
+        for (Player player : gameFile.getPlayers()) {
             player.getServerConnection().getSender().sendStringToClient(message);
         }
     }

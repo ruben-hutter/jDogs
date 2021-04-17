@@ -519,9 +519,9 @@ public class ServerGameCommand {
                 break;
         }
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + newPosition1
+        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
                 + newPosition2);
-
+        mainGame.turnComplete(nickname);
         // TODO eliminate card!!
     }
 
@@ -569,6 +569,7 @@ public class ServerGameCommand {
     }
 
     public void setMainGame(MainGame mainGame) {
+        this.mainGame = mainGame;
         this.gameFile = mainGame.getGameFile();
         this.gameState = mainGame.getGameState();
         players = mainGame.getGameFile().getPlayers();
