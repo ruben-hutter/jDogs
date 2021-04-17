@@ -513,17 +513,6 @@ public class ServerGameCommand {
         }
         return null;
     }
-/*
-    public void setMainGame(MainGame mainGame) {
-        this.mainGame = mainGame;
-        players = this.gameFile.getPlayers();
-    }
-
- */
-
-
-
-
 
     public void setMainGame(MainGame mainGame) {
         this.gameFile = mainGame.getGameFile();
