@@ -343,8 +343,7 @@ public class ServerGameCommand {
                 ownPlayer = player;
                 ownActualPosition1 = player.recivePosition1Server(ownPieceID);
                 ownActualPosition2 = player.recivePosition2Server(ownPieceID);
-                ownHasMoved = player.reciveHasMoved(ownPieceID);
-                ownStartingPosition = player.getStartingPosition();
+
             }
         }
 
