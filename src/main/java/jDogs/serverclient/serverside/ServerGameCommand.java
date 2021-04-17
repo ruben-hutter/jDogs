@@ -77,6 +77,7 @@ public class ServerGameCommand {
                 // special cases (move command syntax different from normal)
 
                 switch (card) {
+                    // TODO substitute sub 5 with new command from checkCard()
                     case "SEVE":
                         checkMoveSeven(text.substring(5)); // TODO difference between mod 0 and 1 (teams or not)
                         break;
@@ -160,24 +161,8 @@ public class ServerGameCommand {
         int startingPosition = -1;
         Player ownPlayer = null;
         Alliance_4 alliance4;
-        switch(alliance) {
-            case "YELO":
-                alliance4 = Alliance_4.YELLOW;
-                break;
-            case "REDD":
-                alliance4 = Alliance_4.RED;
-                break;
-            case "BLUE":
-                alliance4 = Alliance_4.BLUE;
-                break;
-            case "GREN":
-                alliance4 = Alliance_4.GREEN;
-                break;
-            default:
-                // if command piece not correct, return to client
-                sendToThisClient.enqueue("Piece isn't entered correctly");
-                return;
-        }
+
+        alliance4 = convertAlliance(alliance);
 
         for (Player player : players) {
             if (player.getAlliance() == alliance4) {
@@ -199,6 +184,8 @@ public class ServerGameCommand {
             return;
         }
 
+        // TODO no block going heaven or passing track
+
         // check if there is a piece on destination
         if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
             sendToThisClient.enqueue("You eliminate yourself!");
@@ -215,7 +202,7 @@ public class ServerGameCommand {
             boolean hasMoved) {
         int[] cardValues = getCardValues(card);
         if (cardValues == null) {
-            System.out.println("wrong card value " + card);
+            System.out.println("wrong card value " + card); // TODO ??
             return false;
         }
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
@@ -326,8 +313,6 @@ public class ServerGameCommand {
         int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
         String ownActualPosition1 = "";
         int ownActualPosition2 = -1;
-        boolean ownHasMoved = false;
-        int ownStartingPosition = -1;
         Player ownPlayer = null;
         Alliance_4 ownAlliance4;
 
@@ -340,52 +325,18 @@ public class ServerGameCommand {
         Player otherPlayer = null;
         Alliance_4 otherAlliance4;
 
-        switch(ownAlliance) {
-            case "YELO":
-                ownAlliance4 = Alliance_4.YELLOW;
-                break;
-            case "REDD":
-                ownAlliance4 = Alliance_4.RED;
-                break;
-            case "BLUE":
-                ownAlliance4 = Alliance_4.BLUE;
-                break;
-            case "GREN":
-                ownAlliance4 = Alliance_4.GREEN;
-                break;
-            default:
-                // if command piece not correct, return to client
-                sendToThisClient.enqueue("Piece isn't entered correctly");
-                return;
-        }
+        ownAlliance4 = convertAlliance(ownAlliance);
+
         for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == ownAlliance4) {
                 ownPlayer = player;
                 ownActualPosition1 = player.recivePosition1Server(ownPieceID);
                 ownActualPosition2 = player.recivePosition2Server(ownPieceID);
-                ownHasMoved = player.reciveHasMoved(ownPieceID);
-                ownStartingPosition = player.getStartingPosition();
             }
         }
 
-        switch(otherAlliance) {
-            case "YELO":
-                otherAlliance4 = Alliance_4.YELLOW;
-                break;
-            case "REDD":
-                otherAlliance4 = Alliance_4.RED;
-                break;
-            case "BLUE":
-                otherAlliance4 = Alliance_4.BLUE;
-                break;
-            case "GREN":
-                otherAlliance4 = Alliance_4.GREEN;
-                break;
-            default:
-                // if command piece not correct, return to client
-                sendToThisClient.enqueue("Piece isn't entered correctly");
-                return;
-        }
+        otherAlliance4 = convertAlliance(otherAlliance);
+
         for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == otherAlliance4) {
                 otherPlayer = player;
@@ -400,7 +351,7 @@ public class ServerGameCommand {
                 || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
                 || (otherActualPosition1.equals("B") && otherActualPosition2 == otherStartingPosition
                 && !otherHasMoved)) {
-            sendToThisClient.enqueue("You can't switch this pieces!");
+            sendToThisClient.enqueue("INFO You can't switch this pieces!");
         } else {
             assert ownPlayer != null;
             simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
@@ -409,12 +360,84 @@ public class ServerGameCommand {
         }
     }
 
-    private void checkMoveSeven(String completeMove) {
-        int piecesToMove = Integer.parseInt(text.substring(10, 11));
-        int startIndex = 12;
+    private Alliance_4 convertAlliance(String allianceString) {
+        Alliance_4 alliance;
+        switch(allianceString) {
+            case "YELO":
+                alliance = Alliance_4.YELLOW;
+                break;
+            case "REDD":
+                alliance = Alliance_4.RED;
+                break;
+            case "BLUE":
+                alliance = Alliance_4.BLUE;
+                break;
+            case "GREN":
+                alliance = Alliance_4.GREEN;
+                break;
+            default:
+                // if command piece not correct, return to client
+                sendToThisClient.enqueue("INFO Piece isn't entered correctly");
+                return null;
+        }
+        return alliance;
+    }
+
+    private void checkMoveSeven(String completeMove) { // SEVE 2 YELO-1 B20 GREN-2 C01
+        int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
+        int startIndex = 7;
+        int countToSeven = 0;
+        int moveValue;
         for (int i = 0; i < piecesToMove; i++) {
-            (text.substring(startIndex, startIndex + 10));
+            moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
+            if (moveValue < 0) {
+                return;
+            }
+            countToSeven += moveValue;
+            if (countToSeven > 7) {
+                sendToThisClient.enqueue("INFO You moved more than 7!");
+                return;
+            }
             startIndex += 11;
+        }
+    }
+
+    private int checkSingleSeven(String move) { // YELO-1 B20
+        String alliance = move.substring(0, 4);
+        int pieceID = Integer.parseInt(move.substring(5, 6));
+        String newPosition1 = move.substring(7, 8);
+        int newPosition2 = Integer.parseInt(move.substring(8));
+        String actualPosition1 = "";
+        int actualPosition2 = -1;
+        boolean hasMoved = false;
+        int startingPosition = -1;
+        Player ownPlayer = null;
+        Alliance_4 alliance4;
+
+        alliance4 = convertAlliance(alliance);
+
+        for (Player player : players) {
+            if (player.getAlliance() == alliance4) {
+                logger.debug("Alliance Player: " + player.getAlliance());
+                ownPlayer = player;
+                actualPosition1 = player.recivePosition1Server(pieceID);
+                logger.debug("actual position1: " + actualPosition1);
+                actualPosition2 = player.recivePosition2Server(pieceID);
+                logger.debug("actual position2: " + actualPosition2);
+                hasMoved = player.reciveHasMoved(pieceID);
+                startingPosition = player.getStartingPosition();
+            }
+        }
+
+        if ((actualPosition1.equals("A") || newPosition1.equals("A"))
+                || (actualPosition1.equals("C") && newPosition1.equals("B"))) {
+            return -1;
+        } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
+            // track -> track
+        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+            // track -> heaven
+        } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
+            // heaven -> heaven
         }
     }
 
@@ -435,8 +458,6 @@ public class ServerGameCommand {
         simpleMove(player, pieceID, newPosition1, newPosition2);
         return true;
     }
-
-    // TODO no block going heaven or passing track
 
     /**
      * Move a piece and eliminate enemy
