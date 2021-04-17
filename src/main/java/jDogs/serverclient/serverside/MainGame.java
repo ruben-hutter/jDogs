@@ -21,6 +21,24 @@ public class MainGame {
 
     MainGame(GameFile gameFile) {
         this.gameFile = gameFile;
+        this.gameState = new GameState(gameFile);
+
+        setUp();
+
+
+        startGameRhythm();
+    }
+
+    public void setUp() {
+        gameState.createPlayers();
+        players = gameFile.getPlayers();
+
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
+            players.get(i).getServerConnection().getSender().sendStringToClient("GAME " + gameFile.getNumberOfParticipants() + " "
+                    + gameFile.getParticipants());
+            logger.debug("Player " + i + " ServerConnection " + players.get(i).getServerConnection());
+        }
         players = gameFile.getPlayers();
         gameState = new GameState(gameFile);
         gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
@@ -82,7 +100,7 @@ public class MainGame {
         String newHand;
         ArrayList<String> newHandArray;
 
-        for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
+        /*for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
             newHandArray = new ArrayList<>();
             newHand = "ROUN " + turnNumber + " " + number;
 

@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.Main;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.ClientGame;
@@ -8,6 +9,7 @@ import jDogs.player.Player;
 import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +36,7 @@ public class ServerGameCommand {
     private GameState gameState;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
     private ArrayList<Player> players;
+    private MainGame mainGame;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -43,7 +46,6 @@ public class ServerGameCommand {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.loggedIn = false;
-        this.nickname = null;
         this.serverParser = new ServerParser(server,serverConnection);
         this.players = null;
     }
@@ -60,7 +62,7 @@ public class ServerGameCommand {
                 //finish game
                 break;
             case "MOVE":
-
+/*
                 String playerName = serverConnection.getNickname();
                 logger.debug("Player nickname: " + playerName);
                 Player player = gameState.getPlayer(playerName);
@@ -73,6 +75,8 @@ public class ServerGameCommand {
                 }
                 //String card = text.substring(5, 9);
                 String card = toCheckMove.substring(5, 9);
+
+ */
 
                 // special cases (move command syntax different from normal)
 
@@ -339,6 +343,8 @@ public class ServerGameCommand {
                 ownPlayer = player;
                 ownActualPosition1 = player.recivePosition1Server(ownPieceID);
                 ownActualPosition2 = player.recivePosition2Server(ownPieceID);
+                ownHasMoved = player.reciveHasMoved(ownPieceID);
+                ownStartingPosition = player.getStartingPosition();
             }
         }
 
@@ -563,11 +569,10 @@ public class ServerGameCommand {
         return null;
     }
 
-    public void setGameFile(GameFile gameFile) {
-        this.gameFile = gameFile;
-    }
-
-    public void setNickName(String nickname) {
-        this.nickname = nickname;
+    public void setMainGame(MainGame mainGame) {
+        this.gameFile = mainGame.getGameFile();
+        this.gameState = mainGame.getGameState();
+        players = mainGame.getGameFile().getPlayers();
+        this.nickname = serverConnection.getNickname();
     }
 }

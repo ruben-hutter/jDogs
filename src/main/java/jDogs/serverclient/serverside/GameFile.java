@@ -55,7 +55,7 @@ public class GameFile {
     private void setUpTeamMode() {
 
         if (teamMode > 0) {
-            this.teamIDs = total / teamMode;
+            this.teamIDs = total / teamMode + 1;
         }
     }
 
@@ -269,10 +269,6 @@ public class GameFile {
         pendent = false;
         mainGame = new MainGame(this);
         Server.getInstance().startGame(mainGame);
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
-            logger.debug("Player " + i + " ServerConnection " + players.get(i).getServerConnection());
-        }
     }
 
     /**
