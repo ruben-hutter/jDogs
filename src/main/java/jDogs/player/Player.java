@@ -144,6 +144,8 @@ public class Player {
     /**
      * Change the actual position of a piece on server side
      * @param pieceID which of the 4 pieces
+     * @param newPosition1 A = home, B = track, C = heaven
+     * @param newPosition2 0 up to max num of tiles for newPos 1
      */
     public void changePositionServer(int pieceID, String newPosition1, int newPosition2) {
         Piece pieceToMove = getPiece(pieceID);

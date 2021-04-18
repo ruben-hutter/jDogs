@@ -6,10 +6,10 @@ import jDogs.serverclient.helpers.Queuejd;
 
 /**
  * This thread processes messages received meaningfully.
- * <li>it receives commands from server and reacts accordingly</li>
+ * - it receives commands from server and reacts accordingly
  * e.g. if the server wants a default nickname, the messageHandler
  * sends the local hostname back to the server.
- * <li>it prints messages meant for the client into the cmd</li>
+ * - it prints messages meant for the client into the cmd
  */
 public class MessageHandlerClient implements Runnable{
 

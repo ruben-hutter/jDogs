@@ -73,6 +73,7 @@ public class ServerGameCommand {
                     Player player = gameFile.getPlayer(playerName);
                     logger.debug("Player: " + player);
                     cardToEliminate = text.substring(5,9);
+                    System.out.println("first cardToEliminate: " + cardToEliminate);
                     String toCheckMove = checkCard(player, text);
                     if (toCheckMove == null) {
                         sendToThisClient.enqueue("Invalid card or no hand");
@@ -142,6 +143,7 @@ public class ServerGameCommand {
                 case "ACEE":
                     String ass = text.substring(5,9);
                     cardToEliminate = "ACEE";
+                    System.out.println("ACEE cardToEliminate: " + cardToEliminate);
                     toCheckMove = ass + " " + text.substring(10);
                     logger.debug("This string is send to checkMove (without ACEE): " + toCheckMove);
                     break;
@@ -225,7 +227,9 @@ public class ServerGameCommand {
             }
             //eliminate card
             gameFile.getPlayer(nickname).getDeck().remove(cardToEliminate);
+            System.out.println("Eliminated card: " + cardToEliminate);
             cardToEliminate = null;
+            System.out.println("After elimination: " + cardToEliminate);
             mainGame.turnComplete(nickname);
 
         } else {

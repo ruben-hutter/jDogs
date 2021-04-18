@@ -370,7 +370,7 @@ public class LobbyController implements Initializable {
      *  this method receives from the createGameWindowController
      * @param gameId this is the game name
      * @param total the total number of participants till starting the game
-     *
+     * @param teamMode 0 for singleMode and 1 for teamMode
      */
     public void sendNewGame(String gameId, String total, String teamMode) {
         System.out.println("Send new game");

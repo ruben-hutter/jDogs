@@ -181,7 +181,6 @@ public class Server {
 
     /**
      *
-     * @param gameFile
      * @return list of server connection objects of clients who participate in this opened game or started game
      */
     public ArrayList<ServerConnection> getServerConnectionsMap(GameFile gameFile) {

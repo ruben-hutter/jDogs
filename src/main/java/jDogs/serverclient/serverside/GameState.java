@@ -43,6 +43,8 @@ public class GameState {
 
     /**
      * Updates ArrayList when a move is done
+     * @param piece piece which changes position
+     * @param newPosition1 A, B or C
      */
     public void updatePiecesOnTrack(Piece piece, String newPosition1) {
         if (isPieceOnTrack(piece)) {
