@@ -369,7 +369,7 @@ public class ServerGameCommand {
      * @param twoPieces pieces to switch position
      */
     private void checkMoveJack(String twoPieces) { // JACK YELO-1 BLUE-2
-        if (twoPieces.length() >= 17) {
+        if (twoPieces.length() == 23) {
             String ownAlliance = twoPieces.substring(5, 9);
             int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
             String ownActualPosition1 = "";
