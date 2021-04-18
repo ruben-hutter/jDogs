@@ -540,9 +540,9 @@ public class ServerGameCommand {
             if (player.getAlliance() == alliance4) {
                 logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;
-                actualPosition1 = player.recivePosition1Server(pieceID);
+                actualPosition1 = player.receivePosition1Server(pieceID);
                 logger.debug("actual position1: " + actualPosition1);
-                actualPosition2 = player.recivePosition2Server(pieceID);
+                actualPosition2 = player.receivePosition2Server(pieceID);
                 logger.debug("actual position2: " + actualPosition2);
                 hasMoved = player.reciveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();

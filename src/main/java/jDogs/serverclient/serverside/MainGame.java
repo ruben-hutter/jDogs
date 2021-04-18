@@ -108,8 +108,8 @@ public class MainGame {
             }
             // send newHand to player and to client here
             player.sendMessageToClient(newHand);
+            player.setAllowedToPlay(true);
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
-            logger.debug("Client get the cards as: " + newHand);
         }
 
 
