@@ -7,11 +7,14 @@ package jDogs.serverclient.serverside;
  */
 public enum ServerGameProtocol {
 
-
+    /**
+     * Command to leave game and shutdown ServerConnection
+    */
+    EXIT,
     /**
      * Command to leave the current game and return to the lobby.
      */
-    EXIT,
+    QUIT,
     /**
      * Command to choose the game mode: Number of players, composition of the team, design of the board.
      */

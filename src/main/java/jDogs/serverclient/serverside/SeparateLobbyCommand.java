@@ -1,6 +1,9 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SeparateLobbyCommand {
 
@@ -11,6 +14,7 @@ public class SeparateLobbyCommand {
     private ServerConnection serverConnection;
     private GameFile gameFile;
     private String nickname;
+    private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
 
     SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, Queuejd sendToPub, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;
@@ -21,6 +25,7 @@ public class SeparateLobbyCommand {
     }
 
     public void execute(String text) {
+        logger.debug("Entered SeparateLobbyCommand with: " + text);
 
         String command = text.substring(0, 4);
 
@@ -28,10 +33,10 @@ public class SeparateLobbyCommand {
 
                 case "WCHT":
                     //send private message
-
+                    String mess = text.substring(5);
                     int separator = -1;
-                    for (int i = 0; i < text.substring(5).length(); i++) {
-                        if (Character.isWhitespace(text.substring(4).charAt(i))) {
+                    for (int i = 0; i < mess.length(); i++) {
+                        if (Character.isWhitespace(mess.charAt(i))) {
                             separator = i;
                             break;
                         }
@@ -41,9 +46,8 @@ public class SeparateLobbyCommand {
                         sendToThisClient.enqueue("INFO " + "wrong WCHT format");
                         break;
                     }
-
-                    String destiny = text.substring(5, 4 + separator);
-                    String message = text.substring(5 + separator);
+                    String destiny = text.substring(0, separator);
+                    String message = text.substring(separator + 1);
 
                     if (!isParticipant(destiny)) {
                         sendToThisClient
@@ -83,8 +87,13 @@ public class SeparateLobbyCommand {
                     // client confirms to start the game
 
                     if (gameFile.readyToStart() && gameFile.getHost().equals(nickname)) {
+                        logger.debug("gamefile ready to start? " + gameFile.readyToStart());
+                        logger.debug("nickname: " + nickname);
+                        logger.debug("host: " +gameFile.getHost());
                         System.out.println("starting game ");
                         gameFile.start();
+                        logger.debug("Game started");
+
                     }
                     break;
 

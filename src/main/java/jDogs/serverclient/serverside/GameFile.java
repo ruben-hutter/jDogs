@@ -1,8 +1,11 @@
 package jDogs.serverclient.serverside;
+//this class represents information of pendent games(still in lobby) or ongoing games
 
 import jDogs.player.Player;
 import java.util.ArrayList;
 import java.util.Collections;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -22,6 +25,7 @@ public class GameFile {
     private int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
     private int teamIDs;
+    private static final Logger logger = LogManager.getLogger(GameFile.class);
 
     public GameFile(String nameId, String host, String total, int teamMode,
             ServerConnection serverConnection) {
@@ -45,7 +49,7 @@ public class GameFile {
     private void setUpTeamMode() {
 
         if (teamMode > 0) {
-            this.teamIDs = total / teamMode;
+            this.teamIDs = total / teamMode + 1;
         }
     }
 
@@ -75,7 +79,6 @@ public class GameFile {
             while (teamID < sizeNames / teamSize) {
                 for (int i = 0; i < teamSize; i++) {
                     getPlayer(array[i]).setTeamID(teamID);
-                    System.out.println(getPlayer(array[i]).getTeamID() + " " + getPlayer(array[i]).getPlayerName());
                 }
                 teamID++;
             }
@@ -125,28 +128,31 @@ public class GameFile {
 
 
     public void sendMessageToParticipants(String message) {
-
+        logger.debug("message for players of " + nameId + " : " + message);
         for (Player player : players) {
-            System.out.println("send message from game file" + message);
             player.getServerConnection().getSender().sendStringToClient(message);
         }
     }
 
     public void addParticipant(ServerConnection serverConnection) {
-        players.add(new Player(serverConnection.getNickname(), serverConnection));
-        numberParticipants++;
-        sendMessageToParticipants("LPUB " + serverConnection.getNickname());
-        for (int i = 0; i < numberParticipants - 1; i++) {
-            players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
+        if (numberParticipants < total) {
+            players.add(new Player(serverConnection.getNickname(), serverConnection));
+            numberParticipants++;
+            sendMessageToParticipants("LPUB " + serverConnection.getNickname());
+            for (int i = 0; i < numberParticipants - 1; i++) {
+                players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
+            }
+
+            if (teamMode == 1 && readyToStart()) {
+
+                checkforTeams();
+                OrderArrayListToPlayGame();
+                // get players arraylist in definitive order
+            }
+
+        } else {
+            serverConnection.getSender().sendStringToClient("INFO no more players allowed in game");
         }
-
-        if (teamMode == 1 && readyToStart()) {
-
-            checkforTeams();
-            OrderArrayListToPlayGame();
-            // get players arraylist in definitive order
-        }
-
     }
 
     /**
@@ -155,10 +161,10 @@ public class GameFile {
      */
     public void removeParticipant(ServerConnection serverConnection) {
         String nickname = serverConnection.getNickname();
+        Player player = getPlayer(nickname);
+        players.remove(player);
 
         if (pendent) {
-            Player player = getPlayer(nickname);
-            players.remove(player);
             numberParticipants--;
             sendMessageToParticipants("DPER " + nickname);
             Server.getInstance().getSender(nickname)
@@ -218,14 +224,16 @@ public class GameFile {
         }
     }
 
-
     public String getParticipants() {
+
         String participants = "";
 
         for (Player player : players) {
             participants += player.getPlayerName() + "\n";
             participants += " " + "\n";
         }
+        participants += players.get(players.size() - 1).getPlayerName();
+        logger.debug("Participants: " + participants);
 
         return participants;
     }
@@ -269,12 +277,8 @@ public class GameFile {
      */
     public void start() {
         pendent = false;
-        //Server.getInstance().startGame(new MainGame(this));
-        for (int i = 0; i < players.size(); i++) {
-            players.get(i).getServerConnection().getMessageHandlerServer().setPlaying(true, this);
-            mainGame = new MainGame(this);
-            Server.getInstance().startGame(mainGame);
-        }
+        mainGame = new MainGame(this);
+        Server.getInstance().startGame(mainGame);
     }
 
     /**
@@ -301,15 +305,15 @@ public class GameFile {
             System.out.println("INFO game finished");
         }
         Server.getInstance().removeGame(this);
-
     }
 
     /**
-     * @param message message to every active player in lobby, separate lobby or games
+     * message to every active player in lobby, separate lobby or games
+     * @param message
      */
     private void sendMessageToAll(String message) {
-        for (ServerConnection serverConnection1 : Server.getInstance().serverConnections) {
-            serverConnection1.getSender().sendStringToAllClients(message);
+        for (ServerConnection serverConnection1 : Server.getInstance().getBasicConnections()) {
+            serverConnection1.getSender().sendStringToClient(message);
         }
     }
 
@@ -343,6 +347,5 @@ public class GameFile {
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
 
 }

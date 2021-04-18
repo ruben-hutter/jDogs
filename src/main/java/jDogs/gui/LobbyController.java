@@ -313,7 +313,6 @@ public class LobbyController implements Initializable {
             openGames.add(newGame);
     }
 
-    //TODO method doesn t remove object from sight
 
     public void removePendentGameInLobby(String substring) {
         OpenGame openGame = GuiParser.getOpenGame(substring);
@@ -350,7 +349,6 @@ public class LobbyController implements Initializable {
         playersInLobby.add(new Participant(player));
     }
 
-    //TODO method doesn t remove player
     public void removePlayerinPublic(String player) {
         try {
             Participant participant = new Participant(player);
@@ -379,7 +377,7 @@ public class LobbyController implements Initializable {
      *  this method receives from the createGameWindowController
      * @param gameId this is the game name
      * @param total the total number of participants till starting the game
-     *
+     * @param teamMode 0 for singleMode and 1 for teamMode
      */
     public void sendNewGame(String gameId, String total, String teamMode) {
         System.out.println("Send new game");

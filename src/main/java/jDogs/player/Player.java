@@ -1,7 +1,6 @@
 package jDogs.player;
 
 import jDogs.Alliance_4;
-import jDogs.Piece;
 import jDogs.board.Board;
 import jDogs.board.Tile;
 import jDogs.serverclient.serverside.ServerConnection;
@@ -20,17 +19,23 @@ public class Player {
     Alliance_4 alliance4;
     Board board;
     public int startingPosition;
-    private ArrayList<String> deck;
     private ServerConnection serverConnection;
     private int teamID;
+    private boolean allowedToPlay;
 
     public Player(String playerName, ServerConnection serverConnection) {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
+        this.allowedToPlay = false;
         teamID = -1;
-
-
     }
+
+    /**
+     * Player instance for client
+     * @param playerName name of player
+     * @param alliance4 alliance of player
+     * @param board created board for client
+     */
 
     public Player(String playerName, Alliance_4 alliance4, Board board) {
         this.playerName = playerName;
@@ -41,11 +46,13 @@ public class Player {
         setPiecesOnHome();
     }
 
-    public void setUpPlayerOnServer( Alliance_4 alliance4) {
+    public void setUpPlayerOnServer(Alliance_4 alliance4) {
         this.alliance4 = alliance4;
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
-        this.deck = null;
+        for (Piece piece : pieces) {
+            piece.setPositionServer("A", piece.getPieceID() - 1);
+        }
     }
 
     public static Comparator<Player> TeamIdComparator = new Comparator<Player>() {
@@ -75,16 +82,8 @@ public class Player {
     private void setPiecesOnHome() {
         for (int i = 0; i < pieces.length; i++) {
             board.allHomeTiles.get(alliance4)[i].setPiece(pieces[i]);
-            pieces[i].setPosition(board.allHomeTiles.get(alliance4)[i]);
+            pieces[i].setPositionClient(board.allHomeTiles.get(alliance4)[i]);
         }
-    }
-
-    public void setDeck (ArrayList<String> deck) {
-        this.deck = deck;
-    }
-
-    public ArrayList<String> getDeck() {
-        return deck;
     }
 
     public String getPlayerName() {
@@ -93,6 +92,14 @@ public class Player {
 
     public Alliance_4 getAlliance() {
         return alliance4;
+    }
+
+    public boolean receiveHasMoved(int pieceID) {
+        return getPiece(pieceID).getHasMoved();
+    }
+
+    public int getStartingPosition() {
+        return startingPosition;
     }
 
     /**
@@ -110,16 +117,37 @@ public class Player {
     }
 
     /**
-     * Change the actual position of a piece to a new one
+     * Change the actual position of a piece on client side
      * @param pieceID which of the 4 pieces
      * @param newPosition the new position tile
      */
-    public void changePiecePosition(int pieceID, Tile newPosition) {
+    public void changePositionClient(int pieceID, Tile newPosition) {
         Piece pieceToMove = getPiece(pieceID);
-        Tile oldPosition = pieceToMove.getPosition();
-        pieceToMove.setPosition(newPosition);
+        assert pieceToMove != null;
+        Tile oldPosition = pieceToMove.getPositionClient();
+        pieceToMove.setPositionClient(newPosition);
         oldPosition.setPiece(null);
         newPosition.setPiece(pieceToMove);
+    }
+
+    /**
+     * Change the actual position of a piece on server side
+     * @param pieceID which of the 4 pieces
+     * @param newPosition1 A = home, B = track, C = heaven
+     * @param newPosition2 0 up to max num of tiles for newPos 1
+     */
+    public void changePositionServer(int pieceID, String newPosition1, int newPosition2) {
+        Piece pieceToMove = getPiece(pieceID);
+        assert pieceToMove != null;
+        pieceToMove.setPositionServer(newPosition1, newPosition2);
+    }
+
+    public String receivePosition1Server(int pieceID) {
+        return pieces[pieceID - 1].getPositionServer1();
+    }
+
+    public int receivePosition2Server(int pieceID) {
+        return pieces[pieceID - 1].getPositionServer2();
     }
 
     public void setTeamID(int newID) {
@@ -137,7 +165,7 @@ public class Player {
      * @param message to the client concerning this game
      */
     public void sendMessageToClient(String message) {
-        serverConnection.getSender().sendStringToClient(message);
+        this.serverConnection.getSender().sendStringToClient(message);
     }
 
     @Override
@@ -147,5 +175,20 @@ public class Player {
 
     public ServerConnection getServerConnection() {
         return serverConnection;
+    }
+
+    /**
+     * excludes player from game till this round finished
+     */
+    public void excludeForRound() {
+        this.allowedToPlay = false;
+    }
+
+    public boolean isAllowedToPlay() {
+        return this.allowedToPlay;
+    }
+
+    public void setAllowedToPlay(boolean val) {
+        this.allowedToPlay = val;
     }
 }

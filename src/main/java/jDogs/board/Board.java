@@ -6,9 +6,6 @@ import java.util.Map;
 
 /**
  * Creates board initial setup
- * <li>1 x TrackTiles</li>
- * <li>4 x HomeTiles</li>
- * <li>4 x HeavenTiles</li>
  */
 public class Board {
 

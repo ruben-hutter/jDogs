@@ -34,12 +34,16 @@ public class ReceiveFromServer implements Runnable {
         try {
             while(running) {
                 if (din.available() != 0) {
+
+                    client.monitorMsg(System.currentTimeMillis());
+
                     message = din.readUTF();
+
+
                     if (message.equalsIgnoreCase("ping")) {
-                        client.monitorMsg(System.currentTimeMillis());
+                        //client.monitorMsg(System.currentTimeMillis());
                         //connectionToServerMonitor.sendSignal();
                     } else {
-                        //System.out.println("received from server " + message);
                         receiveQueue.enqueue(message);
                     }
                 }

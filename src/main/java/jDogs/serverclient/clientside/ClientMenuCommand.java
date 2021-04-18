@@ -3,8 +3,11 @@ package jDogs.serverclient.clientside;
 
 import jDogs.gui.GUIManager;
 import jDogs.serverclient.helpers.Queuejd;
+import jDogs.serverclient.serverside.ServerMenuCommand;
 import java.sql.SQLOutput;
 import javafx.application.Platform;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * ClientMenuCommand contains the menu/lobby
@@ -19,6 +22,7 @@ public class ClientMenuCommand {
     private SendFromClient sendFromClient;
     private Queuejd sendQueue;
     private Queuejd keyBoardInQueue;
+    private static final Logger logger = LogManager.getLogger(ClientMenuCommand.class);
 
     ClientMenuCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
 
@@ -31,7 +35,7 @@ public class ClientMenuCommand {
     }
 
     public void execute (String text) {
-        System.out.println("text " + text);
+        logger.debug("Entered ClientMenuCommand with: " + text);
         String command = text.substring(0,4);
 
         switch (command) {
@@ -47,11 +51,11 @@ public class ClientMenuCommand {
                     name = text.substring(5);
                     client.setNickname(name);
                     sendFromClient.keyBoardInBlocked = false;
-
+/*
                     Platform.runLater(() -> GUIManager.getInstance().lobbyController.
                             displayInfomsg("INFO from server. Your new nick is " + name));
 
-
+ */
                     System.out.println("your new nick is " + name);
 
                 }
@@ -59,33 +63,32 @@ public class ClientMenuCommand {
 
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
-
+/*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
 
+ */
 
                 break;
 
             case "WCHT":
                 System.out.println("WCHT: " + text.substring(5));
 
-                Platform.runLater(()->
+              /*  Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
 
-
+               */
 
                 break;
-
             case "LPUB":
 
-                //TODO Information update of active users in Public Lobby
                 //just compare to existing String/Array and replace if necessary
 
 
-               Platform.runLater(()->
+               /* Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPlayerinPublic(text.substring(5)));
 
-
+                */
 
 
 
@@ -94,29 +97,32 @@ public class ClientMenuCommand {
                 break;
 
             case "LCHT":
-
+               /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLCHTmsg(text.substring(5)));
 
-
+                */
                 System.out.println("LCHT " + text.substring(5));
 
             case "DPER":
 
-                Platform.runLater(()->
+                /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePlayerinPublic(text.substring(5)));
+
+                 */
+
+
                 break;
 
 
 
             case "JOIN":
 
-                //TODO display Information about a user or users who joined a pendent game
-
+/*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
 
-
+ */
                 System.out.println("start separate lobby");
 
 
@@ -129,10 +135,10 @@ public class ClientMenuCommand {
 
                 System.out.println("OGAM: " + text.substring(5));
 
-                Platform.runLater(()->
+                /*Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
 
-
+                 */
 
 
                 break;
@@ -140,50 +146,36 @@ public class ClientMenuCommand {
             case "DOGA":
                 //TODO remove openGame from GUI-Lobby-Display
                 System.out.println("DOGA: " + text.substring(5));
-
+                /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
 
-
+                 */
 
 
                 break;
 
 
             case "INFO":
-
+    /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
 
-
+     */
 
 
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
             case "STAR":
-
+    /*
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.startGameConfirmation());
 
-
+     */
 
 
                 break;
-
-            case "GAME":
-                //TODO receive game details when game starts and display in Game GUI
-                //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
-
-
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.startGame(text.substring(5)));
-
-
-
-                System.out.println("New Game " + text.substring(5));
-                break;
-
 
             default:
                 System.out.println("received from server " + text + ". This command " + command

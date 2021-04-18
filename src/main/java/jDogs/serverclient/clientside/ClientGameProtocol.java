@@ -11,7 +11,7 @@ public enum ClientGameProtocol {
     /**
      * Command to start a new game.
      */
-    PLAY,
+    GAME,
     /**
      * Command to leave the current game and return to the lobby.
      */
@@ -21,6 +21,18 @@ public enum ClientGameProtocol {
      * Parameters are: cardvalue, startposition, goalposition.
      */
     MOVE,
+    /**
+     * Command to print out actual board state
+     */
+    BORD,
+    /**
+     * Information which card is removed on serverside from your hand
+     */
+    CARD,
+    /**
+     * Command to print out actual hand
+     */
+    HAND,
     /**
      * Command to give a card to this player.
      */

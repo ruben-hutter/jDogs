@@ -6,10 +6,10 @@ import jDogs.serverclient.helpers.Queuejd;
 
 /**
  * This thread processes messages received meaningfully.
- * <li>it receives commands from server and reacts accordingly</li>
+ * - it receives commands from server and reacts accordingly
  * e.g. if the server wants a default nickname, the messageHandler
  * sends the local hostname back to the server.
- * <li>it prints messages meant for the client into the cmd</li>
+ * - it prints messages meant for the client into the cmd
  */
 public class MessageHandlerClient implements Runnable{
 
@@ -46,7 +46,7 @@ public class MessageHandlerClient implements Runnable{
                 } else {
                     if (reply.length() >= 4 && ClientGameProtocol
                             .isACommand(reply.substring(0, 4))) {
-                        clientMenuCommand.execute(reply);
+                        clientGameCommand.execute(reply);
                     } else {
                         System.out.println("message doesn't match Menu or GameProtocol: " + reply);
                     }

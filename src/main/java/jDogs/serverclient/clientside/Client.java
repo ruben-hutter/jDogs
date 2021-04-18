@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * starts threads for sending/receiving to/from server
- * instantiates receiver & sender Queue
+ * instantiates receiver and sender Queue
  * kill client from here
  */
 public class Client {
@@ -43,19 +43,12 @@ public class Client {
     }
 
  //maintenance only
-    /*
     public static void main(String[] args) {
         Client c = new Client();
-        c.setNickname("maintenance");
+        c.setNickname("user");
     }
 
-     */
-
-
-
-
-
-    /**
+      /**
      * Sets up connection to Server
      * Messages are saved in specific queues
      * 5 threads to handle connection are started

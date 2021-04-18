@@ -1,6 +1,7 @@
 package jDogs;
 
 import jDogs.gui.GUILauncher;
+import jDogs.serverclient.clientside.Client;
 import jDogs.serverclient.serverside.Server;
 
 public class Main {
@@ -23,16 +24,15 @@ public class Main {
             Main mainInstance = new Main();
 
             if (args[0].equals("client")) {
-                    mainInstance.parseHostaddressAndPort(args[1]);
+                mainInstance.parseHostaddressAndPort(args[1]);
 
-                    if (args.length == 3 && args[2] != null) {
-                        mainInstance.setUsername(args[2]);
-                    }
-                    GUILauncher.main(args);
+                if (args.length == 3 && args[2] != null) {
+                    mainInstance.setUsername(args[2]);
+                }
+                //GUILauncher.main(args);
+                Client.main(args);
 
-            }
-
-            if (args[0].equals("server")) {
+            } else if (args[0].equals("server")) {
                 //mainInstance.parseServerPort(args[1]);
                 Server.main(args);
 

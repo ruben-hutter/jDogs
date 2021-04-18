@@ -29,13 +29,17 @@ public enum ClientMenuProtocol {
      */
     STAT,
     /**
-     * Information that client received a public chat message to all players.
+     * Information that client receives a public chat message to all players.
      */
     PCHT,
     /**
      * Information that client received a private message from a player.
      */
     WCHT,
+    /**
+     * Receive a public lobby chat
+     */
+    LCHT,
     /**
      * Information that client received a message from a separate lobby he joins.
      */
@@ -65,10 +69,6 @@ public enum ClientMenuProtocol {
      * Delete a person from pendent game
      */
     DPER,
-    /**
-     * A new Game with this Client is started, get required data of game from server
-     */
-    GAME,
     /**
      * Common Information from Server
      */

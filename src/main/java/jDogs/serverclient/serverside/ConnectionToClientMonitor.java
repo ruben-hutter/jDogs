@@ -18,10 +18,12 @@ public class ConnectionToClientMonitor implements Runnable {
 
     @Override
     public void run() {
+
         if (monitorCS.connectionCheck()) {
-            sendToClient.enqueue("ping");
+            //sendToClient.enqueue("ping");
+            serverConnection.getSender().sendStringToClient("ping");
         } else {
-            System.out.println(this.toString() + " no ping message from server for over 10sec."
+            System.out.println(this.toString() + " no ping message from client for over 10sec."
                     + "shutdown connection to server");
             serverConnection.kill();
         }

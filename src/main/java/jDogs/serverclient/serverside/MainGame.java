@@ -3,6 +3,8 @@ package jDogs.serverclient.serverside;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import java.util.Random;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainGame {
     private String[] gameArray;
@@ -13,18 +15,32 @@ public class MainGame {
     private ArrayList<String> deck;
     private Random random = new Random();
     private ArrayList<Player> players;
+    private static final Logger logger = LogManager.getLogger(MainGame.class);
+    private int numberOfRounds;
+    private String actualPlayer;
 
 
-
-    MainGame(GameFile gameFile) {
+    MainGame (GameFile gameFile) {
         this.gameFile = gameFile;
-        GameState gameState = new GameState(gameFile);
-        gameFile.sendMessageToParticipants("GAME " + gameFile.getNumberOfParticipants() + " "
-                + gameFile.getParticipants());
+        this.gameState = new GameState(gameFile);
+        setUp();
+        startGameRhythm();
+    }
 
+    /**
+     * sets up the main game after calling the constructor
+     */
+    public void setUp() {
+        gameState.createPlayers();
         players = gameFile.getPlayers();
 
-        startGameRhythm();
+
+        for (Player player : players) {
+            player.getServerConnection().getMessageHandlerServer().setPlaying(true, this);
+            player.getServerConnection().getSender().sendStringToClient("GAME " + gameFile.getNumberOfParticipants() + " "
+                    + gameFile.getParticipants());
+            logger.debug("Player   ServerConnection " + player.getServerConnection());
+        }
     }
 
     /**
@@ -32,6 +48,7 @@ public class MainGame {
      */
     private void startGameRhythm() {
         setRandomBeginner();
+        this.numberOfRounds = 0;
         turnNumber = 0;
         this.numbDealOut = 6;
         //first deck
@@ -52,6 +69,8 @@ public class MainGame {
         int players = 0;
 
         System.out.println("RANDOM beginner is " + oldArray[random]);
+        gameFile.sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
+        logger.debug("Random beginner is: " +  oldArray[random]);
 
         for (int i = random; i < oldArray.length; i++) {
             gameArray[players] = oldArray[i];
@@ -67,31 +86,82 @@ public class MainGame {
      * this method sends a request to the next player to make a move
      */
     private void nextTurn() {
-
-        Server.getInstance().getSender(gameArray[turnNumber]).sendStringToClient("TURN");
+        System.out.println("turnNumbers in nextTurn " + turnNumber);
+        int numb = turnNumber % players.size();
+        actualPlayer = gameArray[numb];
+        if (gameFile.getPlayer(actualPlayer).isAllowedToPlay()) {
+            Server.getInstance().getSender(actualPlayer).sendStringToClient("TURN");
+        } else {
+            turnComplete(actualPlayer);
+        }
     }
 
+    /**
+     * this method deals out cards after all cards are played or when the game starts
+     * @param number
+     */
     private void dealOutCards(int number) {
         //deal out cards from here by using a certain procedure
 
         String newHand;
         ArrayList<String> newHandArray;
 
-        for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
-            newHandArray = new ArrayList<>();
-            newHand = "ROUN " + turnNumber + " " + number;
+        for (Player player : gameFile.getPlayers()) {
+            newHand = "ROUN " +  " " + number;
 
             for (int j = 0; j < number; j++) {
                 int randomNumber = random.nextInt(deck.size());
                 String card = deck.remove(randomNumber);
-                System.out.println("Card " + card);
                 newHand += " " + card;
-                newHandArray.add(card);
+                gameState.getCards().get(player.getPlayerName()).add(card);
             }
             // send newHand to player and to client here
-            players.get(i).setDeck(newHandArray);
-            players.get(i).sendMessageToClient(newHand);
+            player.sendMessageToClient(newHand);
+            player.setAllowedToPlay(true);
+            logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
+        gameFile.sendMessageToParticipants("HAND");
+
+
+
+/*
+        ArrayList<String> newHandArray;
+        String newHand;
+
+        newHandArray = new ArrayList<>();
+        //damit checkCard funktioniert, müssen die Strings einzeln hinzugefügt werden
+        //newHandArray.add("ACEE KING JOKE SIXX FOUR JACK");
+        newHand = "ROUN " + turnNumber + " " + number;
+
+        String hand = "ROUN " + turnNumber + " " + number + " ACEE ACEE TENN TWOO EIGT NINE";
+        String a = "ACEE";
+        String b = "TENN";
+        String c = "TWOO";
+        String d = "EIGT";
+        String e = "NINE";
+        String f = "ACEE";
+        newHandArray.add(a);
+        newHandArray.add(b);
+        newHandArray.add(c);
+        newHandArray.add(d);
+        newHandArray.add(e);
+        newHandArray.add(f);
+
+
+
+
+        for (Player player : players) {
+            player.setAllowedToPlay(true);
+            player.sendMessageToClient(hand);
+            gameState.getCards().get(player.getPlayerName()).add(a);
+            gameState.getCards().get(player.getPlayerName()).add(b);
+            gameState.getCards().get(player.getPlayerName()).add(c);
+            gameState.getCards().get(player.getPlayerName()).add(d);
+            gameState.getCards().get(player.getPlayerName()).add(e);
+            gameState.getCards().get(player.getPlayerName()).add(f);
+        }
+
+ */
 
     }
 
@@ -157,34 +227,65 @@ public class MainGame {
      */
     public void turnComplete(String nickname) {
         System.out.println(nickname + " finished his turn");
+        actualPlayer = null;
         turnNumber++;
+        numberOfRounds++;
+        System.out.println("number of rounds " + numberOfRounds);
+        System.out.println("calc numberofrounds/participants " + numberOfRounds / gameFile.getNumberOfParticipants());
+        System.out.println("numberDeal out 1 " + numbDealOut);
         // new round
         //no cards in any player`s hand
-        if (turnNumber == numbDealOut) {
+        if (numberOfRounds / gameFile.getNumberOfParticipants() == numbDealOut) {
             if (numbDealOut == 2) {
+                System.out.println("entered if ");
                 numbDealOut = 6;
                 // anew deck
                 deck = getDeck();
+                numberOfRounds = 0;
             } else {
+                System.out.println("2 NUMB DEAL OUT " + numbDealOut);
                 numbDealOut--;
+                numberOfRounds = 0;
             }
             dealOutCards(numbDealOut);
         }
-
         nextTurn();
+
     }
 
+    /**
+     * this method is used to check the gameID
+     * @return
+     */
     public String getGameId() {
         return gameFile.getNameId();
     }
 
-
+    /**
+     * get the gamefile of this game
+     * @return
+     */
     public GameFile getGameFile() {
         return gameFile;
     }
 
-    public Player getPlayer(String nickname) {
-        return gameState.getPlayer(nickname);
+    /**
+     * get the gameState of the maingame
+     * @return
+     */
+    public GameState getGameState() {
+        return gameState;
+    }
 
+    /**
+     * sends the game file to the archive
+     * and the main game will be left to the garbage collector
+     */
+    public void kill() {
+        this.gameFile.cancel();
+    }
+
+    public String getActualPlayer() {
+        return actualPlayer;
     }
 }

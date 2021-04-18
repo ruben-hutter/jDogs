@@ -1,6 +1,6 @@
 package jDogs.board;
 
-import jDogs.Piece;
+import jDogs.player.Piece;
 
 /**
  * Tile is a square where a token can be placed

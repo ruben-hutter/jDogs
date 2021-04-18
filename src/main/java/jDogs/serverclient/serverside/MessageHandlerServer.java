@@ -124,11 +124,10 @@ public class MessageHandlerServer implements Runnable {
      *                false: send messages to public MenuCommand (a game ended)
      */
 
-    public void setPlaying(boolean playing,GameFile gameFile) {
+    public void setPlaying(boolean playing,MainGame mainGame) {
         if (playing) {
-            this.gameFile = gameFile;
-            serverGameCommand.setGameFile(gameFile);
-            serverGameCommand.setNickName(nickname);
+            this.gameFile = mainGame.getGameFile();
+            serverGameCommand.setMainGame(mainGame);
             state = "playing";
         } else {
             state = "publicLobby";

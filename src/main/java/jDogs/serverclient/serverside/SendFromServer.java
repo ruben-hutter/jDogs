@@ -45,15 +45,11 @@ public class SendFromServer implements Runnable {
             }
             if (!sendToAll.isEmpty()) {
                 String message = sendToAll.dequeue();
-                System.out.println("send to all " + message);
-
                 sendStringToAllClients(message);
             }
 
             if (!sendToPub.isEmpty()) {
                 String message = sendToPub.dequeue();
-                System.out.println("send to pub " + message);
-
                 sendStringToPublicLobbyGuests(message);
             }
 
@@ -63,7 +59,6 @@ public class SendFromServer implements Runnable {
                 e.printStackTrace();
             }
         }
-        System.out.println(this.toString() + "  stops now...");
         try {
             dout.close();
         } catch (IOException e) {
@@ -94,9 +89,9 @@ public class SendFromServer implements Runnable {
      * @param text a String message
      */
     synchronized public void sendStringToAllClients(String text) {
-        for (int index = 0; index < server.serverConnections.size(); index++) {
-            server.serverConnections.get(index).getSender().sendStringToClient(text);
-        }
+       for (ServerConnection serverConnection : server.getBasicConnections()) {
+           serverConnection.getSender().sendStringToClient(text);
+       }
     }
 
     synchronized public void sendStringToPublicLobbyGuests(String text) {

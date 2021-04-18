@@ -70,3 +70,9 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+
+tasks.register("build-cs108") {
+    group = 'build'
+    description = "Creates executable jar and javadoc"
+    dependsOn javadoc, jar
+}
