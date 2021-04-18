@@ -19,7 +19,7 @@ public class Player {
     Alliance_4 alliance4;
     Board board;
     public int startingPosition;
-    private ArrayList<String> deck;
+    private ArrayList<String> hand;
     private ServerConnection serverConnection;
     private int teamID;
     private boolean allowedToPlay;
@@ -53,7 +53,7 @@ public class Player {
         for (Piece piece : pieces) {
             piece.setPositionServer("A", piece.getPieceID() - 1);
         }
-        this.deck = null;
+        this.hand = null;
     }
 
     public static Comparator<Player> TeamIdComparator = new Comparator<Player>() {
@@ -87,14 +87,14 @@ public class Player {
         }
     }
 
-    public void setDeck (ArrayList<String> deck) {
+    public void setHand(ArrayList<String> hand) {
 
-        this.deck = deck;
+        this.hand = hand;
         this.allowedToPlay = true;
     }
 
-    public ArrayList<String> getDeck() {
-        return deck;
+    public ArrayList<String> getHand() {
+        return hand;
     }
 
     public String getPlayerName() {
@@ -190,10 +190,10 @@ public class Player {
      * excludes player from game till this round finished
      */
     public void excludeForRound() {
-        this.deck = null;
+        this.hand = null;
     }
 
     public boolean isAllowedToPlay() {
-       return this.deck != null;
+       return this.hand != null;
     }
 }

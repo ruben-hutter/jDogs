@@ -21,7 +21,7 @@ public class ConnectionToClientMonitor implements Runnable {
         if (monitorCS.connectionCheck()) {
             sendToClient.enqueue("ping");
         } else {
-            System.out.println(this.toString() + " no ping message from server for over 10sec."
+            System.out.println(this.toString() + " no ping message from client for over 10sec."
                     + "shutdown connection to server");
             serverConnection.kill();
         }

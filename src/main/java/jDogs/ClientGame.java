@@ -2,15 +2,18 @@ package jDogs;
 
 import jDogs.board.Board;
 import jDogs.player.Player;
+import java.util.ArrayList;
 
 /**
  * Generates the board and the players for a game.
  */
 public class ClientGame {
 
-    public int numPlayers;
-    Board board;
-    Player[] players;
+    private int numPlayers;
+    private Board board;
+    private Player[] players;
+    private int turnNumber;
+    private ArrayList<String> cards;
 
     public ClientGame(String[] playerNames) {
         numPlayers = playerNames.length;
@@ -28,7 +31,6 @@ public class ClientGame {
     private void createGame(String[] playerNames) {
         // creates the board
         board = new Board(numPlayers);
-        System.out.println("numPlayers " + numPlayers);
 
         // creates all the players
         players = new Player[numPlayers];
@@ -36,7 +38,6 @@ public class ClientGame {
         for (Alliance_4 alliance4 : Alliance_4.values()) {
 
             players[counter] = new Player(playerNames[counter], alliance4, board);
-            System.out.println("client game " + players[counter].getPlayerName());
             counter++;
         }
     }
@@ -50,6 +51,16 @@ public class ClientGame {
             System.out.println(player);
         }
         System.out.println(board);
+
+    }
+
+    /**
+     * prints the cards the player holds
+     */
+    private void printCards() {
+        for (String card : cards) {
+            System.out.print(card + " ");
+        }
     }
 
     /**
@@ -74,8 +85,7 @@ public class ClientGame {
      */
     // TODO hasMoved
     public void changePiecePosition(Player player, int pieceID, String newPosition) {
-        System.out.println(newPosition);
-        System.out.println("char " + newPosition.charAt(0));
+
         switch(newPosition.substring(0,1)) {
             case "A":
                 player.changePositionClient(pieceID, board.allHomeTiles.
@@ -91,5 +101,41 @@ public class ClientGame {
                 break;
         }
         printGameState();
+    }
+
+
+    public void setCards(String substring) {
+        setTurnNumber(substring.charAt(0) - 48);
+        cards = getCardsArray(substring);
+
+        printCards();
+    }
+
+    //String hand = turnNumber + " " + number + " ACEE ACEE TENN TWOO EIGT NINE";
+    private ArrayList<String> getCardsArray(String text) {
+
+        int number = text.charAt(2) - 48;
+        ArrayList<String> arrayList = new ArrayList<>();
+        int position = 4;
+        int count = 0;
+
+        for (int i = 4; count < number - 1 && i < text.length(); i++) {
+            if (Character.isWhitespace(text.charAt(i))) {
+                arrayList.add(text.substring(position, i));
+                position = i + 1;
+                count++;
+            }
+        }
+        arrayList.add(text.substring(position));
+        return arrayList;
+    }
+
+    private void setTurnNumber(int i) {
+        turnNumber = i;
+    }
+
+    public void remove(String card) {
+        cards.remove(card);
+        printCards();
     }
 }

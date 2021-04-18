@@ -3,7 +3,6 @@ package jDogs.serverclient.serverside;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
-import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
@@ -52,12 +51,16 @@ public class ServerGameCommand {
 
         switch (command) {
             case "QUIT":
-                // TODO stop ServerConnection and Client
+                this.gameFile.sendMessageToParticipants("INFO " + nickname + " left game session");
+                this.gameFile.cancel();
                 break;
             case "EXIT":
-                // TODO startExit();
-                //finish game
+                //stop serverConnection
+                this.gameFile.sendMessageToParticipants("INFO " + nickname + " left game session");
+                this.gameFile.cancel();
+                this.serverConnection.kill();
                 break;
+
             case "MOVE":
                 if (text.length() >= 9) {
 
@@ -126,7 +129,7 @@ public class ServerGameCommand {
         }
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
-        ArrayList<String> hand = player.getDeck();
+        ArrayList<String> hand = player.getHand();
         if (hand == null) {
             return null;
         }
@@ -223,7 +226,8 @@ public class ServerGameCommand {
                 return;
             }
             //eliminate card
-            gameFile.getPlayer(nickname).getDeck().remove(cardToEliminate);
+            gameFile.getPlayer(nickname).getHand().remove(cardToEliminate);
+            gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
             cardToEliminate = null;
             mainGame.turnComplete(nickname);
 

@@ -4,7 +4,6 @@ import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.gui.GuiParser;
 import jDogs.serverclient.helpers.Queuejd;
-import jDogs.serverclient.serverside.SeparateLobbyCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,9 +48,13 @@ public class ClientGameCommand {
 
             case "ROUN":
                 //TODO received hand of cards display in Game GUI
-                System.out.println("ROUN: " + text.substring(5));
+                clientGame.setCards(text.substring(5));
                 //TODO client game setCards()
                 //clientGame.setCards(text.substring(5));
+                break;
+
+            case "CARD":
+                clientGame.remove(text.substring(5));
                 break;
 
             case "GAME":

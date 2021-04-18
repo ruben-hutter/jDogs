@@ -19,7 +19,7 @@ public class MainGame {
     private int numberOfRounds;
 
 
-    MainGame(GameFile gameFile) {
+    MainGame (GameFile gameFile) {
         this.gameFile = gameFile;
         this.gameState = new GameState(gameFile);
         setUp();
@@ -109,7 +109,7 @@ public class MainGame {
                 newHandArray.add(card);
             }
             // send newHand to player and to client here
-            players.get(i).setDeck(newHandArray);
+            players.get(i).setCards(newHandArray);
             players.get(i).sendMessageToClient(newHand);
             logger.debug("Player " + players.get(i) + " has cards " + newHandArray);
             logger.debug("Client get the cards as: " + newHand);
@@ -123,7 +123,7 @@ public class MainGame {
         //newHandArray.add("ACEE KING JOKE SIXX FOUR JACK");
         newHand = "ROUN " + turnNumber + " " + number;
 
-        String hand = "ROUN " + turnNumber  + number + "ACEE ACEE TENN TWOO EIGT NINE";
+        String hand = "ROUN " + turnNumber + " " + number + " ACEE ACEE TENN TWOO EIGT NINE";
         String a = "ACEE";
         String b = "TENN";
         String c = "TWOO";
@@ -139,7 +139,7 @@ public class MainGame {
 
         for (Player player : players) {
             player.sendMessageToClient(hand);
-            player.setDeck(newHandArray);
+            player.setHand(newHandArray);
         }
 
     }
@@ -237,5 +237,9 @@ public class MainGame {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public void kill() {
+        this.gameFile.cancel();
     }
 }

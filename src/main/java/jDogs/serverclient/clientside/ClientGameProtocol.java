@@ -22,6 +22,10 @@ public enum ClientGameProtocol {
      */
     MOVE,
     /**
+     * Information which card is removed on serverside from your hand
+     */
+    CARD,
+    /**
      * Command to give a card to this player.
      */
     CTTP,
