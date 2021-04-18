@@ -5,9 +5,12 @@ import jDogs.player.Piece;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameState {
 
+    private Map<String, ArrayList<String>> cards = new HashMap<>();
     private final GameFile gameFile;
     private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
@@ -22,9 +25,12 @@ public class GameState {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
             gameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
+            cards.put(gameFile.getPlayers().get(counter).getPlayerName(),new ArrayList<>());
             counter++;
         }
     }
+
+
 
     public ArrayList<Piece> getSortedPiecesOnTrack() {
         Collections.sort(piecesOnTrack);
@@ -39,6 +45,10 @@ public class GameState {
             }
         }
         return false;
+    }
+
+    public Map<String, ArrayList<String>> getCards() {
+        return cards;
     }
 
     /**

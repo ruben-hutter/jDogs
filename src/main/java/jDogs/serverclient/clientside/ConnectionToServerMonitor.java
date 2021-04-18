@@ -17,6 +17,7 @@ public class ConnectionToServerMonitor implements Runnable {
 
     @Override
     public void run() {
+
         if (monitorCS.connectionCheck()) {
             sendToServer.enqueue("pong");
         } else {
