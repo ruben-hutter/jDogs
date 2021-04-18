@@ -86,6 +86,7 @@ public class MainGame {
      * this method sends a request to the next player to make a move
      */
     private void nextTurn() {
+        System.out.println("turnNumbers in nextTurn " + turnNumber);
         int numb = turnNumber % players.size();
         actualPlayer = gameArray[numb];
         if (gameFile.getPlayer(actualPlayer).isAllowedToPlay()) {

@@ -37,6 +37,10 @@ public enum ClientMenuProtocol {
      */
     WCHT,
     /**
+     * Receive a public lobby chat
+     */
+    LCHT,
+    /**
      * Command to start a new game.
      */
     STAR,
