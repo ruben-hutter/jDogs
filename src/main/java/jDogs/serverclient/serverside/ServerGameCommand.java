@@ -215,6 +215,7 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("INFO Check the card value with your desired destination");
                 return;
             }
+
             // TODO no block going heaven or passing track
 
             // check if there is a piece on destination
@@ -259,6 +260,7 @@ public class ServerGameCommand {
                     }
                 }
             } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+                // TODO check that you don't jump over your pieces -> piecesOnPath()
                 // go heaven
                 int difference;
                 if (!hasMoved) {
@@ -426,6 +428,7 @@ public class ServerGameCommand {
         int startIndex = 7;
         int countToSeven = 0;
         int moveValue;
+        ArrayList<Piece> piecesToEliminate = new ArrayList<>();
         for (int i = 0; i < piecesToMove; i++) {
             moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
             if (moveValue < 0) {
@@ -437,9 +440,15 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("INFO You moved more than 7!");
                 return;
             }
+            ArrayList<Piece> singleEliminations = piecesOnPath(completeMove.substring(startIndex,
+                    startIndex + 10));
+            assert singleEliminations != null;
+            piecesToEliminate.addAll(singleEliminations);
             startIndex += 11;
         }
+        // TODO check block
 
+        // countToSeven = 7 and no blocks -> execute moves and eliminate pieces
     }
 
     private int checkSingleSeven(String move) { // YELO-1 B20
@@ -469,12 +478,16 @@ public class ServerGameCommand {
             }
         }
 
+        int difference;
         if (actualPosition1.equals("B") && newPosition1.equals("B")
                 || (actualPosition1.equals("C") && newPosition1.equals("C"))) {
             // track -> track or heaven -> heaven
-            return newPosition2 - actualPosition2;
+            difference = newPosition2 - actualPosition2;
+            if (difference < 0) {
+                difference += 64;
+            }
+            return difference;
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
-            int difference;
             // track -> heaven
             if (!hasMoved) {
                 return -1;
@@ -488,6 +501,66 @@ public class ServerGameCommand {
             return difference;
         }
         return -1;
+    }
+
+    private ArrayList<Piece> piecesOnPath(String move) {
+        String alliance = move.substring(0, 4);
+        int pieceID = Integer.parseInt(move.substring(5, 6));
+        String newPosition1 = move.substring(7, 8);
+        int newPosition2 = Integer.parseInt(move.substring(8));
+        String actualPosition1 = "";
+        int actualPosition2 = -1;
+        boolean hasMoved = false;
+        int startingPosition = -1;
+        Player ownPlayer = null;
+        Alliance_4 alliance4;
+        ArrayList<Piece> piecesToEliminate = new ArrayList<>();
+
+        alliance4 = convertAlliance(alliance);
+
+        for (Player player : players) {
+            if (player.getAlliance() == alliance4) {
+                logger.debug("Alliance Player: " + player.getAlliance());
+                ownPlayer = player;
+                actualPosition1 = player.recivePosition1Server(pieceID);
+                logger.debug("actual position1: " + actualPosition1);
+                actualPosition2 = player.recivePosition2Server(pieceID);
+                logger.debug("actual position2: " + actualPosition2);
+                hasMoved = player.reciveHasMoved(pieceID);
+                startingPosition = player.getStartingPosition();
+            }
+        }
+
+        int difference;
+        if (actualPosition1.equals("B") && newPosition1.equals("B")) {
+            // track -> track
+            difference = newPosition2 - actualPosition2;
+            if (difference < 0) {
+                difference += 64;
+            }
+            for (int i = 1; i <= difference; i++) {
+                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
+                        (actualPosition2 + i) % 64);
+                if (pieceOnPath != null && pieceOnPath.getPieceAlliance() != ownPlayer.getAlliance()) {
+                    piecesToEliminate.add(pieceOnPath);
+                }
+            }
+            return piecesToEliminate;
+        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+            // track -> heaven
+            // TODO
+            difference = startingPosition - actualPosition2;
+            if (difference < 0) {
+                difference = difference + 64 + newPosition2 + 1;
+            } else {
+                difference = difference + newPosition2 + 1;
+            }
+            //return difference;
+        } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
+            // heaven -> heaven
+            // TODO
+        }
+        return null;
     }
 
     /**
@@ -530,8 +603,16 @@ public class ServerGameCommand {
         Piece piece = player.getPiece(pieceID);
         gameState.updatePiecesOnTrack(piece, newPosition1);
 
-        String pieceAlliance = "";
-        switch(piece.getPieceAlliance()) {
+        String pieceAlliance = convertAlliance(piece.getPieceAlliance());
+
+        // updates client side
+        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
+                + newPosition2);
+    }
+
+    private String convertAlliance(Alliance_4 alliance4) {
+        String pieceAlliance;
+        switch(alliance4) {
             case YELLOW:
                 pieceAlliance = "YELO";
                 break;
@@ -544,10 +625,10 @@ public class ServerGameCommand {
             case RED:
                 pieceAlliance = "REDD";
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + alliance4);
         }
-        // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
-                + newPosition2);
+        return pieceAlliance;
     }
 
     private void eliminatePiece(Piece piece) {
