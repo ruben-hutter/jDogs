@@ -26,6 +26,10 @@ public enum ClientGameProtocol {
      */
     CARD,
     /**
+     * Command to print out actual hand
+     */
+    HAND,
+    /**
      * Command to give a card to this player.
      */
     CTTP,

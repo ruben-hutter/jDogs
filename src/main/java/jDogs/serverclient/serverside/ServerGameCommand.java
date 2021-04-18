@@ -241,6 +241,7 @@ public class ServerGameCommand {
 
             gameState.getCards().get(nickname).remove(cardToEliminate);
             gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+            gameFile.sendMessageToParticipants("HAND");
 
             cardToEliminate = null;
             mainGame.turnComplete(nickname);

@@ -57,7 +57,7 @@ public class ClientGame {
     /**
      * prints the cards the player holds
      */
-    private void printCards() {
+    public void printCards() {
         for (String card : cards) {
             System.out.print(card + " ");
         }
@@ -101,7 +101,6 @@ public class ClientGame {
                 break;
         }
         printGameState();
-        printCards();
     }
 
 
@@ -109,7 +108,6 @@ public class ClientGame {
         setTurnNumber(substring.charAt(0) - 48);
         cards = getCardsArray(substring);
 
-        printCards();
     }
 
     //String hand = turnNumber + " " + number + " ACEE ACEE TENN TWOO EIGT NINE";

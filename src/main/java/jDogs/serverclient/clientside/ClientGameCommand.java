@@ -57,6 +57,10 @@ public class ClientGameCommand {
                 clientGame.remove(text.substring(5));
                 break;
 
+            case "HAND":
+                clientGame.printCards();
+                break;
+
             case "GAME":
                 //TODO receive game details when game starts and display in Game GUI
                 clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
