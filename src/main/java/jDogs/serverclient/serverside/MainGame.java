@@ -107,7 +107,7 @@ public class MainGame {
         ArrayList<String> newHandArray;
 
         for (Player player : gameFile.getPlayers()) {
-            newHand = "ROUN " + turnNumber + " " + number;
+            newHand = "ROUN " +  " " + number;
 
             for (int j = 0; j < number; j++) {
                 int randomNumber = random.nextInt(deck.size());
@@ -120,6 +120,7 @@ public class MainGame {
             player.setAllowedToPlay(true);
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
+        gameFile.sendMessageToParticipants("HAND");
 
 
 
@@ -244,6 +245,7 @@ public class MainGame {
             } else {
                 System.out.println("2 NUMB DEAL OUT " + numbDealOut);
                 numbDealOut--;
+                numberOfRounds = 0;
             }
             dealOutCards(numbDealOut);
         }
