@@ -228,6 +228,7 @@ public class MainGame {
         actualPlayer = null;
         turnNumber++;
         numberOfRounds++;
+
         // new round
         //no cards in any player`s hand
         if (numberOfRounds / gameFile.getNumberOfParticipants() == numbDealOut) {
@@ -241,8 +242,8 @@ public class MainGame {
             }
             dealOutCards(numbDealOut);
         }
-
         nextTurn();
+
     }
 
     /**

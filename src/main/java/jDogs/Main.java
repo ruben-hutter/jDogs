@@ -1,6 +1,7 @@
 package jDogs;
 
 import jDogs.gui.GUILauncher;
+import jDogs.serverclient.clientside.Client;
 import jDogs.serverclient.serverside.Server;
 
 public class Main {
