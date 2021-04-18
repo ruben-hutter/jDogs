@@ -36,7 +36,6 @@ public class ClientMenuCommand {
 
     public void execute (String text) {
         logger.debug("Entered ClientMenuCommand with: " + text);
-        System.out.println("text " + text);
         String command = text.substring(0,4);
 
         switch (command) {

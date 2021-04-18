@@ -66,6 +66,7 @@ public class ServerGameCommand {
 
                     if (text.substring(5,9).equals("SURR")) {
                         gameFile.getPlayer(nickname).excludeForRound();
+                        gameState.getCards().get(nickname).clear();
                         sendToThisClient.enqueue("INFO excluded for this round");
                         mainGame.turnComplete(nickname);
                         break;
@@ -78,7 +79,7 @@ public class ServerGameCommand {
                     cardToEliminate = text.substring(5,9);
                     String toCheckMove = checkCard(player, text);
                     if (toCheckMove == null) {
-                        sendToThisClient.enqueue("Invalid card or no hand");
+                        sendToThisClient.enqueue("INFO Invalid card or no hand");
                         logger.debug("You don't have this card on your hand");
                         return;
                     }
@@ -129,10 +130,12 @@ public class ServerGameCommand {
         }
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
-        ArrayList<String> hand = player.getHand();
+        ArrayList<String> hand = gameState.getCards().get(nickname);
+
         if (hand == null) {
             return null;
         }
+
         logger.debug("Player's hand: " + hand);
         logger.debug("Deck contains card? " + hand.contains(card));
         if(hand.contains(card)){
@@ -154,7 +157,6 @@ public class ServerGameCommand {
             }
         }
         return toCheckMove;
-
     }
 
 
@@ -199,9 +201,9 @@ public class ServerGameCommand {
                     if (player.getAlliance() == alliance4) {
                         logger.debug("Alliance Player: " + player.getAlliance());
                         ownPlayer = player;
-                        actualPosition1 = player.recivePosition1Server(pieceID);
+                        actualPosition1 = player.receivePosition1Server(pieceID);
                         logger.debug("actual position1: " + actualPosition1);
-                        actualPosition2 = player.recivePosition2Server(pieceID);
+                        actualPosition2 = player.receivePosition2Server(pieceID);
                         logger.debug("actual position2: " + actualPosition2);
                         hasMoved = player.reciveHasMoved(pieceID);
                         startingPosition = player.getStartingPosition();
@@ -227,8 +229,20 @@ public class ServerGameCommand {
                 return;
             }
             //eliminate card
-            gameFile.getPlayer(nickname).getHand().remove(cardToEliminate);
+
+            System.out.println("Cards before");
+
+            for (String carddd : gameState.getCards().get(nickname)) {
+                System.out.print(carddd + " ");
+            }
+
+            gameState.getCards().get(nickname).remove(cardToEliminate);
             gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+
+            System.out.println("Cards after ");
+            for (String carddd : gameState.getCards().get(nickname)) {
+                System.out.print(carddd + " ");
+            }
             cardToEliminate = null;
             mainGame.turnComplete(nickname);
 
@@ -373,8 +387,8 @@ public class ServerGameCommand {
         for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == ownAlliance4) {
                 ownPlayer = player;
-                ownActualPosition1 = player.recivePosition1Server(ownPieceID);
-                ownActualPosition2 = player.recivePosition2Server(ownPieceID);
+                ownActualPosition1 = player.receivePosition1Server(ownPieceID);
+                ownActualPosition2 = player.receivePosition2Server(ownPieceID);
 
             }
         }
@@ -384,8 +398,8 @@ public class ServerGameCommand {
         for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == otherAlliance4) {
                 otherPlayer = player;
-                otherActualPosition1 = player.recivePosition1Server(otherPieceID);
-                otherActualPosition2 = player.recivePosition2Server(otherPieceID);
+                otherActualPosition1 = player.receivePosition1Server(otherPieceID);
+                otherActualPosition2 = player.receivePosition2Server(otherPieceID);
                 otherHasMoved = player.reciveHasMoved(otherPieceID);
                 otherStartingPosition = player.getStartingPosition();
             }
@@ -473,9 +487,9 @@ public class ServerGameCommand {
             if (player.getAlliance() == alliance4) {
                 logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;
-                actualPosition1 = player.recivePosition1Server(pieceID);
+                actualPosition1 = player.receivePosition1Server(pieceID);
                 logger.debug("actual position1: " + actualPosition1);
-                actualPosition2 = player.recivePosition2Server(pieceID);
+                actualPosition2 = player.receivePosition2Server(pieceID);
                 logger.debug("actual position2: " + actualPosition2);
                 hasMoved = player.reciveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
