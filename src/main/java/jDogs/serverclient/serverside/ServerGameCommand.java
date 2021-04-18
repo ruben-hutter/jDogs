@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
  * server.
  *
  */
-
 public class ServerGameCommand {
     private final Server server;
     private final ServerConnection serverConnection;
@@ -237,8 +236,8 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("You eliminate yourself!");
                 return;
             }
-            //eliminate card
 
+            //eliminate card
             gameState.getCards().get(nickname).remove(cardToEliminate);
             gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
 
@@ -266,11 +265,19 @@ public class ServerGameCommand {
                         && newPosition2 == startingPosition;
             } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
                 // continue on track
-                int difference = newPosition2 - actualPosition2;
-                // sets the difference to a possible card value
-                if (difference < 0) {
-                    difference += 64;
+                int difference;
+                if (card.equals("FOUR")) {
+                    for (int cardValue : cardValues) {
+                        if (cardValue == -4) {
+                            difference = (newPosition2 - actualPosition2) % 64;
+                            if (difference == cardValue) {
+                                return true;
+                            }
+                        }
+                    }
                 }
+                // sets the difference to a possible card value
+                difference = Math.floorMod(newPosition2 - actualPosition2, 64);
                 for (int cardValue : cardValues) {
                     if (cardValue == difference) {
                         return true;
@@ -420,6 +427,13 @@ public class ServerGameCommand {
             simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
             assert otherPlayer != null;
             simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
+
+            //eliminate card
+            gameState.getCards().get(nickname).remove(cardToEliminate);
+            gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+
+            cardToEliminate = null;
+            mainGame.turnComplete(nickname);
         }
     }
 
@@ -488,6 +502,12 @@ public class ServerGameCommand {
                 eliminatePiece(piece);
             }
         }
+        //eliminate card
+        gameState.getCards().get(nickname).remove(cardToEliminate);
+        gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+
+        cardToEliminate = null;
+        mainGame.turnComplete(nickname);
     }
 
     private int checkSingleSeven(String move) { // YELO-1 B20
@@ -526,10 +546,7 @@ public class ServerGameCommand {
         if (actualPosition1.equals("B") && newPosition1.equals("B")
                 || (actualPosition1.equals("C") && newPosition1.equals("C"))) {
             // track -> track or heaven -> heaven
-            difference = newPosition2 - actualPosition2;
-            if (difference < 0) {
-                difference += 64;
-            }
+            difference = Math.floorMod(newPosition2 - actualPosition2, 64);
             return difference;
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // track -> heaven
