@@ -230,19 +230,9 @@ public class ServerGameCommand {
             }
             //eliminate card
 
-            System.out.println("Cards before");
-
-            for (String carddd : gameState.getCards().get(nickname)) {
-                System.out.print(carddd + " ");
-            }
-
             gameState.getCards().get(nickname).remove(cardToEliminate);
             gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
 
-            System.out.println("Cards after ");
-            for (String carddd : gameState.getCards().get(nickname)) {
-                System.out.print(carddd + " ");
-            }
             cardToEliminate = null;
             mainGame.turnComplete(nickname);
 
