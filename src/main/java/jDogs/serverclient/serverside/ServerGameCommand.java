@@ -215,6 +215,7 @@ public class ServerGameCommand {
                 return;
             }
             //TODO find better place for this
+            //TODO if player finished, and teamMode on, he can play 2 colors
             //prevent players from moving with others pieces
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 sendToThisClient.enqueue("INFO you cannot move this color");
@@ -391,6 +392,12 @@ public class ServerGameCommand {
             }
         }
 
+        // TODO if playing in teamMode
+        if (ownPlayer != gameFile.getPlayer(nickname)) {
+            sendToThisClient.enqueue("INFO you cannot move this color");
+            return;
+        }
+
         otherAlliance4 = convertAlliance(otherAlliance);
 
         for (Player player : gameState.getPlayersState()) {
@@ -448,7 +455,7 @@ public class ServerGameCommand {
         for (int i = 0; i < piecesToMove; i++) {
             moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
             if (moveValue < 0) {
-                sendToThisClient.enqueue("INFO At least one invalid destination!");
+                sendToThisClient.enqueue("INFO At least one invalid destination or piece!");
                 return;
             }
             countToSeven += moveValue;
@@ -458,13 +465,29 @@ public class ServerGameCommand {
             }
             ArrayList<Piece> singleEliminations = piecesOnPath(completeMove.substring(startIndex,
                     startIndex + 10));
-            assert singleEliminations != null;
+            if (singleEliminations == null) {
+                sendToThisClient.enqueue("INFO You can't jump over your pieces in heaven!");
+                return;
+            }
             piecesToEliminate.addAll(singleEliminations);
             startIndex += 11;
         }
         // TODO check block
 
-        // countToSeven = 7 and no blocks -> execute moves and eliminate pieces
+        if (countToSeven == 7) {
+            startIndex = 7;
+            Player player;
+            for (int i = 0; i < piecesToMove; i++) {
+                String move = completeMove.substring(startIndex, startIndex + 10);
+                player = gameFile.getPlayer(serverConnection.getNickname());
+                simpleMove(player, Integer.parseInt(move.substring(5, 6)), move.substring(7, 8),
+                        Integer.parseInt(move.substring(8)));
+                startIndex += 11;
+            }
+            for (Piece piece : piecesToEliminate) {
+                eliminatePiece(piece);
+            }
+        }
     }
 
     private int checkSingleSeven(String move) { // YELO-1 B20
@@ -492,6 +515,11 @@ public class ServerGameCommand {
                 hasMoved = player.receiveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
             }
+        }
+
+        // TODO if teamMode
+        if (ownPlayer != gameFile.getPlayer(nickname)) {
+            return -1;
         }
 
         int difference;
@@ -561,22 +589,35 @@ public class ServerGameCommand {
                     piecesToEliminate.add(pieceOnPath);
                 }
             }
-            return piecesToEliminate;
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // track -> heaven
-            // TODO
             difference = startingPosition - actualPosition2;
             if (difference < 0) {
-                difference = difference + 64 + newPosition2 + 1;
-            } else {
-                difference = difference + newPosition2 + 1;
+                difference += 64;
             }
-            //return difference;
+            for (int i = 1; i <= difference; i++) {
+                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
+                        (actualPosition2 + i) % 64);
+                if (pieceOnPath != null && pieceOnPath.getPieceAlliance() != ownPlayer.getAlliance()) {
+                    piecesToEliminate.add(pieceOnPath);
+                }
+            }
+            for (int i = 0; i <= newPosition2; i++) {
+                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
+                if (pieceOnPath != null) {
+                    return null;
+                }
+            }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             // heaven -> heaven
-            // TODO
+            for (int i = actualPosition2; i <= newPosition2; i++) {
+                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
+                if (pieceOnPath != null) {
+                    return null;
+                }
+            }
         }
-        return null;
+        return piecesToEliminate;
     }
 
     /**
