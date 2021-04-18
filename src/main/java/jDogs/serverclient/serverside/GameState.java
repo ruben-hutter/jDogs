@@ -126,9 +126,5 @@ public class GameState {
         return gameFile.getPlayers();
     }
 
-    public void sendMessageToPlayers(String message) {
-        for (Player player : gameFile.getPlayers()) {
-            player.getServerConnection().getSender().sendStringToClient(message);
-        }
-    }
+
 }

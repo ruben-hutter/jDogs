@@ -155,10 +155,10 @@ public class GameFile {
      */
     public void removeParticipant(ServerConnection serverConnection) {
         String nickname = serverConnection.getNickname();
+        Player player = getPlayer(nickname);
+        players.remove(player);
 
         if (pendent) {
-            Player player = getPlayer(nickname);
-            players.remove(player);
             numberParticipants--;
             sendMessageToParticipants("DPER " + nickname);
             Server.getInstance().getSender(nickname)

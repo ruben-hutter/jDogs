@@ -214,7 +214,8 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("INFO format exception in checkMove");
                 return;
             }
-
+            //TODO find better place for this
+            //prevent players from moving with others pieces
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 sendToThisClient.enqueue("INFO you cannot move this color");
                 return;
