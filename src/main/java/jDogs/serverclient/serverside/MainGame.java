@@ -86,6 +86,7 @@ public class MainGame {
      * this method sends a request to the next player to make a move
      */
     private void nextTurn() {
+        System.out.println("turnNumbers in nextTurn " + turnNumber);
         int numb = turnNumber % players.size();
         actualPlayer = gameArray[numb];
         if (gameFile.getPlayer(actualPlayer).isAllowedToPlay()) {
@@ -106,7 +107,7 @@ public class MainGame {
         ArrayList<String> newHandArray;
 
         for (Player player : gameFile.getPlayers()) {
-            newHand = "ROUN " + turnNumber + " " + number;
+            newHand = "ROUN " +  " " + number;
 
             for (int j = 0; j < number; j++) {
                 int randomNumber = random.nextInt(deck.size());
@@ -119,6 +120,7 @@ public class MainGame {
             player.setAllowedToPlay(true);
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
+        gameFile.sendMessageToParticipants("HAND");
 
 
 
@@ -228,17 +230,22 @@ public class MainGame {
         actualPlayer = null;
         turnNumber++;
         numberOfRounds++;
-
+        System.out.println("number of rounds " + numberOfRounds);
+        System.out.println("calc numberofrounds/participants " + numberOfRounds / gameFile.getNumberOfParticipants());
+        System.out.println("numberDeal out 1 " + numbDealOut);
         // new round
         //no cards in any player`s hand
         if (numberOfRounds / gameFile.getNumberOfParticipants() == numbDealOut) {
             if (numbDealOut == 2) {
+                System.out.println("entered if ");
                 numbDealOut = 6;
                 // anew deck
                 deck = getDeck();
                 numberOfRounds = 0;
             } else {
+                System.out.println("2 NUMB DEAL OUT " + numbDealOut);
                 numbDealOut--;
+                numberOfRounds = 0;
             }
             dealOutCards(numbDealOut);
         }

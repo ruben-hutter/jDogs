@@ -103,20 +103,19 @@ public class ClientGame {
 
 
     public void setCards(String substring) {
-        setTurnNumber(substring.charAt(0) - 48);
         cards = getCardsArray(substring);
 
     }
 
-    //String hand = turnNumber + " " + number + " ACEE ACEE TENN TWOO EIGT NINE";
+    //String hand = number + " ACEE ACEE TENN TWOO EIGT NINE";
     private ArrayList<String> getCardsArray(String text) {
 
-        int number = text.charAt(2) - 48;
+        int number = text.charAt(0) - 48;
         ArrayList<String> arrayList = new ArrayList<>();
-        int position = 4;
+        int position = 2;
         int count = 0;
 
-        for (int i = 4; count < number - 1 && i < text.length(); i++) {
+        for (int i = 2; count < number - 1 && i < text.length(); i++) {
             if (Character.isWhitespace(text.charAt(i))) {
                 arrayList.add(text.substring(position, i));
                 position = i + 1;
