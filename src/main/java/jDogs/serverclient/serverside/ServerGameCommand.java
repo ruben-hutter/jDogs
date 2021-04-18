@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.ClientGame;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
@@ -15,7 +16,6 @@ import org.apache.logging.log4j.Logger;
  * server.
  *
  */
-
 public class ServerGameCommand {
 
     private final Server server;
@@ -63,7 +63,7 @@ public class ServerGameCommand {
                 break;
 
             case "MOVE":
-                if (text.length() >= 9 && mainGame.getActualPlayer() == nickname) {
+                if (text.length() >= 9 && mainGame.getActualPlayer().equals(nickname)) {
 
                     if (text.substring(5, 9).equals("SURR")) {
                         gameFile.getPlayer(nickname).setAllowedToPlay(false);
@@ -239,8 +239,14 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("You eliminate yourself!");
                 return;
             }
-            //eliminate card
 
+            // remove block if piece moves for first time on track
+            if (!hasMoved && actualPosition1.equals("B") && newPosition1.equals("B")) {
+                ownPlayer.getPiece(pieceID).changeHasMoved();
+            }
+
+            gameFile.sendMessageToParticipants("BORD");
+            //eliminate card
             gameState.getCards().get(nickname).remove(cardToEliminate);
             gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
             gameFile.sendMessageToParticipants("HAND");
@@ -375,6 +381,7 @@ public class ServerGameCommand {
             String ownActualPosition1 = "";
             int ownActualPosition2 = -1;
             Player ownPlayer = null;
+            boolean ownHasMoved = false;
             Alliance_4 ownAlliance4;
 
             String otherAlliance = twoPieces.substring(12, 16);
@@ -393,7 +400,7 @@ public class ServerGameCommand {
                     ownPlayer = player;
                     ownActualPosition1 = player.receivePosition1Server(ownPieceID);
                     ownActualPosition2 = player.receivePosition2Server(ownPieceID);
-
+                    ownHasMoved = player.receiveHasMoved(ownPieceID);
                 }
             }
 
@@ -427,6 +434,12 @@ public class ServerGameCommand {
                 assert otherPlayer != null;
                 simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
 
+                // remove block if piece moves for first time on track
+                if (!ownHasMoved && ownActualPosition1.equals("B") && otherActualPosition1.equals("B")) {
+                    ownPlayer.getPiece(ownPieceID).changeHasMoved();
+                }
+
+                gameFile.sendMessageToParticipants("BORD");
                 //eliminate card
                 gameState.getCards().get(nickname).remove(cardToEliminate);
                 gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
@@ -493,15 +506,26 @@ public class ServerGameCommand {
             Player player;
             for (int i = 0; i < piecesToMove; i++) {
                 String move = completeMove.substring(startIndex, startIndex + 10);
+                // TODO change if teamMode on
                 player = gameFile.getPlayer(serverConnection.getNickname());
-                simpleMove(player, Integer.parseInt(move.substring(5, 6)), move.substring(7, 8),
-                        Integer.parseInt(move.substring(8)));
+                int pieceID = Integer.parseInt(move.substring(5, 6));
+                String newPosition1 = move.substring(7, 8);
+                int newPosition2 = Integer.parseInt(move.substring(8));
+                Piece piece = player.getPiece(pieceID);
+                simpleMove(player, pieceID, newPosition1, newPosition2);
+                // remove block if piece moves for first time on track
+                if (!piece.getHasMoved() && piece.getPositionServer1().equals("B")
+                        && newPosition1.equals("B")) {
+                    piece.changeHasMoved();
+                }
                 startIndex += 11;
             }
             for (Piece piece : piecesToEliminate) {
                 eliminatePiece(piece);
             }
         }
+
+        gameFile.sendMessageToParticipants("BORD");
         //eliminate card
         gameState.getCards().get(nickname).remove(cardToEliminate);
         gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);

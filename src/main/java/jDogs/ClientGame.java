@@ -83,10 +83,9 @@ public class ClientGame {
      * @param pieceID witch of the 4 pieces
      * @param newPosition where to put the piece
      */
-    // TODO hasMoved
     public void changePiecePosition(Player player, int pieceID, String newPosition) {
 
-        switch(newPosition.substring(0,1)) {
+        switch(newPosition.substring(0, 1)) {
             case "A":
                 player.changePositionClient(pieceID, board.allHomeTiles.
                         get(player.getAlliance())[pieceID - 1]);
@@ -100,7 +99,6 @@ public class ClientGame {
                         get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
                 break;
         }
-        printGameState();
     }
 
 

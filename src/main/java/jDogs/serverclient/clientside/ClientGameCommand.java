@@ -94,6 +94,9 @@ public class ClientGameCommand {
                                 Integer.parseInt(text.substring(10, 11)), text.substring(12));
                         break;
                 }
+
+            case "BORD":
+                clientGame.printGameState();
         }
     }
 }
