@@ -3,6 +3,7 @@ package jDogs.serverclient.serverside;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
+import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
