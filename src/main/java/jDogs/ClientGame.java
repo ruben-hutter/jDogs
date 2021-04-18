@@ -101,6 +101,7 @@ public class ClientGame {
                 break;
         }
         printGameState();
+        printCards();
     }
 
 

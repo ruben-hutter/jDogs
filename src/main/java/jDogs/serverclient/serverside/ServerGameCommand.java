@@ -62,7 +62,7 @@ public class ServerGameCommand {
                 break;
 
             case "MOVE":
-                if (text.length() >= 9) {
+                if (text.length() >= 9 && mainGame.getActualPlayer() == nickname) {
 
                     if (text.substring(5,9).equals("SURR")) {
                         gameFile.getPlayer(nickname).setAllowedToPlay(false);

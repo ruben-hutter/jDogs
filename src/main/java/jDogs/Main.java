@@ -1,6 +1,7 @@
 package jDogs;
 
 import jDogs.gui.GUILauncher;
+import jDogs.serverclient.clientside.Client;
 import jDogs.serverclient.serverside.Server;
 
 public class Main {
@@ -28,16 +29,17 @@ public class Main {
                     if (args.length == 3 && args[2] != null) {
                         mainInstance.setUsername(args[2]);
                     }
-                    GUILauncher.main(args);
-
-            }
-
-            if (args[0].equals("server")) {
-                //mainInstance.parseServerPort(args[1]);
-                Server.main(args);
+                    //GUILauncher.main(args);
+                Client.main(args);
 
             } else {
-                System.err.println("server or client in string is missing");
+                if (args[0].equals("server")) {
+                    //mainInstance.parseServerPort(args[1]);
+                    Server.main(args);
+
+                } else {
+                    System.err.println("server or client in string is missing");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
