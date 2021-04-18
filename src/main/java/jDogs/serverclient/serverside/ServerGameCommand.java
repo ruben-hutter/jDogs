@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
  */
 
 public class ServerGameCommand {
+
     private final Server server;
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
@@ -40,7 +41,7 @@ public class ServerGameCommand {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.loggedIn = false;
-        this.serverParser = new ServerParser(server,serverConnection);
+        this.serverParser = new ServerParser(server, serverConnection);
         this.players = null;
         this.cardToEliminate = null;
     }
@@ -64,7 +65,7 @@ public class ServerGameCommand {
             case "MOVE":
                 if (text.length() >= 9 && mainGame.getActualPlayer() == nickname) {
 
-                    if (text.substring(5,9).equals("SURR")) {
+                    if (text.substring(5, 9).equals("SURR")) {
                         gameFile.getPlayer(nickname).setAllowedToPlay(false);
                         gameState.getCards().get(nickname).clear();
                         sendToThisClient.enqueue("INFO excluded for this round");
@@ -76,7 +77,7 @@ public class ServerGameCommand {
                     logger.debug("Player nickname: " + playerName);
                     Player player = gameFile.getPlayer(playerName);
                     logger.debug("Player: " + player);
-                    cardToEliminate = text.substring(5,9);
+                    cardToEliminate = text.substring(5, 9);
                     String toCheckMove = checkCard(player, text);
                     if (toCheckMove == null) {
                         sendToThisClient.enqueue("INFO Invalid card or no hand");
@@ -110,7 +111,7 @@ public class ServerGameCommand {
                 gameFile.sendMessageToParticipants(
                         "LCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
-                //send message to everyone logged in, in lobby, separated or playing
+            //send message to everyone logged in, in lobby, separated or playing
             case "PCHT":
                 sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
@@ -119,11 +120,12 @@ public class ServerGameCommand {
 
     /**
      * Checks if the given card is in the players hand
+     *
      * @param player
      * @param text
      * @return
      */
-    private String checkCard(Player player, String text){
+    private String checkCard(Player player, String text) {
         String card = text.substring(5, 9);
         if (card.equals("ACE1") || card.equals("AC11")) {
             card = "ACEE";
@@ -138,21 +140,22 @@ public class ServerGameCommand {
 
         logger.debug("Player's hand: " + hand);
         logger.debug("Deck contains card? " + hand.contains(card));
-        if(hand.contains(card)){
+        if (hand.contains(card)) {
             switch (card) {
                 case "JOKE":
-                    String value = text.substring(10,14);
+                    String value = text.substring(10, 14);
                     toCheckMove = value + " " + text.substring(15);
-                    logger.debug("This string is send to checkMove (without Joker): " + toCheckMove);
+                    logger.debug(
+                            "This string is send to checkMove (without Joker): " + toCheckMove);
                     break;
                 case "ACEE":
-                    String ass = text.substring(5,9);
+                    String ass = text.substring(5, 9);
                     cardToEliminate = "ACEE";
                     toCheckMove = ass + " " + text.substring(10);
                     logger.debug("This string is send to checkMove (without ACEE): " + toCheckMove);
                     break;
                 default:
-                    toCheckMove =  card + " " + text.substring(10);
+                    toCheckMove = card + " " + text.substring(10);
                     logger.debug("This string is send to checkMove: " + toCheckMove);
             }
         }
@@ -222,7 +225,6 @@ public class ServerGameCommand {
                 return;
             }
 
-
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
                     newPosition2, startingPosition, hasMoved)) {
@@ -250,6 +252,7 @@ public class ServerGameCommand {
             sendToThisClient.enqueue("INFO entered command does`t fit the length(15) for checkmove()");
         }
     }
+
     /**
      * Checks if newPosition is ok with played card
      */
@@ -257,75 +260,67 @@ public class ServerGameCommand {
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
             boolean hasMoved) {
 
-            int[] cardValues = getCardValues(card);
-            if (cardValues == null) {
+        int[] cardValues = getCardValues(card);
+        if (cardValues == null) {
+            return false;
+        }
+        if (actualPosition1.equals("A") && newPosition1.equals("B")) {
+            // you play an exit card and you exit on your starting position
+            return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING"))
+                    && newPosition2 == startingPosition;
+        } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
+            // continue on track
+            int difference;
+            if (card.equals("FOUR")) {
+                for (int cardValue : cardValues) {
+                    if (cardValue == -4) {
+                        difference = (newPosition2 - actualPosition2) % 64;
+                        if (difference == cardValue) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            // sets the difference to a possible card value
+            difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+            for (int cardValue : cardValues) {
+                if (cardValue == difference) {
+                    return true;
+                }
+            }
+        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+            // TODO check that you don't jump over your pieces -> piecesOnPath()
+            // go heaven
+            int difference;
+            if (!hasMoved) {
                 return false;
             }
-            if (actualPosition1.equals("A") && newPosition1.equals("B")) {
-                // you play an exit card and you exit on your starting position
-                return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING"))
-                        && newPosition2 == startingPosition;
-            } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
-                // continue on track
-                int difference;
-                if (card.equals("FOUR")) {
-                    for (int cardValue : cardValues) {
-                        if (cardValue == -4) {
-                            difference = (newPosition2 - actualPosition2) % 64;
-                            if (difference == cardValue) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-                // sets the difference to a possible card value
-                difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+            if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
-                    if (cardValue == difference) {
-                        return true;
-                    }
-                }
-            } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
-                // TODO check that you don't jump over your pieces -> piecesOnPath()
-                // go heaven
-                int difference;
-                if (!hasMoved) {
-                    return false;
-                } else if (card.equals("FOUR")) {
-                    for (int cardValue : cardValues) {
-                        if (cardValue == 4) {
-                            difference = startingPosition - actualPosition2;
-                            if (difference < 0) {
-                                difference = difference + 64 + newPosition2 + 1;
-                            } else {
-                                difference = difference + newPosition2 + 1;
-                            }
-                            return cardValue == difference;
-                        } else if (cardValue == -4) {
-                            difference = startingPosition - actualPosition2 - newPosition2 - 1;
-                            return cardValue == difference;
-                        }
-                    }
-                } else {
-                    difference = startingPosition - actualPosition2;
-                    if (difference < 0) {
-                        difference = difference + 64 + newPosition2 + 1;
-                    } else {
-                        difference = difference + newPosition2 + 1;
-                    }
-                    for (int cardValue : cardValues) {
+                    if (cardValue == 4) {
+                        difference = Math.floorMod(startingPosition - actualPosition2, 64);
+                        return cardValue == difference + newPosition2 + 1;
+                    } else if (cardValue == -4) {
+                        difference = startingPosition - actualPosition2 - newPosition2 - 1;
                         return cardValue == difference;
                     }
                 }
-            } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-                return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
+            } else {
+                difference = Math.floorMod(startingPosition - actualPosition2, 64);
+                difference += newPosition2 + 1;
+                for (int cardValue : cardValues) {
+                    return cardValue == difference;
+                }
             }
-            return false;
+        } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
+            return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
+        }
+        return false;
     }
 
     private int[] getCardValues(String card) {
         int[] possibleValues;
-        switch(card) {
+        switch (card) {
             case "ACE1":
                 possibleValues = new int[]{1};
                 break;
