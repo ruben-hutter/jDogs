@@ -94,7 +94,7 @@ public class Player {
         return alliance4;
     }
 
-    public boolean reciveHasMoved(int pieceID) {
+    public boolean receiveHasMoved(int pieceID) {
         return getPiece(pieceID).getHasMoved();
     }
 

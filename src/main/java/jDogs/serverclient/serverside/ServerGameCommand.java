@@ -3,7 +3,6 @@ package jDogs.serverclient.serverside;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
-import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
@@ -206,14 +205,21 @@ public class ServerGameCommand {
                         logger.debug("actual position1: " + actualPosition1);
                         actualPosition2 = player.receivePosition2Server(pieceID);
                         logger.debug("actual position2: " + actualPosition2);
-                        hasMoved = player.reciveHasMoved(pieceID);
+                        hasMoved = player.receiveHasMoved(pieceID);
                         startingPosition = player.getStartingPosition();
+                        System.out.println("came to if player name " + player.getPlayerName());
                     }
                 }
             } catch (Exception e) {
                 sendToThisClient.enqueue("INFO format exception in checkMove");
                 return;
             }
+
+            if (ownPlayer != gameFile.getPlayer(nickname)) {
+                sendToThisClient.enqueue("INFO you cannot move this color");
+                return;
+            }
+
 
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
@@ -391,7 +397,7 @@ public class ServerGameCommand {
                 otherPlayer = player;
                 otherActualPosition1 = player.receivePosition1Server(otherPieceID);
                 otherActualPosition2 = player.receivePosition2Server(otherPieceID);
-                otherHasMoved = player.reciveHasMoved(otherPieceID);
+                otherHasMoved = player.receiveHasMoved(otherPieceID);
                 otherStartingPosition = player.getStartingPosition();
             }
         }
@@ -482,7 +488,7 @@ public class ServerGameCommand {
                 logger.debug("actual position1: " + actualPosition1);
                 actualPosition2 = player.receivePosition2Server(pieceID);
                 logger.debug("actual position2: " + actualPosition2);
-                hasMoved = player.reciveHasMoved(pieceID);
+                hasMoved = player.receiveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
             }
         }
@@ -535,7 +541,7 @@ public class ServerGameCommand {
                 logger.debug("actual position1: " + actualPosition1);
                 actualPosition2 = player.receivePosition2Server(pieceID);
                 logger.debug("actual position2: " + actualPosition2);
-                hasMoved = player.reciveHasMoved(pieceID);
+                hasMoved = player.receiveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
             }
         }
