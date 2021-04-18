@@ -79,8 +79,8 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "TEAM":
+                    System.out.println("team " + text.substring(5));
                     gameFile.changeTeam(text.substring(5));
-                    sendToThisClient.enqueue("INFO error client doesn`t exist");
                     break;
 
                 case "STAR":
@@ -99,20 +99,16 @@ public class SeparateLobbyCommand {
 
                 case "QUIT":
 
-                    System.out.println(
-                            nickname + " doesn`t join anymore " + this.gameFile.getNameId());
+
                     if (this.gameFile.getHost() == nickname) {
                         this.gameFile.cancel();
                         Server.getInstance().allGamesNotFinished.remove(this.gameFile);
-                        sendToAll.enqueue("DOGA " + this.gameFile.getSendReady());
                     } else {
                         this.gameFile.removeParticipant(serverConnection);
                         sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
                     }
-                    System.out.println(2);
                     serverConnection.getMessageHandlerServer().returnToLobby();
                     sendToPub.enqueue("LPUB " + nickname);
-                    System.out.println(3);
                     break;
 
                 case "STAT":

@@ -16,11 +16,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class GameFile {
 
-    private String nameId;
-    private String host;
-    private String participants;
-    private String confirmedParticipants;
-    private int numberOfConfirmed;
+    private final String nameId;
+    private final String host;
     private int numberParticipants;
     private int total;
     private boolean pendent;
@@ -35,10 +32,7 @@ public class GameFile {
         this.nameId = nameId;
         this.host = host;
         this.total = Integer.parseInt(total);
-        this.participants = host;
         this.numberParticipants = 1;
-        this.confirmedParticipants = host;
-        this.numberOfConfirmed = 0;
         this.pendent = true;
         this.teamMode = teamMode;
         setUpTeamMode();
@@ -64,15 +58,24 @@ public class GameFile {
      *                    names which should be together in a team
      */
     public void changeTeam(String combination) {
-        //e.g. format of combination 2 4 Gregor Ruben Johanna Joe
-        // teams of two
-        //Gregor - Ruben & Johanna - Joe
-        int teamSize = combination.charAt(0);
-        int sizeNames = combination.charAt(1);
+        //e.g. format of combination: "2 4 Gregor Ruben Johanna Joe"
+        // teams of two(2)
+        // 4 names to parse(4)
+        //Gregor - Ruben vs Johanna - Joe
+        int teamSize = combination.charAt(0) - 48;
+        int sizeNames = combination.charAt(2) - 48;
+
         if (sizeNames == numberParticipants) {
 
-            String[] array = parseNames(sizeNames, combination.substring(3));
+            String[] array = parseNames(sizeNames, combination.substring(4));
+
             int teamID = 0;
+            System.out.println("size names " + sizeNames);
+            System.out.println("team size" + teamSize);
+            System.out.println(array.length);
+            if (array[0] != null) {
+                System.out.println("array 0: " + array[0]);
+            }
             while (teamID < sizeNames / teamSize) {
                 for (int i = 0; i < teamSize; i++) {
                     getPlayer(array[i]).setTeamID(teamID);
@@ -84,12 +87,15 @@ public class GameFile {
 
         } else {
             // do nothing
+            System.out.println(numberParticipants);
+            System.out.println(sizeNames);
+            System.out.println("numPart and size names doesnt match");
         }
     }
 
     private void orderByTeamId() {
         Collections.sort(players, Player.TeamIdComparator);
-        System.out.println("NEW TEAM combination " + participants);
+        System.out.println("NEW TEAM combination " + getParticipants());
     }
 
 
@@ -102,21 +108,21 @@ public class GameFile {
         return null;
     }
 
-    private String[] parseNames(int size, String message) {
+    private String[] parseNames(int size, String mess) {
         String[] array = new String[size];
         int position = 0;
         int i = 0;
-        int count = 1;
-        while (count < size) {
+        int count = 0;
+        while (count < size - 1) {
 
-            if (Character.isWhitespace(message.charAt(i))) {
-                array[count] = message.substring(position, i);
+            if (Character.isWhitespace(mess.charAt(i))) {
+                array[count] = mess.substring(position, i);
                 position = i + 1;
                 count++;
             }
             i++;
         }
-        array[count - 1] = message.substring(position);
+        array[count] = mess.substring(position);
         return array;
     }
 
@@ -214,7 +220,7 @@ public class GameFile {
         }
 
         if (teamsIncomplete) {
-            changeTeam("2 " + numberParticipants + participants);
+            changeTeam("2 " + numberParticipants + getParticipants());
         }
     }
 
@@ -222,8 +228,9 @@ public class GameFile {
 
         String participants = "";
 
-        for (int i = 0; i < players.size() - 1; i++) {
-            participants += players.get(i).getPlayerName() + " ";
+        for (Player player : players) {
+            participants += player.getPlayerName() + "\n";
+            participants += " " + "\n";
         }
         participants += players.get(players.size() - 1).getPlayerName();
         logger.debug("Participants: " + participants);
@@ -294,6 +301,7 @@ public class GameFile {
         if (pendent) {
             sendMessageToAll("DOGA " + getSendReady());
         } else {
+            Server.getInstance().finishedGames.add(this);
             System.out.println("INFO game finished");
         }
         Server.getInstance().removeGame(this);

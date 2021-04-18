@@ -123,8 +123,6 @@ public class Server {
 
         //scMap
         serverConnectionMap.put(nickname,serverConnection);
-        System.out.println("added to serverConnection " + nickname + nickname.length());
-        serverConnectionMap.get("maintenance");
         // add to lobbyGuests
         publicLobbyGuests.add(nickname);
 
@@ -172,9 +170,10 @@ public class Server {
 
     /**
      *
+     * @param gameFile
      * @return list of server connection objects of clients who participate in this opened game or started game
      */
-    public ArrayList<ServerConnection> getServerConnectionsMap(GameFile gameFile) {
+    public ArrayList<ServerConnection> getServerConnectionsArray(GameFile gameFile) {
 
         ArrayList<ServerConnection> aList = new ArrayList<>();
         System.out.println(gameFile.getParticipants());
@@ -237,7 +236,6 @@ public class Server {
 
     public void addToLobby(ServerConnection serverConnection) {
         publicLobbyConnections.add(serverConnection);
-        System.out.println( serverConnection.getNickname() + " added size: " + publicLobbyConnections.size());
     }
 
     public void removeFromLobby(ServerConnection serverConnection) {
@@ -250,5 +248,13 @@ public class Server {
 
     public ArrayList<ServerConnection> getBasicConnections() {
         return basicConnectionList;
+    }
+
+    public ArrayList<ServerConnection> getPublicLobbyConnections() {
+        return publicLobbyConnections;
+    }
+
+    public Map<String, ServerConnection> getServerConnectionMap() {
+        return serverConnectionMap;
     }
 }

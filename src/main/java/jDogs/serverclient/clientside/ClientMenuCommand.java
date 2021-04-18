@@ -79,7 +79,7 @@ public class ClientMenuCommand {
 
                */
 
-
+                break;
             case "LPUB":
 
                 //just compare to existing String/Array and replace if necessary
