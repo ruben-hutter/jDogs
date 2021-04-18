@@ -65,7 +65,7 @@ public class ServerGameCommand {
                 if (text.length() >= 9) {
 
                     if (text.substring(5,9).equals("SURR")) {
-                        gameFile.getPlayer(nickname).excludeForRound();
+                        gameFile.getPlayer(nickname).setAllowedToPlay(false);
                         gameState.getCards().get(nickname).clear();
                         sendToThisClient.enqueue("INFO excluded for this round");
                         mainGame.turnComplete(nickname);

@@ -26,6 +26,9 @@ public class MainGame {
         startGameRhythm();
     }
 
+    /**
+     * sets up the main game after calling the constructor
+     */
     public void setUp() {
         gameState.createPlayers();
         players = gameFile.getPlayers();
@@ -91,6 +94,10 @@ public class MainGame {
         }
     }
 
+    /**
+     * this method deals out cards after all cards are played or when the game starts
+     * @param number
+     */
     private void dealOutCards(int number) {
         //deal out cards from here by using a certain procedure
 
@@ -236,20 +243,34 @@ public class MainGame {
         nextTurn();
     }
 
+    /**
+     * this method is used to check the gameID
+     * @return
+     */
     public String getGameId() {
         return gameFile.getNameId();
     }
 
-
+    /**
+     * get the gamefile of this game
+     * @return
+     */
     public GameFile getGameFile() {
         return gameFile;
     }
 
-
+    /**
+     * get the gameState of the maingame
+     * @return
+     */
     public GameState getGameState() {
         return gameState;
     }
 
+    /**
+     * sends the game file to the archive
+     * and the main game will be left to the garbage collector
+     */
     public void kill() {
         this.gameFile.cancel();
     }
