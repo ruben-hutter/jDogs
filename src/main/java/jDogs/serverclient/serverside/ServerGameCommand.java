@@ -373,7 +373,7 @@ public class ServerGameCommand {
      * @param twoPieces pieces to switch position
      */
     private void checkMoveJack(String twoPieces) { // JACK YELO-1 BLUE-2
-        if (twoPieces.length() > 18) {
+        if (twoPieces.length() >= 17) {
             String ownAlliance = twoPieces.substring(5, 9);
             int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
             String ownActualPosition1 = "";
@@ -419,23 +419,25 @@ public class ServerGameCommand {
                 }
             }
 
-        if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
-                || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
-                || (otherActualPosition1.equals("B") && otherActualPosition2 == otherStartingPosition
-                && !otherHasMoved)) {
-            sendToThisClient.enqueue("INFO You can't switch this pieces!");
-        } else {
-            assert ownPlayer != null;
-            simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
-            assert otherPlayer != null;
-            simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
+            if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
+                    || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
+                    || (otherActualPosition1.equals("B")
+                    && otherActualPosition2 == otherStartingPosition
+                    && !otherHasMoved)) {
+                sendToThisClient.enqueue("INFO You can't switch this pieces!");
+            } else {
+                assert ownPlayer != null;
+                simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
+                assert otherPlayer != null;
+                simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
 
-            //eliminate card
-            gameState.getCards().get(nickname).remove(cardToEliminate);
-            gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                //eliminate card
+                gameState.getCards().get(nickname).remove(cardToEliminate);
+                gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
 
-            cardToEliminate = null;
-            mainGame.turnComplete(nickname);
+                cardToEliminate = null;
+                mainGame.turnComplete(nickname);
+            }
         }
     }
 
