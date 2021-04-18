@@ -96,27 +96,27 @@ public class MainGame {
 
         String newHand;
         ArrayList<String> newHandArray;
-/*
-        for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
-            newHandArray = new ArrayList<>();
+
+        for (Player player : gameFile.getPlayers()) {
             newHand = "ROUN " + turnNumber + " " + number;
 
             for (int j = 0; j < number; j++) {
                 int randomNumber = random.nextInt(deck.size());
                 String card = deck.remove(randomNumber);
-                System.out.println("Card " + card);
                 newHand += " " + card;
-                newHandArray.add(card);
+                gameState.getCards().get(player.getPlayerName()).add(card);
             }
             // send newHand to player and to client here
-            players.get(i).setCards(newHandArray);
-            players.get(i).sendMessageToClient(newHand);
-            logger.debug("Player " + players.get(i) + " has cards " + newHandArray);
+            player.sendMessageToClient(newHand);
+            logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
             logger.debug("Client get the cards as: " + newHand);
         }
 
- */
 
+
+/*
+        ArrayList<String> newHandArray;
+        String newHand;
 
         newHandArray = new ArrayList<>();
         //damit checkCard funktioniert, müssen die Strings einzeln hinzugefügt werden
@@ -137,10 +137,21 @@ public class MainGame {
         newHandArray.add(e);
         newHandArray.add(f);
 
+
+
+
         for (Player player : players) {
+            player.setAllowedToPlay(true);
             player.sendMessageToClient(hand);
-            player.setHand(newHandArray);
+            gameState.getCards().get(player.getPlayerName()).add(a);
+            gameState.getCards().get(player.getPlayerName()).add(b);
+            gameState.getCards().get(player.getPlayerName()).add(c);
+            gameState.getCards().get(player.getPlayerName()).add(d);
+            gameState.getCards().get(player.getPlayerName()).add(e);
+            gameState.getCards().get(player.getPlayerName()).add(f);
         }
+
+ */
 
     }
 

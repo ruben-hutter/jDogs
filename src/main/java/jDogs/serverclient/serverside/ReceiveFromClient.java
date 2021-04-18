@@ -53,7 +53,6 @@ public class ReceiveFromClient implements Runnable {
                     //heartbeat-signal
                     if (textIn.equals("pong")) {
                         //TODO delete sout
-                        System.out.println("received pong " + serverConnection.getNickname() + " " + System.currentTimeMillis());
                         //serverConnection.monitorMsg(System.currentTimeMillis());
                         //connectionToClientMonitor.sendSignal();
                     } else {

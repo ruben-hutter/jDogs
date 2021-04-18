@@ -18,10 +18,8 @@ public class ConnectionToClientMonitor implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("connection to clieMo start " + serverConnection.getNickname());
 
         if (monitorCS.connectionCheck()) {
-            System.out.println("Send a ping");
             //sendToClient.enqueue("ping");
             serverConnection.getSender().sendStringToClient("ping");
         } else {

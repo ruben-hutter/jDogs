@@ -19,7 +19,6 @@ public class Player {
     Alliance_4 alliance4;
     Board board;
     public int startingPosition;
-    private ArrayList<String> hand;
     private ServerConnection serverConnection;
     private int teamID;
     private boolean allowedToPlay;
@@ -37,6 +36,7 @@ public class Player {
      * @param alliance4 alliance of player
      * @param board created board for client
      */
+
     public Player(String playerName, Alliance_4 alliance4, Board board) {
         this.playerName = playerName;
         this.alliance4 = alliance4;
@@ -53,7 +53,6 @@ public class Player {
         for (Piece piece : pieces) {
             piece.setPositionServer("A", piece.getPieceID() - 1);
         }
-        this.hand = null;
     }
 
     public static Comparator<Player> TeamIdComparator = new Comparator<Player>() {
@@ -85,16 +84,6 @@ public class Player {
             board.allHomeTiles.get(alliance4)[i].setPiece(pieces[i]);
             pieces[i].setPositionClient(board.allHomeTiles.get(alliance4)[i]);
         }
-    }
-
-    public void setHand(ArrayList<String> hand) {
-
-        this.hand = hand;
-        this.allowedToPlay = true;
-    }
-
-    public ArrayList<String> getHand() {
-        return hand;
     }
 
     public String getPlayerName() {
@@ -151,11 +140,11 @@ public class Player {
         pieceToMove.setPositionServer(newPosition1, newPosition2);
     }
 
-    public String recivePosition1Server(int pieceID) {
+    public String receivePosition1Server(int pieceID) {
         return pieces[pieceID - 1].getPositionServer1();
     }
 
-    public int recivePosition2Server(int pieceID) {
+    public int receivePosition2Server(int pieceID) {
         return pieces[pieceID - 1].getPositionServer2();
     }
 
@@ -190,10 +179,14 @@ public class Player {
      * excludes player from game till this round finished
      */
     public void excludeForRound() {
-        this.hand = null;
+        this.allowedToPlay = false;
     }
 
     public boolean isAllowedToPlay() {
-       return this.hand != null;
+        return this.allowedToPlay;
+    }
+
+    public void setAllowedToPlay(boolean val) {
+        this.allowedToPlay = val;
     }
 }

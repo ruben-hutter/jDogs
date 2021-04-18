@@ -122,9 +122,8 @@ public class GameFile {
 
 
     public void sendMessageToParticipants(String message) {
-
+        logger.debug("message for players of " + nameId + " : " + message);
         for (Player player : players) {
-            System.out.println("send message from game file" + message);
             player.getServerConnection().getSender().sendStringToClient(message);
         }
     }

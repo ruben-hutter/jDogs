@@ -41,11 +41,9 @@ public class ReceiveFromServer implements Runnable {
 
 
                     if (message.equalsIgnoreCase("ping")) {
-                        System.out.println("RECEIVED PING " + client.getNickname() + " " + System.currentTimeMillis());
                         //client.monitorMsg(System.currentTimeMillis());
                         //connectionToServerMonitor.sendSignal();
                     } else {
-                        System.out.println("received from server " + message);
                         receiveQueue.enqueue(message);
                     }
                 }
