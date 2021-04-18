@@ -443,6 +443,7 @@ public class ServerGameCommand {
                 //eliminate card
                 gameState.getCards().get(nickname).remove(cardToEliminate);
                 gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                gameFile.sendMessageToParticipants("HAND");
 
                 cardToEliminate = null;
                 mainGame.turnComplete(nickname);
@@ -529,6 +530,7 @@ public class ServerGameCommand {
         //eliminate card
         gameState.getCards().get(nickname).remove(cardToEliminate);
         gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+        gameFile.sendMessageToParticipants("HAND");
 
         cardToEliminate = null;
         mainGame.turnComplete(nickname);

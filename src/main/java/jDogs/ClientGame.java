@@ -132,6 +132,5 @@ public class ClientGame {
 
     public void remove(String card) {
         cards.remove(card);
-        printCards();
     }
 }
