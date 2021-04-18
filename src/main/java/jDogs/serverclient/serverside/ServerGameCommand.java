@@ -215,6 +215,7 @@ public class ServerGameCommand {
                 return;
             }
             //TODO find better place for this
+            //TODO if player finished, and teamMode on, he can play 2 colors
             //prevent players from moving with others pieces
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 sendToThisClient.enqueue("INFO you cannot move this color");
