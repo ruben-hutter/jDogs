@@ -17,6 +17,7 @@ public class MainGame {
     private ArrayList<Player> players;
     private static final Logger logger = LogManager.getLogger(MainGame.class);
     private int numberOfRounds;
+    private String actualPlayer;
 
 
     MainGame (GameFile gameFile) {
@@ -86,11 +87,11 @@ public class MainGame {
      */
     private void nextTurn() {
         int numb = turnNumber % players.size();
-
-        if (gameFile.getPlayer(gameArray[numb]).isAllowedToPlay()) {
-            Server.getInstance().getSender((gameArray[numb])).sendStringToClient("TURN");
+        actualPlayer = gameArray[numb];
+        if (gameFile.getPlayer(actualPlayer).isAllowedToPlay()) {
+            Server.getInstance().getSender(actualPlayer).sendStringToClient("TURN");
         } else {
-            turnComplete((gameArray[numb]));
+            turnComplete(actualPlayer);
         }
     }
 
@@ -224,6 +225,7 @@ public class MainGame {
      */
     public void turnComplete(String nickname) {
         System.out.println(nickname + " finished his turn");
+        actualPlayer = null;
         turnNumber++;
         numberOfRounds++;
         // new round
@@ -273,5 +275,9 @@ public class MainGame {
      */
     public void kill() {
         this.gameFile.cancel();
+    }
+
+    public String getActualPlayer() {
+        return actualPlayer;
     }
 }

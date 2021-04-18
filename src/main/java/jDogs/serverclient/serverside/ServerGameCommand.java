@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
  * server.
  *
  */
+
 public class ServerGameCommand {
     private final Server server;
     private final ServerConnection serverConnection;
@@ -61,7 +62,7 @@ public class ServerGameCommand {
                 break;
 
             case "MOVE":
-                if (text.length() >= 9) {
+                if (text.length() >= 9 && mainGame.getActualPlayer() == nickname) {
 
                     if (text.substring(5,9).equals("SURR")) {
                         gameFile.getPlayer(nickname).setAllowedToPlay(false);
@@ -236,8 +237,8 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("You eliminate yourself!");
                 return;
             }
-
             //eliminate card
+
             gameState.getCards().get(nickname).remove(cardToEliminate);
             gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
 
@@ -372,50 +373,51 @@ public class ServerGameCommand {
      * @param twoPieces pieces to switch position
      */
     private void checkMoveJack(String twoPieces) { // JACK YELO-1 BLUE-2
-        String ownAlliance = twoPieces.substring(5, 9);
-        int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
-        String ownActualPosition1 = "";
-        int ownActualPosition2 = -1;
-        Player ownPlayer = null;
-        Alliance_4 ownAlliance4;
+        if (twoPieces.length() > 18) {
+            String ownAlliance = twoPieces.substring(5, 9);
+            int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
+            String ownActualPosition1 = "";
+            int ownActualPosition2 = -1;
+            Player ownPlayer = null;
+            Alliance_4 ownAlliance4;
 
-        String otherAlliance = twoPieces.substring(12, 16);
-        int otherPieceID = Integer.parseInt(twoPieces.substring(17));
-        String otherActualPosition1 = "";
-        int otherActualPosition2 = -1;
-        boolean otherHasMoved = false;
-        int otherStartingPosition = -1;
-        Player otherPlayer = null;
-        Alliance_4 otherAlliance4;
+            String otherAlliance = twoPieces.substring(12, 16);
+            int otherPieceID = Integer.parseInt(twoPieces.substring(17));
+            String otherActualPosition1 = "";
+            int otherActualPosition2 = -1;
+            boolean otherHasMoved = false;
+            int otherStartingPosition = -1;
+            Player otherPlayer = null;
+            Alliance_4 otherAlliance4;
 
-        ownAlliance4 = convertAlliance(ownAlliance);
+            ownAlliance4 = convertAlliance(ownAlliance);
 
-        for (Player player : gameState.getPlayersState()) {
-            if (player.getAlliance() == ownAlliance4) {
-                ownPlayer = player;
-                ownActualPosition1 = player.receivePosition1Server(ownPieceID);
-                ownActualPosition2 = player.receivePosition2Server(ownPieceID);
+            for (Player player : gameState.getPlayersState()) {
+                if (player.getAlliance() == ownAlliance4) {
+                    ownPlayer = player;
+                    ownActualPosition1 = player.receivePosition1Server(ownPieceID);
+                    ownActualPosition2 = player.receivePosition2Server(ownPieceID);
 
+                }
             }
-        }
 
-        // TODO if playing in teamMode
-        if (ownPlayer != gameFile.getPlayer(nickname)) {
-            sendToThisClient.enqueue("INFO you cannot move this color");
-            return;
-        }
-
-        otherAlliance4 = convertAlliance(otherAlliance);
-
-        for (Player player : gameState.getPlayersState()) {
-            if (player.getAlliance() == otherAlliance4) {
-                otherPlayer = player;
-                otherActualPosition1 = player.receivePosition1Server(otherPieceID);
-                otherActualPosition2 = player.receivePosition2Server(otherPieceID);
-                otherHasMoved = player.receiveHasMoved(otherPieceID);
-                otherStartingPosition = player.getStartingPosition();
+            // TODO if playing in teamMode
+            if (ownPlayer != gameFile.getPlayer(nickname)) {
+                sendToThisClient.enqueue("INFO you cannot move this color");
+                return;
             }
-        }
+
+            otherAlliance4 = convertAlliance(otherAlliance);
+
+            for (Player player : gameState.getPlayersState()) {
+                if (player.getAlliance() == otherAlliance4) {
+                    otherPlayer = player;
+                    otherActualPosition1 = player.receivePosition1Server(otherPieceID);
+                    otherActualPosition2 = player.receivePosition2Server(otherPieceID);
+                    otherHasMoved = player.receiveHasMoved(otherPieceID);
+                    otherStartingPosition = player.getStartingPosition();
+                }
+            }
 
         if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
                 || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
