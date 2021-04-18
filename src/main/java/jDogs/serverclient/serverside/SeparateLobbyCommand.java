@@ -33,10 +33,10 @@ public class SeparateLobbyCommand {
 
                 case "WCHT":
                     //send private message
-
+                    String mess = text.substring(5);
                     int separator = -1;
-                    for (int i = 0; i < text.substring(5).length(); i++) {
-                        if (Character.isWhitespace(text.substring(4).charAt(i))) {
+                    for (int i = 0; i < mess.length(); i++) {
+                        if (Character.isWhitespace(mess.charAt(i))) {
                             separator = i;
                             break;
                         }
@@ -46,9 +46,8 @@ public class SeparateLobbyCommand {
                         sendToThisClient.enqueue("INFO " + "wrong WCHT format");
                         break;
                     }
-
-                    String destiny = text.substring(5, 4 + separator);
-                    String message = text.substring(5 + separator);
+                    String destiny = text.substring(0, separator);
+                    String message = text.substring(separator + 1);
 
                     if (!isParticipant(destiny)) {
                         sendToThisClient

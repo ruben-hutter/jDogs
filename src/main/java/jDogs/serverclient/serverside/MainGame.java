@@ -228,16 +228,20 @@ public class MainGame {
         actualPlayer = null;
         turnNumber++;
         numberOfRounds++;
-
+        System.out.println("number of rounds " + numberOfRounds);
+        System.out.println("calc numberofrounds/participants " + numberOfRounds / gameFile.getNumberOfParticipants());
+        System.out.println("numberDeal out 1 " + numbDealOut);
         // new round
         //no cards in any player`s hand
         if (numberOfRounds / gameFile.getNumberOfParticipants() == numbDealOut) {
             if (numbDealOut == 2) {
+                System.out.println("entered if ");
                 numbDealOut = 6;
                 // anew deck
                 deck = getDeck();
                 numberOfRounds = 0;
             } else {
+                System.out.println("2 NUMB DEAL OUT " + numbDealOut);
                 numbDealOut--;
             }
             dealOutCards(numbDealOut);
