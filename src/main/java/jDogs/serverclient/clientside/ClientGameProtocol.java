@@ -22,6 +22,10 @@ public enum ClientGameProtocol {
      */
     MOVE,
     /**
+     * Command to print out actual board state
+     */
+    BORD,
+    /**
      * Information which card is removed on serverside from your hand
      */
     CARD,

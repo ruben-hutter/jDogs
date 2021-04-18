@@ -215,7 +215,7 @@ public class ServerMenuCommand {
         }
     }
     /**
-     *
+     * This method return a gamefile
      * @param gameName is the name of the game which was sent to the server
      * @return returns a game if it exists in the server ArrayList of unfinished games
      */
