@@ -375,6 +375,12 @@ public class ServerGameCommand {
             }
         }
 
+        // TODO if playing in teamMode
+        if (ownPlayer != gameFile.getPlayer(nickname)) {
+            sendToThisClient.enqueue("INFO you cannot move this color");
+            return;
+        }
+
         otherAlliance4 = convertAlliance(otherAlliance);
 
         for (Player player : gameState.getPlayersState()) {
@@ -432,7 +438,7 @@ public class ServerGameCommand {
         for (int i = 0; i < piecesToMove; i++) {
             moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
             if (moveValue < 0) {
-                sendToThisClient.enqueue("INFO At least one invalid destination!");
+                sendToThisClient.enqueue("INFO At least one invalid destination or piece!");
                 return;
             }
             countToSeven += moveValue;
@@ -492,6 +498,11 @@ public class ServerGameCommand {
                 hasMoved = player.reciveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
             }
+        }
+
+        // TODO if teamMode
+        if (ownPlayer != gameFile.getPlayer(nickname)) {
+            return -1;
         }
 
         int difference;
