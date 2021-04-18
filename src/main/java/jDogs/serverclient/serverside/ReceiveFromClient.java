@@ -45,13 +45,16 @@ public class ReceiveFromClient implements Runnable {
 
                 if (din.available() != 0) {
                     textIn = din.readUTF();
+                    serverConnection.monitorMsg(System.currentTimeMillis());
 
                     //informs that any message arrived
                     //connectionToClientMonitor.message(System.currentTimeMillis());
 
                     //heartbeat-signal
                     if (textIn.equals("pong")) {
-                        serverConnection.monitorMsg(System.currentTimeMillis());
+                        //TODO delete sout
+                        System.out.println("received pong " + serverConnection.getNickname() + " " + System.currentTimeMillis());
+                        //serverConnection.monitorMsg(System.currentTimeMillis());
                         //connectionToClientMonitor.sendSignal();
                     } else {
                         //write to receiver-queue

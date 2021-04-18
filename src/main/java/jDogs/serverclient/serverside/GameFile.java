@@ -130,20 +130,24 @@ public class GameFile {
     }
 
     public void addParticipant(ServerConnection serverConnection) {
-        players.add(new Player(serverConnection.getNickname(), serverConnection));
-        numberParticipants++;
-        sendMessageToParticipants("LPUB " + serverConnection.getNickname());
-        for (int i = 0; i < numberParticipants - 1; i++) {
-            players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
+        if (numberParticipants < total) {
+            players.add(new Player(serverConnection.getNickname(), serverConnection));
+            numberParticipants++;
+            sendMessageToParticipants("LPUB " + serverConnection.getNickname());
+            for (int i = 0; i < numberParticipants - 1; i++) {
+                players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
+            }
+
+            if (teamMode == 1 && readyToStart()) {
+
+                checkforTeams();
+                OrderArrayListToPlayGame();
+                // get players arraylist in definitive order
+            }
+
+        } else {
+            serverConnection.getSender().sendStringToClient("INFO no more players allowed in game");
         }
-
-        if (teamMode == 1 && readyToStart()) {
-
-            checkforTeams();
-            OrderArrayListToPlayGame();
-            // get players arraylist in definitive order
-        }
-
     }
 
     /**
@@ -291,19 +295,18 @@ public class GameFile {
         if (pendent) {
             sendMessageToAll("DOGA " + getSendReady());
         } else {
-            Server.getInstance().finishedGames.add(this);
             System.out.println("INFO game finished");
         }
         Server.getInstance().removeGame(this);
-
     }
 
     /**
-     * @param message message to every active player in lobby, separate lobby or games
+     * message to every active player in lobby, separate lobby or games
+     * @param message
      */
     private void sendMessageToAll(String message) {
-        for (ServerConnection serverConnection1 : Server.getInstance().serverConnections) {
-            serverConnection1.getSender().sendStringToAllClients(message);
+        for (ServerConnection serverConnection1 : Server.getInstance().getBasicConnections()) {
+            serverConnection1.getSender().sendStringToClient(message);
         }
     }
 

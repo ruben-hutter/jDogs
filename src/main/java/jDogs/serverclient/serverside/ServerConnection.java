@@ -65,7 +65,7 @@ public class ServerConnection {
                 sendToPub,this);
         Thread senderThread = new Thread(sender);
         senderThread.start();
-        System.out.println("thread sender name: " + senderThread.toString());
+
 
         // detect connection problems thread
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
@@ -73,12 +73,13 @@ public class ServerConnection {
                         (this, sendToThisClient, monitorCS), 5000,5000, TimeUnit.MILLISECONDS);
 
 
+
+
         // receiveFromClient thread
         listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,
                 this);
         Thread listener = new Thread(listeningToClient);
         listener.start();
-        System.out.println("thread listener name: " + listener.toString());
 
         // messageHandlerServer Thread
         messageHandlerServer = new MessageHandlerServer(server,
