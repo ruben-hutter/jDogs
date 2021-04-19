@@ -1,6 +1,5 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.ClientGame;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
@@ -238,10 +237,12 @@ public class ServerGameCommand {
                 return;
             }
 
-            if (checkForBlock(actualPosition1, actualPosition2, newPosition1, newPosition2, ownPlayer)) {
+            /*
+            if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2, ownPlayer)) {
                 sendToThisClient.enqueue("INFO Someone blocks you");
                 return;
             }
+             */
 
             // check if there is a piece on destination
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
@@ -272,13 +273,15 @@ public class ServerGameCommand {
      * Checks if there is a block on the way to new position
      * @return true if you are blocked
      */
-    private boolean checkForBlock(String actualPosition1, int actualPosition2, String newPosition1,
+    private boolean checkForBlock(String card, String actualPosition1,
+            int actualPosition2, String newPosition1,
             int newPosition2, Player player) {
         int [] startingPositions = new int[] {0, 16, 32, 48};
         Piece pieceOnStart;
         int convertActualPos;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
+            // TODO four case -4
             for (int startingPosition : startingPositions) {
                 if (newPosition2 > actualPosition2) {
                     if (actualPosition2 < startingPosition && startingPosition < newPosition2) {
@@ -572,11 +575,13 @@ public class ServerGameCommand {
                     Piece piece = player.getPiece(pieceID);
                     String actualPosition1 = player.receivePosition1Server(pieceID);
                     int actualPosition2 = player.receivePosition2Server(pieceID);
-                    if (checkForBlock(actualPosition1, actualPosition2, newPosition1, newPosition2,
+                    /*
+                    if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
                             player)) {
                         sendToThisClient.enqueue("INFO There is a block, you can't pass!");
                         return;
                     }
+                     */
                     simpleMove(player, pieceID, newPosition1, newPosition2);
                     // remove block if piece moves for first time on track
                     if (!piece.getHasMoved() && piece.getPositionServer1().equals("B")
