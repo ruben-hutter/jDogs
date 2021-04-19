@@ -256,4 +256,14 @@ Ein Thema war auch die ungleichmässige Arbeitsverteilung bei Milestone 3. Für 
 
 ---
 
+*14.04.2021 - 18.04.21, Johanna*
+
+### Protokoll#13 - Protokoll
+
+Am Freitag, Samstag und Sonntag stellten wir das Spiel fertig für den Meilenstein 3. Gemeinsam testeten wir das Spiel und teilten die anstehenden Arbeiten auf. Wir fanden verschiedene Fehler, die noch korrigiert werden konnten: z.B. wurde die gespielte Karte nicht von der Hand des Spielers abgebucht, etc. 
+
+---
+
+
+
 
