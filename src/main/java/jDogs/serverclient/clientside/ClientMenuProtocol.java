@@ -25,7 +25,7 @@ public enum ClientMenuProtocol {
      */
     PLAY,
     /**
-     * Command to request the game statistics.
+     * Information requesting the game statistics.
      */
     STAT,
     /**

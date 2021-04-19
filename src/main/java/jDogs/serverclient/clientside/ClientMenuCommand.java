@@ -155,7 +155,7 @@ public class ClientMenuCommand {
                 break;
 
             case "STAT":
-                System.out.println(text.substring(5));
+                System.out.println("all Games " + text.substring(5));
                 break;
 
 

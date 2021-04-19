@@ -116,9 +116,22 @@ public class ServerMenuCommand {
                     break;
 
                 case "STAT":
+                    String running = "";
+                    for (MainGame mainGame : server.runningGames) {
+                        running += mainGame.getGameId() + " ";
+
+                    }
+                    String finished = "";
+
+                    for (GameFile gameFile1 : server.finishedGames) {
+                        finished += gameFile1.getNameId() + " ";
+                    }
+
                     sendToThisClient
                             .enqueue("STAT " + "runningGames " + server.runningGames.size()
-                                    + " finishedGames " + server.finishedGames.size());
+                                    + running
+                                    + " finishedGames " + server.finishedGames.size()
+                                    + finished);
                     logger.debug("runningGames " + server.runningGames.size()
                             + " finishedGames " + server.finishedGames.size());
                     break;
