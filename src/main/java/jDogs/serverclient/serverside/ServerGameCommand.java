@@ -46,6 +46,11 @@ public class ServerGameCommand {
         this.cardToEliminate = null;
     }
 
+    /**
+     * this method executes all commands
+     * import for playing a game on serverside
+     * @param text command which should be processed
+     */
     public void execute(String text) {
         logger.debug("Entered ServerGameCommand with: " + text);
         String command = text.substring(0, 4);
@@ -324,6 +329,7 @@ public class ServerGameCommand {
         }
         return false;
     }
+
 
     private int[] getCardValues(String card) {
         int[] possibleValues;

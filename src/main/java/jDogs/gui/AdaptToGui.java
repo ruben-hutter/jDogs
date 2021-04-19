@@ -1,5 +1,9 @@
 package jDogs.gui;
 
+/**
+ * this class adapts the fields how they are kept to the gui and
+ * translates their value to a position on the board
+ */
 public class AdaptToGui {
     private int boardSize;
     private FieldOnBoard[] fieldsOnTrack;
@@ -15,10 +19,18 @@ public class AdaptToGui {
        instance = this;
     }
 
+    /**
+     * Since only one gui exists, we only need one GUI-Adapter
+     * @return the signleton of this class
+     */
     public static AdaptToGui getInstance() {
         return instance;
     }
 
+    /**
+     * creates a translation table to translate them from gamestate to gui
+     * @param boardSize is the size of the board(4 or 6)
+     */
     private void createFieldsOnTrack(int boardSize) {
         // board size is 4 or 6
         fieldsOnTrack = new FieldOnBoard[this.boardSize * 16];
@@ -63,14 +75,16 @@ public class AdaptToGui {
         }
     }
 
-   public void createFieldsOnHeaven (int boardSize) {
+    /**
+     * creates all the fields on heaven
+     * @param boardSize size of the board(4/6)
+     */
+    public void createFieldsOnHeaven (int boardSize) {
 
        switch(boardSize) {
 
            case 4:
                fieldsOnHeaven = new FieldOnBoard[boardSize][NUM_PIECES];
-
-
 
                for (int i = 0; i < boardSize * 16; i++) {
                    /**
@@ -121,6 +135,11 @@ public class AdaptToGui {
        }
     }
 
+    /**
+     *
+     * @param number the number on the gamestate
+     * @return the place in the gui(saved as FieldOnBoard)
+     */
     public FieldOnBoard getTrack(int number) {
        if (number > fieldsOnTrack.length) {
            return null;

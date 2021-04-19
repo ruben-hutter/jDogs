@@ -107,7 +107,7 @@ public class MainGame {
         ArrayList<String> newHandArray;
 
         for (Player player : gameFile.getPlayers()) {
-            newHand = "ROUN " +  " " + number;
+            newHand = "ROUN " + number;
 
             for (int j = 0; j < number; j++) {
                 int randomNumber = random.nextInt(deck.size());

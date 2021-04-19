@@ -3,6 +3,11 @@ package jDogs.gui;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
 
+/**
+ * this class represents open game objects and makes it possible
+ * to display them in the lobby window
+ */
+
 public class OpenGame {
     //name must be unique!
     private final SimpleStringProperty name;

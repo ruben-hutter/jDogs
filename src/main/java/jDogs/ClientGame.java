@@ -129,6 +129,9 @@ public class ClientGame {
     }
 
     public void remove(String card) {
+        System.out.println("removed card " + card);
+        System.out.println(cards.size());
         cards.remove(card);
+        System.out.println(cards.size());
     }
 }

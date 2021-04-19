@@ -42,6 +42,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.checkerframework.checker.units.qual.A;
 
+/**
+ * this class represents the lobby window
+ */
 public class LobbyController implements Initializable {
     @FXML
     ObservableList<OpenGame> openGames;
@@ -83,13 +86,7 @@ public class LobbyController implements Initializable {
                 new PropertyValueFactory<OpenGame, String>("TeamMode")
         );
 
-
-
-
-
-
         tableViewActiveGames.setItems((ObservableList)openGames);
-
 
         tableViewActiveGames.setOnMousePressed ((MouseEvent event) -> {
             if (event.getClickCount() == 1 &&
@@ -147,6 +144,10 @@ public class LobbyController implements Initializable {
     @FXML
     private TextField textField;
 
+    /**
+     * start game button
+     * @param event fires if the start game button is pressed
+     */
     @FXML
     void startButtonOnAction(ActionEvent event) {
         if (startGamePossible) {
@@ -158,6 +159,12 @@ public class LobbyController implements Initializable {
 
     }
 
+    /**
+     * sets up a new open game
+     * @param event fires if button is pressed
+     *              and a new window to create
+     *              an open game window gets created
+     */
     @FXML
     void newGameButtonOnAction(ActionEvent event) {
         System.out.println("started new game action");
@@ -184,7 +191,11 @@ public class LobbyController implements Initializable {
 
     }
 
-
+    /**
+     * leave separate lobby mode(leave open game)
+     * @param event fires if client wants
+     *             to leave separate lobby command
+     */
     @FXML
     void setQButtonOnAction(ActionEvent event) {
         if(gameId != null) {
@@ -198,6 +209,12 @@ public class LobbyController implements Initializable {
 
     }
 
+    /**
+     * the join button allows to join an
+     * open game/separate lobby
+     * @param event fires if the join
+     *              button is activated
+     */
     @FXML
     void setJButtonOnAction(ActionEvent event) {
         if (selectedGame != null && tableViewActiveGames.getSelectionModel().getSelectedItem()!= null) {
@@ -210,12 +227,21 @@ public class LobbyController implements Initializable {
         }
     }
 
+    /**
+     * shutdown client by closing window
+     * @param event fires if client
+     *              closes the window
+     */
     @FXML
     void exitJDogs(ActionEvent event) {
         System.out.println("exit..");
         System.exit(-1);
     }
 
+    /**
+     * send message by clicking button
+     * @param event fires if button gets pressed
+     */
     @FXML
     void sendButtonOnAction(ActionEvent event) {
         System.out.println("send..");
@@ -269,24 +295,43 @@ public class LobbyController implements Initializable {
         publicChatMessagesLobby.appendText("@PUB " + message + "\n");
     }
 
+    /**
+     * message displayed as lobby chat message
+     * @param message lobby chat message
+     */
     public void displayLCHTmsg(String message) {
         publicChatMessagesLobby.appendText("@LOBBY " + message + "\n");
     }
 
-
+    /**
+     * message displayed as whisper chat message
+     * @param message whisper chat message
+     */
     public void displayWCHTmsg(String message) {
         publicChatMessagesLobby.appendText(message + "\n");
     }
 
+    /**
+     * display info message
+     * @param info info message
+     */
     public void displayInfomsg(String info) {
         publicChatMessagesLobby.appendText(info + "\n");
     }
 
+    /**
+     * display all player in lobby
+     * @param player in lobby
+     */
     public void displayPlayersInLobby(String player) {
         playersInLobby.add(new Participant(player));
 
     }
 
+    /**
+     * display open pendent game
+     * @param game from server
+     */
     public void displayPendentGameInLobby(String game) {
         OpenGame newGame = GuiParser.getOpenGame(game);
 
@@ -313,7 +358,10 @@ public class LobbyController implements Initializable {
             openGames.add(newGame);
     }
 
-
+    /**
+     * remove pendent game in lobby
+     * @param substring the open game which should be replaced
+     */
     public void removePendentGameInLobby(String substring) {
         OpenGame openGame = GuiParser.getOpenGame(substring);
         int row = -1;
@@ -336,7 +384,11 @@ public class LobbyController implements Initializable {
 
     }
 
-    public void displayOnGoingGamesInLobby(String games) {
+    /**
+     * display ongoing game in lobby
+     * @param game to parse first
+     */
+    public void displayOnGoingGameInLobby(String game) {
 
     }
 
@@ -385,11 +437,18 @@ public class LobbyController implements Initializable {
         gameDialog.close();
     }
 
+    /**
+     * closes the window to create an open game
+     */
     public void closeGameDialog() {
         System.out.println("close game dialog window");
         gameDialog.close();
     }
 
+    /**
+     * method to set inform gui that it joined separate lobby
+     * @param game string from server
+     */
     public void goToSeparateLobbyGame(String game) {
         gameId = game;
         displayInfomsg("INFO you joined game " + gameId);
@@ -397,10 +456,13 @@ public class LobbyController implements Initializable {
         playersInLobby.removeAll();
     }
 
+    /**
+     * method to allow to start the game
+     */
     public void startGameConfirmation() {
         startGamePossible = true;
         /**
-         * this code represents a rotating rectangle, that is rotating when the game is ready to start
+         * this code represents a rotating rectangle, which is rotating when the game is ready to start
          */
         final Rectangle rotatingRect = new Rectangle(5,5,10,6);
         rotatingRect.setFill(Color.GREEN);
@@ -422,7 +484,10 @@ public class LobbyController implements Initializable {
 
     }
 
-
+    /**
+     * starts game in lobby controller
+     * @param gameInfo open game information
+     */
     public void startGame(String gameInfo) {
         GUIManager.getInstance().startGame();
     }

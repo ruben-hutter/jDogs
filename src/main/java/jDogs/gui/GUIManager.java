@@ -13,6 +13,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * this class handles all the relation between gui and client
+ * every window is called from here
+ */
+
 public class GUIManager extends Application {
     private Stage primaryStage;
     private static GUIManager instance;
@@ -26,7 +31,10 @@ public class GUIManager extends Application {
         launch(args);
     }
 
-    //get singleton
+    /**
+     * this is important to call this object as a singleton
+     * @return static instance
+     */
     public static GUIManager getInstance() {
         return instance;
     }
@@ -42,6 +50,9 @@ public class GUIManager extends Application {
         setLoginScene();
     }
 
+    /**
+     * sets up the login window
+     */
     private void setLoginScene() {
 
         // activate loginWindow
@@ -75,7 +86,9 @@ public class GUIManager extends Application {
 
     }
 
-
+    /**
+     * sets up the lobby window
+     */
     public void setLobbyScene() {
         String lobbyPath = "src/main/resources/lobbyWindow.fxml";
         // activate Window
@@ -102,7 +115,10 @@ public class GUIManager extends Application {
 
     }
 
-
+    /**
+     * this method is called to start client and lobby
+     * @param nickname name entered in the login window
+     */
     public void goToLobby(String nickname) {
         client = new Client();
         client.setNickname(nickname);
@@ -116,11 +132,16 @@ public class GUIManager extends Application {
     }
 
 
-
+    /**
+     * starts the game
+     */
     public void startGame() {
         setGameScene();
     }
 
+    /**
+     * sets up the game window
+     */
     private void setGameScene() {
 
         String lobbyPath = "src/main/resources/gameWindow.fxml";

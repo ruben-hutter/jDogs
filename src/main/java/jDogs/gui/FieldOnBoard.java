@@ -1,5 +1,9 @@
 package jDogs.gui;
 
+/**
+ * this class represents a 2D-field on the gui board
+ * with an x value and y value
+ */
 public class FieldOnBoard {
     private int x;
     private int y;
