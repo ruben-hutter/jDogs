@@ -11,7 +11,6 @@ public class AdaptToGui {
     private FieldOnBoard[][] fieldsOnHome;
     private final int NUM_PIECES = 4;
     private final int BOARD_SIZE = 4;
-
     private static AdaptToGui instance;
 
     public AdaptToGui() {
@@ -149,6 +148,65 @@ public class AdaptToGui {
        }
     }
 
+    public void createFieldsOnHome(int boardSize) {
+        switch (boardSize) {
+            case 4:
+
+                //starting positions are 2/2 2/17 17/17 17/2
+                // home positions are next to starting positions so
+                // 2/2: 0/0 0/1 1/0 1/1
+                // 2/17: 0/17 0/18 1/17 1/18
+                // 17/17: 19/17 19/18 18/17 18/18
+                // 17/2: 19/0 19/1 18/0 18/1
+
+                fieldsOnHome = new FieldOnBoard[boardSize][NUM_PIECES];
+                int count = 0;
+                while ( count < boardSize) {
+
+                    int x = 0;
+                    int y = 0;
+                    int j = 0;
+
+                    fieldsOnHome[count][j] = new FieldOnBoard(x, y);
+                    fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
+                    fieldsOnHome[count][j + 2] = new FieldOnBoard(x + 1, y);
+                    fieldsOnHome[count][j + 3] = new FieldOnBoard(x + 1, y + 1);
+
+                    count++;
+                    x = 0;
+                    y = 17;
+                    j = 0;
+
+                    fieldsOnHome[count][j] = new FieldOnBoard(x, y);
+                    fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
+                    fieldsOnHome[count][j + 2] = new FieldOnBoard(x + 1, y);
+                    fieldsOnHome[count][j + 3] = new FieldOnBoard(x + 1, y + 1);
+
+                    count++;
+                    x = 19;
+                    y = 17;
+                    j = 0;
+
+                    fieldsOnHome[count][j] = new FieldOnBoard(x, y);
+                    fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
+                    fieldsOnHome[count][j + 2] = new FieldOnBoard(x - 1, y);
+                    fieldsOnHome[count][j + 3] = new FieldOnBoard(x - 1, y + 1);
+
+                    count++;
+                    x = 19;
+                    y = 0;
+                    j = 0;
+
+                    fieldsOnHome[count][j] = new FieldOnBoard(x, y);
+                    fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
+                    fieldsOnHome[count][j + 2] = new FieldOnBoard(x - 1, y);
+                    fieldsOnHome[count][j + 3] = new FieldOnBoard(x - 1, y + 1);
+
+                }
+                break;
+        }
+    }
+
     /**
      * get the heaven tile
      * @param number number in order of players
@@ -173,6 +231,31 @@ public class AdaptToGui {
        return fieldsOnTrack[number];
     }
 
+    /**
+     * translates a home tile in the game to a field in the gui
+     * @param startPos the starting position of this alliance
+     * @param pieceID the id of this token in the array of home tiles
+     * @return a 2D Field which represents this field in the gui
+     */
+    public FieldOnBoard getHomeField(int startPos, int pieceID) {
+        FieldOnBoard home = null;
+        switch (startPos) {
+            case 0:
+                home = fieldsOnHome[0][pieceID];
+                break;
+            case 16:
+                home = fieldsOnHome[1][pieceID];
+                break;
+            case 32:
+                home = fieldsOnHome[2][pieceID];
+                break;
+            case 48:
+                home = fieldsOnHome[3][pieceID];
+                break;
+        }
+        return home;
+    }
+
     public static void main(String[] args) {
         AdaptToGui adaptToGui = new AdaptToGui();
         FieldOnBoard[] heavenArr = adaptToGui.getHeavenField(3);
@@ -180,4 +263,6 @@ public class AdaptToGui {
             System.out.println("x val: " + fieldOnBoard.getX() + " y val: " + fieldOnBoard.getY());
         }
     }
+
+
 }
