@@ -44,7 +44,6 @@ public class ReceiveFromServer implements Runnable {
                         //connectionToServerMonitor.sendSignal();
                     } else {
                         receiveQueue.enqueue(message);
-                        System.out.println("message " + message);
                     }
                 }
                 try {
