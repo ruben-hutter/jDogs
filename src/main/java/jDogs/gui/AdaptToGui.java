@@ -10,12 +10,15 @@ public class AdaptToGui {
     private FieldOnBoard[][] fieldsOnHeaven;
     private FieldOnBoard[][] fieldsOnHome;
     private final int NUM_PIECES = 4;
+    private final int BOARD_SIZE = 4;
 
     private static AdaptToGui instance;
 
-    public AdaptToGui(int boardSize) {
-        this.boardSize = boardSize;
+    public AdaptToGui() {
+
+        this.boardSize = BOARD_SIZE;
        createFieldsOnTrack(boardSize);
+       createFieldsOnHeaven(boardSize);
        instance = this;
     }
 
@@ -85,8 +88,8 @@ public class AdaptToGui {
 
            case 4:
                fieldsOnHeaven = new FieldOnBoard[boardSize][NUM_PIECES];
-
-               for (int i = 0; i < boardSize * 16; i++) {
+               int count = 0;
+               while (count < boardSize) {
                    /**
                     * order: 2/2 is startingPos 0
                     *       2/17 is startingPos 16
@@ -98,32 +101,43 @@ public class AdaptToGui {
                    int startY = 2;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
-                       fieldsOnHeaven[i][j] = new FieldOnBoard(startX + 1,startY + 1);
+                       fieldsOnHeaven[count][j] = new FieldOnBoard(++startX,++startY);
+                       System.out.println("startx " + startX + " startY " + startY);
+
                    }
+                   count++;
 
                    // from 2/17 -> +1/-1
                    startX = 2;
                    startY = 17;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
-                       fieldsOnHeaven[i][j] = new FieldOnBoard(startX + 1,startY - 1);
-                   }
+                       fieldsOnHeaven[count][j] = new FieldOnBoard(++startX,--startY);
+                       System.out.println("startx " + startX + " startY " + startY);
 
+                   }
+                   count++;
                    // from 17/17 -> -1/-1
                    startX = 17;
                    startY = 17;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
-                       fieldsOnHeaven[i][j] = new FieldOnBoard(startX - 1,startY - 1);
+                       fieldsOnHeaven[count][j] = new FieldOnBoard(--startX,--startY);
+                       System.out.println("startx " + startX + " startY " + startY);
+
                    }
+                   count++;
 
                    // from 17/2 -> -1/+1
                    startX = 17;
                    startY = 2;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
-                       fieldsOnHeaven[i][j] = new FieldOnBoard(startX - 1,startY + 1);
+                       fieldsOnHeaven[count][j] = new FieldOnBoard(--startX,++startY);
+                       System.out.println("startx " + startX + " startY " + startY);
+
                    }
+                   count++;
                }
                break;
 
@@ -136,8 +150,20 @@ public class AdaptToGui {
     }
 
     /**
-     *
-     * @param number the number on the gamestate
+     * get the heaven tile
+     * @param number number in order of players
+     *               e.g. "Johanna Ruben Gregor Joe" Johanna`s
+     *               heaven tiles are accessible with '0'
+     * @return heaven tile coordinates on gui of this player
+     */
+    public FieldOnBoard[] getHeavenField(int number) {
+        FieldOnBoard[] array = fieldsOnHeaven[number];
+        return array;
+    }
+
+    /**
+     * returns the track on the gui
+     * @param number the number of the field on the game state
      * @return the place in the gui(saved as FieldOnBoard)
      */
     public FieldOnBoard getTrack(int number) {
@@ -145,5 +171,13 @@ public class AdaptToGui {
            return null;
        }
        return fieldsOnTrack[number];
+    }
+
+    public static void main(String[] args) {
+        AdaptToGui adaptToGui = new AdaptToGui();
+        FieldOnBoard[] heavenArr = adaptToGui.getHeavenField(3);
+        for (FieldOnBoard fieldOnBoard : heavenArr) {
+            System.out.println("x val: " + fieldOnBoard.getX() + " y val: " + fieldOnBoard.getY());
+        }
     }
 }
