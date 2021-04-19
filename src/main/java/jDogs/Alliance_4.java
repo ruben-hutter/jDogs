@@ -25,4 +25,18 @@ public enum Alliance_4 {
     public int getStartingPosition() {
         return startingPosition;
     }
+
+    /**
+     * Give an alliance for a starting position
+     * @param startingPosition 0, 16, 32 or 48
+     * @return alliance
+     */
+    public Alliance_4 getAlliance(int startingPosition) {
+        for (Alliance_4 alliance4 : Alliance_4.values()) {
+            if (this.startingPosition == startingPosition) {
+                return alliance4;
+            }
+        }
+        return null;
+    }
 }
