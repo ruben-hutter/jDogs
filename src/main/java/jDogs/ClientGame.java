@@ -47,8 +47,7 @@ public class ClientGame {
     public void printGameState() {
         // prints out the player with the associated color and the actual board status
         for (Player player : players) {
-            System.out.println(players.length);
-            System.out.println(player);
+            System.out.print(player);
         }
         System.out.println(board);
 
@@ -104,7 +103,6 @@ public class ClientGame {
 
     public void setCards(String substring) {
         cards = getCardsArray(substring);
-
     }
 
     //String hand = number + " ACEE ACEE TENN TWOO EIGT NINE";

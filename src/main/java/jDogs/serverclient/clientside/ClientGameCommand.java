@@ -49,8 +49,7 @@ public class ClientGameCommand {
             case "ROUN":
                 //TODO received hand of cards display in Game GUI
                 clientGame.setCards(text.substring(5));
-                //TODO client game setCards()
-                //clientGame.setCards(text.substring(5));
+
                 break;
 
             case "CARD":
@@ -94,9 +93,11 @@ public class ClientGameCommand {
                                 Integer.parseInt(text.substring(10, 11)), text.substring(12));
                         break;
                 }
+                break;
 
             case "BORD":
                 clientGame.printGameState();
+                break;
         }
     }
 }

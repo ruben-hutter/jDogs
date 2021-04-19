@@ -84,6 +84,7 @@ public class GuiParser {
     public static String[] getArray(String activeUsers) {
         // activeUsers String contains at the first place: the number of nicknames in String
         // e.g. "3;Joe;Jonas;John"
+
         String[] array = new String[activeUsers.charAt(0) - 48];
         int arrayCount = 0;
         int first = 2;
@@ -94,7 +95,7 @@ public class GuiParser {
                 first = i + 1;
             }
         }
-        array[arrayCount] = activeUsers.substring(first);
+        array[arrayCount - 1] = activeUsers.substring(first);
         return array;
     }
 

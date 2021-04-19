@@ -37,10 +37,6 @@ public enum ClientMenuProtocol {
      */
     WCHT,
     /**
-     * Receive a public lobby chat
-     */
-    LCHT,
-    /**
      * Information that client received a message from a separate lobby he joins.
      */
     LCHT,

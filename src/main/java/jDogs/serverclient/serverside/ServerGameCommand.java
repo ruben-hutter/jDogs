@@ -94,6 +94,7 @@ public class ServerGameCommand {
                                     toCheckMove); // TODO difference between mod 0 and 1 (teams or not)
                             break;
                         case "JACK":
+                            //TODO convert to ACE
                             checkMoveJack(toCheckMove);
                             break;
                         default:
@@ -375,79 +376,83 @@ public class ServerGameCommand {
      * @param twoPieces pieces to switch position
      */
     private void checkMoveJack(String twoPieces) { // JACK YELO-1 BLUE-2
-        if (twoPieces.length() == 23) {
-            String ownAlliance = twoPieces.substring(5, 9);
-            int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
-            String ownActualPosition1 = "";
-            int ownActualPosition2 = -1;
-            Player ownPlayer = null;
-            boolean ownHasMoved = false;
-            Alliance_4 ownAlliance4;
+        try {
+            if (twoPieces.length() == 23) {
+                String ownAlliance = twoPieces.substring(5, 9);
+                int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
+                String ownActualPosition1 = "";
+                int ownActualPosition2 = -1;
+                Player ownPlayer = null;
+                boolean ownHasMoved = false;
+                Alliance_4 ownAlliance4;
 
-            String otherAlliance = twoPieces.substring(12, 16);
-            int otherPieceID = Integer.parseInt(twoPieces.substring(17));
-            String otherActualPosition1 = "";
-            int otherActualPosition2 = -1;
-            boolean otherHasMoved = false;
-            int otherStartingPosition = -1;
-            Player otherPlayer = null;
-            Alliance_4 otherAlliance4;
+                String otherAlliance = twoPieces.substring(12, 16);
+                int otherPieceID = Integer.parseInt(twoPieces.substring(17));
+                String otherActualPosition1 = "";
+                int otherActualPosition2 = -1;
+                boolean otherHasMoved = false;
+                int otherStartingPosition = -1;
+                Player otherPlayer = null;
+                Alliance_4 otherAlliance4;
 
-            ownAlliance4 = convertAlliance(ownAlliance);
+                ownAlliance4 = convertAlliance(ownAlliance);
 
-            for (Player player : gameState.getPlayersState()) {
-                if (player.getAlliance() == ownAlliance4) {
-                    ownPlayer = player;
-                    ownActualPosition1 = player.receivePosition1Server(ownPieceID);
-                    ownActualPosition2 = player.receivePosition2Server(ownPieceID);
-                    ownHasMoved = player.receiveHasMoved(ownPieceID);
-                }
-            }
-
-            // TODO if playing in teamMode
-            if (ownPlayer != gameFile.getPlayer(nickname)) {
-                sendToThisClient.enqueue("INFO you cannot move this color");
-                return;
-            }
-
-            otherAlliance4 = convertAlliance(otherAlliance);
-
-            for (Player player : gameState.getPlayersState()) {
-                if (player.getAlliance() == otherAlliance4) {
-                    otherPlayer = player;
-                    otherActualPosition1 = player.receivePosition1Server(otherPieceID);
-                    otherActualPosition2 = player.receivePosition2Server(otherPieceID);
-                    otherHasMoved = player.receiveHasMoved(otherPieceID);
-                    otherStartingPosition = player.getStartingPosition();
-                }
-            }
-
-            if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
-                    || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
-                    || (otherActualPosition1.equals("B")
-                    && otherActualPosition2 == otherStartingPosition
-                    && !otherHasMoved)) {
-                sendToThisClient.enqueue("INFO You can't switch this pieces!");
-            } else {
-                assert ownPlayer != null;
-                simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
-                assert otherPlayer != null;
-                simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
-
-                // remove block if piece moves for first time on track
-                if (!ownHasMoved && ownActualPosition1.equals("B") && otherActualPosition1.equals("B")) {
-                    ownPlayer.getPiece(ownPieceID).changeHasMoved();
+                for (Player player : gameState.getPlayersState()) {
+                    if (player.getAlliance() == ownAlliance4) {
+                        ownPlayer = player;
+                        ownActualPosition1 = player.receivePosition1Server(ownPieceID);
+                        ownActualPosition2 = player.receivePosition2Server(ownPieceID);
+                        ownHasMoved = player.receiveHasMoved(ownPieceID);
+                    }
                 }
 
-                gameFile.sendMessageToParticipants("BORD");
-                //eliminate card
-                gameState.getCards().get(nickname).remove(cardToEliminate);
-                gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-                gameFile.sendMessageToParticipants("HAND");
+                // TODO if playing in teamMode
+                if (ownPlayer != gameFile.getPlayer(nickname)) {
+                    sendToThisClient.enqueue("INFO you cannot move this color");
+                    return;
+                }
 
-                cardToEliminate = null;
-                mainGame.turnComplete(nickname);
+                otherAlliance4 = convertAlliance(otherAlliance);
+
+                for (Player player : gameState.getPlayersState()) {
+                    if (player.getAlliance() == otherAlliance4) {
+                        otherPlayer = player;
+                        otherActualPosition1 = player.receivePosition1Server(otherPieceID);
+                        otherActualPosition2 = player.receivePosition2Server(otherPieceID);
+                        otherHasMoved = player.receiveHasMoved(otherPieceID);
+                        otherStartingPosition = player.getStartingPosition();
+                    }
+                }
+
+                if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
+                        || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
+                        || (otherActualPosition1.equals("B")
+                        && otherActualPosition2 == otherStartingPosition
+                        && !otherHasMoved)) {
+                    sendToThisClient.enqueue("INFO You can't switch this pieces!");
+                } else {
+                    assert ownPlayer != null;
+                    simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
+                    assert otherPlayer != null;
+                    simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
+
+                    // remove block if piece moves for first time on track
+                    if (!ownHasMoved && ownActualPosition1.equals("B") && otherActualPosition1.equals("B")) {
+                        ownPlayer.getPiece(ownPieceID).changeHasMoved();
+                    }
+
+                    gameFile.sendMessageToParticipants("BORD");
+                    //eliminate card
+                    gameState.getCards().get(nickname).remove(cardToEliminate);
+                    gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                    gameFile.sendMessageToParticipants("HAND");
+
+                    cardToEliminate = null;
+                    mainGame.turnComplete(nickname);
+                }
             }
+        } catch (Exception e) {
+            sendToThisClient.enqueue("INFO wrong format for jack");
         }
     }
 
@@ -475,119 +480,127 @@ public class ServerGameCommand {
     }
 
     private void checkMoveSeven(String completeMove) { // SEVE 2 YELO-1 B20 GREN-2 C01
-        int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
-        int startIndex = 7;
-        int countToSeven = 0;
-        int moveValue;
-        ArrayList<Piece> piecesToEliminate = new ArrayList<>();
-        for (int i = 0; i < piecesToMove; i++) {
-            moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
-            if (moveValue < 0) {
-                sendToThisClient.enqueue("INFO At least one invalid destination or piece!");
-                return;
-            }
-            countToSeven += moveValue;
-            if (countToSeven > 7) {
-                sendToThisClient.enqueue("INFO You moved more than 7!");
-                return;
-            }
-            ArrayList<Piece> singleEliminations = piecesOnPath(completeMove.substring(startIndex,
-                    startIndex + 10));
-            if (singleEliminations == null) {
-                sendToThisClient.enqueue("INFO You can't jump over your pieces in heaven!");
-                return;
-            }
-            piecesToEliminate.addAll(singleEliminations);
-            startIndex += 11;
-        }
-        // TODO check block
-
-        if (countToSeven == 7) {
-            startIndex = 7;
-            Player player;
+        try {
+            int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
+            int startIndex = 7;
+            int countToSeven = 0;
+            int moveValue;
+            ArrayList<Piece> piecesToEliminate = new ArrayList<>();
             for (int i = 0; i < piecesToMove; i++) {
-                String move = completeMove.substring(startIndex, startIndex + 10);
-                // TODO change if teamMode on
-                player = gameFile.getPlayer(serverConnection.getNickname());
-                int pieceID = Integer.parseInt(move.substring(5, 6));
-                String newPosition1 = move.substring(7, 8);
-                int newPosition2 = Integer.parseInt(move.substring(8));
-                Piece piece = player.getPiece(pieceID);
-                simpleMove(player, pieceID, newPosition1, newPosition2);
-                // remove block if piece moves for first time on track
-                if (!piece.getHasMoved() && piece.getPositionServer1().equals("B")
-                        && newPosition1.equals("B")) {
-                    piece.changeHasMoved();
+                moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
+                if (moveValue < 0) {
+                    sendToThisClient.enqueue("INFO At least one invalid destination or piece!");
+                    return;
                 }
+                countToSeven += moveValue;
+                if (countToSeven > 7) {
+                    sendToThisClient.enqueue("INFO You moved more than 7!");
+                    return;
+                }
+                ArrayList<Piece> singleEliminations = piecesOnPath(completeMove.substring(startIndex,
+                        startIndex + 10));
+                if (singleEliminations == null) {
+                    sendToThisClient.enqueue("INFO You can't jump over your pieces in heaven!");
+                    return;
+                }
+                piecesToEliminate.addAll(singleEliminations);
                 startIndex += 11;
             }
-            for (Piece piece : piecesToEliminate) {
-                eliminatePiece(piece);
+            // TODO check block
+
+            if (countToSeven == 7) {
+                startIndex = 7;
+                Player player;
+                for (int i = 0; i < piecesToMove; i++) {
+                    String move = completeMove.substring(startIndex, startIndex + 10);
+                    // TODO change if teamMode on
+                    player = gameFile.getPlayer(serverConnection.getNickname());
+                    int pieceID = Integer.parseInt(move.substring(5, 6));
+                    String newPosition1 = move.substring(7, 8);
+                    int newPosition2 = Integer.parseInt(move.substring(8));
+                    Piece piece = player.getPiece(pieceID);
+                    simpleMove(player, pieceID, newPosition1, newPosition2);
+                    // remove block if piece moves for first time on track
+                    if (!piece.getHasMoved() && piece.getPositionServer1().equals("B")
+                            && newPosition1.equals("B")) {
+                        piece.changeHasMoved();
+                    }
+                    startIndex += 11;
+                }
+                for (Piece piece : piecesToEliminate) {
+                    eliminatePiece(piece);
+                }
             }
+
+            gameFile.sendMessageToParticipants("BORD");
+            //eliminate card
+            gameState.getCards().get(nickname).remove(cardToEliminate);
+            gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+            gameFile.sendMessageToParticipants("HAND");
+
+            cardToEliminate = null;
+            mainGame.turnComplete(nickname);
+        } catch (Exception e) {
+            sendToThisClient.enqueue("INFO wrong format for seven");
         }
-
-        gameFile.sendMessageToParticipants("BORD");
-        //eliminate card
-        gameState.getCards().get(nickname).remove(cardToEliminate);
-        gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-        gameFile.sendMessageToParticipants("HAND");
-
-        cardToEliminate = null;
-        mainGame.turnComplete(nickname);
     }
 
     private int checkSingleSeven(String move) { // YELO-1 B20
-        String alliance = move.substring(0, 4);
-        int pieceID = Integer.parseInt(move.substring(5, 6));
-        String newPosition1 = move.substring(7, 8);
-        int newPosition2 = Integer.parseInt(move.substring(8));
-        String actualPosition1 = "";
-        int actualPosition2 = -1;
-        boolean hasMoved = false;
-        int startingPosition = -1;
-        Player ownPlayer = null;
-        Alliance_4 alliance4;
+        try {
+            String alliance = move.substring(0, 4);
+            int pieceID = Integer.parseInt(move.substring(5, 6));
+            String newPosition1 = move.substring(7, 8);
+            int newPosition2 = Integer.parseInt(move.substring(8));
+            String actualPosition1 = "";
+            int actualPosition2 = -1;
+            boolean hasMoved = false;
+            int startingPosition = -1;
+            Player ownPlayer = null;
+            Alliance_4 alliance4;
 
-        alliance4 = convertAlliance(alliance);
+            alliance4 = convertAlliance(alliance);
 
-        for (Player player : players) {
-            if (player.getAlliance() == alliance4) {
-                logger.debug("Alliance Player: " + player.getAlliance());
-                ownPlayer = player;
-                actualPosition1 = player.receivePosition1Server(pieceID);
-                logger.debug("actual position1: " + actualPosition1);
-                actualPosition2 = player.receivePosition2Server(pieceID);
-                logger.debug("actual position2: " + actualPosition2);
-                hasMoved = player.receiveHasMoved(pieceID);
-                startingPosition = player.getStartingPosition();
+            for (Player player : players) {
+                if (player.getAlliance() == alliance4) {
+                    logger.debug("Alliance Player: " + player.getAlliance());
+                    ownPlayer = player;
+                    actualPosition1 = player.receivePosition1Server(pieceID);
+                    logger.debug("actual position1: " + actualPosition1);
+                    actualPosition2 = player.receivePosition2Server(pieceID);
+                    logger.debug("actual position2: " + actualPosition2);
+                    hasMoved = player.receiveHasMoved(pieceID);
+                    startingPosition = player.getStartingPosition();
+                }
             }
-        }
 
-        // TODO if teamMode
-        if (ownPlayer != gameFile.getPlayer(nickname)) {
-            return -1;
-        }
-
-        int difference;
-        if (actualPosition1.equals("B") && newPosition1.equals("B")
-                || (actualPosition1.equals("C") && newPosition1.equals("C"))) {
-            // track -> track or heaven -> heaven
-            difference = Math.floorMod(newPosition2 - actualPosition2, 64);
-            return difference;
-        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
-            // track -> heaven
-            if (!hasMoved) {
+            // TODO if teamMode
+            if (ownPlayer != gameFile.getPlayer(nickname)) {
                 return -1;
             }
-            difference = startingPosition - actualPosition2;
-            if (difference < 0) {
-                difference = difference + 64 + newPosition2 + 1;
-            } else {
-                difference = difference + newPosition2 + 1;
+
+            int difference;
+            if (actualPosition1.equals("B") && newPosition1.equals("B")
+                    || (actualPosition1.equals("C") && newPosition1.equals("C"))) {
+                // track -> track or heaven -> heaven
+                difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+                return difference;
+            } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+                // track -> heaven
+                if (!hasMoved) {
+                    return -1;
+                }
+                difference = startingPosition - actualPosition2;
+                if (difference < 0) {
+                    difference = difference + 64 + newPosition2 + 1;
+                } else {
+                    difference = difference + newPosition2 + 1;
+                }
+                return difference;
             }
-            return difference;
+            return -1;
+        } catch (Exception e) {
+            return -1;
         }
-        return -1;
     }
 
     private ArrayList<Piece> piecesOnPath(String move) {

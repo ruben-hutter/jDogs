@@ -103,6 +103,7 @@ public class ClientMenuCommand {
 
                 */
                 System.out.println("LCHT " + text.substring(5));
+                break;
 
             case "DPER":
 
@@ -139,8 +140,6 @@ public class ClientMenuCommand {
                         GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
 
                  */
-
-
                 break;
 
             case "DOGA":
@@ -155,6 +154,10 @@ public class ClientMenuCommand {
 
                 break;
 
+            case "STAT":
+                System.out.println(text.substring(5));
+                break;
+
 
             case "INFO":
     /*
@@ -165,16 +168,6 @@ public class ClientMenuCommand {
 
 
                 System.out.println("SRVRINFO: " + text.substring(5));
-                break;
-
-            case "STAR":
-    /*
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.startGameConfirmation());
-
-     */
-
-
                 break;
 
             default:

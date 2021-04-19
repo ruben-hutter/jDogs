@@ -39,12 +39,12 @@ public class ReceiveFromServer implements Runnable {
 
                     message = din.readUTF();
 
-
                     if (message.equalsIgnoreCase("ping")) {
                         //client.monitorMsg(System.currentTimeMillis());
                         //connectionToServerMonitor.sendSignal();
                     } else {
                         receiveQueue.enqueue(message);
+                        System.out.println("message " + message);
                     }
                 }
                 try {
