@@ -1,5 +1,4 @@
 package jDogs.serverclient.serverside;
-//this class represents information of pendent games(still in lobby) or ongoing games
 
 import jDogs.player.Player;
 import java.util.ArrayList;
@@ -93,6 +92,11 @@ public class GameFile {
         }
     }
 
+    /**
+     * orders the players arraylist by the the teamID
+     * so that afterwards it can be sorted in the right
+     * way to play the game
+     */
     private void orderByTeamId() {
         Collections.sort(players, Player.TeamIdComparator);
         System.out.println("NEW TEAM combination " + getParticipants());
@@ -108,6 +112,12 @@ public class GameFile {
         return null;
     }
 
+    /**
+     * parses the names it receives
+     * @param size of the array the method should create
+     * @param mess the names etc. it should parse
+     * @return a string array
+     */
     private String[] parseNames(int size, String mess) {
         String[] array = new String[size];
         int position = 0;
@@ -126,7 +136,10 @@ public class GameFile {
         return array;
     }
 
-
+    /**
+     * sends message only to participants of this game
+     * @param message for clients of this game
+     */
     public void sendMessageToParticipants(String message) {
         logger.debug("message for players of " + nameId + " : " + message);
         for (Player player : players) {
@@ -238,6 +251,11 @@ public class GameFile {
         return participants;
     }
 
+    /**
+     * method to send information to client
+     * @return String ready to send to client
+     * for some basic information about game
+     */
     public String getSendReady() {
         return nameId + " " + host + " " + numberParticipants + " " + total + " " + teamMode;
     }

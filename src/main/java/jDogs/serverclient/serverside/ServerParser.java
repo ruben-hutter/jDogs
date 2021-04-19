@@ -1,5 +1,9 @@
 package jDogs.serverclient.serverside;
 
+/**
+ * this class helps to parse informations sent from
+ * client to server and which needs to be parsed
+ */
 public class ServerParser {
 
     private Server server;
@@ -10,6 +14,11 @@ public class ServerParser {
         this.serverConnection = serverConnection;
     }
 
+    /**
+     * sets up a new open game
+     * @param gameSetup required information from server about new open game
+     * @return a gameFile in which most information about the game is saved
+     */
     public GameFile setUpGame(String gameSetup) {
 
         try {
@@ -62,6 +71,13 @@ public class ServerParser {
         }
     }
 
+    /**
+     * this method checks if the host is already in a game involved
+     * (but this method will be deprecated)
+     * @param host the one who opened this opengame
+     * @return true, if host is already in a game involved
+     */
+    //TODO delete method
     private boolean checkHost(String host) {
         for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
             if (server.allGamesNotFinished.get(i).getHost().equals(host)) {
@@ -71,7 +87,12 @@ public class ServerParser {
         return true;
     }
 
-
+    /**
+     *
+     * @param name name of the new open game
+     * @return modified name if name is already used
+     * or original name if not
+     */
     private String checkName(String name) {
         int problem = -1;
         for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
