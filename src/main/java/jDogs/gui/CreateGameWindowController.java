@@ -23,13 +23,20 @@ public class CreateGameWindowController {
     @FXML
     private Button cancelButton;
 
-
+    /**
+     * button to cancel game
+     * @param event fires if the cancel button is pressed
+     */
     @FXML
     void cancelButtonOnAction(ActionEvent event) {
         GUIManager.getInstance().lobbyController.closeGameDialog();
 
     }
 
+    /**
+     * button to create new game
+     * @param event fires if a new game gets created in this window
+     */
     @FXML
     void createButtonOnAction(ActionEvent event) {
         String teamMode = teamModeField.getText();

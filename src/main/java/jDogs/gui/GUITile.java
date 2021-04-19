@@ -1,5 +1,9 @@
 package jDogs.gui;
 
+/**
+ * this class is important to hold the relation between
+ * gui-2D fields and representation of game fiels
+ */
 public class GUITile {
 
     private FieldOnBoard field;

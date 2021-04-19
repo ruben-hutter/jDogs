@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+/**
+ * this class represents the login window
+ */
 public class LoginController {
 
     @FXML
@@ -16,12 +19,21 @@ public class LoginController {
     @FXML
     private Button cancelButton;
 
+    /**
+     * cancel the game
+     * @param event fires if clients cancels the game
+     */
     @FXML
     void cancelButtonOnAction(ActionEvent event) {
         //Shutdown
         System.exit(-1);
     }
 
+    /**
+     * send a nickname to gui
+     * @param event fires if a name
+     *             with length > 3 is typed in
+     */
     @FXML
     void loginButtonOnAction(ActionEvent event) {
         String nickname;

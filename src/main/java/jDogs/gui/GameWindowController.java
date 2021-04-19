@@ -19,6 +19,9 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 
+/**
+ * this class represents the gameWindow
+ */
 public class GameWindowController implements Initializable {
 
     @FXML
@@ -45,11 +48,19 @@ public class GameWindowController implements Initializable {
     @FXML
     private Button sendButton;
 
+    /**
+     * this method receives a move to send to server
+     * @param event fires if a piece is moved
+     */
     @FXML
     void makeMoveButtonOnAction(ActionEvent event) {
 
     }
 
+    /**
+     * send message to server
+     * @param event fires if a message should be sent to server
+     */
     @FXML
     void sendButtonOnAction(ActionEvent event) {
 
@@ -93,6 +104,10 @@ public class GameWindowController implements Initializable {
 
     }
 
+    /**
+     * a method to update the gui board
+     * if updates arrive from server
+     */
     public void updateGUIBoard() {
 
     }

@@ -21,7 +21,7 @@ public enum ServerGameProtocol {
     PLAY,
     /**
      * Command to make a move.
-     * Parameters are: cardvalue, startposition, goalposition.
+     * Parameters are: cardvalue, piece-ID, goalposition.
      */
     MOVE,
     /**

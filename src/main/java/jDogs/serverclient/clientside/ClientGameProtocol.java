@@ -18,7 +18,7 @@ public enum ClientGameProtocol {
     EXIT,
     /**
      * Information about other player who made a move.
-     * Parameters are: cardvalue, startposition, goalposition.
+     * Parameters are: piece-ID, goalposition.
      */
     MOVE,
     /**

@@ -10,7 +10,11 @@ import java.sql.SQLOutput;
 
 public class GuiParser {
 
-    //returns openGames as OpenGameObjects
+    /**
+     * parses an opengame to display in gui
+     * @param message a string containing an opengame
+     * @return an opengame to display in gui
+     */
     public static OpenGame getOpenGame(String message) {
 
         int idSeparator = -1;
@@ -69,7 +73,11 @@ public class GuiParser {
         return new OpenGame(id,responsible,sum,needed,teamMode);
     }
 
-
+    /**
+     * checks if a message is sent in the right format and sends it to server
+     * @param message parse message to send as wcht message
+     * @return a string to send to server
+     */
     public static String sendWcht(String message) {
         for (int i = 0; i < message.length(); i++) {
             if (Character.isWhitespace(message.toCharArray()[i])) {
@@ -81,6 +89,12 @@ public class GuiParser {
         return null;
     }
 
+    /**
+     * a method to parse strings received in one long string
+     * @param activeUsers is an array sent from server to parse,
+     *                   usually contains usernames
+     * @return an Array with the Strings which were sent
+     */
     public static String[] getArray(String activeUsers) {
         // activeUsers String contains at the first place: the number of nicknames in String
         // e.g. "3;Joe;Jonas;John"
@@ -99,8 +113,4 @@ public class GuiParser {
         return array;
     }
 
-    public static void parseGameSetUp(String gameInfo) {
-
-
-    }
 }

@@ -3,6 +3,9 @@ package jDogs.gui;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Button;
 
+/**
+ * this class represents a player which is displayed in lobby window
+ */
 public class Participant {
 
     SimpleStringProperty player;
