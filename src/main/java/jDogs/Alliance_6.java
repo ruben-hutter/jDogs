@@ -1,5 +1,10 @@
 package jDogs;
 
+/**
+ * Saves the Piece Alliances (color)
+ * and the relative startingPosition on the Track
+ * with 6 players.
+ */
 public enum Alliance_6 {
 
     YELLOW(0),
@@ -15,6 +20,10 @@ public enum Alliance_6 {
         this.startingPosition = startingPosition;
     }
 
+    /**
+     * Returns the starting position for this alliance.
+     * @return 0, 16, 32, 48, 64 or 80
+     */
     public int getStartingPosition() {
         return startingPosition;
     }

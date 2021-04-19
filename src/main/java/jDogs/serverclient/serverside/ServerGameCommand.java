@@ -99,8 +99,8 @@ public class ServerGameCommand {
                                     toCheckMove); // TODO difference between mod 0 and 1 (teams or not)
                             break;
                         case "JACK":
-                            //TODO convert to ACE
-                            checkMoveJack(toCheckMove);
+                            checkMove(toCheckMove.replace("JACK", "ACE1"));
+                            //checkMoveJack(toCheckMove);
                             break;
                         default:
                             checkMove(toCheckMove);
