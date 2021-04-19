@@ -23,6 +23,7 @@ public class Token {
         fieldOnBoard = AdaptToGui.getInstance().getHomeField(alliance4.getStartingPosition(), pieceId);
     }
 
+
     public void setNewPosition(int newPosition, char type) {
         this.posType = type;
         this.position = newPosition;
