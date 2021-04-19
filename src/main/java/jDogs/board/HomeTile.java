@@ -2,6 +2,9 @@ package jDogs.board;
 
 import jDogs.Alliance_4;
 
+/**
+ * Element to create a complete home for player
+ */
 public class HomeTile extends Tile {
 
     Alliance_4 alliance4;

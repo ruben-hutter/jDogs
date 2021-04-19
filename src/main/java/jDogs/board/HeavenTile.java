@@ -2,6 +2,9 @@ package jDogs.board;
 
 import jDogs.Alliance_4;
 
+/**
+ * Element to create a complete heaven for player
+ */
 public class HeavenTile extends Tile {
 
     Alliance_4 alliance4;

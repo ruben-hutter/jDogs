@@ -100,7 +100,10 @@ public class ClientGame {
         }
     }
 
-
+    /**
+     * Sets the cards for the game
+     * @param substring the cards
+     */
     public void setCards(String substring) {
         cards = getCardsArray(substring);
     }
@@ -124,10 +127,18 @@ public class ClientGame {
         return arrayList;
     }
 
+    /**
+     * Sets the actual turn number
+     * @param i num between 6-2
+     */
     private void setTurnNumber(int i) {
         turnNumber = i;
     }
 
+    /**
+     * Remove a card from the hand
+     * @param card card to remove
+     */
     public void remove(String card) {
         cards.remove(card);
     }

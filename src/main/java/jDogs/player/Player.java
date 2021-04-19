@@ -23,6 +23,11 @@ public class Player {
     private int teamID;
     private boolean allowedToPlay;
 
+    /**
+     * Player instance for server
+     * @param playerName name of player
+     * @param serverConnection main server instance
+     */
     public Player(String playerName, ServerConnection serverConnection) {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
@@ -36,7 +41,6 @@ public class Player {
      * @param alliance4 alliance of player
      * @param board created board for client
      */
-
     public Player(String playerName, Alliance_4 alliance4, Board board) {
         this.playerName = playerName;
         this.alliance4 = alliance4;
@@ -46,6 +50,10 @@ public class Player {
         setPiecesOnHome();
     }
 
+    /**
+     * Sets a new player for the server side
+     * @param alliance4 the alliance for the new player
+     */
     public void setUpPlayerOnServer(Alliance_4 alliance4) {
         this.alliance4 = alliance4;
         startingPosition = alliance4.getStartingPosition();
@@ -55,13 +63,14 @@ public class Player {
         }
     }
 
-    public static Comparator<Player> TeamIdComparator = new Comparator<Player>() {
-        @Override
-        public int compare(Player player1, Player player2) {
-            int teamIdPlayer1 = player1.getTeamID();
-            int teamIdPlayer2 = player2.getTeamID();
-            return teamIdPlayer1 - teamIdPlayer2;
-        }
+    /**
+     * Checks if two players are in the same team
+     * if playing in teamMode.
+     */
+    public static Comparator<Player> TeamIdComparator = (player1, player2) -> {
+        int teamIdPlayer1 = player1.getTeamID();
+        int teamIdPlayer2 = player2.getTeamID();
+        return teamIdPlayer1 - teamIdPlayer2;
     };
 
     /**
@@ -86,18 +95,36 @@ public class Player {
         }
     }
 
+    /**
+     * Gets the nickname of the player.
+     * @return a String
+     */
     public String getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Gets the piece alliance
+     * @return YELLOW, GREEN, BLUE or RED
+     */
     public Alliance_4 getAlliance() {
         return alliance4;
     }
 
+    /**
+     * Gives if a piece as been moved size it
+     * was placed on the track.
+     * @param pieceID num between 1-4
+     * @return true if it has moved
+     */
     public boolean receiveHasMoved(int pieceID) {
         return getPiece(pieceID).getHasMoved();
     }
 
+    /**
+     * Gets starting position (saved in alliance)
+     * @return 0, 16, 32 or 48
+     */
     public int getStartingPosition() {
         return startingPosition;
     }
@@ -142,23 +169,42 @@ public class Player {
         pieceToMove.setPositionServer(newPosition1, newPosition2);
     }
 
+    /**
+     * Gives the first part of the position
+     * for the server side
+     * @param pieceID int between 1-4
+     * @return A, B or C
+     */
     public String receivePosition1Server(int pieceID) {
         return pieces[pieceID - 1].getPositionServer1();
     }
 
+    /**
+     * Gives the second part of the position
+     * for the server side
+     * @param pieceID int between 1-4
+     * @return int between 0-3 or 0-63
+     */
     public int receivePosition2Server(int pieceID) {
         return pieces[pieceID - 1].getPositionServer2();
     }
 
+    /**
+     * Sets on the player the teamID if
+     * player mode is teamMode
+     * @param newID 0 or 1
+     */
     public void setTeamID(int newID) {
-
         teamID = newID;
     }
 
+    /**
+     * Returns the teamID
+     * @return 0 or 1
+     */
     public int getTeamID() {
         return teamID;
     }
-
 
     /**
      *
@@ -168,27 +214,39 @@ public class Player {
         this.serverConnection.getSender().sendStringToClient(message);
     }
 
-    @Override
-    public String toString() {
-        return getPlayerName() + ": " + getAlliance();
-    }
-
+    /**
+     * Returns the connection instance to the server
+     * @return a ServerConnection
+     */
     public ServerConnection getServerConnection() {
         return serverConnection;
     }
 
     /**
-     * excludes player from game till this round finished
+     * Excludes player from game till this round finished
      */
     public void excludeForRound() {
         this.allowedToPlay = false;
     }
 
+    /**
+     * Returns if the player is or not allowed to play
+     * @return true if allowed
+     */
     public boolean isAllowedToPlay() {
         return this.allowedToPlay;
     }
 
+    /**
+     * Changes the allowedToPlay value to the given one.
+     * @param val true or false
+     */
     public void setAllowedToPlay(boolean val) {
         this.allowedToPlay = val;
+    }
+
+    @Override
+    public String toString() {
+        return getPlayerName() + ": " + getAlliance();
     }
 }
