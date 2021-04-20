@@ -1,6 +1,7 @@
 package jDogs.gui;
 
 import jDogs.Alliance_4;
+import javafx.scene.shape.Circle;
 
 /**
  * this class represents a piece in the gui
@@ -14,7 +15,13 @@ public class Token {
    private int orderNumber;
    private int position;
    private FieldOnBoard fieldOnBoard;
+    private int oldPos;
+    private char oldType;
+    private FieldOnBoard oldFieldOnBoard;
+    private Circle circle;
+    private ColorTokens colorToken;
 
+    //tokens = createCircles();
     public Token(Alliance_4 alliance4, String playerName, int pieceId) {
         this.alliance4 = alliance4;
         this.playerName = playerName;
@@ -22,11 +29,17 @@ public class Token {
         this.pieceId = pieceId;
         this.posType = 'A';
         this.position = -1;
+        //this.colorToken = ColorTokens(alliance4).getColor;
         this.fieldOnBoard = AdaptToGui.getInstance().getHomeField(alliance4.getStartingPosition(), pieceId);
+        //this.circle = new Circle(10, colorToken(alliance4).getColor());
     }
 
 
+
     public void setNewPosition(int newPosition, char type) {
+        this.oldPos = this.position;
+        this.oldType = this.posType;
+        this.oldFieldOnBoard = fieldOnBoard;
         this.posType = type;
         this.position = newPosition;
 
@@ -50,4 +63,11 @@ public class Token {
 
     }
 
+    public FieldOnBoard getOldField() {
+        return oldFieldOnBoard;
+    }
+
+    public FieldOnBoard getNewField() {
+        return fieldOnBoard;
+    }
 }

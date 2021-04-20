@@ -43,6 +43,7 @@ public class LoginController {
         } else {
             System.out.println(nickname);
             GUIManager.getInstance().goToLobby(nickname);
+            //GUIManager.getInstance().startGame();
 
             //LoginEventHandler.INSTANCE.loggedIn(nickname);
         }

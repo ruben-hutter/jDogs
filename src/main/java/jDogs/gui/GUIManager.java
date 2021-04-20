@@ -49,6 +49,7 @@ public class GUIManager extends Application {
         this.primaryStage = primaryStage;
 
         setLoginScene();
+
     }
 
     /**
@@ -84,6 +85,8 @@ public class GUIManager extends Application {
         primaryStage.setOnCloseRequest(e-> System.exit(-1));
 
         primaryStage.show();
+
+
 
     }
 

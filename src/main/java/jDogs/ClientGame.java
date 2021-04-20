@@ -1,6 +1,8 @@
 package jDogs;
 
 import jDogs.board.Board;
+import jDogs.gui.GUIManager;
+import jDogs.gui.Token;
 import jDogs.player.Player;
 import java.util.ArrayList;
 
@@ -14,14 +16,43 @@ public class ClientGame {
     private Player[] players;
     private int turnNumber;
     private ArrayList<String> cards;
+    private Token[][] guiTokens;
+    private static ClientGame instance;
 
     public ClientGame(String[] playerNames) {
         numPlayers = playerNames.length;
         createGame(playerNames);
+        guiTokens = setGuiTokens();
+        instance = this;
 
         for (int i = 0; i < playerNames.length; i++) {
             System.out.println(playerNames[i]);
         }
+    }
+
+    public static ClientGame getInstance() {
+        return instance;
+    }
+
+    /**
+     * sets a double array with all tokens used on the board
+     * it uses the player array to feed the
+     * double array with information
+     * @return token double array
+     */
+    private Token[][] setGuiTokens() {
+        Token [][] newGuiTokens = new Token[numPlayers][Board.NUM_HOME_TILES];
+        for(int i = 0; i < numPlayers; i++) {
+
+            for (int j = 0; j < Board.NUM_HOME_TILES; j++) {
+                newGuiTokens[i][j] = new Token(players[i].getAlliance(),players[i].getPlayerName(),j);
+            }
+        }
+        return newGuiTokens;
+    }
+
+    public Token[][] getGuiTokens() {
+        return guiTokens;
     }
 
     /**
@@ -83,19 +114,22 @@ public class ClientGame {
      * @param newPosition where to put the piece
      */
     public void changePiecePosition(Player player, int pieceID, String newPosition) {
-
+        int newPos = Integer.parseInt(newPosition.substring(1));
         switch(newPosition.substring(0, 1)) {
             case "A":
                 player.changePositionClient(pieceID, board.allHomeTiles.
                         get(player.getAlliance())[pieceID - 1]);
+                guiTokens[player.startingPosition/16][pieceID - 1].setNewPosition(newPos, 'A');
                 break;
             case "B":
-                player.changePositionClient(pieceID, board.allTrackTiles[Integer
-                        .parseInt(newPosition.substring(1))]);
+                player.changePositionClient(pieceID, board.allTrackTiles[newPos]);
+                guiTokens[player.startingPosition/16][pieceID - 1].setNewPosition(newPos, 'B');
                 break;
             case "C":
                 player.changePositionClient(pieceID, board.allHeavenTiles.
-                        get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
+                        get(player.getAlliance())[newPos]);
+                guiTokens[player.startingPosition/16][pieceID - 1].setNewPosition(newPos, 'C');
+                GUIManager.getInstance().gameWindowController.updateToken(player.startingPosition/16,pieceID - 1);
                 break;
         }
     }
@@ -142,4 +176,10 @@ public class ClientGame {
     public void remove(String card) {
         cards.remove(card);
     }
+
+    public int getNumPlayers() {
+        return players.length;
+    }
+
+
 }
