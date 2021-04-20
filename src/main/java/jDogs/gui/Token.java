@@ -7,6 +7,7 @@ import jDogs.Alliance_4;
  */
 public class Token {
 
+    private final int pieceId;
     private char posType;
     private Alliance_4 alliance4;
    private String playerName;
@@ -18,9 +19,10 @@ public class Token {
         this.alliance4 = alliance4;
         this.playerName = playerName;
         this.orderNumber = orderNumber;
+        this.pieceId = pieceId;
         this.posType = 'A';
         this.position = -1;
-        fieldOnBoard = AdaptToGui.getInstance().getHomeField(alliance4.getStartingPosition(), pieceId);
+        this.fieldOnBoard = AdaptToGui.getInstance().getHomeField(alliance4.getStartingPosition(), pieceId);
     }
 
 
@@ -31,14 +33,17 @@ public class Token {
         switch (type) {
             case 'A':
                 //get heaven field on board here
+                this.fieldOnBoard = AdaptToGui.getInstance().getHomeField(alliance4.getStartingPosition(), pieceId);
+                this.position = -1;
                 break;
 
             case 'B':
                 // get track field on board here and set it there
+                this.fieldOnBoard = AdaptToGui.getInstance().getTrack(newPosition);
                 break;
 
             case 'C':
-
+                this.fieldOnBoard = AdaptToGui.getInstance().getHeavenField(alliance4.getStartingPosition()/16)[newPosition];
                 break;
 
         }
