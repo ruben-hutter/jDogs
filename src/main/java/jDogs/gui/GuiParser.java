@@ -105,6 +105,7 @@ public class GuiParser {
         for (int i = 2; i < activeUsers.length(); i++) {
             if(activeUsers.charAt(i) == ' ') {
                 array[arrayCount] = activeUsers.substring(first,i);
+                System.out.println("name gui parser " + array[arrayCount]);
                 arrayCount++;
                 first = i + 1;
             }
@@ -112,5 +113,4 @@ public class GuiParser {
         array[arrayCount - 1] = activeUsers.substring(first);
         return array;
     }
-
 }
