@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import jDogs.Alliance_4;
 import javafx.scene.paint.Color;
 
 /**
@@ -18,5 +19,23 @@ public enum ColorTokens {
 
     public Color getColor() {
         return color;
+    }
+
+    public Color getAllianceColor(Alliance_4 alliance4) {
+        switch (alliance4) {
+
+            case YELLOW:
+                return Color.YELLOW;
+
+            case GREEN:
+                return Color.GREEN;
+
+            case BLUE:
+                return Color.BLUE;
+
+            case RED:
+                return Color.RED;
+        }
+        return null;
     }
 }

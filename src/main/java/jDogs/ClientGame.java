@@ -17,12 +17,13 @@ public class ClientGame {
     private int turnNumber;
     private ArrayList<String> cards;
     private Token[][] guiTokens;
+    private String[] playerNames;
     private static ClientGame instance;
 
     public ClientGame(String[] playerNames) {
+        this.playerNames = playerNames;
         numPlayers = playerNames.length;
         createGame(playerNames);
-        guiTokens = setGuiTokens();
         instance = this;
 
         for (int i = 0; i < playerNames.length; i++) {
@@ -34,26 +35,6 @@ public class ClientGame {
         return instance;
     }
 
-    /**
-     * sets a double array with all tokens used on the board
-     * it uses the player array to feed the
-     * double array with information
-     * @return token double array
-     */
-    private Token[][] setGuiTokens() {
-        Token [][] newGuiTokens = new Token[numPlayers][Board.NUM_HOME_TILES];
-        for(int i = 0; i < numPlayers; i++) {
-
-            for (int j = 0; j < Board.NUM_HOME_TILES; j++) {
-                newGuiTokens[i][j] = new Token(players[i].getAlliance(),players[i].getPlayerName(),j);
-            }
-        }
-        return newGuiTokens;
-    }
-
-    public Token[][] getGuiTokens() {
-        return guiTokens;
-    }
 
     /**
      * Creates a game for the given players
@@ -182,4 +163,7 @@ public class ClientGame {
     }
 
 
+    public String[] getPlayerNames() {
+        return playerNames;
+    }
 }

@@ -1,6 +1,7 @@
 package jDogs.gui;
 
 import com.sun.javafx.scene.paint.GradientUtils.Point;
+import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.board.Board;
 import java.net.URL;
@@ -30,7 +31,7 @@ import javafx.util.Duration;
  */
 public class GameWindowController implements Initializable {
 
-    Circle[][] tokens;
+    Token[][] tokens;
 
     private static final int CIRCLE_RADIUS = 10;
     @FXML
@@ -132,6 +133,21 @@ public class GameWindowController implements Initializable {
         }
     }
 
+
+    }
+
+    private void createTokens() {
+        tokens = new Token[ClientGame.getInstance().getNumPlayers()][Board.NUM_HOME_TILES];
+        int count = 0;
+
+        for (Alliance_4 alliance4 : Alliance_4.values()) {
+
+            for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
+                tokens[count][i] = new Token(alliance4,ClientGame.getInstance().getPlayerNames()[count],i);
+            }
+            count++;
+        }
+
     }
 /*
     private Token[][] createCircles() {
@@ -159,12 +175,11 @@ public class GameWindowController implements Initializable {
     }
 
     public void updateToken(int arrayLevel, int pieceId) {
-       FieldOnBoard oldFieldOnBoard = ClientGame.getInstance().getGuiTokens()[arrayLevel][pieceId].getOldField();
-       FieldOnBoard newFieldOnBoard = ClientGame.getInstance().getGuiTokens()[arrayLevel][pieceId].getNewField();
+
 
        //get right token on board -> create array
         // move tokens with polyline from one field to another
-       paneForGrid.getChildren().remove(oldFieldOnBoard.getX(),oldFieldOnBoard.getY());
+     //  paneForGrid.getChildren().remove(oldFieldOnBoard.getX(),oldFieldOnBoard.getY());
 
     }
 }

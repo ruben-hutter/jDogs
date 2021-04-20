@@ -21,17 +21,14 @@ public class Token {
     private Circle circle;
     private ColorTokens colorToken;
 
-    //tokens = createCircles();
     public Token(Alliance_4 alliance4, String playerName, int pieceId) {
-        this.alliance4 = alliance4;
         this.playerName = playerName;
         this.orderNumber = orderNumber;
         this.pieceId = pieceId;
         this.posType = 'A';
         this.position = -1;
-        //this.colorToken = ColorTokens(alliance4).getColor;
         this.fieldOnBoard = AdaptToGui.getInstance().getHomeField(alliance4.getStartingPosition(), pieceId);
-        //this.circle = new Circle(10, colorToken(alliance4).getColor());
+        this.circle = new Circle(10, colorToken.getColor());
     }
 
 
