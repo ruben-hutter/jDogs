@@ -69,6 +69,9 @@ public class GameWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        int boardSize = GUIManager.getInstance().getBoardSize();
+
+
         GridPane gridPane = new GridPane();
         gridPane.addRow(18);
         gridPane.addColumn(18);

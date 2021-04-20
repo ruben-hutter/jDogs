@@ -1,6 +1,7 @@
 package jDogs.gui;
 
 
+import jDogs.ClientGame;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
