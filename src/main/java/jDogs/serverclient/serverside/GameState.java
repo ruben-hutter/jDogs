@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Saves the state of the game and update it during the game
+ */
 public class GameState {
 
     private Map<String, ArrayList<String>> cards = new HashMap<>();
@@ -21,6 +24,9 @@ public class GameState {
         this.piecesOnTrack = new ArrayList<>();
     }
 
+    /**
+     * Creates the players for the game
+     */
     public void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
@@ -29,7 +35,6 @@ public class GameState {
             counter++;
         }
     }
-
 
 
     public ArrayList<Piece> getSortedPiecesOnTrack() {

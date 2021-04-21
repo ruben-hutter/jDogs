@@ -264,6 +264,15 @@ Am Freitag, Samstag und Sonntag stellten wir das Spiel fertig für den Meilenste
 
 ---
 
+*20.04.2021, Johanna*
+
+### Protokoll#14 - Protokoll
+
+Heute bereiteten wir die Präsentation vor. Wir gingen die einzelnen Punkte durch (About A Game, Demo, Progress Report, QA, Rules To Code, Technology) und gestalteten die passenden Folien dazu. Zudem überlegten wir uns einen Zeitplan für die Präsentation. Um für die morgige Übungsstunde vorbereitet zu sein, testeten wir, ob JDogs auch über Hamachi spielbar ist. 
+
+**Nächstes Treffen:** Mittwoch, 21.04.21, 09:45 Uhr. 
+
+
 
 
 
