@@ -37,8 +37,8 @@ public class MainGame {
 
         for (Player player : players) {
             player.getServerConnection().getMessageHandlerServer().setPlaying(true, this);
-            player.getServerConnection().getSender().sendStringToClient("GAME " + gameFile.getNumberOfParticipants() + " "
-                    + gameFile.getParticipants());
+            player.getServerConnection().getSender().sendStringToClient("GAME "
+                    + gameFile.getNumberOfParticipants() + " " + gameFile.getParticipants());
             logger.debug("Player   ServerConnection " + player.getServerConnection());
         }
     }

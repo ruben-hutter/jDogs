@@ -237,12 +237,11 @@ public class ServerGameCommand {
                 return;
             }
 
-            /*
+            // if move passes an occupied starting position, and that piece haven't moved
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2, ownPlayer)) {
                 sendToThisClient.enqueue("INFO Someone blocks you");
                 return;
             }
-             */
 
             // check if there is a piece on destination
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {

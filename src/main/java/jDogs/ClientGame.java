@@ -18,10 +18,6 @@ public class ClientGame {
     public ClientGame(String[] playerNames) {
         numPlayers = playerNames.length;
         createGame(playerNames);
-
-        for (int i = 0; i < playerNames.length; i++) {
-            System.out.println(playerNames[i]);
-        }
     }
 
     /**
@@ -47,7 +43,7 @@ public class ClientGame {
     public void printGameState() {
         // prints out the player with the associated color and the actual board status
         for (Player player : players) {
-            System.out.print(player);
+            System.out.println(player);
         }
         System.out.println(board);
 
@@ -57,6 +53,7 @@ public class ClientGame {
      * prints the cards the player holds
      */
     public void printCards() {
+        System.out.print("Your cards: ");
         for (String card : cards) {
             System.out.print(card + " ");
         }
