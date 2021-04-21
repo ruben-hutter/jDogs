@@ -246,7 +246,7 @@ public class GameFile {
             participants += " " + "\n";
         }
         participants += players.get(players.size() - 1).getPlayerName();
-        logger.debug("Participants: " + participants);
+        //logger.debug("Participants: " + participants);
 
         return participants;
     }
