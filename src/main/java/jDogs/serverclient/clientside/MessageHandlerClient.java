@@ -34,7 +34,6 @@ public class MessageHandlerClient implements Runnable{
         this.clientGameCommand = new ClientGameCommand(client, sendFromClient,sendQueue,keyBoardInQueue);
 
     }
-
     @Override
     public void run() {
         String reply;
