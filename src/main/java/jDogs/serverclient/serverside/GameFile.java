@@ -239,16 +239,15 @@ public class GameFile {
 
     public String getParticipants() {
 
-        String participants = "";
+        StringBuilder participants = new StringBuilder();
 
         for (Player player : players) {
-            participants += player.getPlayerName() + "\n";
-            participants += " " + "\n";
+            participants.append(player.getPlayerName()).append(" ");
         }
-        participants += players.get(players.size() - 1).getPlayerName();
+        participants.append(players.get(players.size() - 1).getPlayerName());
         logger.debug("Participants: " + participants);
 
-        return participants;
+        return participants.toString();
     }
 
     /**

@@ -24,6 +24,8 @@ public class GameState {
         this.piecesOnTrack = new ArrayList<>();
     }
 
+    // TODO check if player has 4 in heaven, end game
+
     /**
      * Creates the players for the game
      */
