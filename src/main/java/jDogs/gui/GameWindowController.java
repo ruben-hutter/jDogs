@@ -5,6 +5,7 @@ import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.board.Board;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
@@ -30,8 +31,8 @@ import javafx.util.Duration;
  * this class represents the gameWindow
  */
 public class GameWindowController implements Initializable {
-
-    Token[][] tokens;
+    @FXML
+    Color[] colorsForPieces;
 
     private static final int CIRCLE_RADIUS = 10;
     @FXML
@@ -60,6 +61,8 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private GridPane gridPane;
+    @FXML
+    private Circle[][] circlePieces;
 
     /**
      * this method receives a move to send to server
@@ -83,8 +86,10 @@ public class GameWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //int boardSize = GUIManager.getInstance().getBoardSize();
+        //circlePieces = createCircles();
 
-
+        ArrayList<Circle> circles =  new ArrayList<>();
+        //set up gridPane
         gridPane = new GridPane();
         gridPane.addRow(18);
         gridPane.addColumn(18);
@@ -110,7 +115,7 @@ public class GameWindowController implements Initializable {
         gridPane.add(circle8, 10, 10);
 
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setNode(circle8);
+        pathTransition.setNode(circle1);
         pathTransition.setDuration(Duration.seconds(3));
         pathTransition.setPath(new Circle(30));
         pathTransition.setCycleCount(1);
@@ -132,22 +137,19 @@ public class GameWindowController implements Initializable {
             gridPane.getChildren().remove(circle1);
         }
     }
-
-
     }
+    @FXML
+    private Circle[][] createCircles() {
 
-    private void createTokens() {
-        tokens = new Token[ClientGame.getInstance().getNumPlayers()][Board.NUM_HOME_TILES];
+        Circle[][] newCircles = new Circle[ClientGame.getInstance().getNumPlayers()][Board.NUM_HOME_TILES];
         int count = 0;
-
-        for (Alliance_4 alliance4 : Alliance_4.values()) {
-
+        for (ColorTokens colorToken : ColorTokens.values()) {
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
-                tokens[count][i] = new Token(alliance4,ClientGame.getInstance().getPlayerNames()[count],i);
+                newCircles[count][i] =new Circle(10, colorToken.getColor());
             }
             count++;
         }
-
+        return newCircles;
     }
 /*
     private Token[][] createCircles() {
