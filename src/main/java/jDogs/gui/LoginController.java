@@ -44,7 +44,6 @@ public class LoginController {
             System.out.println(nickname);
             GUIManager.getInstance().goToLobby(nickname);
 
-            //LoginEventHandler.INSTANCE.loggedIn(nickname);
         }
 
     }

@@ -51,11 +51,11 @@ public class ClientMenuCommand {
                     name = text.substring(5);
                     client.setNickname(name);
                     sendFromClient.keyBoardInBlocked = false;
-/*
+
                     Platform.runLater(() -> GUIManager.getInstance().lobbyController.
                             displayInfomsg("INFO from server. Your new nick is " + name));
 
- */
+
                     System.out.println("your new nick is " + name);
 
                 }
@@ -63,21 +63,21 @@ public class ClientMenuCommand {
 
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
-/*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
 
- */
+
 
                 break;
 
             case "WCHT":
                 System.out.println("WCHT: " + text.substring(5));
 
-              /*  Platform.runLater(()->
+                Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
 
-               */
+
 
                 break;
             case "LPUB":
@@ -85,10 +85,10 @@ public class ClientMenuCommand {
                 //just compare to existing String/Array and replace if necessary
 
 
-               /* Platform.runLater(()->
+               Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPlayerinPublic(text.substring(5)));
 
-                */
+
 
 
 
@@ -97,20 +97,19 @@ public class ClientMenuCommand {
                 break;
 
             case "LCHT":
-               /*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLCHTmsg(text.substring(5)));
 
-                */
                 System.out.println("LCHT " + text.substring(5));
                 break;
 
             case "DPER":
 
-                /*Platform.runLater(()->
+                Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePlayerinPublic(text.substring(5)));
 
-                 */
+
 
 
                 break;
@@ -119,11 +118,11 @@ public class ClientMenuCommand {
 
             case "JOIN":
 
-/*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
 
- */
+
                 System.out.println("start separate lobby");
 
 
@@ -136,20 +135,20 @@ public class ClientMenuCommand {
 
                 System.out.println("OGAM: " + text.substring(5));
 
-                /*Platform.runLater(()->
+                Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
 
-                 */
+
                 break;
 
             case "DOGA":
                 //TODO remove openGame from GUI-Lobby-Display
                 System.out.println("DOGA: " + text.substring(5));
-                /*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
 
-                 */
+
 
 
                 break;
@@ -160,11 +159,11 @@ public class ClientMenuCommand {
 
 
             case "INFO":
-    /*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
 
-     */
+
 
 
                 System.out.println("SRVRINFO: " + text.substring(5));
