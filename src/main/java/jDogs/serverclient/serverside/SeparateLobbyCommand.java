@@ -105,9 +105,10 @@ public class SeparateLobbyCommand {
                         this.gameFile.cancel();
                         Server.getInstance().allGamesNotFinished.remove(this.gameFile);
                     } else {
-                        this.gameFile.removeParticipant(serverConnection);
+                        this.gameFile.removeParticipant(serverConnection.getNickname());
                         sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
                     }
+                    System.out.println("passed sepLobComm Quit " + nickname);
                     serverConnection.getMessageHandlerServer().returnToLobby();
                     sendToPub.enqueue("LPUB " + nickname);
                     break;

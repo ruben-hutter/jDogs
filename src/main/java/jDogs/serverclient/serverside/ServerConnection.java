@@ -99,26 +99,26 @@ public class ServerConnection {
 
 
     synchronized public void kill() {
+
         if (!messageHandlerServer.getState().equals("publicLobby")) {
-            if (messageHandlerServer.getGameFile().getHost().equals(nickName)) {
-                messageHandlerServer.getGameFile().cancel();
-            } else {
-                messageHandlerServer.getGameFile().removeParticipant(this);
-            }
+            messageHandlerServer.returnToLobby();
+                server.removeGameFromSC(messageHandlerServer.getGameFile(), nickName);
         }
-        try {
-             System.out.println("stop ServerConnection..." + InetAddress.getLocalHost().getHostName() );
-        } catch (UnknownHostException e) {
-             e.printStackTrace();
-        }
-        scheduledExecutorService.shutdown();
+
+        this.listeningToClient.kill();
+        this.sender.kill();
+        this.scheduledExecutorService.shutdown();
+        this.messageHandlerServer.kill();
+
+
+        System.out.println("stop ServerConnection..." + nickName );
+
         System.out.println(scheduledExecutorService.toString() + " stops now");
 
         server.removeServerConnection(this);
+
         server.removeNickname(messageHandlerServer.getNickName());
-        this.listeningToClient.kill();
-        this.sender.kill();
-        this.messageHandlerServer.kill();
+
 
     }
 

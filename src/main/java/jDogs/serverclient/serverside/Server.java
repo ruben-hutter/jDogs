@@ -1,6 +1,7 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.Main;
+import jDogs.player.Player;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -196,8 +197,56 @@ public class Server {
         return null;
     }
 
+    public void removeGameFromSC(GameFile gameFile, String nickname) {
+
+        gameFile.removeFromParticipantServer(nickname);
+        System.out.println("remove here");
+        if (gameFile.getHost() == null) {
+            if (gameFile.isPendent()) {
+                sendMessageToAll("DOGA " + gameFile.getSendReady());
+                for (Player player: gameFile.getPlayers()) {
+                    if (player.getPlayerName() != nickname) {
+                        player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                    }
+                }
+            } else {
+                for (Player player: gameFile.getPlayers()) {
+                    if (player.getPlayerName() != nickname) {
+                        player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                        player.sendMessageToClient("INFO host " + nickname + " quit game..shutdown game");
+                    }
+                }
+                runningGames.remove(gameFile);
+            }
+            finishedGames.remove(gameFile);
+        } else {
+            if (gameFile.isPendent()) {
+                sendMessageToAll("DOGA " + gameFile.getSendReady());
+            } else {
+                for (Player player: gameFile.getPlayers()) {
+                    if (player.getPlayerName() != nickname) {
+                        player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                        player.sendMessageToClient("INFO " + nickname + " quit game..shutdown game");
+                    }
+                }
+            }
+        }
+    }
+
     public void removeGame(GameFile gameFile) {
+
+        if (gameFile.isPendent()) {
+            sendMessageToAll("DOGA " + gameFile.getSendReady());
+        } else {
+            //Server.getInstance().finishedGames.add(gameFile);
+            for (Player player : gameFile.getPlayers()) {
+                player.getServerConnection().getMessageHandlerServer().returnToLobby();
+            }
+            System.out.println("INFO game finished");
+        }
+
         allGamesNotFinished.remove(gameFile);
+        System.out.println("got removed");
         MainGame mainGame;
         if ((mainGame = getMainGame(gameFile)) != null) {
             runningGames.remove(mainGame);
@@ -243,7 +292,10 @@ public class Server {
     }
 
     public void removeServerConnection(ServerConnection serverConnection) {
+        allNickNames.remove(serverConnection.getNickname());
+        publicLobbyConnections.remove(serverConnection);
         basicConnectionList.remove(serverConnection);
+        serverConnectionMap.remove(serverConnection);
     }
 
     public ArrayList<ServerConnection> getBasicConnections() {

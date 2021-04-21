@@ -76,7 +76,7 @@ public class SendFromServer implements Runnable {
             dout.flush();
         } catch (IOException e) {
             // e.printStackTrace();
-            System.out.println("ServerConnection error 1: send String to Client error....");
+            System.out.println("ServerConnection error 1: send String to Client error...." + serverConnection.getNickname());
             // kill this serverConnection:
             running = false;
             serverConnection.kill();
