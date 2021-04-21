@@ -368,7 +368,7 @@ public class LobbyController implements Initializable {
 
         for (int i = 0; i < openGames.size(); i++) {
             if (openGames.get(i).getName().equals(openGame.getName())) {
-                System.out.println("remove me");
+                //System.out.println("remove me");
                 row = i;
                 break;
             }
