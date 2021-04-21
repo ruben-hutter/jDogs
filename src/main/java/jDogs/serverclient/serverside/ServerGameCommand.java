@@ -237,12 +237,6 @@ public class ServerGameCommand {
                 return;
             }
 
-            // if move passes an occupied starting position, and that piece haven't moved
-            if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2, ownPlayer)) {
-                sendToThisClient.enqueue("INFO Someone blocks you");
-                return;
-            }
-
             // check if there is a piece on destination
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
                 sendToThisClient.enqueue("You eliminate yourself!");
@@ -266,51 +260,6 @@ public class ServerGameCommand {
         } else {
             sendToThisClient.enqueue("INFO entered command does`t fit the length(15) for checkmove()");
         }
-    }
-
-    /**
-     * Checks if there is a block on the way to new position
-     * @return true if you are blocked
-     */
-    private boolean checkForBlock(String card, String actualPosition1,
-            int actualPosition2, String newPosition1,
-            int newPosition2, Player player) {
-        int [] startingPositions = new int[] {0, 16, 32, 48};
-        Piece pieceOnStart;
-        int convertActualPos;
-        if (actualPosition1.equals("B") && newPosition1.equals("B")) {
-            // continue on track
-            // TODO four case -4
-            for (int startingPosition : startingPositions) {
-                if (newPosition2 > actualPosition2) {
-                    if (actualPosition2 < startingPosition && startingPosition < newPosition2) {
-                        pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
-                                startingPosition);
-                        if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                                == alliance_4.getAlliance(startingPosition)) {
-                            if (!pieceOnStart.getHasMoved()) {
-                                return true;
-                            }
-                        }
-                    }
-                } else {
-                    convertActualPos = actualPosition2 - 64;
-                    if (convertActualPos < startingPosition && startingPosition < newPosition2) {
-                        pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
-                                startingPosition);
-                        if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                                == alliance_4.getAlliance(startingPosition)) {
-                            if (!pieceOnStart.getHasMoved()) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
-            // TODO
-        }
-        return false;
     }
 
     /**
@@ -574,13 +523,6 @@ public class ServerGameCommand {
                     Piece piece = player.getPiece(pieceID);
                     String actualPosition1 = player.receivePosition1Server(pieceID);
                     int actualPosition2 = player.receivePosition2Server(pieceID);
-                    /*
-                    if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
-                            player)) {
-                        sendToThisClient.enqueue("INFO There is a block, you can't pass!");
-                        return;
-                    }
-                     */
                     simpleMove(player, pieceID, newPosition1, newPosition2);
                     // remove block if piece moves for first time on track
                     if (!piece.getHasMoved() && piece.getPositionServer1().equals("B")
