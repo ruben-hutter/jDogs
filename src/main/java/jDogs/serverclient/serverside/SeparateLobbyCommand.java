@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.player.Player;
 import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
@@ -125,6 +126,11 @@ public class SeparateLobbyCommand {
                         list += "\n";
                     }
                     sendToThisClient.enqueue(list);
+                    break;
+
+                case "LPUB":
+                    for (Player player : gameFile.getPlayers())
+                    sendToThisClient.enqueue("LPUB " + player.getPlayerName());
                     break;
 
                 default:
