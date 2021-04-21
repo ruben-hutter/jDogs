@@ -200,7 +200,6 @@ public class Server {
     public void removeGameFromSC(GameFile gameFile, String nickname) {
 
         gameFile.removeFromParticipantServer(nickname);
-        System.out.println("remove here");
         if (gameFile.getHost() == null) {
             if (gameFile.isPendent()) {
                 sendMessageToAll("DOGA " + gameFile.getSendReady());

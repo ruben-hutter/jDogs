@@ -102,7 +102,7 @@ public class ServerConnection {
 
         if (!messageHandlerServer.getState().equals("publicLobby")) {
             messageHandlerServer.returnToLobby();
-                server.removeGameFromSC(messageHandlerServer.getGameFile(), nickName);
+            server.removeGameFromSC(messageHandlerServer.getGameFile(), nickName);
         }
 
         this.listeningToClient.kill();
