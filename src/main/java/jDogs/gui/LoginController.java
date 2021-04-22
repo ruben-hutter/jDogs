@@ -45,7 +45,6 @@ public class LoginController {
             //GUIManager.getInstance().goToLobby(nickname);
             GUIManager.getInstance().startGame();
 
-            //LoginEventHandler.INSTANCE.loggedIn(nickname);
         }
 
     }

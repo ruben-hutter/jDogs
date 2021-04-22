@@ -16,9 +16,6 @@ public class ClientGame {
     private Player[] players;
     private int turnNumber;
     private ArrayList<String> cards;
-    private Token[][] guiTokens;
-    private String[] playerNames;
-    private static ClientGame instance;
 
     public ClientGame(String[] playerNames) {
         this.playerNames = playerNames;
@@ -59,7 +56,7 @@ public class ClientGame {
     public void printGameState() {
         // prints out the player with the associated color and the actual board status
         for (Player player : players) {
-            System.out.print(player);
+            System.out.println(player);
         }
         System.out.println(board);
 
@@ -69,6 +66,7 @@ public class ClientGame {
      * prints the cards the player holds
      */
     public void printCards() {
+        System.out.print("Your cards: ");
         for (String card : cards) {
             System.out.print(card + " ");
         }
@@ -95,22 +93,19 @@ public class ClientGame {
      * @param newPosition where to put the piece
      */
     public void changePiecePosition(Player player, int pieceID, String newPosition) {
-        int newPos = Integer.parseInt(newPosition.substring(1));
+
         switch(newPosition.substring(0, 1)) {
             case "A":
                 player.changePositionClient(pieceID, board.allHomeTiles.
                         get(player.getAlliance())[pieceID - 1]);
-                guiTokens[player.startingPosition/16][pieceID - 1].setNewPosition(newPos, 'A');
                 break;
             case "B":
-                player.changePositionClient(pieceID, board.allTrackTiles[newPos]);
-                guiTokens[player.startingPosition/16][pieceID - 1].setNewPosition(newPos, 'B');
+                player.changePositionClient(pieceID, board.allTrackTiles[Integer
+                        .parseInt(newPosition.substring(1))]);
                 break;
             case "C":
                 player.changePositionClient(pieceID, board.allHeavenTiles.
-                        get(player.getAlliance())[newPos]);
-                guiTokens[player.startingPosition/16][pieceID - 1].setNewPosition(newPos, 'C');
-                GUIManager.getInstance().gameWindowController.updateToken(player.startingPosition/16,pieceID - 1);
+                        get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
                 break;
         }
     }

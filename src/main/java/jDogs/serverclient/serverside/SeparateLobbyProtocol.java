@@ -25,7 +25,11 @@ public enum SeparateLobbyProtocol {
     /**
      * Command to confirm whether the game should be started under the given conditions.
      */
-    STAR;
+    STAR,
+    /**
+     * Command send to this player all fellow participants of separate lobby
+     */
+    LPUB;
 
 
     /**

@@ -264,6 +264,25 @@ Am Freitag, Samstag und Sonntag stellten wir das Spiel fertig für den Meilenste
 
 ---
 
+*20.04.2021, Johanna*
+
+### Protokoll#14 - Protokoll
+
+Heute bereiteten wir die Präsentation vor. Wir gingen die einzelnen Punkte durch (About A Game, Demo, Progress Report, QA, Rules To Code, Technology) und gestalteten die passenden Folien dazu. Zudem überlegten wir uns einen Zeitplan für die Präsentation. Um für die morgige Übungsstunde vorbereitet zu sein, testeten wir, ob JDogs auch über Hamachi spielbar ist. 
+
+**Nächstes Treffen:** Mittwoch, 21.04.21, 09:45 Uhr. 
 
 
+---
 
+*21.04.2021, Johanna*
+
+### Protokoll#15 - Protokoll
+
+Leider konnten wir das Spiel nicht so wie geplant in der Übungsstunde vorzeigen, es gab Probleme bei der Erstellung eines Servers mit einem anderen Port als 8090. Wir durften das Problem bis am Nachmittag beheben. Zudem stellten wir die Präsentation für Meilenstein 3 fertig. Anschliessend besprachen wir das weitere Vorgehen. Wir möchten so schnell wie möglich die Spiellogik komplett implementiert haben, das bedeutet konkret, dass die Karten 7, Jack und 4 ihre volle Funktionalität erhalten und dass ein Spieler, der gerade aus dem Zwinger gekommen ist, den Weg für andere Figuren blockiert. Die Hauptaufgabe bei Meilenstein 4 scheint uns die Grafik zu sein. Wir diskutierten darüber, wie wir das Spiel komplett über die grafische Benutzeroberfläche laufen lassen können (z.B. auswählen der Figuren, Karten und Zielpositionen durch klicken). 
+
+**Nächstes Treffen:** Donnerstag, 22.04.21, 09:30 Uhr: Generalprobe Präsentation.
+
+**Übernächstes Treffen:** Montag, 26.04.21, 18:00 Uhr
+
+---

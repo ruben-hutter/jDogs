@@ -1,6 +1,5 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.ClientGame;
 import jDogs.player.Player;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
@@ -32,6 +31,7 @@ public class ServerGameCommand {
     private ArrayList<Player> players;
     private MainGame mainGame;
     private String cardToEliminate;
+    private Alliance_4 alliance_4;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -223,8 +223,7 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("INFO format exception in checkMove");
                 return;
             }
-            //TODO find better place for this
-            //TODO if player finished, and teamMode on, he can play 2 colors
+            //TODO find better place for this; if player finished, and teamMode on, he can play 2 colors
             //prevent players from moving with others pieces
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 sendToThisClient.enqueue("INFO you cannot move this color");
@@ -237,8 +236,6 @@ public class ServerGameCommand {
                 sendToThisClient.enqueue("INFO Check the card value with your desired destination");
                 return;
             }
-
-            // TODO no block going heaven or passing track
 
             // check if there is a piece on destination
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
@@ -301,12 +298,12 @@ public class ServerGameCommand {
                 }
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
-            // TODO check that you don't jump over your pieces -> piecesOnPath()
             // go heaven
             int difference;
             if (!hasMoved) {
                 return false;
             }
+            // TODO piecesOnPath();
             if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
                     if (cardValue == 4) {
@@ -512,7 +509,6 @@ public class ServerGameCommand {
                 piecesToEliminate.addAll(singleEliminations);
                 startIndex += 11;
             }
-            // TODO check block
 
             if (countToSeven == 7) {
                 startIndex = 7;
@@ -525,6 +521,8 @@ public class ServerGameCommand {
                     String newPosition1 = move.substring(7, 8);
                     int newPosition2 = Integer.parseInt(move.substring(8));
                     Piece piece = player.getPiece(pieceID);
+                    String actualPosition1 = player.receivePosition1Server(pieceID);
+                    int actualPosition2 = player.receivePosition2Server(pieceID);
                     simpleMove(player, pieceID, newPosition1, newPosition2);
                     // remove block if piece moves for first time on track
                     if (!piece.getHasMoved() && piece.getPositionServer1().equals("B")

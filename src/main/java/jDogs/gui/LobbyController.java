@@ -368,7 +368,7 @@ public class LobbyController implements Initializable {
 
         for (int i = 0; i < openGames.size(); i++) {
             if (openGames.get(i).getName().equals(openGame.getName())) {
-                System.out.println("remove me");
+                //System.out.println("remove me");
                 row = i;
                 break;
             }
@@ -453,8 +453,12 @@ public class LobbyController implements Initializable {
         gameId = game;
         displayInfomsg("INFO you joined game " + gameId);
         //show only players in separate lobby
-        playersInLobby.removeAll();
+        for (int i = 0; i < playersInLobby.size(); i++) {
+            playersInLobby.remove(i);
+        }
     }
+
+
 
     /**
      * method to allow to start the game

@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.player.Player;
 import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
@@ -104,9 +105,10 @@ public class SeparateLobbyCommand {
                         this.gameFile.cancel();
                         Server.getInstance().allGamesNotFinished.remove(this.gameFile);
                     } else {
-                        this.gameFile.removeParticipant(serverConnection);
+                        this.gameFile.removeParticipant(serverConnection.getNickname());
                         sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
                     }
+                    System.out.println("passed sepLobComm Quit " + nickname);
                     serverConnection.getMessageHandlerServer().returnToLobby();
                     sendToPub.enqueue("LPUB " + nickname);
                     break;
@@ -125,6 +127,11 @@ public class SeparateLobbyCommand {
                         list += "\n";
                     }
                     sendToThisClient.enqueue(list);
+                    break;
+
+                case "LPUB":
+                    for (Player player : gameFile.getPlayers())
+                    sendToThisClient.enqueue("LPUB " + player.getPlayerName());
                     break;
 
                 default:

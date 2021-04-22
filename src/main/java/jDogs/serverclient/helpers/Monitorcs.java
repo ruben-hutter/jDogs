@@ -23,8 +23,7 @@ public class Monitorcs {
     }
     //return if last ping/pong received under 10 s;
     public boolean connectionCheck() {
-
-        if (System.currentTimeMillis() - this.newTime >= 20000) {
+        if (System.currentTimeMillis() - this.newTime >= 10000) {
             return false;
         }
         return true;

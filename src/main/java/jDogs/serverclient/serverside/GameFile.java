@@ -167,25 +167,35 @@ public class GameFile {
             serverConnection.getSender().sendStringToClient("INFO no more players allowed in game");
         }
     }
+    public void removeFromParticipantServer(String nickname) {
+        if (!players.remove(nickname)) {
+            System.out.println("couldn t remove " + nickname + " from players list");
+        }
+
+    }
 
     /**
-     * @param serverConnection is the participant which should be removed attention: it doesn`t work
+     * @param nickname is the participant which should be removed attention: it doesn`t work
      *                         for the host the host should be removed by deleting the whole file
      */
-    public void removeParticipant(ServerConnection serverConnection) {
-        String nickname = serverConnection.getNickname();
-        Player player = getPlayer(nickname);
-        players.remove(player);
+    public void removeParticipant(String nickname) {
 
-        if (pendent) {
-            numberParticipants--;
-            sendMessageToParticipants("DPER " + nickname);
-            Server.getInstance().getSender(nickname)
-                    .sendStringToAllClients("OGAM " + getSendReady());
+        Player player = getPlayer(nickname);
+
+        if (!players.remove(player)) {
+            System.out.println("couldn t remove player");
         } else {
-            // if serverConnection of a client stops while playing the server sends all clients back to public lobby
-            sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
-            cancel();
+
+            if (pendent) {
+                numberParticipants--;
+                sendMessageToParticipants("DPER " + nickname);
+                Server.getInstance().getSender(nickname)
+                        .sendStringToAllClients("OGAM " + getSendReady());
+            } else {
+                // if serverConnection of a client stops while playing the server sends all clients back to public lobby
+                sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
+                cancel();
+            }
         }
     }
 
@@ -239,16 +249,15 @@ public class GameFile {
 
     public String getParticipants() {
 
-        String participants = "";
+        StringBuilder participants = new StringBuilder();
 
         for (Player player : players) {
-            participants += player.getPlayerName() + "\n";
-            participants += " " + "\n";
+            participants.append(player.getPlayerName()).append(" ");
         }
-        participants += players.get(players.size() - 1).getPlayerName();
+        participants.append(players.get(players.size() - 1).getPlayerName());
         logger.debug("Participants: " + participants);
 
-        return participants;
+        return participants.toString();
     }
 
     /**
@@ -312,16 +321,6 @@ public class GameFile {
      * the game while playing
      */
     public void cancel() {
-
-        for (Player player : players) {
-            player.getServerConnection().getMessageHandlerServer().returnToLobby();
-        }
-        if (pendent) {
-            sendMessageToAll("DOGA " + getSendReady());
-        } else {
-            Server.getInstance().finishedGames.add(this);
-            System.out.println("INFO game finished");
-        }
         Server.getInstance().removeGame(this);
     }
 

@@ -112,5 +112,4 @@ public class GuiParser {
         array[arrayCount - 1] = activeUsers.substring(first);
         return array;
     }
-
 }

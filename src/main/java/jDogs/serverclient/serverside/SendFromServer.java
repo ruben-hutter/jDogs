@@ -54,7 +54,7 @@ public class SendFromServer implements Runnable {
             }
 
             try {
-                Thread.sleep(30);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -76,7 +76,7 @@ public class SendFromServer implements Runnable {
             dout.flush();
         } catch (IOException e) {
             // e.printStackTrace();
-            System.out.println("ServerConnection error 1: send String to Client error....");
+            System.out.println("ServerConnection error 1: send String to Client error...." + serverConnection.getNickname());
             // kill this serverConnection:
             running = false;
             serverConnection.kill();
