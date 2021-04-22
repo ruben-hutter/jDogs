@@ -10,9 +10,22 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.GameWindowController">
-   <bottom>
-    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="245.0" prefWidth="799.0" BorderPane.alignment="CENTER">
+<SplitPane dividerPositions="0.7692885771543085" orientation="VERTICAL" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.GameWindowController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <SplitPane fx:id="splitPane" dividerPositions="0.904559118236473" prefHeight="611.0" prefWidth="800.0">
+               <items>
+                  <Pane fx:id="paneForGrid" prefHeight="600.0" prefWidth="600.0">
+                     <children>
+                        <ImageView fx:id="imageBackground" fitHeight="610.0" fitWidth="719.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                     </children></Pane>
+                  <Pane fx:id="paneForInfoField" prefHeight="203.0" prefWidth="586.0" />
+               </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="245.0" prefWidth="799.0">
          <children>
             <BorderPane layoutY="17.0" prefHeight="165.0" prefWidth="600.0">
                <center>
@@ -45,21 +58,5 @@
             </BorderPane>
          </children>
       </AnchorPane>
-   </bottom>
-   <center>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" BorderPane.alignment="CENTER">
-         <children>
-            <SplitPane fx:id="splitPane" dividerPositions="0.904559118236473" prefHeight="611.0" prefWidth="800.0">
-               <items>
-                  <Pane fx:id="paneForGrid" prefHeight="600.0" prefWidth="600.0">
-                     <children>
-                        <ImageView fx:id="imageBackground" fitHeight="610.0" fitWidth="719.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </Pane>
-                  <Pane fx:id="paneForInfoField" prefHeight="203.0" prefWidth="586.0" />
-               </items>
-            </SplitPane>
-         </children>
-      </AnchorPane>
-   </center>
-</BorderPane>
+  </items>
+</SplitPane>

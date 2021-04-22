@@ -103,6 +103,9 @@ public class GameWindowController implements Initializable {
 
         //set up gridPane
         gridPane = new GridPane();
+        //gridPane.setMaxSize(600,600);
+        gridPane.getBoundsInParent();
+        gridPane.setMinSize(600,600);
         gridPane.addRow(18);
         gridPane.addColumn(18);
         gridPane.setHgap(10);
@@ -129,6 +132,9 @@ public class GameWindowController implements Initializable {
         }
         paneForGrid.getChildren().addAll(gridPane, groupCircle);
         setCirclesToHome();
+
+        gridPane.prefHeightProperty().bind(paneForGrid.heightProperty());
+        gridPane.prefWidthProperty().bind(paneForGrid.widthProperty());
     }
 
 

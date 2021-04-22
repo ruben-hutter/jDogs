@@ -148,7 +148,7 @@ public class GUIManager extends Application {
      */
     private void setGameScene() {
 
-        String lobbyPath = "src/main/resources/gameWindow.fxml";
+        String lobbyPath = "src/main/resources/gameWindow_orig.fxml";
         // activate Window
         //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
         URL url = null;
