@@ -4,37 +4,48 @@ import com.sun.javafx.scene.paint.GradientUtils.Point;
 import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.board.Board;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.animation.Transition;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Sphere;
-import javafx.util.Duration;
+
 
 /**
  * this class represents the gameWindow
  */
 public class GameWindowController implements Initializable {
-    @FXML
-    Color[] colorsForPieces;
+
 
     private static final int CIRCLE_RADIUS = 10;
+    AdaptToGui adaptToGui = new AdaptToGui();
+
+    private ArrayList<Circle> circles;
+
+    @FXML
+    private ImageView imageBackground;
+
     @FXML
     private SplitPane splitPane;
 
@@ -63,6 +74,7 @@ public class GameWindowController implements Initializable {
     private GridPane gridPane;
     @FXML
     private Circle[][] circlePieces;
+    private FieldOnBoard[] homeArray;
 
     /**
      * this method receives a move to send to server
@@ -88,83 +100,64 @@ public class GameWindowController implements Initializable {
         //int boardSize = GUIManager.getInstance().getBoardSize();
         //circlePieces = createCircles();
 
-        ArrayList<Circle> circles =  new ArrayList<>();
+
         //set up gridPane
         gridPane = new GridPane();
         gridPane.addRow(18);
         gridPane.addColumn(18);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
 
-        for (int i = 0; i < 19; i++) {
+
+        double valX = 0;
+        double valY = 0;
+
+
+        for (int i = 0; i < 18; i++) {
             for (int j = 0; j < 18; j++) {
-                gridPane.add(new Rectangle(30,30, Color.BISQUE),i, j);
+             Rectangle rectangle = new Rectangle(20, 20 , Color.DEEPPINK);
+                //rectangle.setLayoutX(valX++);
+                //rectangle.setLayoutY(valY);
+             //rectangle.setY(i);
+             gridPane.add(rectangle,j, i);
             }
         }
-        paneForGrid.getChildren().add(gridPane);
-
-        //Sphere sphere = new Sphere(10);
-        Circle circle1 = new Circle(10);
-        Circle circle2 = new Circle(10);
-        Circle circle3 = new Circle(10);
-        Circle circle4 = new Circle(10);
-        Circle circle5 = new Circle(10);
-        Circle circle6 = new Circle(10);
-        Circle circle7 = new Circle(10);
-        Circle circle8 = new Circle(10,Color.GREEN);
-        Circle circle9 = new Circle(10);
-        Circle circle10 = new Circle(10);
-        gridPane.add(circle8, 10, 10);
-
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setNode(circle1);
-        pathTransition.setDuration(Duration.seconds(3));
-        pathTransition.setPath(new Circle(30));
-        pathTransition.setCycleCount(1);
-        pathTransition.play();
-
-
-        gridPane.add(circle1, 0, 0);
-        gridPane.add(circle2,1,0);
-        gridPane.add(circle3,0,1);
-        gridPane.add(circle4,1,1);
-
-       if(paneForGrid.getChildren().get(0).equals(gridPane)) {
-            System.out.println("true");
+        circles = createCircles();
+        Group groupCircle = new Group();
+        for (Circle circle : circles) {
+            groupCircle.getChildren().add(circle);
         }
-
-    for (int i = 0; i < gridPane.getChildren().size(); i++) {
-        if (gridPane.getChildren().get(i).equals(circle1)) {
-            System.out.println("true " + i);
-            gridPane.getChildren().remove(circle1);
-        }
+        paneForGrid.getChildren().addAll(gridPane, groupCircle);
+        setCirclesToHome();
     }
-    }
-    @FXML
-    private Circle[][] createCircles() {
 
-        Circle[][] newCircles = new Circle[ClientGame.getInstance().getNumPlayers()][Board.NUM_HOME_TILES];
+
+    private void setCirclesToHome() {
+        homeArray = AdaptToGui.getInstance().getHomeFieldArray();
+
         int count = 0;
-        for (ColorTokens colorToken : ColorTokens.values()) {
-            for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
-                newCircles[count][i] =new Circle(10, colorToken.getColor());
+        for (Circle circle : circles) {
+            circle.setCenterY(homeArray[count].getY()*25);
+            circle.setCenterX(homeArray[count++].getX()*35);
+            if (homeArray.length < count) {
+                System.err.println("homeArray too short for all circles");
+                break;
             }
-            count++;
+        }
+    }
+
+
+    private ArrayList<Circle> createCircles() {
+        ArrayList<Circle> newCircles =  new ArrayList<>();
+        for (ColorTokens colorTokens : ColorTokens.values()) {
+
+            for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
+                newCircles.add(new Circle(10, colorTokens.getColor()));
+            }
         }
         return newCircles;
     }
-/*
-    private Token[][] createCircles() {
-        tokens = new Token[ClientGame.getInstance().getNumPlayers()][Board.NUM_HOME_TILES];
 
-       for (int i = 0; i < ClientGame.getInstance().getNumPlayers(); i++) {
-
-           for (int j = 0; j < Board.NUM_HOME_TILES; j++) {
-               tokens[i][j] = new Token();
-           }
-       }
-       return tokens;
-    }
-
- */
 
 
 

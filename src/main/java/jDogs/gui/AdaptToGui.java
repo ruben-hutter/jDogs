@@ -1,5 +1,9 @@
 package jDogs.gui;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import jDogs.board.Board;
+import org.checkerframework.checker.units.qual.A;
+
 /**
  * this class adapts the fields how they are kept to the gui and
  * translates their value to a position on the board
@@ -18,6 +22,7 @@ public class AdaptToGui {
         this.boardSize = BOARD_SIZE;
        createFieldsOnTrack(boardSize);
        createFieldsOnHeaven(boardSize);
+       createFieldsOnHome(boardSize);
        instance = this;
     }
 
@@ -101,7 +106,6 @@ public class AdaptToGui {
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(++startX,++startY);
-                       System.out.println("startx " + startX + " startY " + startY);
 
                    }
                    count++;
@@ -112,7 +116,6 @@ public class AdaptToGui {
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(++startX,--startY);
-                       System.out.println("startx " + startX + " startY " + startY);
 
                    }
                    count++;
@@ -122,7 +125,6 @@ public class AdaptToGui {
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(--startX,--startY);
-                       System.out.println("startx " + startX + " startY " + startY);
 
                    }
                    count++;
@@ -133,7 +135,6 @@ public class AdaptToGui {
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(--startX,++startY);
-                       System.out.println("startx " + startX + " startY " + startY);
 
                    }
                    count++;
@@ -202,6 +203,7 @@ public class AdaptToGui {
                     fieldsOnHome[count][j + 2] = new FieldOnBoard(x - 1, y);
                     fieldsOnHome[count][j + 3] = new FieldOnBoard(x - 1, y + 1);
 
+                    count++;
                 }
                 break;
         }
@@ -257,12 +259,30 @@ public class AdaptToGui {
     }
 
     public static void main(String[] args) {
-        AdaptToGui adaptToGui = new AdaptToGui();
-        FieldOnBoard[] heavenArr = adaptToGui.getHeavenField(3);
-        for (FieldOnBoard fieldOnBoard : heavenArr) {
-            System.out.println("x val: " + fieldOnBoard.getX() + " y val: " + fieldOnBoard.getY());
-        }
+      AdaptToGui adaptToGui = new AdaptToGui();
+      FieldOnBoard[] test = adaptToGui.getHomeFieldArray();
+      int count = 0;
+      for (FieldOnBoard fieldOnBoard : test) {
+          System.out.println(fieldOnBoard.getX() + " " + fieldOnBoard.getY());
+          count++;
+          if (count % 4 == 0) {
+              System.out.println("new " + (count/4));
+          }
+      }
     }
 
 
+    public FieldOnBoard[] getHomeFieldArray() {
+
+        FieldOnBoard[] homeFieldArr = new FieldOnBoard[boardSize * Board.NUM_HOME_TILES];
+        int count = 0;
+        for (FieldOnBoard fieldOnBoardArray[] : fieldsOnHome) {
+
+            for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
+                homeFieldArr[count] = fieldOnBoardArray[i];
+                count++;
+            }
+        }
+        return homeFieldArr;
+    }
 }

@@ -16,6 +16,8 @@ public class ClientGame {
     private Player[] players;
     private int turnNumber;
     private ArrayList<String> cards;
+    private String[] playerNames;
+    private static ClientGame instance;
 
     public ClientGame(String[] playerNames) {
         this.playerNames = playerNames;
