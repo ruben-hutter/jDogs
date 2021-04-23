@@ -164,8 +164,8 @@ public class AdaptToGui {
                 int count = 0;
                 while ( count < boardSize) {
 
-                    int x = 0;
-                    int y = 0;
+                    int x = 1;
+                    int y = 1;
                     int j = 0;
 
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);
@@ -174,7 +174,7 @@ public class AdaptToGui {
                     fieldsOnHome[count][j + 3] = new FieldOnBoard(x + 1, y + 1);
 
                     count++;
-                    x = 0;
+                    x = 1;
                     y = 17;
                     j = 0;
 
@@ -184,7 +184,7 @@ public class AdaptToGui {
                     fieldsOnHome[count][j + 3] = new FieldOnBoard(x + 1, y + 1);
 
                     count++;
-                    x = 19;
+                    x = 22;
                     y = 17;
                     j = 0;
 
@@ -194,8 +194,8 @@ public class AdaptToGui {
                     fieldsOnHome[count][j + 3] = new FieldOnBoard(x - 1, y + 1);
 
                     count++;
-                    x = 19;
-                    y = 0;
+                    x = 22;
+                    y = 1;
                     j = 0;
 
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);

@@ -101,22 +101,27 @@ public class GameWindow2Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        circleGroup = new Group();
+       setOnHome();
+    }
+
+    /**
+     * set all pieces on their respective home position
+     */
+    private void setOnHome() {
+
         adaptToGui = new AdaptToGui();
         int count = 0;
 
         FieldOnBoard[] homeArray = adaptToGui.getHomeFieldArray();
         for (ColorTokens colorTokens: ColorTokens.values()) {
             Color color = colorTokens.getColor();
+
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorTokens.getColor());
+                circle.setId("" + count);
                 gridPane.add(circle, homeArray[count].getX(), homeArray[count].getY());
                 count++;
             }
         }
-
-        FieldOnBoard[] homePositions = adaptToGui.getHomeFieldArray();
-
-
     }
 }
