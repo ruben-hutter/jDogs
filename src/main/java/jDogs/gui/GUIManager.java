@@ -25,8 +25,8 @@ public class GUIManager extends Application {
     FXMLLoader lobbyLoader;
     public LobbyController lobbyController;
     FXMLLoader gameLoader;
-    public GameWindowController gameWindowController;
     private Client client;
+    private GameWindow2Controller gameWindow2Controller;
 
     public static void main(String[] args) {
         launch(args);
@@ -85,6 +85,7 @@ public class GUIManager extends Application {
         primaryStage.setOnCloseRequest(e-> System.exit(-1));
 
         primaryStage.show();
+
 
 
 
@@ -148,7 +149,8 @@ public class GUIManager extends Application {
      */
     private void setGameScene() {
 
-        String lobbyPath = "src/main/resources/gameWindow_orig.fxml";
+        //String lobbyPath = "src/main/resources/gameWindow_orig.fxml";
+        String lobbyPath = "src/main/resources/gameWindow2.fxml";
         // activate Window
         //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
         URL url = null;
@@ -165,7 +167,8 @@ public class GUIManager extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        gameWindowController = gameLoader.getController();
+        //gameWindowController = gameLoader.getController();
+        gameWindow2Controller = gameLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
 
