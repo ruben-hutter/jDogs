@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import jDogs.ClientGame;
 import jDogs.board.Board;
 import java.net.URL;
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public class GameWindow2Controller implements Initializable {
     private Group circleGroup;
 
     private AdaptToGui adaptToGui;
+    private FadeTransition fadeTransitionCircle1;
+    private FadeTransition fadeTransitionCircle2;
+    private boolean jackIsSelected;
 
     @FXML
     void exitMenuOnAction(ActionEvent event) {
@@ -80,28 +84,62 @@ public class GameWindow2Controller implements Initializable {
     void onMouseClickGrid(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
         if (clickedNode != gridPane) {
-            // stop first field blinking if one clicks another field
-            if (fadeTransitionGrid != null) {
-                fadeTransitionGrid.stop();
+
+
+            if (clickedNode instanceof Circle) {
+                System.out.println("entered circle");
+
+                if (jackIsSelected && fadeTransitionCircle1!= null) {
+                    if (fadeTransitionCircle2 != null) {
+                        fadeTransitionCircle2.jumpTo(Duration.seconds(5));
+                        fadeTransitionCircle2.stop();
+                    }
+                    fadeTransitionCircle2 = new FadeTransition(Duration.seconds(0.3), clickedNode);
+                    fadeTransitionCircle2.setFromValue(0.0);
+                    fadeTransitionCircle2.setToValue(1.0);
+                    fadeTransitionCircle2.setCycleCount(Animation.INDEFINITE);
+                    fadeTransitionCircle2.play();
+                } else {
+                    if (fadeTransitionCircle1 != null) {
+                        fadeTransitionCircle1.jumpTo(Duration.seconds(5));
+                        fadeTransitionCircle1.stop();
+                    }
+                    fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9), clickedNode);
+                    fadeTransitionCircle1.setFromValue(0.0);
+                    fadeTransitionCircle1.setToValue(1.0);
+                    fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
+                    fadeTransitionCircle1.play();
+                }
+            } else {
+                if (clickedNode instanceof Pane) {
+
+                        // stop first field blinking if one clicks another field
+                        if (fadeTransitionGrid != null) {
+                            fadeTransitionGrid.jumpTo(Duration.seconds(5));
+                            fadeTransitionGrid.stop();
+                        }
+                        Integer colIndex = GridPane.getColumnIndex(clickedNode);
+                        Integer rowIndex = GridPane.getRowIndex(clickedNode);
+                        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
+                        int clicked = event.getClickCount();
+                        fadeTransitionGrid = new FadeTransition(Duration.seconds(0.9), clickedNode);
+                        fadeTransitionGrid.setFromValue(0.0);
+                        fadeTransitionGrid.setToValue(1.0);
+                        fadeTransitionGrid.setCycleCount(Animation.INDEFINITE);
+                        fadeTransitionGrid.play();
+                    }
+                }
             }
-            Integer colIndex = GridPane.getColumnIndex(clickedNode);
-            Integer rowIndex = GridPane.getRowIndex(clickedNode);
-            System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
-            int clicked = event.getClickCount();
-            fadeTransitionGrid = new FadeTransition(Duration.seconds(0.9), clickedNode);
-            fadeTransitionGrid.setFromValue(0.0);
-            fadeTransitionGrid.setToValue(1.0);
-            fadeTransitionGrid.setCycleCount(Animation.INDEFINITE);
-            fadeTransitionGrid.play();
         }
-    }
+
 
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-       setOnHome();
+        jackIsSelected = false;
+        setOnHome();
+        makeSingleMove(0,0,7);
     }
 
     /**
@@ -118,10 +156,37 @@ public class GameWindow2Controller implements Initializable {
 
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorTokens.getColor());
-                circle.setId("" + count);
+                circle.setId("" + (count + 1));
+                System.out.println("circle ids " + (count + 1));
                 gridPane.add(circle, homeArray[count].getX(), homeArray[count].getY());
                 count++;
             }
         }
+    }
+
+    public void makeSingleMove(int playerNr, int pieceID, int newPosition) {
+        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
+        System.out.println("circle ID " + circleID);
+        FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
+
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Circle) {
+                Circle circle = (Circle) node;
+                if (circle.getId().equals(circleID)) {
+                    gridPane.getChildren().remove(circle);
+                    System.out.println("removed circle");
+                    gridPane.add(circle,newPos.getX(), newPos.getY());
+                    break;
+                }
+            }
+        }
+    }
+
+    public void sendHome() {
+
+    }
+
+    public void setJack() {
+
     }
 }
