@@ -90,6 +90,7 @@ public class GameWindow2Controller implements Initializable {
                 System.out.println("entered circle");
 
                 if (jackIsSelected && fadeTransitionCircle1!= null) {
+                    System.out.println("entered jack");
                     if (fadeTransitionCircle2 != null) {
                         fadeTransitionCircle2.jumpTo(Duration.seconds(5));
                         fadeTransitionCircle2.stop();
@@ -103,6 +104,7 @@ public class GameWindow2Controller implements Initializable {
                     if (fadeTransitionCircle1 != null) {
                         fadeTransitionCircle1.jumpTo(Duration.seconds(5));
                         fadeTransitionCircle1.stop();
+                        fadeTransitionCircle1 = null;
                     }
                     fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9), clickedNode);
                     fadeTransitionCircle1.setFromValue(0.0);

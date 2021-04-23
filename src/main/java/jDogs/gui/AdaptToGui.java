@@ -45,39 +45,40 @@ public class AdaptToGui {
         // first position is a new starting position
 
         int trackCounter = 0;
-        int leftestPoint = 2;
-        int rightestPoint = 18;
-        int highestPoint = 2;
+        int leftestPoint = 4;
+        int rightestPoint = 20;
+        int highestPoint = 1;
         int lowestPoint = 18;
 
-        //side up (2/2,2/3...2/17)
+        //left side from yellow to green (4/2,4,3,4,5....4,17)
+
 
         for (int i = 0; i < 16; i++) {
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(highestPoint, leftestPoint + i);
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint, highestPoint + i);
             trackCounter++;
 
         }
 
-        //right side(2/18, 3/18.....18/17)
+        //down side(4/18, 5/18.....20/18)
 
         for (int i = 0; i < 16; i++) {
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(highestPoint + i, rightestPoint);
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint + i, lowestPoint);
             trackCounter++;
         }
 
-        //side down (18/18, 18/16,...18/3)
+        //right side (20/18, 20/17,...20/1)
 
         for (int i = 0; i < 16; i++) {
 
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(lowestPoint, rightestPoint - i);
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint, lowestPoint - i);
             trackCounter++;
 
         }
 
-        // left side (18/2, 17/2...3/2)
+        // upper side (18/2, 17/2...3/2)
 
         for (int i = 0; i < 16; i++) {
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(lowestPoint - i, leftestPoint);
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint - i, highestPoint);
             trackCounter++;
         }
     }
@@ -167,7 +168,7 @@ public class AdaptToGui {
                     int x = 1;
                     int y = 1;
                     int j = 0;
-
+                    // YELLOW
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);
                     fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
                     fieldsOnHome[count][j + 2] = new FieldOnBoard(x + 1, y);
@@ -177,27 +178,27 @@ public class AdaptToGui {
                     x = 1;
                     y = 17;
                     j = 0;
-
+                    // GREEN
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);
                     fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
                     fieldsOnHome[count][j + 2] = new FieldOnBoard(x + 1, y);
                     fieldsOnHome[count][j + 3] = new FieldOnBoard(x + 1, y + 1);
 
                     count++;
-                    x = 22;
+                    x = 23;
                     y = 17;
                     j = 0;
-
+                    // BLUE
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);
                     fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
                     fieldsOnHome[count][j + 2] = new FieldOnBoard(x - 1, y);
                     fieldsOnHome[count][j + 3] = new FieldOnBoard(x - 1, y + 1);
 
                     count++;
-                    x = 22;
+                    x = 23;
                     y = 1;
                     j = 0;
-
+                    // RED
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);
                     fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
                     fieldsOnHome[count][j + 2] = new FieldOnBoard(x - 1, y);
