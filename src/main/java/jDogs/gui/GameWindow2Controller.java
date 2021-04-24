@@ -39,12 +39,12 @@ public class GameWindow2Controller implements Initializable {
     private AdaptToGui adaptToGui;
     private String[] cardArray;
     private String cardClicked;
-    private Integer colIndexCircle2;
-    private Integer rowIndexCircle2;
-    private Integer rowIndexCircle1;
-    private Integer colIndexCircle1;
-    private Integer colIndexField;
-    private Integer rowIndexField;
+    private double colIndexCircle2;
+    private double rowIndexCircle2;
+    private double rowIndexCircle1;
+    private double colIndexCircle1;
+    private double colIndexField;
+    private double rowIndexField;
 
     @FXML
     private MenuBar menuBar;
@@ -250,7 +250,6 @@ public class GameWindow2Controller implements Initializable {
         }
     }
 
-
     @FXML
     void makeMoveButtonOnAction(ActionEvent event) {
         if (cardClicked != null) {
@@ -274,6 +273,11 @@ public class GameWindow2Controller implements Initializable {
                     }
                 } else {
                         System.out.println("simple move sent");
+
+                        //TODO send from here to server
+                        //FieldOnBoard destiny = new FieldOnBoard(colIndexField, rowIndexField);
+                        String pieceID = getPieceIDOnPane(colIndexCircle1,rowIndexCircle1);
+                    System.out.println("PIECE ID " + pieceID);
                         colIndexField = -1;
                         rowIndexField = -1;
                         fadeTransitionCard.jumpTo(Duration.ZERO);
@@ -290,6 +294,25 @@ public class GameWindow2Controller implements Initializable {
         colIndexCircle1 = -1;
     }
 
+    /**
+     *
+     * @param colIndexCircle column in gridPane
+     * @param rowIndexCircle row in gridPane
+     * @return the pieceID of the piece in the gridPane that was clicked by the user
+     */
+    private String getPieceIDOnPane(double colIndexCircle, double rowIndexCircle) {
+       for (Node node : gridPane.getChildren()) {
+           if (node instanceof  Circle) {
+               if (GridPane.getColumnIndex(node) == colIndexCircle && GridPane.getRowIndex(node) == rowIndexCircle) {
+                   Circle circle = (Circle) node;
+                   return circle.getId();
+               }
+           }
+       }
+
+        return null;
+    }
+
 
     private void startFadeTransitionCard(ImageView imageViewBlink) {
         if (fadeTransitionCard != null) {
@@ -302,7 +325,6 @@ public class GameWindow2Controller implements Initializable {
         fadeTransitionCard.setToValue(0.0);
         fadeTransitionCard.setCycleCount(Animation.INDEFINITE);
         fadeTransitionCard.play();
-        System.out.println("FADE transition now");
     }
 
 
@@ -314,20 +336,8 @@ public class GameWindow2Controller implements Initializable {
         setAllCardImageViews();
 
 
-        cardArray = new String[6];
-        String path1 = "src/main/resources/4C.png";
 
-
-        URL url = getUrl(path1);
-
-        Image image1 = new Image(url.toString());
-
-        imageViewCard0.setImage(image1);
-        imageViewCard1.setImage(image1);
-        imageViewCard2.setImage(image1);
-        imageViewCard3.setImage(image1);
-        imageViewCard4.setImage(image1);
-        imageViewCard5.setImage(image1);
+        //TODO delete and give Array from ClientGame
         String[] cardddss = new String[]{"ACEE", "KING", "THRE", "TWOO", "NINE", "FOUR"};
         setHand(cardddss);
     }
@@ -337,26 +347,12 @@ public class GameWindow2Controller implements Initializable {
      */
     private void setAllCardImageViews() {
         allCardImageViews = new ImageView[6];
-
         allCardImageViews[0] = imageViewCard0;
         allCardImageViews[1] = imageViewCard1;
         allCardImageViews[2] = imageViewCard2;
         allCardImageViews[3] = imageViewCard3;
         allCardImageViews[4] = imageViewCard4;
         allCardImageViews[5] = imageViewCard5;
-    }
-
-    private URL getUrl(String path1) {
-        // activate Window
-        //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
-        URL url = null;
-        try {
-            return Paths.get(path1).toUri().toURL();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
