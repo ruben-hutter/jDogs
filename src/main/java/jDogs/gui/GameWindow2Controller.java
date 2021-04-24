@@ -96,19 +96,19 @@ public class GameWindow2Controller implements Initializable {
                         fadeTransitionCircle2.stop();
                     }
                     fadeTransitionCircle2 = new FadeTransition(Duration.seconds(0.3), clickedNode);
-                    fadeTransitionCircle2.setFromValue(0.0);
-                    fadeTransitionCircle2.setToValue(1.0);
+                    fadeTransitionCircle2.setFromValue(1.0);
+                    fadeTransitionCircle2.setToValue(0.0);
                     fadeTransitionCircle2.setCycleCount(Animation.INDEFINITE);
                     fadeTransitionCircle2.play();
                 } else {
                     if (fadeTransitionCircle1 != null) {
-                        fadeTransitionCircle1.jumpTo(Duration.seconds(5));
+                        fadeTransitionCircle1.jumpTo(Duration.ZERO);
                         fadeTransitionCircle1.stop();
                         fadeTransitionCircle1 = null;
                     }
                     fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9), clickedNode);
-                    fadeTransitionCircle1.setFromValue(0.0);
-                    fadeTransitionCircle1.setToValue(1.0);
+                    fadeTransitionCircle1.setFromValue(1.0);
+                    fadeTransitionCircle1.setToValue(0.0);
                     fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
                     fadeTransitionCircle1.play();
                 }
@@ -117,7 +117,7 @@ public class GameWindow2Controller implements Initializable {
 
                         // stop first field blinking if one clicks another field
                         if (fadeTransitionGrid != null) {
-                            fadeTransitionGrid.jumpTo(Duration.seconds(5));
+                            fadeTransitionGrid.jumpTo(Duration.ZERO);
                             fadeTransitionGrid.stop();
                         }
                         Integer colIndex = GridPane.getColumnIndex(clickedNode);
@@ -125,16 +125,14 @@ public class GameWindow2Controller implements Initializable {
                         System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
                         int clicked = event.getClickCount();
                         fadeTransitionGrid = new FadeTransition(Duration.seconds(0.9), clickedNode);
-                        fadeTransitionGrid.setFromValue(0.0);
-                        fadeTransitionGrid.setToValue(1.0);
+                        fadeTransitionGrid.setFromValue(1.0);
+                        fadeTransitionGrid.setToValue(0.0);
                         fadeTransitionGrid.setCycleCount(Animation.INDEFINITE);
                         fadeTransitionGrid.play();
-                    }
                 }
             }
         }
-
-
+    }
 
 
     @Override
