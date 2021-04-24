@@ -19,7 +19,7 @@ public class CardUrl {
                 url = "src/main/resources/cards/2C.png";
                 break;
 
-            case "THREE":
+            case "THRE":
                 url = "src/main/resources/cards/3C.png";
                 break;
 

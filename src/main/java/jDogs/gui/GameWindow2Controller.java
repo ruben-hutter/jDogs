@@ -107,6 +107,8 @@ public class GameWindow2Controller implements Initializable {
     @FXML
     private FadeTransition fadeTransitionCard;
 
+    private boolean yourTurn;
+
     @FXML
     void exitMenuOnAction(ActionEvent event) {
 
@@ -192,7 +194,7 @@ public class GameWindow2Controller implements Initializable {
         Node clickedNode = event.getPickResult().getIntersectedNode();
         //TODO after move sent set cardClicked to null
         //TODO if JOKE is chosen, find solution on GUI to transform to desired card
-        if (clickedNode != gridPane && cardClicked != null) {
+        if (clickedNode != gridPane && cardClicked != null && yourTurn) {
 
 
             if (clickedNode instanceof Circle) {
@@ -253,16 +255,41 @@ public class GameWindow2Controller implements Initializable {
     void makeMoveButtonOnAction(ActionEvent event) {
         if (cardClicked != null) {
             if (colIndexCircle1 != -1 && rowIndexCircle1 != -1) {
-                if (cardClicked.equals("JACK") && colIndexCircle2 != -1 && rowIndexCircle2 != -1) {
-                    System.out.println("jack move sent");
-                } else if (colIndexField != -1 && rowIndexCircle1 != -1) {
-                    System.out.println("simple move sent");
-
+                if (cardClicked.equals("JACK")) {
+                    if (colIndexCircle2 != -1 && rowIndexCircle2 != -1) {
+                        System.out.println("jack move sent");
+                        fadeTransitionCard.jumpTo(Duration.ZERO);
+                        fadeTransitionCard.stop();
+                        fadeTransitionGrid.jumpTo(Duration.ZERO);
+                        fadeTransitionGrid.stop();
+                        fadeTransitionCircle1.jumpTo(Duration.ZERO);
+                        fadeTransitionCircle1.stop();
+                        fadeTransitionCircle2.jumpTo(Duration.ZERO);
+                        fadeTransitionCircle2.stop();
+                        colIndexCircle2 = -1;
+                        rowIndexCircle2 = -1;
+                        yourTurn = false;
+                    } else {
+                        System.err.println("didn`t select two pieces for jack");
+                    }
+                } else {
+                        System.out.println("simple move sent");
+                        colIndexField = -1;
+                        rowIndexField = -1;
+                        fadeTransitionCard.jumpTo(Duration.ZERO);
+                        fadeTransitionCard.stop();
+                        fadeTransitionGrid.jumpTo(Duration.ZERO);
+                        fadeTransitionGrid.stop();
+                        fadeTransitionCircle1.jumpTo(Duration.ZERO);
+                        fadeTransitionCircle1.stop();
+                        yourTurn = false;
                 }
             }
         }
-
+        rowIndexCircle1 = -1;
+        colIndexCircle1 = -1;
     }
+
 
     private void startFadeTransitionCard(ImageView imageViewBlink) {
         if (fadeTransitionCard != null) {
@@ -281,6 +308,7 @@ public class GameWindow2Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        yourTurn = true;
         setOnHome();
         makeSingleMove(0,0,15);
         setAllCardImageViews();
@@ -301,7 +329,7 @@ public class GameWindow2Controller implements Initializable {
         imageViewCard4.setImage(image1);
         imageViewCard5.setImage(image1);
         String[] cardddss = new String[]{"ACEE", "KING", "THRE", "TWOO", "NINE", "FOUR"};
-        //setCardArray(cardddss);
+        setHand(cardddss);
     }
 
     /**
@@ -389,26 +417,17 @@ public class GameWindow2Controller implements Initializable {
      * client game sends the cards for this round to the gui here
      * @param cards these cards are the hand for this round
      */
-    public void setCardArray(String[] cards) {
+    public void setHand(String[] cards) {
         this.cardArray = cards;
         int count = 0;
         for(String card : cardArray) {
-           URL url = getImageUrl(card);
-
+           URL url = CardUrl.getURL(card);
            Image image = new Image(url.toString());
            allCardImageViews[count].setImage(image);
            count++;
        }
     }
 
-    /**
-     * get the url of the image to display in gui
-     * @param card ACEE, KING, THRE etc.
-     * @return ace.png, king.png, thre.png etc.
-     */
-    private URL getImageUrl(String card) {
-        return CardUrl.getURL(card);
-    }
 
     public void removeCard(String card) {
         for (int i = 0; i < cardArray.length; i++) {
@@ -420,7 +439,13 @@ public class GameWindow2Controller implements Initializable {
         }
     }
 
+    public void setYourTurn(boolean value) {
+        this.yourTurn = value;
+    }
+
     private void setCardInvisible(int i) {
         allCardImageViews[i].setBlendMode(BlendMode.DARKEN);
     }
+
+
 }
