@@ -2,7 +2,9 @@ package jDogs.gui;
 
 import jDogs.ClientGame;
 import jDogs.board.Board;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
@@ -15,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
@@ -56,14 +60,24 @@ public class GameWindow2Controller implements Initializable {
     @FXML
     private HBox playerDisplay;
 
+
+    @FXML
+    private ImageView imageViewCard0;
+
+
     @FXML
     private FadeTransition fadeTransitionGrid;
+
+    @FXML
+    private FadeTransition fadeTransitionCircle1;
+
+    @FXML
+    private FadeTransition fadeTransitionCircle2;
 
     private Group circleGroup;
 
     private AdaptToGui adaptToGui;
-    private FadeTransition fadeTransitionCircle1;
-    private FadeTransition fadeTransitionCircle2;
+
     private boolean jackIsSelected;
 
     @FXML
@@ -115,20 +129,20 @@ public class GameWindow2Controller implements Initializable {
             } else {
                 if (clickedNode instanceof Pane) {
 
-                        // stop first field blinking if one clicks another field
-                        if (fadeTransitionGrid != null) {
-                            fadeTransitionGrid.jumpTo(Duration.ZERO);
-                            fadeTransitionGrid.stop();
-                        }
-                        Integer colIndex = GridPane.getColumnIndex(clickedNode);
-                        Integer rowIndex = GridPane.getRowIndex(clickedNode);
-                        System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
-                        int clicked = event.getClickCount();
-                        fadeTransitionGrid = new FadeTransition(Duration.seconds(0.9), clickedNode);
-                        fadeTransitionGrid.setFromValue(1.0);
-                        fadeTransitionGrid.setToValue(0.0);
-                        fadeTransitionGrid.setCycleCount(Animation.INDEFINITE);
-                        fadeTransitionGrid.play();
+                    // stop first field blinking if one clicks another field
+                    if (fadeTransitionGrid != null) {
+                        fadeTransitionGrid.jumpTo(Duration.ZERO);
+                        fadeTransitionGrid.stop();
+                    }
+                    Integer colIndex = GridPane.getColumnIndex(clickedNode);
+                    Integer rowIndex = GridPane.getRowIndex(clickedNode);
+                    System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
+                    int clicked = event.getClickCount();
+                    fadeTransitionGrid = new FadeTransition(Duration.seconds(0.9), clickedNode);
+                    fadeTransitionGrid.setFromValue(1.0);
+                    fadeTransitionGrid.setToValue(0.0);
+                    fadeTransitionGrid.setCycleCount(Animation.INDEFINITE);
+                    fadeTransitionGrid.play();
                 }
             }
         }
@@ -140,6 +154,30 @@ public class GameWindow2Controller implements Initializable {
         jackIsSelected = false;
         setOnHome();
         makeSingleMove(0,0,7);
+        String path1 = "src/main/resources/4C.png";
+
+        URL url = getUrl(path1);
+
+        Image image1 = new Image(url.toString());
+
+        imageViewCard0.setImage(image1);
+        imageViewCard0.toFront();
+
+        leftBoardSide.getChildren().add(new ImageView(image1));
+
+    }
+
+    private URL getUrl(String path1) {
+        // activate Window
+        //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
+        URL url = null;
+        try {
+            return Paths.get(path1).toUri().toURL();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
