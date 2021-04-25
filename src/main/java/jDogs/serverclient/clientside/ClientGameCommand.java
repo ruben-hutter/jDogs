@@ -53,14 +53,12 @@ public class ClientGameCommand {
             case "ROUN":
                 //TODO received hand of cards display in Game GUI
                 clientGame.setCards(text.substring(5));
-
-
                 break;
 
             case "CARD":
                 clientGame.remove(text.substring(5));
                 break;
-
+            //TODO delete this
             case "HAND":
                 clientGame.printCards();
                 break;
@@ -71,12 +69,6 @@ public class ClientGameCommand {
                 clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
                 clientGame.printGameState();
 
-              /*  Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
-
-               */
-
-                //details: who makes the first move, who 'sits' where, how many cards do you get in the first round(or do you always get 6?)
                 break;
 
             case "MOVE": // MOVE YELO-1 B20
@@ -103,7 +95,8 @@ public class ClientGameCommand {
 
             case "JACK":
                 //TODO make a special move in the gui
-
+                break;
+            //TODO delete this
             case "BORD":
                 clientGame.printGameState();
                 break;

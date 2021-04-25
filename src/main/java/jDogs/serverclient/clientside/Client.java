@@ -53,6 +53,7 @@ public class Client {
         this.portnumber = Main.getInstance().getPort();
 
 
+
         this.receiveQueue = new Queuejd();
         this.sendQueue = new Queuejd();
         this.keyBoardInQueue = new Queuejd();

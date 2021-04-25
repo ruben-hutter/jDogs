@@ -1,6 +1,8 @@
 package jDogs.gui;
 
+import jDogs.ClientGame;
 import jDogs.board.Board;
+import jDogs.serverclient.clientside.Client;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
@@ -9,7 +11,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.BlendMode;
@@ -89,6 +94,9 @@ public class GameWindow2Controller implements Initializable {
 
     @FXML
     private ImageView imageViewCard2;
+
+    @FXML
+    private Label nameLabel;
 
     @FXML
     private FadeTransition fadeTransitionGrid;
@@ -283,21 +291,24 @@ public class GameWindow2Controller implements Initializable {
                         System.out.println("DESTINY POS " + destinyPos);
                         String pieceID = getPieceIDOnPane(colIndexCircle1, rowIndexCircle1);
 
+                        pieceID = "" + (Integer.parseInt(pieceID) % 4);
+
                         System.out.println("PIECE ID " + pieceID);
                         String newPos;
 
                         if (destinyPos >= 64) {
                             destinyPos = destinyPos - 64;
-                            newPos = "A" + destinyPos;
+                            newPos = "A0" + destinyPos;
                         } else {
                             newPos = "B" + destinyPos;
+                            if (destinyPos < 10) {
+                                newPos = "B0"+destinyPos;
+                            }
                         }
-                        System.out.println("MOVE " + cardClicked + " " + color + "-"
-                                + pieceID + " " + newPos);
-                    /*Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
-                                    + pieceID + " " + newPos);
+                    Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
+                                    + color + "-" + pieceID + " " + newPos);
 
-                     */
+
                         colIndexField = -1;
                         rowIndexField = -1;
                         fadeTransitionCard.jumpTo(Duration.ZERO);
@@ -314,7 +325,6 @@ public class GameWindow2Controller implements Initializable {
             }
         }
         System.err.println("INFO not your turn or no card selected");
-
     }
 
     /**
@@ -356,23 +366,17 @@ public class GameWindow2Controller implements Initializable {
         adaptToGui = new AdaptToGui();
 
 
-        yourTurn = true;
-        playerNr = 0;
-
-        /*
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
 
-         */
-
         color = ColorAbbreviations.values()[playerNr].toString();
 
-
         setOnHome();
-        makeSingleMoveTrack(0,0,15);
         setAllCardImageViews();
+
+        nameLabel.setText(Client.getInstance().getNickname());
 
 
 
@@ -409,7 +413,7 @@ public class GameWindow2Controller implements Initializable {
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorTokens.getColor());
                 circle.setId("" + (count + 1));
-                System.out.println("circle ids " + (count + 1));
+                System.out.println("circle ids " + (count));
                 gridPane.add(circle, homeArray[count].getX(), homeArray[count].getY());
                 count++;
             }
@@ -432,28 +436,39 @@ public class GameWindow2Controller implements Initializable {
         }
     }
 
-
+    /**
+     * remove a card from deck by making card blended
+     * @param card
+     */
     public void removeCard(String card) {
         for (int i = 0; i < cardArray.length; i++) {
             if (cardArray[i] != null && cardArray[i].equals(card)) {
                 cardArray[i] = null;
-                setCardInvisible(i);
+                setCardBlended(i);
                 System.out.println("card " + card + " was removed from deck");
             }
         }
     }
-
     /**
-     * after using card set card invisible
+     * after using card set card blended
      * @param i == number of card in array
      */
-    private void setCardInvisible(int i) {
+    private void setCardBlended(int i) {
         allCardImageViews[i].setBlendMode(BlendMode.DARKEN);
     }
 
+    /**
+     * on true: allows this user to make a move
+     * @param value true, if it`s his or her turn
+     */
     public void setYourTurn(boolean value) {
         //TODO send message to user in GUI : your turn
         this.yourTurn = value;
+        if (yourTurn) {
+            System.out.println("your turn message arrived");
+            Alert alert = new Alert(AlertType.INFORMATION,"It is your turn");
+            alert.show();
+        }
     }
 
     /**
@@ -463,11 +478,25 @@ public class GameWindow2Controller implements Initializable {
      * @param newPosition position nr on server
      */
     public void makeSingleMoveTrack(int playerNr, int pieceID, int newPosition) {
-        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
+        String circleID = getCircleID(playerNr, pieceID);
         System.out.println("circle ID for makeSingleMoveTrack " + circleID);
         FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
         makeSingleMove(circleID, newPos);
 
+    }
+
+    /**
+     * returns the ID given to the piece in gui at the beginning(by command setOnHome())
+      * @param playerNr 0-3
+     * @param pieceID 0-3
+     * @return circleID for circle in gui
+     */
+    private String getCircleID(int playerNr, int pieceID) {
+        if (playerNr == 0) {
+            return "" + (1 * pieceID);
+        } else {
+            return "" + (playerNr * 4 + pieceID);
+        }
     }
 
     private void makeSingleMove(String circleID, FieldOnBoard newPos) {

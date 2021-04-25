@@ -20,10 +20,9 @@ public class Main {
 
     /**
      * Starts the server or the client, given the right arguments
-     * @param args client <hostadress>:<port> <username> | server <port>
+     * @param args client <hostadress>:<port> <username>  server <port>
      */
     public static void main(String[] args) {
-        //client <hostadress>:<port> <username>  server <port>
         System.out.println(args[0]);
         System.out.println(args[1]);
 
