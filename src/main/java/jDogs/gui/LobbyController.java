@@ -167,7 +167,6 @@ public class LobbyController implements Initializable {
      */
     @FXML
     void newGameButtonOnAction(ActionEvent event) {
-        System.out.println("started new game action");
         String dialogPath = "src/main/resources/createGameWindow.fxml";
         URL url = null;
         try {

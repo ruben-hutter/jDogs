@@ -1,19 +1,24 @@
 package jDogs.gui;
 
-import jDogs.ClientGame;
 import jDogs.board.Board;
 import jDogs.serverclient.clientside.Client;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -27,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameWindow2Controller implements Initializable {
@@ -76,7 +82,6 @@ public class GameWindow2Controller implements Initializable {
     @FXML
     private Button makeMoveButton;
 
-
     @FXML
     private ImageView imageViewCard1;
 
@@ -112,6 +117,9 @@ public class GameWindow2Controller implements Initializable {
 
     private boolean yourTurn;
 
+    private Stage allCardsDialog;
+    private AllCardsDialogController allCardsDialogController;
+
     @FXML
     void exitMenuOnAction(ActionEvent event) {
 
@@ -133,7 +141,6 @@ public class GameWindow2Controller implements Initializable {
             cardClicked = cardArray[0];
 
         }
-        System.out.println("clicked card 0");
     }
 
 
@@ -142,11 +149,36 @@ public class GameWindow2Controller implements Initializable {
         if (yourTurn && cardArray.length > 1 && cardArray[1] != null) {
             startFadeTransitionCard(imageViewCard1);
             cardClicked = cardArray[1];
+            if (cardClicked.equals("JOKE")) {
+                String allCardsDialogPath = "src/main/resources/createGameWindow.fxml";
+                URL url = null;
+                try {
+                    url = Paths.get(allCardsDialogPath).toUri().toURL();
+                } catch (
+                        MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                FXMLLoader allCardsDialog = new FXMLLoader(url);
 
+                allCardsDialogController = allCardsDialog.getController();
+                DialogPane dialogPane = null;
+                try {
+                    dialogPane = allCardsDialog.load();
+                } catch (
+                        IOException e) {
+                    e.printStackTrace();
+                }
+                this.allCardsDialog = new Stage();
+                Scene allCardsScene = new Scene(dialogPane);
+                this.allCardsDialog.setScene(allCardsScene);
+                this.allCardsDialog.show();
+
+
+            }
         }
-        System.out.println("clicked card 1");
-
     }
+
+
 
     @FXML
     void onMouseClick2(MouseEvent event) {
@@ -364,19 +396,25 @@ public class GameWindow2Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adaptToGui = new AdaptToGui();
+        // delete
+        playerNr = 0;
+        yourTurn = true;
+        color = "YELO";
+        //delete
 
-
-        playerNr = ClientGame.getInstance().getYourPlayerNr();
+       /* playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
 
         color = ColorAbbreviations.values()[playerNr].toString();
+        nameLabel.setText(Client.getInstance().getNickname());
+
+        */
 
         setOnHome();
         setAllCardImageViews();
 
-        nameLabel.setText(Client.getInstance().getNickname());
 
 
 

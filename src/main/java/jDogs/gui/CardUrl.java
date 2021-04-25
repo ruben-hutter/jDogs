@@ -5,6 +5,10 @@ import java.net.URL;
 import java.nio.file.Paths;
 
 public class CardUrl {
+    //TODO here cardURLArray to getback all urls for all dialog controller to go through all cards
+
+    String[] cardURL = new String[14];
+
 
     public static URL getURL(String card) {
         String url = null;
@@ -78,6 +82,10 @@ public class CardUrl {
             e.printStackTrace();
             return null;
         }
+
+    }
+
+    public static String[] getURLArray() {
 
     }
 }
