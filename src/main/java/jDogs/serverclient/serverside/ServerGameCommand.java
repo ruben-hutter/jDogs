@@ -103,7 +103,8 @@ public class ServerGameCommand {
                                     nickname);
                             break;
                         default:
-                            rulesCheck.checkMove(toCheckMove, gameState, gameFile, mainGame, nickname);
+                            rulesCheck.checkMove(toCheckMove, gameState, gameFile, mainGame,
+                                    nickname);
                     }
                 }
                 break;

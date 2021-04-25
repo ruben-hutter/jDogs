@@ -77,13 +77,13 @@ public class RulesCheck {
         this.mainGame = mainGame;
         if (completeMove.length() == 15) {
             String card = null;
-            int pieceID = 0;
+            int pieceID = -1;
             String newPosition1 = null;
-            int newPosition2 = 0;
+            int newPosition2 = -1;
             String actualPosition1 = null;
-            int actualPosition2 = 0;
+            int actualPosition2 = -1;
             boolean hasMoved = false;
-            int startingPosition = 0;
+            int startingPosition = -1;
             Player ownPlayer = null;
             try {
                 card = completeMove.substring(0, 4);
@@ -91,11 +91,6 @@ public class RulesCheck {
                 pieceID = Integer.parseInt(completeMove.substring(10, 11));
                 newPosition1 = completeMove.substring(12, 13);
                 newPosition2 = Integer.parseInt(completeMove.substring(13));
-                actualPosition1 = "";
-                actualPosition2 = -1;
-                hasMoved = false;
-                startingPosition = -1;
-                ownPlayer = null;
 
                 if (newPosition1.equals("A")) {
                     sendToThisClient.enqueue("INFO You can't move a piece in home.");
@@ -120,8 +115,8 @@ public class RulesCheck {
                 sendToThisClient.enqueue("INFO format exception in checkMove");
                 return;
             }
-            //TODO find better place for this; if player finished, and teamMode on, he can play 2 colors
-            //prevent players from moving with others pieces
+            // TODO if player finished, and teamMode on, he can play 2 colors
+            // prevent players from moving with others pieces
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 sendToThisClient.enqueue("INFO you cannot move this color");
                 return;
@@ -528,12 +523,20 @@ public class RulesCheck {
 
     /**
      * Checks if newPosition is ok with played card
+     * @param card played card
+     * @param actualPosition1 A, B or C
+     * @param actualPosition2 int between 0-3 or on track 0-63
+     * @param newPosition1 A, B or C
+     * @param newPosition2 int between 0-3 or on track 0-63
+     * @param startingPosition player's startingPosition (0, 16, ...)
+     * @param hasMoved false if player is or has just left home
+     * @return false if card can't correspond with destination
      */
     private boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
             boolean hasMoved) {
-
         int[] cardValues = getCardValues(card);
+        int difference;
         if (cardValues == null) {
             return false;
         }
@@ -543,18 +546,21 @@ public class RulesCheck {
                     && newPosition2 == startingPosition;
         } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
-            int difference;
             if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
                     if (cardValue == -4) {
-                        difference = (newPosition2 - actualPosition2) % 64;
+                        difference = Math.floorMod(newPosition2 - actualPosition2, -64);
+                        if (difference == cardValue) {
+                            return true;
+                        }
+                    } else if (cardValue == 4) {
+                        difference = Math.floorMod(newPosition2 - actualPosition2, 64);
                         if (difference == cardValue) {
                             return true;
                         }
                     }
                 }
             }
-            // sets the difference to a possible card value
             difference = Math.floorMod(newPosition2 - actualPosition2, 64);
             for (int cardValue : cardValues) {
                 if (cardValue == difference) {
@@ -563,7 +569,6 @@ public class RulesCheck {
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // go heaven
-            int difference;
             if (!hasMoved) {
                 return false;
             }
@@ -578,14 +583,13 @@ public class RulesCheck {
                         return cardValue == difference;
                     }
                 }
-            } else {
-                difference = Math.floorMod(startingPosition - actualPosition2, 64);
-                difference += newPosition2 + 1;
-                for (int cardValue : cardValues) {
-                    return cardValue == difference;
-                }
+            }
+            difference = Math.floorMod(startingPosition - actualPosition2, 64) + newPosition2 + 1;
+            for (int cardValue : cardValues) {
+                return cardValue == difference;
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
+            // TODO piecesOnPath();
             return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
         }
         return false;
