@@ -597,44 +597,97 @@ public class RulesCheck {
 
     /**
      * Checks if there is a block on the way to new position
+     * @param card played card
+     * @param actualPosition1 A, B or C
+     * @param actualPosition2 int between 0-3 or 0-63 on track
+     * @param newPosition1 A, B or C
+     * @param newPosition2 int between 0-3 or 0-63 on track
+     * @param player this player
      * @return true if you are blocked
      */
     private boolean checkForBlock(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, Player player) {
+        // to adapt with 6 players
         int [] startingPositions = new int[] {0, 16, 32, 48};
+        int[] cardValues = getCardValues(card);
         Piece pieceOnStart;
         int convertActualPos;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
-            // TODO four case -4
-            for (int startingPosition : startingPositions) {
-                if (newPosition2 > actualPosition2) {
-                    if (actualPosition2 < startingPosition && startingPosition < newPosition2) {
-                        pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
-                                startingPosition);
-                        if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                                == alliance4.getAlliance(startingPosition)) {
-                            if (!pieceOnStart.getHasMoved()) {
-                                return true;
+            if (card.equals("FOUR")) {
+                assert cardValues != null;
+                for (int cardValue : cardValues) {
+                    if (cardValue == -4) {
+                        for (int startingPosition : startingPositions) {
+                            if (actualPosition2 >= 4 && newPosition2 <= startingPosition
+                                    && startingPosition <= actualPosition2) {
+                                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                                        startingPosition);
+                                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
+                                        == alliance4.getAlliance(startingPosition)
+                                        && !pieceOnStart.getHasMoved()) {
+                                    return true;
+                                }
+                            } else if (actualPosition2 < 4 && startingPosition <= actualPosition2
+                                    && actualPosition2 <= newPosition2) {
+                                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                                        startingPosition);
+                                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
+                                        == alliance4.getAlliance(startingPosition)
+                                        && !pieceOnStart.getHasMoved()) {
+                                    return true;
+                                }
                             }
                         }
-                    }
-                } else {
-                    convertActualPos = actualPosition2 - 64;
-                    if (convertActualPos < startingPosition && startingPosition < newPosition2) {
-                        pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
-                                startingPosition);
-                        if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                                == alliance4.getAlliance(startingPosition)) {
-                            if (!pieceOnStart.getHasMoved()) {
-                                return true;
-                            }
+                    } else if (cardValue == 4) {
+                        if (checkForBlockHelper(actualPosition2, newPosition1, newPosition2, player,
+                                startingPositions)) {
+                            return true;
                         }
                     }
                 }
             }
+            return checkForBlockHelper(actualPosition2, newPosition1, newPosition2, player,
+                    startingPositions);
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+            // go heaven
             // TODO
+        }
+        return false;
+    }
+
+    /**
+     * Helper method for block check, for positive card values
+     * @param actualPosition2 int between 0-63
+     * @param newPosition1 B or C
+     * @param newPosition2 int between 0-3 or 0-63 on track
+     * @param player this player
+     * @param startingPositions an int[] with the possible starting positions
+     * @return true if the move is blocked and can't be done
+     */
+    private boolean checkForBlockHelper(int actualPosition2, String newPosition1, int newPosition2,
+            Player player, int[] startingPositions) {
+        Piece pieceOnStart;
+        for (int startingPosition : startingPositions) {
+            if (actualPosition2 < startingPosition && startingPosition
+                    <= newPosition2) {
+                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                        startingPosition);
+                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
+                        == alliance4.getAlliance(startingPosition)
+                        && !pieceOnStart.getHasMoved()) {
+                    return true;
+                }
+            } else if (newPosition2 < actualPosition2 && startingPosition
+                    <= newPosition2) {
+                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                        startingPosition);
+                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
+                        == alliance4.getAlliance(startingPosition)
+                        && !pieceOnStart.getHasMoved()) {
+                    return true;
+                }
+            }
         }
         return false;
     }
