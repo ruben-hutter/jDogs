@@ -25,8 +25,8 @@ public class AllCardsDialogController implements Initializable {
 
     @FXML
     void chooseButtonOnAction(ActionEvent event) {
-
-
+        String card = CardUrl.getCardNameByNumber(count % 13);
+        GUIManager.getInstance().gameWindow2Controller.setCardFromJoker(card);
     }
 
 
@@ -34,7 +34,6 @@ public class AllCardsDialogController implements Initializable {
     void setCardImage(MouseEvent event) {
         cardImage = new ImageView(new Image(CardUrl.getURLArray()[count]));
         count++;
-
     }
 
     @Override

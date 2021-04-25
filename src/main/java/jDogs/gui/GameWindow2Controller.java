@@ -419,7 +419,7 @@ public class GameWindow2Controller implements Initializable {
 
 
         //TODO delete and give Array from ClientGame
-        String[] cardddss = new String[]{"ACEE", "KING", "THRE", "TWOO", "NINE", "FOUR"};
+        String[] cardddss = new String[]{"JOKE", "JOKE", "JOKE", "JOKE", "NINE", "FOUR"};
         setHand(cardddss);
     }
 
@@ -571,5 +571,14 @@ public class GameWindow2Controller implements Initializable {
         FieldOnBoard homeField = adaptToGui.getHomeField(startPos,pieceID);
         makeSingleMove(circleID, homeField);
 
+    }
+
+    /**
+     * this method sets the card the user chooses because he had a joker
+     * @param card ACEE,......,KING (without JOKE)
+     */
+    public void setCardFromJoker(String card) {
+        System.out.println("card chosen " + card);
+        cardClicked = card;
     }
 }
