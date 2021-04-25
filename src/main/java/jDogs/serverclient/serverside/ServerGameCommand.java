@@ -2,7 +2,6 @@ package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
 import jDogs.Alliance_4;
-import jDogs.player.Piece;
 import jDogs.serverclient.helpers.Queuejd;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
@@ -85,7 +84,7 @@ public class ServerGameCommand {
                     Player player = gameFile.getPlayer(playerName);
                     logger.debug("Player: " + player);
                     cardToEliminate = text.substring(5, 9);
-                    String toCheckMove = rulesCheck.checkCard(player, text, gameState, nickname);
+                    String toCheckMove = rulesCheck.checkCard(text, gameState, nickname);
                     if (toCheckMove == null) {
                         sendToThisClient.enqueue("INFO Invalid card or no hand");
                         logger.debug("You don't have this card on your hand");

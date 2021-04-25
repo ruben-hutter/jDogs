@@ -12,7 +12,6 @@ public class RulesCheck {
 
     private static final Logger logger = LogManager.getLogger(RulesCheck.class);
     private final Queuejd sendToThisClient;
-
     private String cardToEliminate;
     Alliance_4 alliance4;
     private GameState gameState;
@@ -25,12 +24,10 @@ public class RulesCheck {
 
     /**
      * Checks if the given card is in the players hand
-     *
-     * @param player
-     * @param text
-     * @return
+     * @param text MOVE command from user
+     * @return null if invalid card or the move (with translation if JOKE)
      */
-    protected String checkCard(Player player, String text, GameState gameState, String nickname) {
+    protected String checkCard(String text, GameState gameState, String nickname) {
         String card = text.substring(5, 9);
         if (card.equals("ACE1") || card.equals("AC11")) {
             card = "ACEE";
