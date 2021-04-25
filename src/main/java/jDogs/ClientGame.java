@@ -2,10 +2,10 @@ package jDogs;
 
 import jDogs.board.Board;
 import jDogs.gui.GUIManager;
-import jDogs.gui.Token;
 import jDogs.player.Player;
 import jDogs.serverclient.clientside.Client;
 import java.util.ArrayList;
+import javafx.application.Platform;
 
 /**
  * Generates the board and the players for a game.
@@ -25,6 +25,9 @@ public class ClientGame {
         numPlayers = playerNames.length;
         createGame(playerNames);
         instance = this;
+
+        //move to game-scene in gui manager
+        Platform.runLater(() -> GUIManager.getInstance().startGame());
 
         for (int i = 0; i < playerNames.length; i++) {
             System.out.println(playerNames[i]);
@@ -81,12 +84,14 @@ public class ClientGame {
      * @return a player
      */
     public Player getPlayer(Alliance_4 alliance4) {
-        for (Player player : players) {
-            if (player.getAlliance() == alliance4) {
-                return player;
-            }
-        }
-        return null;
+        int count = 0;
+       for (Alliance_4 alliance : Alliance_4.values()) {
+           if (alliance.equals(alliance4)) {
+               return players[count];
+           }
+           count++;
+       }
+       return null;
     }
 
     /**
@@ -96,21 +101,43 @@ public class ClientGame {
      * @param newPosition where to put the piece
      */
     public void changePiecePosition(Player player, int pieceID, String newPosition) {
+        int playerNumber = getPlayerByNumber(player);
+        int newPos = Integer.parseInt(newPosition.substring(1));
 
         switch(newPosition.substring(0, 1)) {
             case "A":
+                Platform.runLater(() -> GUIManager.getInstance().
+                        gameWindow2Controller.makeHomeMove(playerNumber, pieceID));
+
                 player.changePositionClient(pieceID, board.allHomeTiles.
                         get(player.getAlliance())[pieceID - 1]);
                 break;
             case "B":
+                Platform.runLater(() -> GUIManager.getInstance().
+                        gameWindow2Controller.makeSingleMoveTrack(playerNumber, pieceID,newPos));
+
                 player.changePositionClient(pieceID, board.allTrackTiles[Integer
                         .parseInt(newPosition.substring(1))]);
                 break;
             case "C":
+                Platform.runLater(() -> GUIManager.getInstance().
+                        gameWindow2Controller.makeHeavenMove(playerNumber, pieceID,newPos));
+
                 player.changePositionClient(pieceID, board.allHeavenTiles.
                         get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
                 break;
         }
+    }
+
+    private int getPlayerByNumber(Player player) {
+        int count = 0;
+        for (Alliance_4 alliance4: Alliance_4.values()) {
+            if (alliance4.equals(player.getAlliance())) {
+                return count;
+            }
+            count++;
+        }
+        return -1;
     }
 
     /**
@@ -119,6 +146,24 @@ public class ClientGame {
      */
     public void setCards(String substring) {
         cards = getCardsArray(substring);
+
+        setCardsInGUI();
+
+    }
+
+    /**
+     * this method sets cards in gui
+     */
+    private void setCardsInGUI() {
+        int count = 0;
+        String[] cardsArray = new String[cards.size()];
+        for (String card : cards) {
+            cardsArray[count] = cards.get(count);
+            count++;
+        }
+
+        Platform.runLater(() -> GUIManager.getInstance().
+                gameWindow2Controller.setHand(cardsArray));
     }
 
     //String hand = number + " ACEE ACEE TENN TWOO EIGT NINE";
@@ -154,6 +199,8 @@ public class ClientGame {
      */
     public void remove(String card) {
         cards.remove(card);
+        Platform.runLater(() -> GUIManager.getInstance().
+                gameWindow2Controller.removeCard(card));
     }
 
     public int getNumPlayers() {
@@ -165,7 +212,7 @@ public class ClientGame {
         return playerNames;
     }
 
-    public int getPlayerNr() {
+    public int getYourPlayerNr() {
         int count = 0;
         for (String playerName : playerNames) {
             if (playerName.equals(Client.getInstance().getNickname())) {
@@ -174,10 +221,5 @@ public class ClientGame {
             count++;
         }
         return -1;
-    }
-
-    public String getPlayerColor() {
-        int number = getPlayerNr();
-        return players[number].getAlliance().toString();
     }
 }

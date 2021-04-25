@@ -26,7 +26,7 @@ public class GUIManager extends Application {
     public LobbyController lobbyController;
     FXMLLoader gameLoader;
     private Client client;
-    private GameWindow2Controller gameWindow2Controller;
+    public GameWindow2Controller gameWindow2Controller;
 
     public static void main(String[] args) {
         launch(args);

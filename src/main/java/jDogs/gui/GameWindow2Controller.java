@@ -1,30 +1,20 @@
 package jDogs.gui;
 
-import jDogs.Alliance_4;
-import jDogs.ClientGame;
 import jDogs.board.Board;
-import jDogs.serverclient.clientside.Client;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -370,7 +360,7 @@ public class GameWindow2Controller implements Initializable {
         playerNr = 0;
 
         /*
-        playerNr = ClientGame.getInstance().getPlayerNr();
+        playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
@@ -381,7 +371,7 @@ public class GameWindow2Controller implements Initializable {
 
 
         setOnHome();
-        makeSingleMove(0,0,15);
+        makeSingleMoveTrack(0,0,15);
         setAllCardImageViews();
 
 
@@ -426,36 +416,6 @@ public class GameWindow2Controller implements Initializable {
         }
     }
 
-    /**
-     * client game sends a move (which was sent from server) to the gui
-     * @param playerNr yellow = player1, green = player2, blue = player3, red = player4
-     * @param pieceID 0,1,2,3
-     * @param newPosition position nr on server
-     */
-    public void makeSingleMove(int playerNr, int pieceID, int newPosition) {
-        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
-        System.out.println("circle ID " + circleID);
-        FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
-
-        for (Node node : gridPane.getChildren()) {
-            if (node instanceof Circle) {
-                Circle circle = (Circle) node;
-                if (circle.getId().equals(circleID)) {
-                    gridPane.getChildren().remove(circle);
-                    System.out.println("removed circle");
-                    gridPane.add(circle,newPos.getX(), newPos.getY());
-                    break;
-                }
-            }
-        }
-    }
-
-    public void sendHome() {
-    }
-
-    public void setJack() {
-
-    }
 
     /**
      * client game sends the cards for this round to the gui here
@@ -465,11 +425,11 @@ public class GameWindow2Controller implements Initializable {
         this.cardArray = cards;
         int count = 0;
         for(String card : cardArray) {
-           URL url = CardUrl.getURL(card);
-           Image image = new Image(url.toString());
-           allCardImageViews[count].setImage(image);
-           count++;
-       }
+            URL url = CardUrl.getURL(card);
+            Image image = new Image(url.toString());
+            allCardImageViews[count].setImage(image);
+            count++;
+        }
     }
 
 
@@ -483,13 +443,64 @@ public class GameWindow2Controller implements Initializable {
         }
     }
 
-    public void setYourTurn(boolean value) {
-        this.yourTurn = value;
-    }
+
 
     private void setCardInvisible(int i) {
         allCardImageViews[i].setBlendMode(BlendMode.DARKEN);
     }
 
+    public void setYourTurn(boolean value) {
+        //TODO send message to user in GUI : your turn
+        this.yourTurn = value;
+    }
 
+    /**
+     * client game sends a move (which was sent from server) to the gui
+     * @param playerNr yellow = player1, green = player2, blue = player3, red = player4
+     * @param pieceID 0,1,2,3
+     * @param newPosition position nr on server
+     */
+    public void makeSingleMoveTrack(int playerNr, int pieceID, int newPosition) {
+        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
+        System.out.println("circle ID for makeSingleMoveTrack " + circleID);
+        FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
+        makeSingleMove(circleID, newPos);
+
+    }
+
+    private void makeSingleMove(String circleID, FieldOnBoard newPos) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Circle) {
+                Circle circle = (Circle) node;
+                if (circle.getId().equals(circleID)) {
+                    gridPane.getChildren().remove(circle);
+                    System.out.println("removed circle");
+                    gridPane.add(circle,newPos.getX(), newPos.getY());
+                    break;
+                }
+            }
+        }
+    }
+
+
+    public void sendHome() {
+    }
+
+    public void setJack() {
+
+    }
+
+    public void makeHeavenMove(int playerNumber, int pieceID, int newPos) {
+        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
+        FieldOnBoard heavenField = adaptToGui.getHeavenField(playerNumber, newPos);
+        makeSingleMove(circleID,heavenField);
+    }
+
+    public void makeHomeMove(int playerNumber, int pieceID) {
+        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
+        int startPos = playerNumber * 16;
+        FieldOnBoard homeField = adaptToGui.getHomeField(startPos,pieceID);
+        makeSingleMove(circleID, homeField);
+
+    }
 }

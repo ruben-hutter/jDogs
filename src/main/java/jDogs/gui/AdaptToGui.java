@@ -212,15 +212,14 @@ public class AdaptToGui {
     }
 
     /**
-     * get the heaven tile
-     * @param number number in order of players
-     *               e.g. "Johanna Ruben Gregor Joe" Johanna`s
-     *               heaven tiles are accessible with '0'
-     * @return heaven tile coordinates on gui of this player
+     * translates number on server to heaven field in gui
+     * @param playerNumber 0-3(for 4 players)
+     * @param pos 0-3 (4 heaven fields)
+     * @return position in gui
      */
-    public FieldOnBoard[] getHeavenField(int number) {
-        FieldOnBoard[] array = fieldsOnHeaven[number];
-        return array;
+    public FieldOnBoard getHeavenField(int playerNumber, int pos) {
+        FieldOnBoard fieldOnBoard = fieldsOnHeaven[playerNumber][pos];
+        return fieldOnBoard;
     }
 
     /**

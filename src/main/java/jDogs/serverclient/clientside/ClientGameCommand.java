@@ -2,8 +2,10 @@ package jDogs.serverclient.clientside;
 
 import jDogs.Alliance_4;
 import jDogs.ClientGame;
+import jDogs.gui.GUIManager;
 import jDogs.gui.GuiParser;
 import jDogs.serverclient.helpers.Queuejd;
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +43,8 @@ public class ClientGameCommand {
             case "TURN":
                 if (text.length() == command.length()) {
                     System.out.println("TURN: your turn");
+                    Platform.runLater(() -> GUIManager.getInstance().
+                            gameWindow2Controller.setYourTurn(true));
                 } else {
                     System.out.println("it is " + text.substring(5) + "`s turn");
                 }
@@ -49,6 +53,7 @@ public class ClientGameCommand {
             case "ROUN":
                 //TODO received hand of cards display in Game GUI
                 clientGame.setCards(text.substring(5));
+
 
                 break;
 
@@ -62,6 +67,7 @@ public class ClientGameCommand {
 
             case "GAME":
                 //TODO receive game details when game starts and display in Game GUI
+
                 clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
                 clientGame.printGameState();
 
@@ -94,6 +100,9 @@ public class ClientGameCommand {
                         break;
                 }
                 break;
+
+            case "JACK":
+                //TODO make a special move in the gui
 
             case "BORD":
                 clientGame.printGameState();
