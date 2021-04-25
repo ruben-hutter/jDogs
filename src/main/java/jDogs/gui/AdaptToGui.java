@@ -50,7 +50,7 @@ public class AdaptToGui {
         int highestPoint = 1;
         int lowestPoint = 18;
 
-        //left side from yellow to green (4/2,4,3,4,5....4,17)
+        //left side from yellow to green (4/2,4/3,4/5....4/17)
 
 
         for (int i = 0; i < 16; i++) {
@@ -87,6 +87,7 @@ public class AdaptToGui {
      * creates all the fields on heaven
      * @param boardSize size of the board(4/6)
      */
+    //TODO update with new values
     public void createFieldsOnHeaven (int boardSize) {
 
        switch(boardSize) {
@@ -258,18 +259,14 @@ public class AdaptToGui {
         }
         return home;
     }
-
+    //TODO delete psvm
     public static void main(String[] args) {
       AdaptToGui adaptToGui = new AdaptToGui();
-      FieldOnBoard[] test = adaptToGui.getHomeFieldArray();
-      int count = 0;
-      for (FieldOnBoard fieldOnBoard : test) {
-          System.out.println(fieldOnBoard.getX() + " " + fieldOnBoard.getY());
-          count++;
-          if (count % 4 == 0) {
-              System.out.println("new " + (count/4));
-          }
-      }
+      FieldOnBoard fieldOnBoard = new FieldOnBoard(4,2);
+
+      int number = adaptToGui.getPosNumber(fieldOnBoard, 0);
+        System.out.println(number + " number");
+
     }
 
 
@@ -277,7 +274,7 @@ public class AdaptToGui {
 
         FieldOnBoard[] homeFieldArr = new FieldOnBoard[boardSize * Board.NUM_HOME_TILES];
         int count = 0;
-        for (FieldOnBoard fieldOnBoardArray[] : fieldsOnHome) {
+        for (FieldOnBoard[] fieldOnBoardArray : fieldsOnHome) {
 
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 homeFieldArr[count] = fieldOnBoardArray[i];
@@ -286,4 +283,29 @@ public class AdaptToGui {
         }
         return homeFieldArr;
     }
+
+    /**
+     * transform track or heaven field back to position number on server
+     * @param destiny fieldOnBoard, x-Pos & y-Pos
+     * @return position number on server(heaven tracks numbers are from 64 upwards)
+     */
+    public int getPosNumber(FieldOnBoard destiny, int playerNr) {
+        int pos = 0;
+        for (FieldOnBoard field : fieldsOnTrack) {
+            if (field.getX() == destiny.getX() && field.getY() == destiny.getY()) {
+               return pos;
+            }
+            pos++;
+        }
+        pos = 0;
+        FieldOnBoard[] heavenArr = fieldsOnHeaven[playerNr];
+        for (FieldOnBoard field : heavenArr) {
+            if (field.equals(destiny)) {
+               return pos + 64;
+            }
+            pos++;
+        }
+        return -1;
+    }
+
 }

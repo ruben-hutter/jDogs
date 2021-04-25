@@ -2,6 +2,7 @@ package jDogs.gui;
 
 import jDogs.ClientGame;
 import jDogs.board.Board;
+import jDogs.serverclient.clientside.Client;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -39,12 +40,13 @@ public class GameWindow2Controller implements Initializable {
     private AdaptToGui adaptToGui;
     private String[] cardArray;
     private String cardClicked;
-    private double colIndexCircle2;
-    private double rowIndexCircle2;
-    private double rowIndexCircle1;
-    private double colIndexCircle1;
-    private double colIndexField;
-    private double rowIndexField;
+    private int playerNr;
+    private int colIndexCircle2;
+    private int rowIndexCircle2;
+    private int rowIndexCircle1;
+    private int colIndexCircle1;
+    private int colIndexField;
+    private int rowIndexField;
 
     @FXML
     private MenuBar menuBar;
@@ -275,9 +277,14 @@ public class GameWindow2Controller implements Initializable {
                         System.out.println("simple move sent");
 
                         //TODO send from here to server
-                        //FieldOnBoard destiny = new FieldOnBoard(colIndexField, rowIndexField);
+                        FieldOnBoard destiny = new FieldOnBoard(colIndexField, rowIndexField);
+                        int destinyPos = adaptToGui.getPosNumber(destiny, playerNr);
                         String pieceID = getPieceIDOnPane(colIndexCircle1,rowIndexCircle1);
-                    System.out.println("PIECE ID " + pieceID);
+                        System.out.println("PIECE ID " + pieceID);
+
+                    Client.getInstance().sendMessageToServer("MOVE CARD PIECEID NEWPOS");
+
+
                         colIndexField = -1;
                         rowIndexField = -1;
                         fadeTransitionCard.jumpTo(Duration.ZERO);
@@ -302,15 +309,15 @@ public class GameWindow2Controller implements Initializable {
      */
     private String getPieceIDOnPane(double colIndexCircle, double rowIndexCircle) {
        for (Node node : gridPane.getChildren()) {
-           if (node instanceof  Circle) {
-               if (GridPane.getColumnIndex(node) == colIndexCircle && GridPane.getRowIndex(node) == rowIndexCircle) {
+           if (node instanceof Circle) {
+               if (GridPane.getColumnIndex(node) == colIndexCircle
+                       && GridPane.getRowIndex(node) == rowIndexCircle) {
                    Circle circle = (Circle) node;
                    return circle.getId();
                }
            }
        }
-
-        return null;
+       return null;
     }
 
 
@@ -330,7 +337,12 @@ public class GameWindow2Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        yourTurn = true;
+
+        //yourTurn = true;
+        playerNr = ClientGame.getInstance().getPlayerNr();
+        if (playerNr < 0) {
+            System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
+        }
         setOnHome();
         makeSingleMove(0,0,15);
         setAllCardImageViews();
@@ -402,7 +414,6 @@ public class GameWindow2Controller implements Initializable {
     }
 
     public void sendHome() {
-
     }
 
     public void setJack() {

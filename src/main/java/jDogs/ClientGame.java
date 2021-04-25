@@ -4,6 +4,7 @@ import jDogs.board.Board;
 import jDogs.gui.GUIManager;
 import jDogs.gui.Token;
 import jDogs.player.Player;
+import jDogs.serverclient.clientside.Client;
 import java.util.ArrayList;
 
 /**
@@ -162,5 +163,16 @@ public class ClientGame {
 
     public String[] getPlayerNames() {
         return playerNames;
+    }
+
+    public int getPlayerNr() {
+        int count = 0;
+        for (String playerName : playerNames) {
+            if (playerName.equals(Client.getInstance().getNickname())) {
+                return count;
+            }
+            count++;
+        }
+        return -1;
     }
 }

@@ -97,11 +97,11 @@ public class ClientMenuCommand {
                 break;
 
             case "LCHT":
-               /*
+
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayLCHTmsg(text.substring(5)));
 
-                */
+
                 System.out.println("LCHT " + text.substring(5));
                 break;
 
@@ -118,16 +118,10 @@ public class ClientMenuCommand {
 
 
             case "JOIN":
-
-
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
 
-
                 System.out.println("start separate lobby");
-
-
-
 
                 System.out.println("JOIN: " + text.substring(5));
                 break;
