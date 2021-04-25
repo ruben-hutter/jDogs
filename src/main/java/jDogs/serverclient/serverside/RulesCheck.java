@@ -69,6 +69,10 @@ public class RulesCheck {
      * if for the given card you can go to the desired position
      * if somebody is eliminated by the action
      * @param completeMove card piece destination
+     * @param gameState state of the game
+     * @param gameFile the class which saves al the data of the game
+     * @param mainGame class that starts a new game from the lobby
+     * @param nickname name of player
      */
     protected void checkMove(String completeMove, GameState gameState, GameFile gameFile,
             MainGame mainGame, String nickname) { // TWOO YELO-1 B04
@@ -130,8 +134,9 @@ public class RulesCheck {
             }
 
             // if move passes an occupied starting position, and that piece haven't moved
+            assert actualPosition1 != null;
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
-                    ownPlayer)) {
+                    ownPlayer, pieceID)) {
                 sendToThisClient.enqueue("INFO Someone blocks you");
                 return;
             }
@@ -140,11 +145,6 @@ public class RulesCheck {
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
                 sendToThisClient.enqueue("You eliminate yourself!");
                 return;
-            }
-
-            // remove block if piece moves for first time on track
-            if (!hasMoved && actualPosition1.equals("B") && newPosition1.equals("B")) {
-                ownPlayer.getPiece(pieceID).changeHasMoved();
             }
 
             gameFile.sendMessageToParticipants("BORD");
@@ -165,6 +165,10 @@ public class RulesCheck {
     /**
      * Checks move when card JACK is played
      * @param twoPieces pieces to switch position
+     * @param gameState the state of the game
+     * @param gameFile class which saves the game data
+     * @param mainGame class which starts the game from lobby
+     * @param nickname players name
      */
     protected void checkMoveJack(String twoPieces, GameState gameState, GameFile gameFile,
             MainGame mainGame, String nickname) { // JACK YELO-1 BLUE-2
@@ -221,20 +225,13 @@ public class RulesCheck {
 
                 if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
                         || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
-                        || (otherActualPosition1.equals("B")
-                        && otherActualPosition2 == otherStartingPosition
-                        && !otherHasMoved)) {
+                        || (otherActualPosition1.equals("B") && !otherHasMoved)) {
                     sendToThisClient.enqueue("INFO You can't switch this pieces!");
                 } else {
                     assert ownPlayer != null;
                     simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
                     assert otherPlayer != null;
                     simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
-
-                    // remove block if piece moves for first time on track
-                    if (!ownHasMoved && ownActualPosition1.equals("B") && otherActualPosition1.equals("B")) {
-                        ownPlayer.getPiece(ownPieceID).changeHasMoved();
-                    }
 
                     gameFile.sendMessageToParticipants("BORD");
                     //eliminate card
@@ -606,7 +603,7 @@ public class RulesCheck {
      * @return true if you are blocked
      */
     private boolean checkForBlock(String card, String actualPosition1,
-            int actualPosition2, String newPosition1, int newPosition2, Player player) {
+            int actualPosition2, String newPosition1, int newPosition2, Player player, int pieceID) {
         // to adapt with 6 players
         int [] startingPositions = new int[] {0, 16, 32, 48};
         int[] cardValues = getCardValues(card);
@@ -651,7 +648,11 @@ public class RulesCheck {
                     startingPositions);
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // go heaven
-            // TODO
+            for (Piece piece : player.pieces) {
+                if (piece.getPositionServer1().equals("B") && !piece.getHasMoved()) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -694,6 +695,10 @@ public class RulesCheck {
 
     /**
      * Checks if on the destination is already a piece
+     * @param player this player
+     * @param pieceID int 1-4
+     * @param newPosition1 A, B or C
+     * @param newPosition2 int between 0-3 or 0-63 on track
      * @return false if you eliminate yourself
      */
     private boolean checkWhichMove(Player player, int pieceID, String newPosition1,
@@ -769,7 +774,6 @@ public class RulesCheck {
             Piece toEliminate) {
         simpleMove(player, pieceID, newPosition1, newPosition2);
         eliminatePiece(toEliminate);
-        // card is eliminated in simpleMove()
     }
 
     /**
@@ -784,6 +788,11 @@ public class RulesCheck {
         gameState.updatePiecesOnTrack(piece, newPosition1);
 
         String pieceAlliance = convertAlliance(piece.getPieceAlliance());
+
+        // change hasMoved state to true if piece moves for first time on track
+        if (!piece.getHasMoved()) {
+            piece.changeHasMoved();
+        }
 
         // updates client side
         gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
@@ -811,6 +820,8 @@ public class RulesCheck {
                 pieceAlliance = "REDD";
                 break;
         }
+        // change hasMoved state to false
+        piece.changeHasMoved();
         // updates client side
         gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
                 + newPosition2);
