@@ -443,8 +443,10 @@ public class GameWindow2Controller implements Initializable {
         }
     }
 
-
-
+    /**
+     * after using card set card invisible
+     * @param i == number of card in array
+     */
     private void setCardInvisible(int i) {
         allCardImageViews[i].setBlendMode(BlendMode.DARKEN);
     }
