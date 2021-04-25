@@ -175,4 +175,9 @@ public class ClientGame {
         }
         return -1;
     }
+
+    public String getPlayerColor() {
+        int number = getPlayerNr();
+        return players[number].getAlliance().toString();
+    }
 }
