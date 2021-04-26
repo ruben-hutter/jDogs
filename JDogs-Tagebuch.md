@@ -295,4 +295,24 @@ In den Tagen seit dem letzten Milestone habe ich GameLogic umgeschrieben und ein
 
 ---
 
+*26.04.2021, 18 Uhr, Johanna*
+
+### Protokoll#16 - Protokoll
+
+Gregor zeigte uns seine erste Version der grafischen Umsetzung des Spiels. Man kann die gewünschte Karte, die Spielfigur und die Zielposition durch klicken auswählen und mit dem Button "Make move" bestätigen. Ruben hat die GameLogic soweit fertiggestellt, dass die Karten Jack, 7 und 4 sowie das Blockieren korrekt funktionieren. Es kamen folgende Punkte zur Sprache:
+- Karte ACEE: Nicht ACE1 resp. AC11 übergeben, sondern ACEE, analog zur Karte 4.
+- Fenster bei New Game: Das Fenster, um ein neues Spiel zu erstellen, flimmert. 
+- SURR in GUI: In der GUI muss noch die Möglichkeit eingebaut werden, die Karten für eine Runde abzulegen.  
+- Startbutton in Lobby: Momentan kann man mit dem Starbutton in der Lobby noch kein Spiel starten.
+- Chat in GUI: Der Chat wird noch nicht in der Spiel-GUI angezeigt, nur in der Lobby.
+- Nummerierung der Piece-IDs: Ruben hat die Piece-IDs in der GameLogic von 1-4 nummeriert. Gregor hat die Spielfiguren in der GUI mit 0-3 nummeriert. Ist das ein Problem? Falls ja, wer passt sich an? 
+- Fenster für Infos: Gregor hat zwei Fenster für Informationen für die Clients geplant. In einem Fenster (rechts oben), sollen allgemeine Informationen vom Server angezeigt werden, z.B. "INFO beginner is". Im Fenster unten links sollen einerseits clientspezifische Informationen angezeigt werden, z.B. "Invalid card", oder Informationen, die lediglich für uns während des Entwickelns nötig sind, z.B. wenn ein Thread abgestürzt ist. 
+- Javadoc: Ruben machte uns darauf aufmerksam, dass die Dokumentation mittels Javadoc angepasst werden muss, wenn eine Methode überarbeitet wird und beispielsweise andere Parameter enthält. 
+- HighScore: Der HighScore soll in einem XML-File gespeichert werden. Wir diskutierten mehrere Möglichkeiten, einen HighScore aufzustellen, wie z.B. die Anzahl gefressener Spielfiguren, Anzahl SURR, Anzahl Runden. Zuerst soll im HighScore jedoch nur vermerkt werden, ob eine Person resp. ein Team gewonnen hat. 
+- SendFromServer Absturz: Es besteht das Problem, dass SendFromServer manchmal abstürzt, wenn ein Spiel beendet wird. Eventuell kann dieses Problem mit einer Blocking Queue oder mit wait() und notify() gelöst werden. 
+
+Bis Mittwoch kümmert sich Gregor um das flackernde Fenster und SURR, Ruben implementiert den TeamMode, Victory und HighScore und Johanna versucht das Problem mit SendFromServer zu lösen und erste Unit-Tests zu schreiben. 
+
+
+**Nächstes Treffen:** Mittwoch, 28.04.21, 10:15 Uhr
 
