@@ -128,8 +128,8 @@ public class RulesCheck {
 
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                    newPosition2, startingPosition, hasMoved)) {
-                sendToThisClient.enqueue("INFO Check the card value with your desired destination");
+                    newPosition2, startingPosition, hasMoved, completeMove)) {
+                sendToThisClient.enqueue("INFO Check your move's validity");
                 return;
             }
 
@@ -268,7 +268,7 @@ public class RulesCheck {
                     return;
                 }
                 singleEliminations = piecesOnPath(completeMove.substring(startIndex,
-                        startIndex + 10));
+                        startIndex + 10), "SEVE");
                 if (singleEliminations == null) {
                     sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
                     return;
@@ -382,7 +382,7 @@ public class RulesCheck {
      * @return null if illegal move, empty list if nobody is eliminated
      * and with elements if somebody is eliminated
      */
-    private ArrayList<Piece> piecesOnPath(String move) {
+    private ArrayList<Piece> piecesOnPath(String move, String card) {
         String alliance = move.substring(0, 4);
         int pieceID = Integer.parseInt(move.substring(5, 6));
         String newPosition1 = move.substring(7, 8);
@@ -421,12 +421,15 @@ public class RulesCheck {
                         != ownPlayer.getAlliance()) {
                     piecesToEliminate.add(pieceOnPath);
                 } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
-                        == ownPlayer.getAlliance()) {
+                        == ownPlayer.getAlliance() && card.equals("SEVE")) {
                     return null;
                 }
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // track -> heaven
+            if (card.equals("FOUR")) {
+                // TODO case four heaven (4, -4)
+            }
             difference = Math.floorMod(startingPosition - actualPosition2, 64);
             for (int i = 1; i <= difference; i++) {
                 pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
@@ -524,7 +527,7 @@ public class RulesCheck {
      */
     private boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
-            boolean hasMoved) {
+            boolean hasMoved, String completeMove) {
         int[] cardValues = getCardValues(card);
         int difference;
         if (cardValues == null) {
@@ -562,7 +565,10 @@ public class RulesCheck {
             if (!hasMoved) {
                 return false;
             }
-            // TODO piecesOnPath();
+            if (piecesOnPath(completeMove, card) == null) {
+                sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                return false;
+            }
             if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
                     if (cardValue == 4) {
@@ -579,7 +585,10 @@ public class RulesCheck {
                 return cardValue == difference;
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-            // TODO piecesOnPath();
+            if (piecesOnPath(completeMove, card) == null) {
+                sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                return false;
+            }
             return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
         }
         return false;
