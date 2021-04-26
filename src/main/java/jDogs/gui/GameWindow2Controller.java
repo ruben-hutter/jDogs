@@ -599,19 +599,39 @@ public class GameWindow2Controller implements Initializable {
     }
 
 
-    public void sendHome() {
+    public void setJack(int playerID1, int pieceID1,int newPos1,int playerID2, int pieceID2, int newPos2) {
+        //newPos1 == oldPos of pieceID2
+        //newPos2 == oldPos of PieceID1
+        FieldOnBoard newField1 = adaptToGui.getTrack(newPos1);
+        FieldOnBoard newField2 = adaptToGui.getTrack(newPos2);
+
+        String circleID1 = getCircleID(playerID1, pieceID1);
+        String circleID2 = getCircleID(playerID2, pieceID2);
+
+        makeJackMove();
     }
 
-    public void setJack() {
+    private void makeJackMove() {
 
     }
 
+    /**
+     * sets a piece to a position in heaven
+     * @param playerNumber 0-3
+     * @param pieceID 0-3
+     * @param newPos 0-3
+     */
     public void makeHeavenMove(int playerNumber, int pieceID, int newPos) {
         String circleID ="" + ((playerNr + 1) * (pieceID + 1));
         FieldOnBoard heavenField = adaptToGui.getHeavenField(playerNumber, newPos);
         makeSingleMove(circleID,heavenField);
     }
 
+    /**
+     * sends a piece to home field(usually this is used if a piece is sent home)
+     * @param playerNumber
+     * @param pieceID
+     */
     public void makeHomeMove(int playerNumber, int pieceID) {
         String circleID ="" + ((playerNr + 1) * (pieceID + 1));
         int startPos = playerNumber * 16;
