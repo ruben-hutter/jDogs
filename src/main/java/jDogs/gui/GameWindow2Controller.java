@@ -351,7 +351,7 @@ public class GameWindow2Controller implements Initializable {
                         System.out.println("DESTINY POS " + destinyPos);
                         String pieceID = getPieceIDOnPane(colIndexCircle1, rowIndexCircle1);
 
-                        pieceID = "" + (Integer.parseInt(pieceID) % 4);
+                        pieceID = "" + (Integer.parseInt(pieceID) % 4) + 1;
 
                         System.out.println("PIECE ID " + pieceID);
                         String newPos;
@@ -365,10 +365,10 @@ public class GameWindow2Controller implements Initializable {
                                 newPos = "B0"+destinyPos;
                             }
                         }
-                    /*Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
+                    Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
                                     + color + "-" + pieceID + " " + newPos);
 
-                     */
+
 
 
                         colIndexField = -1;
@@ -429,13 +429,8 @@ public class GameWindow2Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adaptToGui = new AdaptToGui();
-        // delete
-        playerNr = 0;
-        yourTurn = true;
-        color = "YELO";
-        //delete
 
-       /* playerNr = ClientGame.getInstance().getYourPlayerNr();
+        playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
@@ -444,9 +439,9 @@ public class GameWindow2Controller implements Initializable {
         nameLabel2.setText(color.toString());
         nameLabel1.setText(Client.getInstance().getNickname());
 
-        */
 
-        //setPlayerLabels();
+
+        setPlayerLabels();
 
         setOnHome();
         setAllCardImageViews();

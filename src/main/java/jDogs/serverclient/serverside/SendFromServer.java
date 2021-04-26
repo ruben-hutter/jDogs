@@ -39,6 +39,7 @@ public class SendFromServer implements Runnable {
             e.printStackTrace();
         }
         while (running) {
+
             if (!sendToThisClient.isEmpty()) {
                 String message = sendToThisClient.dequeue();
                     sendStringToClient(message);
