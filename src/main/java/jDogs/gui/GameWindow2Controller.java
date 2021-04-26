@@ -103,6 +103,10 @@ public class GameWindow2Controller implements Initializable {
     private ImageView imageViewCard2;
 
     @FXML
+    private ImageView imageViewCard7;
+
+
+    @FXML
     private Label nameLabel;
 
     @FXML
@@ -338,8 +342,10 @@ public class GameWindow2Controller implements Initializable {
                                 newPos = "B0"+destinyPos;
                             }
                         }
-                    Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
+                    /*Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
                                     + color + "-" + pieceID + " " + newPos);
+
+                     */
 
 
                         colIndexField = -1;
@@ -352,6 +358,9 @@ public class GameWindow2Controller implements Initializable {
                         fadeTransitionCircle1.stop();
                         yourTurn = false;
                     }
+                }
+                if (imageViewCard7 != null) {
+                    imageViewCard7.setBlendMode(BlendMode.DARKEN);
                 }
                 rowIndexCircle1 = -1;
                 colIndexCircle1 = -1;
@@ -582,5 +591,6 @@ public class GameWindow2Controller implements Initializable {
         System.out.println("card chosen " + card);
         cardClicked = card;
         allCardsDialog.close();
+        imageViewCard7.setImage(new Image(CardUrl.getURL(card).toString()));
     }
 }
