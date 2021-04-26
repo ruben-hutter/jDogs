@@ -286,3 +286,13 @@ Leider konnten wir das Spiel nicht so wie geplant in der Übungsstunde vorzeigen
 **Übernächstes Treffen:** Montag, 26.04.21, 18:00 Uhr
 
 ---
+
+*26.04.2021, Ruben*
+
+### Bericht#05 - GameLogic debugged
+
+In den Tagen seit dem letzten Milestone habe ich GameLogic umgeschrieben und eine Klasse hinzugefügt, die die verschiedenen Checks übernimmt, so dass die Klasse, die Spielbefehle von Clients empfängt, weniger überfüllt ist. Ich habe auch die Fehler korrigiert, die beim Ausführen von Sonderzügen mit den Karten -4, 7 und Bube auftraten. Mein Ziel ist es, in den nächsten Tagen noch die Möglichkeit hinzuzufügen, im Team zu spielen, also die Möglichkeit, mit den Spielsteinen des Verbündeten mit der Karte 7 zu spielen, und das Spiel mit dem Partner beenden zu können, wenn man seine eigenen Murmeln in Sicherheit gebracht hat.
+
+---
+
+

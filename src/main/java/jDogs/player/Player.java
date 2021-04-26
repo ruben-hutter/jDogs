@@ -153,7 +153,10 @@ public class Player {
         assert pieceToMove != null;
         Tile oldPosition = pieceToMove.getPositionClient();
         pieceToMove.setPositionClient(newPosition);
-        oldPosition.setPiece(null);
+        // checks if the oldTile is pointing to this piece
+        if (oldPosition.getPiece() == pieceToMove) {
+            oldPosition.setPiece(null);
+        }
         newPosition.setPiece(pieceToMove);
     }
 
