@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class GameState {
 
-    private Map<String, ArrayList<String>> cards = new HashMap<>();
+    private final Map<String, ArrayList<String>> cards = new HashMap<>();
     private final GameFile gameFile;
     private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
