@@ -102,42 +102,37 @@ public class AdaptToGui {
                     *       etc..
                     */
 
-                   // from 2/2 -> +1/+1
-                   int startX = 2;
-                   int startY = 2;
-
+                   // from 4/1 -> +1/+1
+                   int startX = 4;
+                   int startY = 1;
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(++startX,++startY);
-
                    }
                    count++;
 
-                   // from 2/17 -> +1/-1
-                   startX = 2;
-                   startY = 17;
+                   // from 4/18 -> +1/-1
+                   startX = 4;
+                   startY = 18;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(++startX,--startY);
-
                    }
                    count++;
-                   // from 17/17 -> -1/-1
-                   startX = 17;
-                   startY = 17;
+                   // from 20/18 -> -1/-1
+                   startX = 20;
+                   startY = 18;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(--startX,--startY);
-
                    }
                    count++;
 
                    // from 17/2 -> -1/+1
-                   startX = 17;
-                   startY = 2;
+                   startX = 20;
+                   startY = 1;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(--startX,++startY);
-
                    }
                    count++;
                }
@@ -261,10 +256,9 @@ public class AdaptToGui {
     //TODO delete psvm
     public static void main(String[] args) {
       AdaptToGui adaptToGui = new AdaptToGui();
-      FieldOnBoard fieldOnBoard = new FieldOnBoard(4,2);
+        System.out.println(adaptToGui.getHeavenField(1,0).getX());
 
-      int number = adaptToGui.getPosNumber(fieldOnBoard, 0);
-        System.out.println(number + " number");
+        System.out.println(adaptToGui.getHeavenField(1,0).getY());
 
     }
 
