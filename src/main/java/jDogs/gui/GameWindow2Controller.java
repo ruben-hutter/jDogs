@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import jDogs.ClientGame;
 import jDogs.board.Board;
 import jDogs.serverclient.clientside.Client;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,6 +55,24 @@ public class GameWindow2Controller implements Initializable {
     private int colIndexField;
     private int rowIndexField;
 
+
+    @FXML
+    private Label labelPlayer0;
+
+    @FXML
+    private Label labelPlayer1;
+
+    @FXML
+    private Label labelPlayer2;
+
+    @FXML
+    private Label labelPlayer3;
+
+    @FXML
+    private TextArea textLogClient;
+
+    @FXML
+    private TextArea textLogServer;
 
     @FXML
     private MenuBar menuBar;
@@ -107,7 +127,10 @@ public class GameWindow2Controller implements Initializable {
 
 
     @FXML
-    private Label nameLabel;
+    private Label nameLabel1;
+
+    @FXML
+    private Label nameLabel2;
 
     @FXML
     private FadeTransition fadeTransitionGrid;
@@ -418,9 +441,12 @@ public class GameWindow2Controller implements Initializable {
         }
 
         color = ColorAbbreviations.values()[playerNr].toString();
-        nameLabel.setText(Client.getInstance().getNickname());
+        nameLabel2.setText(color.toString());
+        nameLabel1.setText(Client.getInstance().getNickname());
 
         */
+
+        //setPlayerLabels();
 
         setOnHome();
         setAllCardImageViews();
@@ -431,6 +457,17 @@ public class GameWindow2Controller implements Initializable {
         //TODO delete and give Array from ClientGame
         String[] cardddss = new String[]{"JOKE", "JOKE", "JOKE", "JOKE", "NINE", "FOUR"};
         setHand(cardddss);
+    }
+
+    /**
+     * sets the text of the labels by adding the nickname of the participating users.
+     */
+    private void setPlayerLabels() {
+
+        labelPlayer0.setText(ClientGame.getInstance().getPlayerNames()[0]);
+        labelPlayer1.setText(ClientGame.getInstance().getPlayerNames()[1]);
+        labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[2]);
+        labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[3]);
     }
 
     /**

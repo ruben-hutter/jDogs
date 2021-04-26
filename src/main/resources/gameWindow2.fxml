@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -37,28 +38,41 @@
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="516.0" prefWidth="120.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="394.0" prefWidth="117.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="leftBoardSide" prefHeight="516.0" prefWidth="128.0" style="-fx-background-color: #6495ed;" VBox.vgrow="ALWAYS">
+            <Pane fx:id="leftBoardSide" prefHeight="394.0" prefWidth="76.0" style="-fx-background-color: #6495ed;" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets right="4.0" />
                </padding>
                <VBox.margin>
                   <Insets right="2.0" />
-               </VBox.margin></Pane>
+               </VBox.margin>
+               <children>
+                  <Label fx:id="labelPlayer0" layoutX="58.0" layoutY="28.0" text="Label" />
+                  <Label fx:id="labelPlayer1" layoutX="58.0" layoutY="324.0" text="Label" />
+               </children></Pane>
          </children>
       </VBox>
    </left>
    <right>
-      <VBox prefHeight="495.0" prefWidth="120.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="394.0" prefWidth="134.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="rightBoardSide" prefHeight="519.0" prefWidth="87.0" style="-fx-background-color: #6495ed;">
+            <Pane fx:id="rightBoardSide" prefHeight="394.0" prefWidth="98.0" style="-fx-background-color: #6495ed;">
                <VBox.margin>
                   <Insets left="2.0" />
                </VBox.margin>
                <padding>
                   <Insets left="4.0" />
-               </padding></Pane>
+               </padding>
+               <children>
+                  <ScrollPane layoutX="3.0" layoutY="79.0">
+                     <content>
+                        <TextArea fx:id="textLogServer" prefHeight="221.0" prefWidth="126.0" text="LogMenu" />
+                     </content>
+                  </ScrollPane>
+                  <Label fx:id="labelPlayer2" layoutX="52.0" layoutY="27.0" text="Label" />
+                  <Label fx:id="labelPlayer3" layoutX="52.0" layoutY="326.0" text="Label" />
+               </children></Pane>
          </children>
       </VBox>
    </right>
@@ -210,7 +224,13 @@
          <children>
             <Pane prefHeight="276.0" prefWidth="165.0" style="-fx-background-color: #e9967a;">
                <children>
-                  <Label fx:id="nameLabel" layoutX="15.0" layoutY="6.0" prefHeight="51.0" prefWidth="88.0" />
+                  <Label fx:id="nameLabel1" layoutX="15.0" layoutY="6.0" prefHeight="51.0" prefWidth="88.0" />
+                  <Label fx:id="nameLabel2" layoutX="15.0" layoutY="68.0" prefHeight="51.0" prefWidth="88.0" />
+                  <ScrollPane layoutX="8.0" layoutY="116.0">
+                     <content>
+                        <TextArea fx:id="textLogClient" prefHeight="156.0" prefWidth="104.0" text="ClientNews/GUI&#10;Problems&#10;" />
+                     </content>
+                  </ScrollPane>
                </children></Pane>
             <Pane prefHeight="276.0" prefWidth="830.0">
                <children>
