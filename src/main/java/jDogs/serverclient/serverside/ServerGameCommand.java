@@ -90,13 +90,13 @@ public class ServerGameCommand {
                         logger.debug("You don't have this card on your hand");
                         return;
                     }
-                    //String card = text.substring(5, 9);
 
                     // special cases (move command syntax different from normal)
                     String card = toCheckMove.substring(0, 4);
                     switch (card) {
                         case "SEVE":
-                            rulesCheck.checkMoveSeven(toCheckMove, serverConnection, nickname);
+                            rulesCheck.checkMoveSeven(toCheckMove, gameState, gameFile, mainGame,
+                                    nickname);
                             break;
                         case "JACK":
                             rulesCheck.checkMoveJack(toCheckMove, gameState, gameFile, mainGame,

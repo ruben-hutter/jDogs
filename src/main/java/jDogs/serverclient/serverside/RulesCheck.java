@@ -10,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 public class RulesCheck {
 
+    // TODO teamMode implementation for hole class
+
     private static final Logger logger = LogManager.getLogger(RulesCheck.class);
     private final Queuejd sendToThisClient;
     private String cardToEliminate;
@@ -116,13 +118,13 @@ public class RulesCheck {
                     }
                 }
             } catch (Exception e) {
-                sendToThisClient.enqueue("INFO format exception in checkMove");
+                sendToThisClient.enqueue("INFO Format exception in checkMove");
                 return;
             }
-            // TODO if player finished, and teamMode on, he can play 2 colors
+
             // prevent players from moving with others pieces
             if (ownPlayer != gameFile.getPlayer(nickname)) {
-                sendToThisClient.enqueue("INFO you cannot move this color");
+                sendToThisClient.enqueue("INFO You cannot move this color");
                 return;
             }
 
@@ -136,14 +138,14 @@ public class RulesCheck {
             // if move passes an occupied starting position, and that piece haven't moved
             assert actualPosition1 != null;
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
-                    ownPlayer, pieceID)) {
+                    ownPlayer)) {
                 sendToThisClient.enqueue("INFO Someone blocks you");
                 return;
             }
 
             // check if there is a piece on destination
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
-                sendToThisClient.enqueue("You eliminate yourself!");
+                sendToThisClient.enqueue("INFO You eliminate yourself!");
                 return;
             }
 
@@ -157,7 +159,7 @@ public class RulesCheck {
             mainGame.turnComplete(nickname);
 
         } else {
-            sendToThisClient.enqueue("INFO entered command does`t fit the length(15) for"
+            sendToThisClient.enqueue("INFO Entered command does`t fit the length(15) for"
                     + "checkmove()");
         }
     }
@@ -176,7 +178,7 @@ public class RulesCheck {
         this.gameFile = gameFile;
         this.mainGame = mainGame;
         try {
-            if (twoPieces.length() == 23) {
+            if (twoPieces.length() == 18) {
                 String ownAlliance = twoPieces.substring(5, 9);
                 int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
                 String ownActualPosition1 = "";
@@ -195,6 +197,7 @@ public class RulesCheck {
                 Alliance_4 otherAlliance4;
 
                 ownAlliance4 = convertAlliance(ownAlliance);
+                otherAlliance4 = convertAlliance(otherAlliance);
 
                 for (Player player : gameState.getPlayersState()) {
                     if (player.getAlliance() == ownAlliance4) {
@@ -202,19 +205,7 @@ public class RulesCheck {
                         ownActualPosition1 = player.receivePosition1Server(ownPieceID);
                         ownActualPosition2 = player.receivePosition2Server(ownPieceID);
                         ownHasMoved = player.receiveHasMoved(ownPieceID);
-                    }
-                }
-
-                // TODO if playing in teamMode
-                if (ownPlayer != gameFile.getPlayer(nickname)) {
-                    sendToThisClient.enqueue("INFO you cannot move this color");
-                    return;
-                }
-
-                otherAlliance4 = convertAlliance(otherAlliance);
-
-                for (Player player : gameState.getPlayersState()) {
-                    if (player.getAlliance() == otherAlliance4) {
+                    } else if (player.getAlliance() == otherAlliance4) {
                         otherPlayer = player;
                         otherActualPosition1 = player.receivePosition1Server(otherPieceID);
                         otherActualPosition2 = player.receivePosition2Server(otherPieceID);
@@ -223,7 +214,9 @@ public class RulesCheck {
                     }
                 }
 
-                if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
+                if (ownPlayer != gameFile.getPlayer(nickname)) {
+                    sendToThisClient.enqueue("INFO You cannot move this color");
+                } else if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
                         || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
                         || (otherActualPosition1.equals("B") && !otherHasMoved)) {
                     sendToThisClient.enqueue("INFO You can't switch this pieces!");
@@ -248,21 +241,28 @@ public class RulesCheck {
         }
     }
 
-    // TODO difference between mod 0 and 1 (teams or not)
     /**
      * Checks move when card SEVE is played
      * @param completeMove given move
+     * @param gameState state of the game
+     * @param gameFile class that saves game
+     * @param mainGame class which starts the game
+     * @param nickname player's name
      */
-    protected void checkMoveSeven(String completeMove, ServerConnection serverConnection,
-            String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
+    protected void checkMoveSeven(String completeMove, GameState gameState, GameFile gameFile,
+            MainGame mainGame, String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
+        this.gameState = gameState;
+        this.gameFile = gameFile;
+        this.mainGame = mainGame;
         try {
             int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
             int startIndex = 7;
             int countToSeven = 0;
             int moveValue;
             ArrayList<Piece> piecesToEliminate = new ArrayList<>();
+            ArrayList<Piece> singleEliminations;
             for (int i = 0; i < piecesToMove; i++) {
-                moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10));
+                moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10), nickname);
                 if (moveValue < 0) {
                     sendToThisClient.enqueue("INFO At least one invalid destination or piece!");
                     return;
@@ -272,7 +272,7 @@ public class RulesCheck {
                     sendToThisClient.enqueue("INFO You moved more than 7!");
                     return;
                 }
-                ArrayList<Piece> singleEliminations = piecesOnPath(completeMove.substring(startIndex,
+                singleEliminations = piecesOnPath(completeMove.substring(startIndex,
                         startIndex + 10));
                 if (singleEliminations == null) {
                     sendToThisClient.enqueue("INFO You can't jump over your pieces in heaven!");
@@ -282,47 +282,39 @@ public class RulesCheck {
                 startIndex += 11;
             }
 
+            // if you move a total of 7 correctly
             if (countToSeven == 7) {
                 startIndex = 7;
-                Player player;
+                Player player = gameState.getPlayer(nickname);
+                String move;
+                int pieceID;
+                String newPosition1;
+                int newPosition2;
                 for (int i = 0; i < piecesToMove; i++) {
-                    String move = completeMove.substring(startIndex, startIndex + 10);
-                    // TODO change if teamMode on
-                    player = gameFile.getPlayer(serverConnection.getNickname());
-                    int pieceID = Integer.parseInt(move.substring(5, 6));
-                    String newPosition1 = move.substring(7, 8);
-                    int newPosition2 = Integer.parseInt(move.substring(8));
-                    Piece piece = player.getPiece(pieceID);
-                    String actualPosition1 = player.receivePosition1Server(pieceID);
-                    int actualPosition2 = player.receivePosition2Server(pieceID);
-                    /*
-                    if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
-                            player)) {
-                        sendToThisClient.enqueue("INFO There is a block, you can't pass!");
-                        return;
-                    }
-                     */
+                    move = completeMove.substring(startIndex, startIndex + 10);
+                    pieceID = Integer.parseInt(move.substring(5, 6));
+                    newPosition1 = move.substring(7, 8);
+                    newPosition2 = Integer.parseInt(move.substring(8));
+
                     simpleMove(player, pieceID, newPosition1, newPosition2);
-                    // remove block if piece moves for first time on track
-                    if (!piece.getHasMoved() && piece.getPositionServer1().equals("B")
-                            && newPosition1.equals("B")) {
-                        piece.changeHasMoved();
-                    }
+
                     startIndex += 11;
                 }
                 for (Piece piece : piecesToEliminate) {
                     eliminatePiece(piece);
                 }
+
+                gameFile.sendMessageToParticipants("BORD");
+                //eliminate card
+                gameState.getCards().get(nickname).remove(cardToEliminate);
+                gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                gameFile.sendMessageToParticipants("HAND");
+
+                cardToEliminate = null;
+                mainGame.turnComplete(nickname);
+            } else {
+                sendToThisClient.enqueue("INFO You don't move a total of 7!");
             }
-
-            gameFile.sendMessageToParticipants("BORD");
-            //eliminate card
-            gameState.getCards().get(nickname).remove(cardToEliminate);
-            gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-            gameFile.sendMessageToParticipants("HAND");
-
-            cardToEliminate = null;
-            mainGame.turnComplete(nickname);
         } catch (Exception e) {
             sendToThisClient.enqueue("INFO wrong format for seven");
         }
@@ -331,9 +323,9 @@ public class RulesCheck {
     /**
      * Checks one of the moves given with card SEVE
      * @param move only one "normal" move
-     * @return -1 if not legal or card value
+     * @return -1 if move not legal or card value
      */
-    private int checkSingleSeven(String move) { // YELO-1 B20
+    private int checkSingleSeven(String move, String nickname) { // YELO-1 B20
         try {
             String alliance = move.substring(0, 4);
             int pieceID = Integer.parseInt(move.substring(5, 6));
@@ -344,11 +336,9 @@ public class RulesCheck {
             boolean hasMoved = false;
             int startingPosition = -1;
             Player ownPlayer = null;
-            Alliance_4 alliance4;
+            Alliance_4 alliance4 = convertAlliance(alliance);
 
-            alliance4 = convertAlliance(alliance);
-
-            for (Player player : players) {
+            for (Player player : gameState.getPlayersState()) {
                 if (player.getAlliance() == alliance4) {
                     logger.debug("Alliance Player: " + player.getAlliance());
                     ownPlayer = player;
@@ -360,8 +350,6 @@ public class RulesCheck {
                     startingPosition = player.getStartingPosition();
                 }
             }
-
-            // TODO if teamMode
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 return -1;
             }
@@ -406,7 +394,7 @@ public class RulesCheck {
 
         alliance4 = convertAlliance(alliance);
 
-        for (Player player : players) {
+        for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == alliance4) {
                 logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;
@@ -602,13 +590,11 @@ public class RulesCheck {
      * @param player this player
      * @return true if you are blocked
      */
-    private boolean checkForBlock(String card, String actualPosition1,
-            int actualPosition2, String newPosition1, int newPosition2, Player player, int pieceID) {
-        // to adapt with 6 players
+    private boolean checkForBlock(String card, String actualPosition1, int actualPosition2,
+            String newPosition1, int newPosition2, Player player) {
         int [] startingPositions = new int[] {0, 16, 32, 48};
         int[] cardValues = getCardValues(card);
         Piece pieceOnStart;
-        int convertActualPos;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
             if (card.equals("FOUR")) {
@@ -692,6 +678,25 @@ public class RulesCheck {
         }
         return false;
     }
+
+    /*
+    private boolean checkForBlockSeven(String actualPosition1, int actualPosition2,
+            String newPosition1, int newPosition2, Player player, int pieceID) {
+        if (actualPosition1.equals("B") && newPosition1.equals("B")) {
+            // continue on track
+            return checkForBlockHelper(actualPosition2, newPosition1, newPosition2, player,
+                    startingPositions);
+        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
+            // go heaven
+            for (Piece piece : player.pieces) {
+                if (piece.getPositionServer1().equals("B") && !piece.getHasMoved()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+     */
 
     /**
      * Checks if on the destination is already a piece
@@ -795,8 +800,8 @@ public class RulesCheck {
         }
 
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
-                + newPosition2);
+        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+                + newPosition1 + newPosition2);
     }
 
     private void eliminatePiece(Piece piece) {
@@ -823,7 +828,7 @@ public class RulesCheck {
         // change hasMoved state to false
         piece.changeHasMoved();
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " " + newPosition1
-                + newPosition2);
+        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+                + newPosition1 + newPosition2);
     }
 }
