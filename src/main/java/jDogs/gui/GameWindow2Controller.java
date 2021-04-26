@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -26,6 +27,7 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -119,6 +121,7 @@ public class GameWindow2Controller implements Initializable {
 
     private Stage allCardsDialog;
     private AllCardsDialogController allCardsDialogController;
+    private BorderPane borderPaneDialog;
 
     @FXML
     void exitMenuOnAction(ActionEvent event) {
@@ -150,7 +153,7 @@ public class GameWindow2Controller implements Initializable {
             startFadeTransitionCard(imageViewCard1);
             cardClicked = cardArray[1];
             if (cardClicked.equals("JOKE")) {
-                String allCardsDialogPath = "src/main/resources/createGameWindow.fxml";
+                String allCardsDialogPath = "src/main/resources/allCardsDialog.fxml";
                 URL url = null;
                 try {
                     url = Paths.get(allCardsDialogPath).toUri().toURL();
@@ -161,19 +164,17 @@ public class GameWindow2Controller implements Initializable {
                 FXMLLoader allCardsDialog = new FXMLLoader(url);
 
                 allCardsDialogController = allCardsDialog.getController();
-                DialogPane dialogPane = null;
+                borderPaneDialog = null;
                 try {
-                    dialogPane = allCardsDialog.load();
+                    borderPaneDialog = allCardsDialog.load();
                 } catch (
                         IOException e) {
                     e.printStackTrace();
                 }
                 this.allCardsDialog = new Stage();
-                Scene allCardsScene = new Scene(dialogPane);
+                Scene allCardsScene = new Scene(borderPaneDialog);
                 this.allCardsDialog.setScene(allCardsScene);
                 this.allCardsDialog.show();
-
-
             }
         }
     }
@@ -580,5 +581,6 @@ public class GameWindow2Controller implements Initializable {
     public void setCardFromJoker(String card) {
         System.out.println("card chosen " + card);
         cardClicked = card;
+        allCardsDialog.close();
     }
 }

@@ -32,12 +32,19 @@ public class AllCardsDialogController implements Initializable {
 
     @FXML
     void setCardImage(MouseEvent event) {
-        cardImage = new ImageView(new Image(CardUrl.getURLArray()[count]));
         count++;
+        String card = CardUrl.getCardNameByNumber(count % 13);
+        URL url = CardUrl.getURL(card);
+        Image image = new Image(url.toString());
+        cardImage.setImage(image);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         count = 0;
+        String card = CardUrl.getCardNameByNumber(count);
+        URL url = CardUrl.getURL(card);
+        Image image = new Image(url.toString());
+        cardImage.setImage(image);
     }
 }
