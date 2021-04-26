@@ -608,12 +608,16 @@ public class GameWindow2Controller implements Initializable {
         String circleID1 = getCircleID(playerID1, pieceID1);
         String circleID2 = getCircleID(playerID2, pieceID2);
 
-        makeJackMove();
+        makeJackMove(circleID1,newField1,circleID2,newField2);
     }
 
-    private void makeJackMove() {
+    private void makeJackMove(String circleID1, FieldOnBoard newField1, String circleID2, FieldOnBoard newField2) {
+
+
+
 
     }
+
 
     /**
      * sets a piece to a position in heaven
