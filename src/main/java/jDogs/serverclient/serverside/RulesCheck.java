@@ -18,7 +18,6 @@ public class RulesCheck {
     Alliance_4 alliance4;
     private GameState gameState;
     private GameFile gameFile;
-    private MainGame mainGame;
 
     public RulesCheck(Queuejd sendToThisClient) {
         this.sendToThisClient = sendToThisClient;
@@ -80,7 +79,6 @@ public class RulesCheck {
             MainGame mainGame, String nickname) { // TWOO YELO-1 B04
         this.gameState = gameState;
         this.gameFile = gameFile;
-        this.mainGame = mainGame;
         if (completeMove.length() == 15) {
             String card = null;
             int pieceID = -1;
@@ -176,28 +174,24 @@ public class RulesCheck {
             MainGame mainGame, String nickname) { // JACK YELO-1 BLUE-2
         this.gameState = gameState;
         this.gameFile = gameFile;
-        this.mainGame = mainGame;
         try {
             if (twoPieces.length() == 18) {
                 String ownAlliance = twoPieces.substring(5, 9);
                 int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
-                String ownActualPosition1 = "";
+                String ownActualPosition1 = null;
                 int ownActualPosition2 = -1;
                 Player ownPlayer = null;
                 boolean ownHasMoved = false;
-                Alliance_4 ownAlliance4;
+                Alliance_4 ownAlliance4 = convertAlliance(ownAlliance);
 
                 String otherAlliance = twoPieces.substring(12, 16);
                 int otherPieceID = Integer.parseInt(twoPieces.substring(17));
-                String otherActualPosition1 = "";
+                String otherActualPosition1 = null;
                 int otherActualPosition2 = -1;
                 boolean otherHasMoved = false;
                 int otherStartingPosition = -1;
                 Player otherPlayer = null;
-                Alliance_4 otherAlliance4;
-
-                ownAlliance4 = convertAlliance(ownAlliance);
-                otherAlliance4 = convertAlliance(otherAlliance);
+                Alliance_4 otherAlliance4 = convertAlliance(otherAlliance);
 
                 for (Player player : gameState.getPlayersState()) {
                     if (player.getAlliance() == ownAlliance4) {
@@ -216,24 +210,26 @@ public class RulesCheck {
 
                 if (ownPlayer != gameFile.getPlayer(nickname)) {
                     sendToThisClient.enqueue("INFO You cannot move this color");
-                } else if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
-                        || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
-                        || (otherActualPosition1.equals("B") && !otherHasMoved)) {
-                    sendToThisClient.enqueue("INFO You can't switch this pieces!");
                 } else {
-                    assert ownPlayer != null;
-                    simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
-                    assert otherPlayer != null;
-                    simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
+                    assert ownActualPosition1 != null;
+                    assert otherActualPosition1 != null;
+                    if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
+                            || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
+                            || (otherActualPosition1.equals("B") && !otherHasMoved)) {
+                        sendToThisClient.enqueue("INFO You can't switch this pieces!");
+                    } else {
+                        simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
+                        simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
 
-                    gameFile.sendMessageToParticipants("BORD");
-                    //eliminate card
-                    gameState.getCards().get(nickname).remove(cardToEliminate);
-                    gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-                    gameFile.sendMessageToParticipants("HAND");
+                        gameFile.sendMessageToParticipants("BORD");
+                        //eliminate card
+                        gameState.getCards().get(nickname).remove(cardToEliminate);
+                        gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                        gameFile.sendMessageToParticipants("HAND");
 
-                    cardToEliminate = null;
-                    mainGame.turnComplete(nickname);
+                        cardToEliminate = null;
+                        mainGame.turnComplete(nickname);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -253,7 +249,6 @@ public class RulesCheck {
             MainGame mainGame, String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
         this.gameState = gameState;
         this.gameFile = gameFile;
-        this.mainGame = mainGame;
         try {
             int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
             int startIndex = 7;
@@ -275,7 +270,7 @@ public class RulesCheck {
                 singleEliminations = piecesOnPath(completeMove.substring(startIndex,
                         startIndex + 10));
                 if (singleEliminations == null) {
-                    sendToThisClient.enqueue("INFO You can't jump over your pieces in heaven!");
+                    sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
                     return;
                 }
                 piecesToEliminate.addAll(singleEliminations);
@@ -297,7 +292,6 @@ public class RulesCheck {
                     newPosition2 = Integer.parseInt(move.substring(8));
 
                     simpleMove(player, pieceID, newPosition1, newPosition2);
-
                     startIndex += 11;
                 }
                 for (Piece piece : piecesToEliminate) {
@@ -323,6 +317,7 @@ public class RulesCheck {
     /**
      * Checks one of the moves given with card SEVE
      * @param move only one "normal" move
+     * @param nickname player's name
      * @return -1 if move not legal or card value
      */
     private int checkSingleSeven(String move, String nickname) { // YELO-1 B20
@@ -331,7 +326,7 @@ public class RulesCheck {
             int pieceID = Integer.parseInt(move.substring(5, 6));
             String newPosition1 = move.substring(7, 8);
             int newPosition2 = Integer.parseInt(move.substring(8));
-            String actualPosition1 = "";
+            String actualPosition1 = null;
             int actualPosition2 = -1;
             boolean hasMoved = false;
             int startingPosition = -1;
@@ -353,8 +348,8 @@ public class RulesCheck {
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 return -1;
             }
-
             int difference;
+            assert actualPosition1 != null;
             if (actualPosition1.equals("B") && newPosition1.equals("B")
                     || (actualPosition1.equals("C") && newPosition1.equals("C"))) {
                 // track -> track or heaven -> heaven
@@ -379,20 +374,26 @@ public class RulesCheck {
         }
     }
 
+    /**
+     * Checks if pieces are on the way to destination and
+     * if they are own pieces or pieces to eliminate.
+     * Includes also the destination, so it checks also for blocks.
+     * @param move a piece with its ID and destination
+     * @return null if illegal move, empty list if nobody is eliminated
+     * and with elements if somebody is eliminated
+     */
     private ArrayList<Piece> piecesOnPath(String move) {
         String alliance = move.substring(0, 4);
         int pieceID = Integer.parseInt(move.substring(5, 6));
         String newPosition1 = move.substring(7, 8);
         int newPosition2 = Integer.parseInt(move.substring(8));
-        String actualPosition1 = "";
+        String actualPosition1 = null;
         int actualPosition2 = -1;
         boolean hasMoved = false;
         int startingPosition = -1;
         Player ownPlayer = null;
-        Alliance_4 alliance4;
+        Alliance_4 alliance4 = convertAlliance(alliance);
         ArrayList<Piece> piecesToEliminate = new ArrayList<>();
-
-        alliance4 = convertAlliance(alliance);
 
         for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == alliance4) {
@@ -407,35 +408,39 @@ public class RulesCheck {
             }
         }
 
+        Piece pieceOnPath;
         int difference;
+        assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // track -> track
-            difference = newPosition2 - actualPosition2;
-            if (difference < 0) {
-                difference += 64;
-            }
+            difference = Math.floorMod(newPosition2 - actualPosition2, 64);
             for (int i = 1; i <= difference; i++) {
-                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
+                pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
                         (actualPosition2 + i) % 64);
-                if (pieceOnPath != null && pieceOnPath.getPieceAlliance() != ownPlayer.getAlliance()) {
+                if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
+                        != ownPlayer.getAlliance()) {
                     piecesToEliminate.add(pieceOnPath);
+                } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
+                        == ownPlayer.getAlliance()) {
+                    return null;
                 }
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // track -> heaven
-            difference = startingPosition - actualPosition2;
-            if (difference < 0) {
-                difference += 64;
-            }
+            difference = Math.floorMod(startingPosition - actualPosition2, 64);
             for (int i = 1; i <= difference; i++) {
-                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
+                pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
                         (actualPosition2 + i) % 64);
-                if (pieceOnPath != null && pieceOnPath.getPieceAlliance() != ownPlayer.getAlliance()) {
+                if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
+                        != ownPlayer.getAlliance()) {
                     piecesToEliminate.add(pieceOnPath);
+                } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
+                        == ownPlayer.getAlliance()) {
+                    return null;
                 }
             }
             for (int i = 0; i <= newPosition2; i++) {
-                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
+                pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
                 if (pieceOnPath != null) {
                     return null;
                 }
@@ -443,7 +448,7 @@ public class RulesCheck {
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             // heaven -> heaven
             for (int i = actualPosition2; i <= newPosition2; i++) {
-                Piece pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
+                pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
                 if (pieceOnPath != null) {
                     return null;
                 }
