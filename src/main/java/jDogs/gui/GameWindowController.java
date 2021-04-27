@@ -378,11 +378,11 @@ public class GameWindowController implements Initializable {
                             if (jokerClicked) {
                                 move = "MOVE JOKE JACK ";
                             }
-/*
+
                             Client.getInstance().sendMessageToServer(move + pieceColor1 + "-"
                                     + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
- */
+
                             System.out.println(move + pieceColor1 + "-"
                                     + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
                             endMoveBlinking();
