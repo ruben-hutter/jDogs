@@ -157,64 +157,63 @@ public class GameWindow2Controller implements Initializable {
     private AllCardsDialogController allCardsDialogController;
     private BorderPane borderPaneDialog;
 
+    /**
+     * end application(stop game)
+     * @param event on click
+     */
     @FXML
     void exitMenuOnAction(ActionEvent event) {
-
+        Client.getInstance().sendMessageToServer("EXIT");
+        Client.getInstance().kill();
     }
 
+    /**
+     * go back to lobby command(stop game)
+     * @param event on click
+     */
     @FXML
     void reToLoMenuOnAction(ActionEvent event) {
-
+        Client.getInstance().sendMessageToServer("QUIT");
     }
 
+    /**
+     * see stats of the game
+     * @param event on click
+     */
     @FXML
     void statisticMenuOnAction(ActionEvent event) {
 
     }
+
+    /**
+     * card field 0 of gridpane
+     * @param event onclick
+     */
     @FXML
     void onMouseClick0(MouseEvent event) {
         if (yourTurn && cardArray.length > 0 && cardArray[0] != null) {
             startFadeTransitionCard(imageViewCard0);
             cardClicked = cardArray[0];
-
+            checkJokeCase();
         }
     }
 
-
+    /**
+     * card field 1 of gridpane
+     * @param event onclick
+     */
     @FXML
     void onMouseClick1(MouseEvent event) {
         if (yourTurn && cardArray.length > 1 && cardArray[1] != null) {
             startFadeTransitionCard(imageViewCard1);
             cardClicked = cardArray[1];
-            if (cardClicked.equals("JOKE")) {
-                String allCardsDialogPath = "src/main/resources/allCardsDialog.fxml";
-                URL url = null;
-                try {
-                    url = Paths.get(allCardsDialogPath).toUri().toURL();
-                } catch (
-                        MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                FXMLLoader allCardsDialog = new FXMLLoader(url);
-
-                allCardsDialogController = allCardsDialog.getController();
-                borderPaneDialog = null;
-                try {
-                    borderPaneDialog = allCardsDialog.load();
-                } catch (
-                        IOException e) {
-                    e.printStackTrace();
-                }
-                this.allCardsDialog = new Stage();
-                Scene allCardsScene = new Scene(borderPaneDialog);
-                this.allCardsDialog.setScene(allCardsScene);
-                this.allCardsDialog.show();
-            }
+            checkJokeCase();
         }
     }
-
-
-
+    /**
+     * card field 2 of gridpane
+     * @param event onclick
+     */
     @FXML
     void onMouseClick2(MouseEvent event) {
         if (yourTurn && cardArray.length > 2 && cardArray[2] != null) {
@@ -222,40 +221,74 @@ public class GameWindow2Controller implements Initializable {
             cardClicked = cardArray[2];
 
         }
-        System.out.println("clicked card 2");
     }
-
+    /**
+     * card field 3 of gridpane
+     * @param event onclick
+     */
     @FXML
     void onMouseClick3(MouseEvent event) {
         if (yourTurn && cardArray.length > 3 && cardArray[3] != null) {
             startFadeTransitionCard(imageViewCard3);
             cardClicked = cardArray[3];
-
+            checkJokeCase();
         }
-        System.out.println("clicked card 3");
-
     }
-
+    /**
+     * card field 4 of gridpane
+     * @param event onclick
+     */
     @FXML
     void onMouseClick4(MouseEvent event) {
         if (yourTurn && cardArray.length > 4 && cardArray[4] != null) {
             startFadeTransitionCard(imageViewCard4);
             cardClicked = cardArray[4];
-
+            checkJokeCase();
         }
-        System.out.println("clicked card 4");
-
     }
-
+    /**
+     * card field 5 of gridpane
+     * @param event onclick
+     */
     @FXML
     void onMouseClick5(MouseEvent event) {
         if (yourTurn && cardArray.length > 5 && cardArray[5] != null) {
             startFadeTransitionCard(imageViewCard5);
             cardClicked = cardArray[5];
+            checkJokeCase();
 
         }
-        System.out.println("clicked card 5");
+    }
 
+    /**
+     * checks if a joker was selected as card and if so
+     * pops up a new window to choose a card for joker
+     */
+    private void checkJokeCase() {
+        if (cardClicked.equals("JOKE")) {
+            String allCardsDialogPath = "src/main/resources/allCardsDialog.fxml";
+            URL url = null;
+            try {
+                url = Paths.get(allCardsDialogPath).toUri().toURL();
+            } catch (
+                    MalformedURLException e) {
+                e.printStackTrace();
+            }
+            FXMLLoader allCardsDialog = new FXMLLoader(url);
+
+            allCardsDialogController = allCardsDialog.getController();
+            borderPaneDialog = null;
+            try {
+                borderPaneDialog = allCardsDialog.load();
+            } catch (
+                    IOException e) {
+                e.printStackTrace();
+            }
+            this.allCardsDialog = new Stage();
+            Scene allCardsScene = new Scene(borderPaneDialog);
+            this.allCardsDialog.setScene(allCardsScene);
+            this.allCardsDialog.show();
+        }
     }
 
 
@@ -337,15 +370,17 @@ public class GameWindow2Controller implements Initializable {
 
                             String pieceID1 = "" + (((intId1) % 4) + 1);
                             String pieceID2 = "" + (((intId2) % 4) + 1);
-
+/*
                             Client.getInstance().sendMessageToServer("MOVE JACK " + pieceColor1 + "-"
+                                    + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
+
+ */
+                            System.out.println("MOVE JACK " + pieceColor1 + "-"
                                     + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
                             endMoveBlinking();
 
                             yourTurn = false;
-                            System.out.println("jack move sent");
-
                     } else {
                         System.err.println("didn`t select two pieces for jack");
                     }
@@ -410,6 +445,10 @@ public class GameWindow2Controller implements Initializable {
         return null;
     }
 
+    /**
+     * this method is used to tell the server the player cannot play this round
+     * @param event clickAction
+     */
     @FXML
     void roundOffButtonOnAction(ActionEvent event) {
         if (yourTurn) {
@@ -447,6 +486,10 @@ public class GameWindow2Controller implements Initializable {
         if (circle2 != null) {
             circle2 = null;
         }
+
+        if (imageViewCard7 != null) {
+            imageViewCard7.setBlendMode(BlendMode.DARKEN);
+        }
     }
 
     /**
@@ -468,7 +511,10 @@ public class GameWindow2Controller implements Initializable {
        return null;
     }
 
-
+    /**
+     * start fading the card after it was selected by click
+     * @param imageViewBlink the imageView with image of card
+     */
     private void startFadeTransitionCard(ImageView imageViewBlink) {
         if (fadeTransitionCard != null) {
             fadeTransitionCard.jumpTo(Duration.seconds(5));
