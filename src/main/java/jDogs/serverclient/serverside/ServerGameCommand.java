@@ -71,7 +71,6 @@ public class ServerGameCommand {
 
             case "MOVE":
                 if (text.length() >= 9 && mainGame.getActualPlayer().equals(nickname)) {
-                    System.out.println("servergamecomm " + text);
                     if (text.substring(5, 9).equals("SURR")) {
                         gameFile.getPlayer(nickname).setAllowedToPlay(false);
                         gameState.getCards().get(nickname).clear();

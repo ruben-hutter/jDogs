@@ -413,8 +413,6 @@ public class GameWindow2Controller implements Initializable {
                                     + colorPiece + "-" + pieceID + " " + newPos);
 
 
-
-
                         colIndexField = -1;
                         rowIndexField = -1;
                         endMoveBlinking();
