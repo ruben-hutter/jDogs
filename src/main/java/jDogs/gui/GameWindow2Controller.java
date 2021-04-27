@@ -219,7 +219,7 @@ public class GameWindow2Controller implements Initializable {
         if (yourTurn && cardArray.length > 2 && cardArray[2] != null) {
             startFadeTransitionCard(imageViewCard2);
             cardClicked = cardArray[2];
-
+            checkJokeCase();
         }
     }
     /**
