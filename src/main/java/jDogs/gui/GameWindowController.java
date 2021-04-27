@@ -47,6 +47,7 @@ public class GameWindowController implements Initializable {
     private AdaptToGui adaptToGui;
     private String[] cardArray;
     private String cardClicked;
+    private boolean jokerClicked;
     private String color;
     private int playerNr;
 
@@ -264,6 +265,7 @@ public class GameWindowController implements Initializable {
      */
     private void checkJokeCase() {
         if (cardClicked.equals("JOKE")) {
+            jokerClicked = true;
             String allCardsDialogPath = "src/main/resources/allCardsDialog.fxml";
             URL url = null;
             try {
@@ -286,6 +288,8 @@ public class GameWindowController implements Initializable {
             Scene allCardsScene = new Scene(borderPaneDialog);
             this.allCardsDialog.setScene(allCardsScene);
             this.allCardsDialog.show();
+        } else {
+            jokerClicked = false;
         }
     }
 
@@ -300,7 +304,7 @@ public class GameWindowController implements Initializable {
             if (clickedNode instanceof Circle) {
                 System.out.println("entered circle");
 
-                if (cardClicked.equals("JACK") && fadeTransitionCircle1!= null) {
+                if (cardClicked.equals("JACK") && circle1 != null) {
                     System.out.println("entered jack");
                     if (fadeTransitionCircle2 != null) {
                         fadeTransitionCircle2.jumpTo(Duration.seconds(5));
@@ -369,14 +373,19 @@ public class GameWindowController implements Initializable {
                             String pieceID1 = "" + (((intId1) % 4) + 1);
                             String pieceID2 = "" + (((intId2) % 4) + 1);
 
-                            Client.getInstance().sendMessageToServer("MOVE JACK " + pieceColor1 + "-"
+                            String move = "MOVE JACK ";
+
+                            if (jokerClicked) {
+                                move = "MOVE JOKE JACK ";
+                            }
+/*
+                            Client.getInstance().sendMessageToServer(move + pieceColor1 + "-"
                                     + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
-                            System.out.println("MOVE JACK " + pieceColor1 + "-"
+ */
+                            System.out.println(move + pieceColor1 + "-"
                                     + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
-
                             endMoveBlinking();
-
                             yourTurn = false;
                     } else {
                         System.err.println("didn`t select two pieces for jack");
@@ -385,8 +394,12 @@ public class GameWindowController implements Initializable {
 
                     if (fadeTransitionGrid != null) {
                         FieldOnBoard destiny = new FieldOnBoard(colIndexField, rowIndexField);
+                        System.out.println(colIndexField + " " + rowIndexField);
                         int destinyPos = adaptToGui.getPosNumber(destiny, playerNr);
-
+                        if(destinyPos < 0) {
+                            //TODO return if destiny is home position
+                            return;
+                        }
                         int intId = Integer.parseInt(circle1.getId());
                         String colorPiece = getColorOfPiece(intId);
 
@@ -403,11 +416,14 @@ public class GameWindowController implements Initializable {
                                 newPos = "B0"+destinyPos;
                             }
                         }
-
-                        System.out.println("MOVE " + cardClicked + " "
+                        String move = "MOVE ";
+                        if (jokerClicked) {
+                            move = "MOVE JOKE ";
+                        }
+                        System.out.println(move + cardClicked + " "
                                 + colorPiece + "-" + pieceID + " " + newPos);
 
-                        Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
+                        Client.getInstance().sendMessageToServer(move + cardClicked + " "
                                     + colorPiece + "-" + pieceID + " " + newPos);
 
 
@@ -418,9 +434,6 @@ public class GameWindowController implements Initializable {
                         endMoveBlinking();
                         yourTurn = false;
                     }
-                }
-                if (imageViewCard7 != null) {
-                    imageViewCard7.setBlendMode(BlendMode.DARKEN);
                 }
             }
         }
@@ -442,7 +455,6 @@ public class GameWindowController implements Initializable {
         }
         return null;
     }
-
     /**
      * this method is used to tell the server the player cannot play this round
      * @param event clickAction
@@ -486,8 +498,10 @@ public class GameWindowController implements Initializable {
         }
 
         if (imageViewCard7 != null) {
-            imageViewCard7.setBlendMode(BlendMode.DARKEN);
+            imageViewCard7.setVisible(false);
         }
+        cardClicked = null;
+        jokerClicked = false;
     }
 
     /**
@@ -530,7 +544,7 @@ public class GameWindowController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adaptToGui = new AdaptToGui();
-
+        jokerClicked = false;
 
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -541,25 +555,23 @@ public class GameWindowController implements Initializable {
         nameLabel2.setText(color.toString());
         nameLabel1.setText(Client.getInstance().getNickname());
 
-
-
-
-
         setPlayerLabels();
-
-
 
         setOnHome();
         setAllCardImageViews();
 
 
 
-
-      /*  //TODO delete and give Array from ClientGame
+/*
+       //TODO delete and give Array from ClientGame
         String[] cardddss = new String[]{"JOKE", "JOKE", "JOKE", "JOKE", "NINE", "FOUR"};
         setHand(cardddss);
 
-       */
+        makeSingleMove("0",adaptToGui.getTrack(4));
+        makeSingleMove("7",adaptToGui.getTrack(7));
+
+ */
+
     }
 
     /**
@@ -668,7 +680,11 @@ public class GameWindowController implements Initializable {
     public void makeSingleMoveTrack(int playerNr, int pieceID, int newPosition) {
         String circleID = getCircleID(playerNr, pieceID);
         System.out.println("circle ID for makeSingleMoveTrack " + circleID);
+        System.out.println("Player NR " + playerNr);
+        System.out.println("pieceId " + pieceID);
         FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
+        System.out.println("new Pos " + newPos.getX() + " " + newPos.getY());
+        System.out.println("CircleID " + circleID);
         makeSingleMove(circleID, newPos);
 
     }
@@ -681,9 +697,9 @@ public class GameWindowController implements Initializable {
      */
     private String getCircleID(int playerNr, int pieceID) {
         if (playerNr == 0) {
-            return "" + (1 * pieceID);
+            return "" + ((1 * pieceID) - 1);
         } else {
-            return "" + (playerNr * 4 + pieceID);
+            return "" + ((playerNr * 4 + pieceID) - 1);
         }
     }
 
@@ -781,9 +797,9 @@ public class GameWindowController implements Initializable {
      * @param card ACEE,......,KING (without JOKE)
      */
     public void setCardFromJoker(String card) {
-        System.out.println("card chosen " + card);
         cardClicked = card;
         allCardsDialog.close();
         imageViewCard7.setImage(new Image(CardUrl.getURL(card).toString()));
+        imageViewCard7.setVisible(true);
     }
 }
