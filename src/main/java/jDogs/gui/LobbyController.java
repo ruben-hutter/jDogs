@@ -35,6 +35,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -177,14 +178,14 @@ public class LobbyController implements Initializable {
         FXMLLoader dialogPaneGameLoader = new FXMLLoader(url);
 
         CreateGameWindowController createGameWindowController = dialogPaneGameLoader.getController();
-        DialogPane dialogPane = null;
+        AnchorPane anchorPane = null;
         try {
-            dialogPane = dialogPaneGameLoader.load();
+            anchorPane = dialogPaneGameLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
         gameDialog = new Stage();
-        Scene gameScene = new Scene(dialogPane);
+        Scene gameScene = new Scene(anchorPane);
         gameDialog.setScene(gameScene);
         gameDialog.show();
 
