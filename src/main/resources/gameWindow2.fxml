@@ -302,7 +302,7 @@
                               <Pane prefHeight="86.0" prefWidth="94.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                  <children>
                                     <Button fx:id="makeMoveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="53.0" mnemonicParsing="false" onAction="#makeMoveButtonOnAction" text="MakeMove" />
-                                    <Button fx:id="roundOFfButton" layoutX="13.0" layoutY="91.0" mnemonicParsing="false" onAction="#roundOffButtonOnAction" style="-fx-background-color: #ff0000;" text="Round off" />
+                                    <Button fx:id="roundOffButton" layoutX="13.0" layoutY="91.0" mnemonicParsing="false" onAction="#roundOffButtonOnAction" style="-fx-background-color: #ff0000;" text="Round off" />
                                  </children>
                               </Pane>
                            </children>
