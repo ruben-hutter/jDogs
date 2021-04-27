@@ -201,12 +201,13 @@ public class GameWindowController implements Initializable {
      * delete all data which was entered via gui while a card was selected
      */
     private void deleteSavedData() {
+        endMoveBlinking();
+
         circle1 = null;
         circle2 = null;
         circle3 = null;
         circle4 = null;
 
-        endMoveBlinking();
     }
     /**
      * card field 0 of gridpane
@@ -369,6 +370,8 @@ public class GameWindowController implements Initializable {
                                     fadeTransitionCircle4.play();
                                 } else {
                                     circle3 = (Circle) clickedNode;
+                                    System.out.println("SEVE 3 " + circle3.getId());
+
                                     if (fadeTransitionCircle3 != null) {
                                         fadeTransitionCircle3.jumpTo(Duration.ZERO);
                                         fadeTransitionCircle3.stop();
@@ -382,6 +385,8 @@ public class GameWindowController implements Initializable {
                                 }
                             } else {
                                 circle2 = (Circle) clickedNode;
+                                System.out.println("SEVE 2 " + circle2.getId());
+
                                 if (fadeTransitionCircle2 != null) {
                                     fadeTransitionCircle2.jumpTo(Duration.ZERO);
                                     fadeTransitionCircle2.stop();
@@ -395,6 +400,7 @@ public class GameWindowController implements Initializable {
                             }
                         } else {
                             circle1 = (Circle) clickedNode;
+                            System.out.println("SEVE 1 " + circle1.getId());
                             if (fadeTransitionCircle1 != null) {
                                 fadeTransitionCircle1.jumpTo(Duration.ZERO);
                                 fadeTransitionCircle1.stop();
@@ -516,14 +522,16 @@ public class GameWindowController implements Initializable {
                         if (jokerClicked) {
                             move = "MOVE JOKE JACK ";
                         }
-
+/*
                         Client.getInstance().sendMessageToServer(move + pieceColor1 + "-"
                                 + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
+
+ */
 
                         System.out.println(move + pieceColor1 + "-"
                                 + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
                         endMoveBlinking();
-                        yourTurn = false;
+                       // yourTurn = false;
                     } else {
                         System.err.println("didn`t select two pieces for jack");
                     }
@@ -535,9 +543,15 @@ public class GameWindowController implements Initializable {
                         //TODO i need 4 transition grids clickable if seve add above
                         if (circle1 != null) {
                            int clicked = countCirclesClicked();
-                           String message = "SEVE " + clicked;
+                            System.out.println("Circle 1 id before " + circle1.getId());
+                            System.out.println("SEVE chosen " + clicked);
+                            String message = "MOVE SEVE " + clicked;
+                            if (jokerClicked) {
+                               message = "MOVE JOKE SEVE " + clicked;
+                           }
                            for (int i = 0; i < clicked; i++) {
                                int id = Integer.parseInt(circle1.getId());
+                               System.out.println("id1 " + id);
                                int playerNumber = id / 4;
                                message += " " + getColorOfPiece(id) + "-" + id;
                                message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
@@ -548,9 +562,11 @@ public class GameWindowController implements Initializable {
                                }
 
                                id = Integer.parseInt(circle2.getId());
+                               System.out.println("id2 " + id);
+
                                playerNumber = id / 4;
                                message += " " + getColorOfPiece(id) + "-" + id;
-                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
+                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField2,rowIndexField2),playerNumber);
 
                                i++;
                                if (i >= clicked) {
@@ -558,9 +574,11 @@ public class GameWindowController implements Initializable {
                                }
 
                                id = Integer.parseInt(circle3.getId());
+                               System.out.println("id3 " + id);
+
                                playerNumber = id / 4;
                                message += " " + getColorOfPiece(id) + "-" + id;
-                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
+                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField3,rowIndexField3),playerNumber);
 
                                i++;
                                if (i >= clicked) {
@@ -570,8 +588,13 @@ public class GameWindowController implements Initializable {
                                id = Integer.parseInt(circle4.getId());
                                playerNumber = id / 4;
                                message += " " + getColorOfPiece(id) + "-" + id;
-                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
+                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField4,rowIndexField4),playerNumber);
                            }
+                           System.out.println(message);
+
+                           //Client.getInstance().sendMessageToServer(message);
+                            //yourTurn = false;
+                            endMoveBlinking();
                         }
                     }
                     //not SEVE or JACK
@@ -579,46 +602,34 @@ public class GameWindowController implements Initializable {
                     if (fadeTransitionGrid1 != null) {
                         FieldOnBoard destiny = new FieldOnBoard(colIndexField1, rowIndexField1);
                         System.out.println(colIndexField1 + " " + rowIndexField1);
-                        int destinyPos = adaptToGui.getPosNumber(destiny, playerNr);
-                        if (destinyPos < 0) {
+                        String newPos = adaptToGui.getPosNumber(destiny, playerNr);
+
                             //TODO return if destiny is home position
-                            return;
-                        }
+
                         int intId = Integer.parseInt(circle1.getId());
                         String colorPiece = getColorOfPiece(intId);
 
                         String pieceID = "" + (((intId) % 4) + 1);
 
-                        String newPos;
 
-                        if (destinyPos >= 64) {
-                            destinyPos = destinyPos - 64;
-                            newPos = "A0" + destinyPos;
-                        } else {
-                            newPos = "B" + destinyPos;
-                            if (destinyPos < 10) {
-                                newPos = "B0" + destinyPos;
-                            }
-                        }
                         String move = "MOVE ";
                         if (jokerClicked) {
                             move = "MOVE JOKE ";
                         }
                         System.out.println(move + cardClicked + " "
                                 + colorPiece + "-" + pieceID + " " + newPos);
-
+/*
                         Client.getInstance().sendMessageToServer(move + cardClicked + " "
                                 + colorPiece + "-" + pieceID + " " + newPos);
 
-                        colIndexField1 = -1;
-                        rowIndexField1 = -1;
+ */
+
                         endMoveBlinking();
-                        yourTurn = false;
-                    }
+                        //yourTurn = false;
                     }
                 }
             }
-
+        }
         System.err.println("INFO not your turn or no card selected");
     }
 
@@ -672,9 +683,43 @@ public class GameWindowController implements Initializable {
      * this method ends any blinking items in the gui when the move is sent
      */
     private void endMoveBlinking() {
+        colIndexField1 = -1;
+        rowIndexField1 = -1;
+
+        colIndexField2 = -1;
+        rowIndexField2 = -1;
+
+        colIndexField3 = -1;
+        rowIndexField3 = 1;
+
+        colIndexField4 = -1;
+        rowIndexField4 = -1;
+
         if (fadeTransitionGrid1 != null) {
+            System.out.println("Stop blink1");
             fadeTransitionGrid1.jumpTo(Duration.ZERO);
             fadeTransitionGrid1.stop();
+        }
+
+        if (fadeTransitionGrid2 != null) {
+            System.out.println("Stop blink2");
+
+            fadeTransitionGrid2.jumpTo(Duration.ZERO);
+            fadeTransitionGrid2.stop();
+        }
+
+        if (fadeTransitionGrid3 != null) {
+            System.out.println("Stop blink3");
+
+            fadeTransitionGrid3.jumpTo(Duration.ZERO);
+            fadeTransitionGrid3.stop();
+        }
+
+        if (fadeTransitionGrid4 != null) {
+            System.out.println("Stop blink4");
+
+            fadeTransitionGrid4.jumpTo(Duration.ZERO);
+            fadeTransitionGrid4.stop();
         }
 
         if (fadeTransitionCard != null) {
@@ -691,10 +736,29 @@ public class GameWindowController implements Initializable {
             fadeTransitionCircle2.jumpTo(Duration.ZERO);
             fadeTransitionCircle2.stop();
         }
+
+        if (fadeTransitionCircle3 != null) {
+            fadeTransitionCircle3.jumpTo(Duration.ZERO);
+            fadeTransitionCircle3.stop();
+        }
+
+        if (fadeTransitionCircle4 != null) {
+            fadeTransitionCircle4.jumpTo(Duration.ZERO);
+            fadeTransitionCircle4.stop();
+        }
+
+
         if (circle1 != null) {
             circle1 = null;
         }
         if (circle2 != null) {
+            circle2 = null;
+        }
+
+        if (circle3 != null) {
+            circle1 = null;
+        }
+        if (circle4 != null) {
             circle2 = null;
         }
 
@@ -747,6 +811,8 @@ public class GameWindowController implements Initializable {
         adaptToGui = new AdaptToGui();
         jokerClicked = false;
 
+        yourTurn = true;
+/*
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
@@ -758,20 +824,23 @@ public class GameWindowController implements Initializable {
 
         setPlayerLabels();
 
+ */
+
         setOnHome();
         setAllCardImageViews();
 
 
 
-/*
-       //TODO delete and give Array from ClientGame
-        String[] cardddss = new String[]{"JOKE", "JOKE", "JOKE", "JOKE", "NINE", "FOUR"};
+
+      //TODO delete and give Array from ClientGame
+        String[] cardddss = new String[]{"JOKE", "JOKE", "JOKE", "JOKE", "SEVE", "SEVE"};
         setHand(cardddss);
 
         makeSingleMove("0",adaptToGui.getTrack(4));
         makeSingleMove("7",adaptToGui.getTrack(7));
+        makeSingleMove("12",adaptToGui.getTrack(24));
 
- */
+
 
     }
 
