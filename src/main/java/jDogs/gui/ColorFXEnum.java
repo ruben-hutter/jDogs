@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 /**
  * translate Alliance to color in Gui
  */
-public enum ColorTokens {
+public enum ColorFXEnum {
 
     YELLOW(Color.YELLOW),
     GREEN(Color.GREEN),
@@ -15,7 +15,7 @@ public enum ColorTokens {
 
     Color color;
 
-    ColorTokens(Color color) { this.color = color;}
+    ColorFXEnum(Color color) { this.color = color;}
 
     public Color getColor() {
         return color;

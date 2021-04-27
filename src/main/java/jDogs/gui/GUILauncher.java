@@ -1,5 +1,8 @@
 package jDogs.gui;
 
+/**
+ * this class is important to start javafx stage
+ */
 public class GUILauncher {
 
     /**

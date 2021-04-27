@@ -1,7 +1,6 @@
 package jDogs.gui;
 
 
-import jDogs.ClientGame;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
@@ -26,7 +25,7 @@ public class GUIManager extends Application {
     public LobbyController lobbyController;
     FXMLLoader gameLoader;
     private Client client;
-    public GameWindow2Controller gameWindow2Controller;
+    public GameWindowController gameWindow2Controller;
 
     public static void main(String[] args) {
         launch(args);
@@ -150,7 +149,7 @@ public class GUIManager extends Application {
     private void setGameScene() {
 
         //String lobbyPath = "src/main/resources/gameWindow_orig.fxml";
-        String lobbyPath = "src/main/resources/gameWindow2.fxml";
+        String lobbyPath = "src/main/resources/gameWindow.fxml";
         // activate Window
         //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
         URL url = null;
