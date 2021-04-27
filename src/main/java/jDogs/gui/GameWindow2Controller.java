@@ -351,7 +351,7 @@ public class GameWindow2Controller implements Initializable {
                         System.out.println("DESTINY POS " + destinyPos);
                         String pieceID = getPieceIDOnPane(colIndexCircle1, rowIndexCircle1);
 
-                        pieceID = "" + (Integer.parseInt(pieceID) % 4) + 1;
+                        pieceID = "" + ((Integer.parseInt(pieceID) % 4) + 1);
 
                         System.out.println("PIECE ID " + pieceID);
                         String newPos;

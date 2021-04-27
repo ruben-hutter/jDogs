@@ -88,6 +88,7 @@ public class ServerGameCommand {
                     String toCheckMove = rulesCheck.checkCard(text, gameState, nickname);
                     if (toCheckMove == null) {
                         sendToThisClient.enqueue("INFO Invalid card or no hand");
+                        sendToThisClient.enqueue("TURN");
                         logger.debug("You don't have this card on your hand");
                         return;
                     }

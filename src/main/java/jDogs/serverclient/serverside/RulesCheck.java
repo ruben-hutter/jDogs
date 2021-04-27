@@ -98,6 +98,7 @@ public class RulesCheck {
 
                 if (newPosition1.equals("A")) {
                     sendToThisClient.enqueue("INFO You can't move a piece in home.");
+                    sendToThisClient.enqueue("TURN");
                     return;
                 }
 
@@ -117,12 +118,15 @@ public class RulesCheck {
                 }
             } catch (Exception e) {
                 sendToThisClient.enqueue("INFO Format exception in checkMove");
+                sendToThisClient.enqueue("TURN");
+
                 return;
             }
 
             // prevent players from moving with others pieces
             if (ownPlayer != gameFile.getPlayer(nickname)) {
                 sendToThisClient.enqueue("INFO You cannot move this color");
+                sendToThisClient.enqueue("TURN");
                 return;
             }
 
@@ -130,6 +134,7 @@ public class RulesCheck {
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
                     newPosition2, startingPosition, hasMoved, completeMove)) {
                 sendToThisClient.enqueue("INFO Check your move's validity");
+                sendToThisClient.enqueue("TURN");
                 return;
             }
 
@@ -138,12 +143,14 @@ public class RulesCheck {
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
                     ownPlayer)) {
                 sendToThisClient.enqueue("INFO Someone blocks you");
+                sendToThisClient.enqueue("TURN");
                 return;
             }
 
             // check if there is a piece on destination
             if (!checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
                 sendToThisClient.enqueue("INFO You eliminate yourself!");
+                sendToThisClient.enqueue("TURN");
                 return;
             }
 
@@ -159,6 +166,7 @@ public class RulesCheck {
         } else {
             sendToThisClient.enqueue("INFO Entered command does`t fit the length(15) for"
                     + "checkmove()");
+            sendToThisClient.enqueue("TURN");
         }
     }
 
@@ -210,6 +218,7 @@ public class RulesCheck {
 
                 if (ownPlayer != gameFile.getPlayer(nickname)) {
                     sendToThisClient.enqueue("INFO You cannot move this color");
+                    sendToThisClient.enqueue("TURN");
                 } else {
                     assert ownActualPosition1 != null;
                     assert otherActualPosition1 != null;
@@ -217,6 +226,7 @@ public class RulesCheck {
                             || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
                             || (otherActualPosition1.equals("B") && !otherHasMoved)) {
                         sendToThisClient.enqueue("INFO You can't switch this pieces!");
+                        sendToThisClient.enqueue("TURN");
                     } else {
                         simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
                         simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
@@ -234,6 +244,7 @@ public class RulesCheck {
             }
         } catch (Exception e) {
             sendToThisClient.enqueue("INFO wrong format for jack");
+            sendToThisClient.enqueue("TURN");
         }
     }
 
@@ -260,17 +271,20 @@ public class RulesCheck {
                 moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10), nickname);
                 if (moveValue < 0) {
                     sendToThisClient.enqueue("INFO At least one invalid destination or piece!");
+                    sendToThisClient.enqueue("TURN");
                     return;
                 }
                 countToSeven += moveValue;
                 if (countToSeven > 7) {
                     sendToThisClient.enqueue("INFO You moved more than 7!");
+                    sendToThisClient.enqueue("TURN");
                     return;
                 }
                 singleEliminations = piecesOnPath(completeMove.substring(startIndex,
                         startIndex + 10), "SEVE");
                 if (singleEliminations == null) {
                     sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                    sendToThisClient.enqueue("TURN");
                     return;
                 }
                 piecesToEliminate.addAll(singleEliminations);
@@ -308,9 +322,11 @@ public class RulesCheck {
                 mainGame.turnComplete(nickname);
             } else {
                 sendToThisClient.enqueue("INFO You don't move a total of 7!");
+                sendToThisClient.enqueue("TURN");
             }
         } catch (Exception e) {
             sendToThisClient.enqueue("INFO wrong format for seven");
+            sendToThisClient.enqueue("TURN");
         }
     }
 
@@ -483,6 +499,7 @@ public class RulesCheck {
             default:
                 // if command piece not correct, return to client
                 sendToThisClient.enqueue("INFO Piece isn't entered correctly");
+                sendToThisClient.enqueue("TURN");
                 return null;
         }
         return alliance;
@@ -567,6 +584,7 @@ public class RulesCheck {
             }
             if (piecesOnPath(completeMove, card) == null) {
                 sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                sendToThisClient.enqueue("TURN");
                 return false;
             }
             if (card.equals("FOUR")) {
@@ -587,6 +605,7 @@ public class RulesCheck {
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             if (piecesOnPath(completeMove, card) == null) {
                 sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                sendToThisClient.enqueue("TURN");
                 return false;
             }
             return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
@@ -781,6 +800,7 @@ public class RulesCheck {
                 break;
             default:
                 sendToThisClient.enqueue("Invalid card!");
+                sendToThisClient.enqueue("TURN");
                 return null;
         }
         return possibleValues;
