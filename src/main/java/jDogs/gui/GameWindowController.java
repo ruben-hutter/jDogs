@@ -51,15 +51,42 @@ public class GameWindowController implements Initializable {
     private String color;
     private int playerNr;
 
-    private int colIndexField;
-    private int rowIndexField;
+    private boolean yourTurn;
+
+    private FadeTransition fadeTransitionGrid1;
+    private FadeTransition fadeTransitionGrid2;
+    private FadeTransition fadeTransitionGrid3;
+    private FadeTransition fadeTransitionGrid4;
+
+    private int colIndexField1;
+    private int rowIndexField1;
+    private Integer colIndexField2;
+    private Integer rowIndexField2;
+    private Integer rowIndexField3;
+    private Integer colIndexField3;
+    private Integer rowIndexField4;
+    private Integer colIndexField4;
 
     private Circle circle1;
     private Circle circle2;
     private Circle circle3;
     private Circle circle4;
 
-    private Pane clickedPane;
+    private FadeTransition fadeTransitionCircle1;
+
+    private FadeTransition fadeTransitionCircle2;
+
+    private FadeTransition fadeTransitionCircle4;
+
+    private FadeTransition fadeTransitionCircle3;
+
+    private FadeTransition fadeTransitionCard;
+
+    private BorderPane borderPaneDialog;
+
+    private AllCardsDialogController allCardsDialogController;
+
+    private Stage allCardsDialog;
 
 
     @FXML
@@ -141,25 +168,6 @@ public class GameWindowController implements Initializable {
     @FXML
     private Label nameLabel2;
 
-    private FadeTransition fadeTransitionGrid1;
-
-    private FadeTransition fadeTransitionCircle1;
-
-    private FadeTransition fadeTransitionCircle2;
-
-    private FadeTransition fadeTransitionCircle4;
-
-    private FadeTransition fadeTransitionCircle3;
-
-    private FadeTransition fadeTransitionCard;
-
-    private BorderPane borderPaneDialog;
-
-    private AllCardsDialogController allCardsDialogController;
-
-    private Stage allCardsDialog;
-
-    private boolean yourTurn;
 
     /**
      * end application(stop game)
@@ -197,8 +205,6 @@ public class GameWindowController implements Initializable {
         circle2 = null;
         circle3 = null;
         circle4 = null;
-
-        clickedPane = null;
 
         endMoveBlinking();
     }
@@ -341,8 +347,6 @@ public class GameWindowController implements Initializable {
                     fadeTransitionCircle2.setToValue(0.0);
                     fadeTransitionCircle2.setCycleCount(Animation.INDEFINITE);
                     fadeTransitionCircle2.play();
-                    //colIndexCircle2 = GridPane.getColumnIndex(clickedNode);
-                    //rowIndexCircle2 = GridPane.getRowIndex(clickedNode);
 
                     circle2 = (Circle) clickedNode;
 
@@ -357,45 +361,53 @@ public class GameWindowController implements Initializable {
                                         fadeTransitionCircle4.jumpTo(Duration.ZERO);
                                         fadeTransitionCircle4.stop();
                                     }
-                                    fadeTransitionCircle4 = new FadeTransition(Duration.seconds(0.9), clickedNode);
+                                    fadeTransitionCircle4 = new FadeTransition(
+                                            Duration.seconds(0.9), clickedNode);
                                     fadeTransitionCircle4.setFromValue(1.0);
                                     fadeTransitionCircle4.setToValue(0.0);
                                     fadeTransitionCircle4.setCycleCount(Animation.INDEFINITE);
-                                    fadeTransitionCircle4.play();                                } else {
+                                    fadeTransitionCircle4.play();
+                                } else {
                                     circle3 = (Circle) clickedNode;
                                     if (fadeTransitionCircle3 != null) {
                                         fadeTransitionCircle3.jumpTo(Duration.ZERO);
                                         fadeTransitionCircle3.stop();
                                     }
-                                    fadeTransitionCircle3 = new FadeTransition(Duration.seconds(0.9), clickedNode);
+                                    fadeTransitionCircle3 = new FadeTransition(
+                                            Duration.seconds(0.9), clickedNode);
                                     fadeTransitionCircle3.setFromValue(1.0);
                                     fadeTransitionCircle3.setToValue(0.0);
                                     fadeTransitionCircle3.setCycleCount(Animation.INDEFINITE);
-                                    fadeTransitionCircle3.play();                                }
+                                    fadeTransitionCircle3.play();
+                                }
                             } else {
                                 circle2 = (Circle) clickedNode;
                                 if (fadeTransitionCircle2 != null) {
                                     fadeTransitionCircle2.jumpTo(Duration.ZERO);
                                     fadeTransitionCircle2.stop();
                                 }
-                                fadeTransitionCircle2 = new FadeTransition(Duration.seconds(0.9), clickedNode);
+                                fadeTransitionCircle2 = new FadeTransition(Duration.seconds(0.9),
+                                        clickedNode);
                                 fadeTransitionCircle2.setFromValue(1.0);
                                 fadeTransitionCircle2.setToValue(0.0);
                                 fadeTransitionCircle2.setCycleCount(Animation.INDEFINITE);
-                                fadeTransitionCircle2.play();                            }
+                                fadeTransitionCircle2.play();
+                            }
                         } else {
                             circle1 = (Circle) clickedNode;
                             if (fadeTransitionCircle1 != null) {
                                 fadeTransitionCircle1.jumpTo(Duration.ZERO);
                                 fadeTransitionCircle1.stop();
                             }
-                            fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9), clickedNode);
+                            fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9),
+                                    clickedNode);
                             fadeTransitionCircle1.setFromValue(1.0);
                             fadeTransitionCircle1.setToValue(0.0);
                             fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
-                            fadeTransitionCircle1.play();                        }
-                    } else
-                        if (fadeTransitionCircle1 != null) {
+                            fadeTransitionCircle1.play();
+                        }
+                        //NOT JACK or SEVE Move
+                    } else if (fadeTransitionCircle1 != null) {
                         fadeTransitionCircle1.jumpTo(Duration.ZERO);
                         fadeTransitionCircle1.stop();
                     }
@@ -404,28 +416,80 @@ public class GameWindowController implements Initializable {
                     fadeTransitionCircle1.setToValue(0.0);
                     fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
                     fadeTransitionCircle1.play();
-                    //colIndexCircle1 = GridPane.getColumnIndex(clickedNode);
-                    //rowIndexCircle1 = GridPane.getRowIndex(clickedNode);
 
                     circle1 = (Circle) clickedNode;
                 }
             } else {
                 if (clickedNode instanceof Pane) {
+                    if (cardClicked.equals("SEVE")) {
+                        if (fadeTransitionGrid1 != null) {
+                           if (fadeTransitionGrid2 != null) {
+                               if (fadeTransitionGrid3 != null) {
+                                   if (colIndexField4 != null) {
+                                       fadeTransitionCircle4.jumpTo(Duration.ZERO);
+                                       fadeTransitionCircle4.stop();
+                                   }
+                                   colIndexField4 = GridPane.getColumnIndex(clickedNode);
+                                   rowIndexField4 = GridPane.getRowIndex(clickedNode);
 
-                    // stop first field blinking if one clicks another field
-                    if (fadeTransitionGrid1 != null) {
-                        fadeTransitionGrid1.jumpTo(Duration.ZERO);
-                        fadeTransitionGrid1.stop();
-                        fadeTransitionGrid1 = null;
+                                   fadeTransitionGrid4 = new FadeTransition(Duration.seconds(0.9),
+                                           clickedNode);
+                                   fadeTransitionGrid4.setFromValue(1.0);
+                                   fadeTransitionGrid4.setToValue(0.0);
+                                   fadeTransitionGrid4.setCycleCount(Animation.INDEFINITE);
+                                   fadeTransitionGrid4.play();
+                               } else {
+                                   colIndexField3 = GridPane.getColumnIndex(clickedNode);
+                                   rowIndexField3 = GridPane.getRowIndex(clickedNode);
+
+                                   fadeTransitionGrid3 = new FadeTransition(Duration.seconds(0.9),
+                                           clickedNode);
+                                   fadeTransitionGrid3.setFromValue(1.0);
+                                   fadeTransitionGrid3.setToValue(0.0);
+                                   fadeTransitionGrid3.setCycleCount(Animation.INDEFINITE);
+                                   fadeTransitionGrid3.play();
+                               }
+                           } else {
+                               colIndexField2 = GridPane.getColumnIndex(clickedNode);
+                               rowIndexField2 = GridPane.getRowIndex(clickedNode);
+
+                               fadeTransitionGrid2 = new FadeTransition(Duration.seconds(0.9),
+                                       clickedNode);
+                               fadeTransitionGrid2.setFromValue(1.0);
+                               fadeTransitionGrid2.setToValue(0.0);
+                               fadeTransitionGrid2.setCycleCount(Animation.INDEFINITE);
+                               fadeTransitionGrid2.play();
+
+                           }
+                        } else {
+                            colIndexField1 = GridPane.getColumnIndex(clickedNode);
+                            rowIndexField1 = GridPane.getRowIndex(clickedNode);
+
+                            fadeTransitionGrid1 = new FadeTransition(Duration.seconds(0.9),
+                                    clickedNode);
+                            fadeTransitionGrid1.setFromValue(1.0);
+                            fadeTransitionGrid1.setToValue(0.0);
+                            fadeTransitionGrid1.setCycleCount(Animation.INDEFINITE);
+                            fadeTransitionGrid1.play();
+                        }
+                    } else {
+
+                        // stop first field blinking if one clicks another field
+                        if (fadeTransitionGrid1 != null) {
+                            fadeTransitionGrid1.jumpTo(Duration.ZERO);
+                            fadeTransitionGrid1.stop();
+                            fadeTransitionGrid1 = null;
+                        }
+                        colIndexField1 = GridPane.getColumnIndex(clickedNode);
+                        rowIndexField1 = GridPane.getRowIndex(clickedNode);
+
+                        fadeTransitionGrid1 = new FadeTransition(Duration.seconds(0.9),
+                                clickedNode);
+                        fadeTransitionGrid1.setFromValue(1.0);
+                        fadeTransitionGrid1.setToValue(0.0);
+                        fadeTransitionGrid1.setCycleCount(Animation.INDEFINITE);
+                        fadeTransitionGrid1.play();
                     }
-                    colIndexField = GridPane.getColumnIndex(clickedNode);
-                    rowIndexField = GridPane.getRowIndex(clickedNode);
-
-                    fadeTransitionGrid1 = new FadeTransition(Duration.seconds(0.9), clickedNode);
-                    fadeTransitionGrid1.setFromValue(1.0);
-                    fadeTransitionGrid1.setToValue(0.0);
-                    fadeTransitionGrid1.setCycleCount(Animation.INDEFINITE);
-                    fadeTransitionGrid1.play();
                 }
             }
         }
@@ -470,23 +534,51 @@ public class GameWindowController implements Initializable {
                     if (fadeTransitionGrid1 != null) {
                         //TODO i need 4 transition grids clickable if seve add above
                         if (circle1 != null) {
-                            if (circle2 != null) {
+                           int clicked = countCirclesClicked();
+                           String message = "SEVE " + clicked;
+                           for (int i = 0; i < clicked; i++) {
+                               int id = Integer.parseInt(circle1.getId());
+                               int playerNumber = id / 4;
+                               message += " " + getColorOfPiece(id) + "-" + id;
+                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
 
-                            } if (circle3 != null) {
-                                if (circle4 != null) {
+                               i++;
+                               if (i >= clicked) {
+                                   break;
+                               }
 
-                                }
-                            }
-                            //do something
+                               id = Integer.parseInt(circle2.getId());
+                               playerNumber = id / 4;
+                               message += " " + getColorOfPiece(id) + "-" + id;
+                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
 
+                               i++;
+                               if (i >= clicked) {
+                                   break;
+                               }
+
+                               id = Integer.parseInt(circle3.getId());
+                               playerNumber = id / 4;
+                               message += " " + getColorOfPiece(id) + "-" + id;
+                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
+
+                               i++;
+                               if (i >= clicked) {
+                                   break;
+                               }
+
+                               id = Integer.parseInt(circle4.getId());
+                               playerNumber = id / 4;
+                               message += " " + getColorOfPiece(id) + "-" + id;
+                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
+                           }
                         }
-
-
                     }
+                    //not SEVE or JACK
                 } else {
                     if (fadeTransitionGrid1 != null) {
-                        FieldOnBoard destiny = new FieldOnBoard(colIndexField, rowIndexField);
-                        System.out.println(colIndexField + " " + rowIndexField);
+                        FieldOnBoard destiny = new FieldOnBoard(colIndexField1, rowIndexField1);
+                        System.out.println(colIndexField1 + " " + rowIndexField1);
                         int destinyPos = adaptToGui.getPosNumber(destiny, playerNr);
                         if (destinyPos < 0) {
                             //TODO return if destiny is home position
@@ -518,8 +610,8 @@ public class GameWindowController implements Initializable {
                         Client.getInstance().sendMessageToServer(move + cardClicked + " "
                                 + colorPiece + "-" + pieceID + " " + newPos);
 
-                        colIndexField = -1;
-                        rowIndexField = -1;
+                        colIndexField1 = -1;
+                        rowIndexField1 = -1;
                         endMoveBlinking();
                         yourTurn = false;
                     }
@@ -529,6 +621,25 @@ public class GameWindowController implements Initializable {
 
         System.err.println("INFO not your turn or no card selected");
     }
+
+    /**
+     * this is used to count a SEVE Move
+     * @return number of circles clicked
+     */
+    private int countCirclesClicked() {
+        int count = 1;
+        if (circle2 != null && rowIndexField2 >= 0 && colIndexField2 >= 0) {
+            count++;
+        }
+        if (circle3 != null && rowIndexField3 >= 0 && colIndexField3 >= 0) {
+            count++;
+        }
+        if (circle4 != null && rowIndexField4 >= 0 && colIndexField4 >= 0) {
+            count++;
+        }
+        return count;
+    }
+
     /**
      * this method returns the color of the piece that was selected according to the pieceID
      * @param id int of the pieceID
