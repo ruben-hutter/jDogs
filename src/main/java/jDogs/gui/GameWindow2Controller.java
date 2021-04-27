@@ -39,6 +39,9 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * this class is the processing part of the gameWindow
+ */
 public class GameWindow2Controller implements Initializable {
 
     private static final double RADIUS_CIRCLE = 10;
@@ -48,12 +51,13 @@ public class GameWindow2Controller implements Initializable {
     private String cardClicked;
     private String color;
     private int playerNr;
-    private int colIndexCircle2;
-    private int rowIndexCircle2;
-    private int rowIndexCircle1;
-    private int colIndexCircle1;
+
     private int colIndexField;
     private int rowIndexField;
+
+    private Circle circle1;
+    private Circle circle2;
+    private Pane clickedPane;
 
 
     @FXML
@@ -103,6 +107,9 @@ public class GameWindow2Controller implements Initializable {
 
     @FXML
     private Button makeMoveButton;
+
+    @FXML
+    private Button roundOffButton;
 
     @FXML
     private ImageView imageViewCard1;
@@ -273,8 +280,12 @@ public class GameWindow2Controller implements Initializable {
                     fadeTransitionCircle2.setToValue(0.0);
                     fadeTransitionCircle2.setCycleCount(Animation.INDEFINITE);
                     fadeTransitionCircle2.play();
-                    colIndexCircle2 = GridPane.getColumnIndex(clickedNode);
-                    rowIndexCircle2 = GridPane.getRowIndex(clickedNode);
+                    //colIndexCircle2 = GridPane.getColumnIndex(clickedNode);
+                    //rowIndexCircle2 = GridPane.getRowIndex(clickedNode);
+
+                    circle2 = (Circle) clickedNode;
+
+
                 } else {
                     if (fadeTransitionCircle1 != null) {
                         fadeTransitionCircle1.jumpTo(Duration.ZERO);
@@ -285,8 +296,10 @@ public class GameWindow2Controller implements Initializable {
                     fadeTransitionCircle1.setToValue(0.0);
                     fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
                     fadeTransitionCircle1.play();
-                    colIndexCircle1 = GridPane.getColumnIndex(clickedNode);
-                    rowIndexCircle1 = GridPane.getRowIndex(clickedNode);
+                    //colIndexCircle1 = GridPane.getColumnIndex(clickedNode);
+                    //rowIndexCircle1 = GridPane.getRowIndex(clickedNode);
+
+                    circle1 = (Circle) clickedNode;
                 }
             } else {
                 if (clickedNode instanceof Pane) {
@@ -315,45 +328,38 @@ public class GameWindow2Controller implements Initializable {
         if (cardClicked != null && yourTurn) {
             if (fadeTransitionCircle1 != null) {
                 if (cardClicked.equals("JACK")) {
-                    if (fadeTransitionCircle2 != null) {
-                        fadeTransitionCard.jumpTo(Duration.ZERO);
-                        fadeTransitionCard.stop();
-                        fadeTransitionCard = null;
+                        if (fadeTransitionCircle2 != null) {
+                            int intId1 = Integer.parseInt(circle1.getId());
+                            int intId2 = Integer.parseInt(circle2.getId());
 
-                        fadeTransitionCircle1.jumpTo(Duration.ZERO);
-                        fadeTransitionCircle1.stop();
-                        fadeTransitionCircle1 = null;
+                            String pieceColor1 = getColorOfPiece(intId1);
+                            String pieceColor2 = getColorOfPiece(intId2);
 
-                        fadeTransitionCircle2.jumpTo(Duration.ZERO);
-                        fadeTransitionCircle2.stop();
-                        fadeTransitionCircle2 = null;
+                            String pieceID1 = "" + (((intId1) % 4) + 1);
+                            String pieceID2 = "" + (((intId2) % 4) + 1);
 
-                        colIndexCircle2 = -1;
-                        rowIndexCircle2 = -1;
+                            Client.getInstance().sendMessageToServer("MOVE JACK " + pieceColor1 + "-"
+                                    + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
-                        if (fadeTransitionGrid != null) {
-                            fadeTransitionGrid.jumpTo(Duration.ZERO);
-                            fadeTransitionGrid.stop();
-                            fadeTransitionGrid = null;
-                        }
-                        yourTurn = false;
-                        System.out.println("jack move sent");
+                            endMoveBlinking();
+
+                            yourTurn = false;
+                            System.out.println("jack move sent");
 
                     } else {
                         System.err.println("didn`t select two pieces for jack");
                     }
                 } else {
-                    if (fadeTransitionGrid != null) {
 
-                        System.out.println("simple move sent");
+                    if (fadeTransitionGrid != null) {
                         FieldOnBoard destiny = new FieldOnBoard(colIndexField, rowIndexField);
                         int destinyPos = adaptToGui.getPosNumber(destiny, playerNr);
-                        System.out.println("DESTINY POS " + destinyPos);
-                        String pieceID = getPieceIDOnPane(colIndexCircle1, rowIndexCircle1);
 
-                        pieceID = "" + ((Integer.parseInt(pieceID) % 4) + 1);
+                        int intId = Integer.parseInt(circle1.getId());
+                        String colorPiece = getColorOfPiece(intId);
 
-                        System.out.println("PIECE ID " + pieceID);
+                        String pieceID = "" + (((intId) % 4) + 1);
+
                         String newPos;
 
                         if (destinyPos >= 64) {
@@ -365,31 +371,82 @@ public class GameWindow2Controller implements Initializable {
                                 newPos = "B0"+destinyPos;
                             }
                         }
-                    Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
-                                    + color + "-" + pieceID + " " + newPos);
 
+                        System.out.println("MOVE " + cardClicked + " "
+                                + colorPiece + "-" + pieceID + " " + newPos);
+                   /* Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
+                                    + colorPiece + "-" + pieceID + " " + newPos);
 
+                    */
 
 
                         colIndexField = -1;
                         rowIndexField = -1;
-                        fadeTransitionCard.jumpTo(Duration.ZERO);
-                        fadeTransitionCard.stop();
-                        fadeTransitionGrid.jumpTo(Duration.ZERO);
-                        fadeTransitionGrid.stop();
-                        fadeTransitionCircle1.jumpTo(Duration.ZERO);
-                        fadeTransitionCircle1.stop();
+                        endMoveBlinking();
                         yourTurn = false;
                     }
                 }
                 if (imageViewCard7 != null) {
                     imageViewCard7.setBlendMode(BlendMode.DARKEN);
                 }
-                rowIndexCircle1 = -1;
-                colIndexCircle1 = -1;
             }
         }
         System.err.println("INFO not your turn or no card selected");
+    }
+    /**
+     * this method returns the color of the piece that was selected according to the pieceID
+     * @param id int of the pieceID
+     * @return String of colorAbbreviation
+     */
+    private String getColorOfPiece(int id) {
+        int playerNumber = (id / 4);
+        int count = 0;
+        for (ColorAbbreviations colorAbbreviations : ColorAbbreviations.values()) {
+            if (count == playerNumber) {
+                return colorAbbreviations.toString();
+            }
+            count++;
+        }
+        return null;
+    }
+
+    @FXML
+    void roundOffButtonOnAction(ActionEvent event) {
+        if (yourTurn) {
+            Client.getInstance().sendMessageToServer("MOVE SURR");
+            endMoveBlinking();
+        }
+    }
+
+    /**
+     * this method ends any blinking items in the gui when the move is sent
+     */
+    private void endMoveBlinking() {
+        if (fadeTransitionGrid != null) {
+            fadeTransitionGrid.jumpTo(Duration.ZERO);
+            fadeTransitionGrid.stop();
+        }
+
+        if (fadeTransitionCard != null) {
+            fadeTransitionCard.jumpTo(Duration.ZERO);
+            fadeTransitionCard.stop();
+        }
+
+        if (fadeTransitionCircle1 != null) {
+            fadeTransitionCircle1.jumpTo(Duration.ZERO);
+            fadeTransitionCircle1.stop();
+        }
+
+        if (fadeTransitionCircle2 != null) {
+            fadeTransitionCircle2.jumpTo(Duration.ZERO);
+            fadeTransitionCircle2.stop();
+        }
+        if (circle1 != null) {
+            circle1 = null;
+        }
+        if (circle2 != null) {
+            circle2 = null;
+        }
     }
 
     /**
@@ -429,7 +486,8 @@ public class GameWindow2Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adaptToGui = new AdaptToGui();
-
+        yourTurn = true;
+/*
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
@@ -441,7 +499,11 @@ public class GameWindow2Controller implements Initializable {
 
 
 
+
+
         setPlayerLabels();
+
+ */
 
         setOnHome();
         setAllCardImageViews();
@@ -492,7 +554,7 @@ public class GameWindow2Controller implements Initializable {
 
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorTokens.getColor());
-                circle.setId("" + (count + 1));
+                circle.setId("" + (count));
                 System.out.println("circle ids " + (count));
                 gridPane.add(circle, homeArray[count].getX(), homeArray[count].getY());
                 count++;

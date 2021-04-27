@@ -255,10 +255,8 @@ public class AdaptToGui {
     }
     //TODO delete psvm
     public static void main(String[] args) {
-      AdaptToGui adaptToGui = new AdaptToGui();
-        System.out.println(adaptToGui.getHeavenField(1,0).getX());
-
-        System.out.println(adaptToGui.getHeavenField(1,0).getY());
+        System.out.println(7%4);
+        System.out.println(3/4);
 
     }
 
