@@ -72,6 +72,7 @@ public class ClientGameCommand {
                 break;
 
             case "MOVE": // MOVE YELO-1 B20
+                System.out.println("cg command " + text);
                 String piece = text.substring(5, 9);
                 switch(piece) {
                     case "YELO":
