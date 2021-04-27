@@ -370,11 +370,10 @@ public class GameWindow2Controller implements Initializable {
 
                             String pieceID1 = "" + (((intId1) % 4) + 1);
                             String pieceID2 = "" + (((intId2) % 4) + 1);
-/*
+
                             Client.getInstance().sendMessageToServer("MOVE JACK " + pieceColor1 + "-"
                                     + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
- */
                             System.out.println("MOVE JACK " + pieceColor1 + "-"
                                     + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
@@ -409,10 +408,11 @@ public class GameWindow2Controller implements Initializable {
 
                         System.out.println("MOVE " + cardClicked + " "
                                 + colorPiece + "-" + pieceID + " " + newPos);
-                   /* Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
+
+                        Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " "
                                     + colorPiece + "-" + pieceID + " " + newPos);
 
-                    */
+
 
 
                         colIndexField = -1;
@@ -532,8 +532,8 @@ public class GameWindow2Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         adaptToGui = new AdaptToGui();
-        yourTurn = true;
-/*
+
+
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
@@ -549,7 +549,7 @@ public class GameWindow2Controller implements Initializable {
 
         setPlayerLabels();
 
- */
+
 
         setOnHome();
         setAllCardImageViews();
@@ -557,9 +557,11 @@ public class GameWindow2Controller implements Initializable {
 
 
 
-        //TODO delete and give Array from ClientGame
+      /*  //TODO delete and give Array from ClientGame
         String[] cardddss = new String[]{"JOKE", "JOKE", "JOKE", "JOKE", "NINE", "FOUR"};
         setHand(cardddss);
+
+       */
     }
 
     /**
