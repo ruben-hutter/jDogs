@@ -354,10 +354,19 @@ public class GameWindowController implements Initializable {
 
                 } else {
                     if (cardClicked.equals("SEVE")) {
+
+                        addToCircleArray(clickedNode);
+
+                    }
+
+
+                    if (cardClicked.equals("SEVEEEEEEn")) {
                         if (circle1 != null) {
                             if (circle2 != null) {
                                 if (circle3 != null) {
                                     circle4 = (Circle) clickedNode;
+                                    System.out.println("SEVE 4 " + circle4.getId());
+
                                     if (fadeTransitionCircle4 != null) {
                                         fadeTransitionCircle4.jumpTo(Duration.ZERO);
                                         fadeTransitionCircle4.stop();
@@ -371,6 +380,7 @@ public class GameWindowController implements Initializable {
                                 } else {
                                     circle3 = (Circle) clickedNode;
                                     System.out.println("SEVE 3 " + circle3.getId());
+                                    System.out.println("SEVE 3 1 " + circle1.getId());
 
                                     if (fadeTransitionCircle3 != null) {
                                         fadeTransitionCircle3.jumpTo(Duration.ZERO);
@@ -386,6 +396,7 @@ public class GameWindowController implements Initializable {
                             } else {
                                 circle2 = (Circle) clickedNode;
                                 System.out.println("SEVE 2 " + circle2.getId());
+                                System.out.println("SEVE 2 1 " + circle1.getId());
 
                                 if (fadeTransitionCircle2 != null) {
                                     fadeTransitionCircle2.jumpTo(Duration.ZERO);
@@ -413,27 +424,37 @@ public class GameWindowController implements Initializable {
                             fadeTransitionCircle1.play();
                         }
                         //NOT JACK or SEVE Move
-                    } else if (fadeTransitionCircle1 != null) {
-                        fadeTransitionCircle1.jumpTo(Duration.ZERO);
-                        fadeTransitionCircle1.stop();
+                    } else {
+                        System.out.println("Entered not jack");
+                        if (fadeTransitionCircle1 != null) {
+                            fadeTransitionCircle1.jumpTo(Duration.ZERO);
+                            fadeTransitionCircle1.stop();
+                        }
+                        fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9),
+                                clickedNode);
+                        fadeTransitionCircle1.setFromValue(1.0);
+                        fadeTransitionCircle1.setToValue(0.0);
+                        fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
+                        fadeTransitionCircle1.play();
+                        circle1 = (Circle) clickedNode;
                     }
-                    fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9), clickedNode);
-                    fadeTransitionCircle1.setFromValue(1.0);
-                    fadeTransitionCircle1.setToValue(0.0);
-                    fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
-                    fadeTransitionCircle1.play();
-
-                    circle1 = (Circle) clickedNode;
                 }
             } else {
                 if (clickedNode instanceof Pane) {
                     if (cardClicked.equals("SEVE")) {
+                        addToGridFields(clickedNode);
+                        addToFadingGrids(clickedNode);
+                    }
+
+
+                    if (cardClicked.equals("SEVEeeenn")) {
                         if (fadeTransitionGrid1 != null) {
+                            System.out.println("SEVE grid");
                            if (fadeTransitionGrid2 != null) {
                                if (fadeTransitionGrid3 != null) {
-                                   if (colIndexField4 != null) {
-                                       fadeTransitionCircle4.jumpTo(Duration.ZERO);
-                                       fadeTransitionCircle4.stop();
+                                   if (fadeTransitionGrid4 != null) {
+                                       fadeTransitionGrid4.jumpTo(Duration.ZERO);
+                                       fadeTransitionGrid4.stop();
                                    }
                                    colIndexField4 = GridPane.getColumnIndex(clickedNode);
                                    rowIndexField4 = GridPane.getRowIndex(clickedNode);
@@ -479,7 +500,7 @@ public class GameWindowController implements Initializable {
                             fadeTransitionGrid1.play();
                         }
                     } else {
-
+                        // not JACK or SEVE
                         // stop first field blinking if one clicks another field
                         if (fadeTransitionGrid1 != null) {
                             fadeTransitionGrid1.jumpTo(Duration.ZERO);
@@ -498,6 +519,43 @@ public class GameWindowController implements Initializable {
                     }
                 }
             }
+        }
+    }
+
+    private void addToFadingGrids(Node clickedNode) {
+        if (gridCount < 7) {
+            fadingGrids[gridCount++];
+        } else {
+            fadingGrids[gridCount].set(Duration.ZERO);
+            fadingGrids[gridCount].stop();
+            fadingGrids[gridCount] =  new FadeTransition();
+        }
+    }
+
+    private void addToFadingCircles(Node clickedNode) {
+        if (circleCount < 7) {
+            fadingCircles[circleCount++] = new FadeTransition();
+        } else {
+            fadingCircles[circleCount].set(Duration.ZERO);
+            fadingCircles[circleCount].stop();
+            fadingCircles[circleCount] = new FadeTransition();
+        }
+
+    }
+
+    private void addToGridFields(Node clickedNode) {
+        if (gridCount < 7) {
+            clickedGrids[gridCount++];
+        } else {
+            clickedGrids[gridCounter] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode), GridPane.getRowIndex(clickedNode));
+        }
+    }
+
+    private void addToCircleArray(Node clickedNode) {
+        if (circleCount < 7) {
+            clickedCircles[circleCount++] = (Circle) clickedNode;
+        } else {
+            clickedCircles[circleCount] = (Circle) clickedNode;
         }
     }
 
@@ -537,13 +595,19 @@ public class GameWindowController implements Initializable {
                     }
                     return;
                 }
+                System.out.println("Circle 1 id before0 " + circle1.getId());
 
                 if (cardClicked.equals("SEVE")) {
+                    System.out.println("SEVE make move button");
+                    System.out.println("Circle 1 id before1 " + circle1.getId());
+
                     if (fadeTransitionGrid1 != null) {
                         //TODO i need 4 transition grids clickable if seve add above
                         if (circle1 != null) {
-                           int clicked = countCirclesClicked();
-                            System.out.println("Circle 1 id before " + circle1.getId());
+                            System.out.println("Circle 1 id before2 " + circle1.getId());
+
+                            int clicked = countCirclesClicked();
+                            System.out.println("Circle 1 id before3 " + circle1.getId());
                             System.out.println("SEVE chosen " + clicked);
                             String message = "MOVE SEVE " + clicked;
                             if (jokerClicked) {
