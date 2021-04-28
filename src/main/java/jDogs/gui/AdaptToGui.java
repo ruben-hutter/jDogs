@@ -280,11 +280,14 @@ public class AdaptToGui {
      * @param destiny fieldOnBoard, x-Pos & y-Pos
      * @return position number on server(heaven tracks numbers are from 64 upwards)
      */
-    public int getPosNumber(FieldOnBoard destiny, int playerNr) {
+    public String getPosNumber(FieldOnBoard destiny, int playerNr) {
         int pos = 0;
         for (FieldOnBoard field : fieldsOnTrack) {
             if (field.getX() == destiny.getX() && field.getY() == destiny.getY()) {
-               return pos;
+                if (pos < 10) {
+                    return "B0" + pos;
+                }
+                return "B" + pos;
             }
             pos++;
         }
@@ -292,11 +295,11 @@ public class AdaptToGui {
         FieldOnBoard[] heavenArr = fieldsOnHeaven[playerNr];
         for (FieldOnBoard field : heavenArr) {
             if (field.equals(destiny)) {
-               return pos + 64;
+               return "B0" + pos;
             }
             pos++;
         }
-        return -1;
+        return "-1";
     }
 
 }
