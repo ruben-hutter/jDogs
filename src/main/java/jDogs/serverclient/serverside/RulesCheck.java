@@ -26,9 +26,12 @@ public class RulesCheck {
     /**
      * Checks if the given card is in the players hand
      * @param text MOVE command from user
+     * @param gameState
      * @return null if invalid card or the move (with translation if JOKE)
      */
-    protected String checkCard(String text, GameState gameState, String nickname) {
+    protected String checkCard(String text, GameState gameState, String nickname,
+            String cardToEliminate) {
+        this.cardToEliminate = cardToEliminate;
         String card = text.substring(5, 9);
         if (card.equals("ACE1") || card.equals("AC11")) {
             card = "ACEE";
@@ -53,7 +56,7 @@ public class RulesCheck {
                     break;
                 case "ACEE":
                     String ass = text.substring(5, 9);
-                    cardToEliminate = "ACEE";
+                    this.cardToEliminate = "ACEE";
                     toCheckMove = ass + " " + text.substring(10);
                     logger.debug("This string is send to checkMove (without ACEE): " + toCheckMove);
                     break;
@@ -207,7 +210,6 @@ public class RulesCheck {
                         otherStartingPosition = player.getStartingPosition();
                     }
                 }
-
                 if (ownPlayer != gameFile.getPlayer(nickname)) {
                     sendToThisClient.enqueue("INFO You cannot move this color");
                 } else {
@@ -215,7 +217,7 @@ public class RulesCheck {
                     assert otherActualPosition1 != null;
                     if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
                             || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
-                            || (otherActualPosition1.equals("B") && !otherHasMoved)) {
+                            || !otherHasMoved) {
                         sendToThisClient.enqueue("INFO You can't switch this pieces!");
                     } else {
                         simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
@@ -382,7 +384,7 @@ public class RulesCheck {
      * @return null if illegal move, empty list if nobody is eliminated
      * and with elements if somebody is eliminated
      */
-    private ArrayList<Piece> piecesOnPath(String move, String card) {
+    private ArrayList<Piece> piecesOnPath(String move, String card) { // YELO-1 B04
         String alliance = move.substring(0, 4);
         int pieceID = Integer.parseInt(move.substring(5, 6));
         String newPosition1 = move.substring(7, 8);
@@ -565,7 +567,7 @@ public class RulesCheck {
             if (!hasMoved) {
                 return false;
             }
-            if (piecesOnPath(completeMove, card) == null) {
+            if (piecesOnPath(completeMove.substring(5), card) == null) {
                 sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
                 return false;
             }
@@ -573,19 +575,24 @@ public class RulesCheck {
                 for (int cardValue : cardValues) {
                     if (cardValue == 4) {
                         difference = Math.floorMod(startingPosition - actualPosition2, 64);
-                        return cardValue == difference + newPosition2 + 1;
+                        if (cardValue == difference + newPosition2 + 1) {
+                            return true;
+                        }
                     } else if (cardValue == -4) {
                         difference = startingPosition - actualPosition2 - newPosition2 - 1;
-                        return cardValue == difference;
+                        if (cardValue == difference) {
+                            return true;
+                        }
                     }
                 }
+                return false;
             }
             difference = Math.floorMod(startingPosition - actualPosition2, 64) + newPosition2 + 1;
             for (int cardValue : cardValues) {
                 return cardValue == difference;
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-            if (piecesOnPath(completeMove, card) == null) {
+            if (piecesOnPath(completeMove.substring(5), card) == null) {
                 sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
                 return false;
             }

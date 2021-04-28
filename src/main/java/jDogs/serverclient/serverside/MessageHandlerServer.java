@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
  *
  * public Lobby
  */
-
 public class MessageHandlerServer implements Runnable {
 
     private final Queuejd sendToAll;

@@ -84,7 +84,8 @@ public class ServerGameCommand {
                     Player player = gameFile.getPlayer(playerName);
                     logger.debug("Player: " + player);
                     cardToEliminate = text.substring(5, 9);
-                    String toCheckMove = rulesCheck.checkCard(text, gameState, nickname);
+                    String toCheckMove = rulesCheck.checkCard(text, gameState, nickname,
+                            cardToEliminate);
                     if (toCheckMove == null) {
                         sendToThisClient.enqueue("INFO Invalid card or no hand");
                         logger.debug("You don't have this card on your hand");

@@ -132,6 +132,4 @@ public class GameState {
     public ArrayList<Player> getPlayersState() {
         return gameFile.getPlayers();
     }
-
-
 }
