@@ -53,33 +53,6 @@ public class GameWindowController implements Initializable {
 
     private boolean yourTurn;
 
-    private FadeTransition fadeTransitionGrid1;
-    private FadeTransition fadeTransitionGrid2;
-    private FadeTransition fadeTransitionGrid3;
-    private FadeTransition fadeTransitionGrid4;
-
-    private int colIndexField1;
-    private int rowIndexField1;
-    private Integer colIndexField2;
-    private Integer rowIndexField2;
-    private Integer rowIndexField3;
-    private Integer colIndexField3;
-    private Integer rowIndexField4;
-    private Integer colIndexField4;
-
-    private Circle circle1;
-    private Circle circle2;
-    private Circle circle3;
-    private Circle circle4;
-
-    private FadeTransition fadeTransitionCircle1;
-
-    private FadeTransition fadeTransitionCircle2;
-
-    private FadeTransition fadeTransitionCircle4;
-
-    private FadeTransition fadeTransitionCircle3;
-
     private FadeTransition fadeTransitionCard;
 
     private BorderPane borderPaneDialog;
@@ -462,8 +435,8 @@ public class GameWindowController implements Initializable {
             if (clickedCircleIds[0] != null) {
                 if (cardClicked.equals("JACK")) {
                     if (clickedCircleIds[1] != null) {
-                        int intId1 = Integer.parseInt(circle1.getId());
-                        int intId2 = Integer.parseInt(circle2.getId());
+                        int intId1 = Integer.parseInt(clickedCircleIds[0]);
+                        int intId2 = Integer.parseInt(clickedCircleIds[1]);
 
                         String pieceColor1 = getColorOfPiece(intId1);
                         String pieceColor2 = getColorOfPiece(intId2);
@@ -591,17 +564,7 @@ public class GameWindowController implements Initializable {
      * this method ends any blinking items in the gui when the move is sent
      */
     private void deleteClickedData() {
-        colIndexField1 = -1;
-        rowIndexField1 = -1;
 
-        colIndexField2 = -1;
-        rowIndexField2 = -1;
-
-        colIndexField3 = -1;
-        rowIndexField3 = 1;
-
-        colIndexField4 = -1;
-        rowIndexField4 = -1;
         //stop blinking of fading grids
 
         for (int i = 0; i < gridCount; i++) {
@@ -615,7 +578,6 @@ public class GameWindowController implements Initializable {
             fadingCircles[i].jumpTo(Duration.ZERO);
             fadingCircles[i].stop();
         }
-
 
         fadingGrids = null;
         fadingCircles = null;
@@ -632,76 +594,16 @@ public class GameWindowController implements Initializable {
 
         totalSum = 1;
 
-        if (fadeTransitionGrid1 != null) {
-            System.out.println("Stop blink1");
-            fadeTransitionGrid1.jumpTo(Duration.ZERO);
-            fadeTransitionGrid1.stop();
-        }
-
-        if (fadeTransitionGrid2 != null) {
-            System.out.println("Stop blink2");
-
-            fadeTransitionGrid2.jumpTo(Duration.ZERO);
-            fadeTransitionGrid2.stop();
-        }
-
-        if (fadeTransitionGrid3 != null) {
-            System.out.println("Stop blink3");
-
-            fadeTransitionGrid3.jumpTo(Duration.ZERO);
-            fadeTransitionGrid3.stop();
-        }
-
-        if (fadeTransitionGrid4 != null) {
-            System.out.println("Stop blink4");
-
-            fadeTransitionGrid4.jumpTo(Duration.ZERO);
-            fadeTransitionGrid4.stop();
-        }
 
         if (fadeTransitionCard != null) {
             fadeTransitionCard.jumpTo(Duration.ZERO);
             fadeTransitionCard.stop();
         }
 
-        if (fadeTransitionCircle1 != null) {
-            fadeTransitionCircle1.jumpTo(Duration.ZERO);
-            fadeTransitionCircle1.stop();
-        }
-
-        if (fadeTransitionCircle2 != null) {
-            fadeTransitionCircle2.jumpTo(Duration.ZERO);
-            fadeTransitionCircle2.stop();
-        }
-
-        if (fadeTransitionCircle3 != null) {
-            fadeTransitionCircle3.jumpTo(Duration.ZERO);
-            fadeTransitionCircle3.stop();
-        }
-
-        if (fadeTransitionCircle4 != null) {
-            fadeTransitionCircle4.jumpTo(Duration.ZERO);
-            fadeTransitionCircle4.stop();
-        }
-
-
-        if (circle1 != null) {
-            circle1 = null;
-        }
-        if (circle2 != null) {
-            circle2 = null;
-        }
-
-        if (circle3 != null) {
-            circle1 = null;
-        }
-        if (circle4 != null) {
-            circle2 = null;
-        }
-
         if (imageViewCard7 != null) {
             imageViewCard7.setVisible(false);
         }
+
         cardClicked = null;
         jokerClicked = false;
     }
