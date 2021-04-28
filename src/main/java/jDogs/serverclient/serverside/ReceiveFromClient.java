@@ -34,29 +34,14 @@ public class ReceiveFromClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        String textIn;
+        String textIn = null;
         try {
-
-
             while (running) {
-
-
                 if (din.available() != 0) {
                     textIn = din.readUTF();
                     serverConnection.monitorMsg(System.currentTimeMillis());
-
-                    //informs that any message arrived
-                    //connectionToClientMonitor.message(System.currentTimeMillis());
-
-                    //heartbeat-signal
-                    if (textIn.equals("pong")) {
-                        //TODO delete sout
-                        //serverConnection.monitorMsg(System.currentTimeMillis());
-                        //connectionToClientMonitor.sendSignal();
-                    } else {
-                        //write to receiver-queue
+                    //write to receiver-queue
+                    if (!textIn.equals("pong")) {
                         receivedFromThisClient.enqueue(textIn);
                     }
                 }

@@ -111,6 +111,7 @@ public class LobbyController implements Initializable {
         tableViewActPlayers.setItems((ObservableList) playersInLobby);
 
     }
+
     @FXML
     private Button startButton;
 
@@ -392,7 +393,7 @@ public class LobbyController implements Initializable {
 
     }
 
-    public void displayPlayerinPublic(String player) {
+    public void displayPlayer(String player) {
         for (int i = 0; i < playersInLobby.size(); i++) {
             if (playersInLobby.get(i).getPlayer().equals(player)) {
                 return;
@@ -401,7 +402,7 @@ public class LobbyController implements Initializable {
         playersInLobby.add(new Participant(player));
     }
 
-    public void removePlayerinPublic(String player) {
+    public void removePlayer(String player) {
         try {
             Participant participant = new Participant(player);
 
@@ -449,13 +450,14 @@ public class LobbyController implements Initializable {
      * method to set inform gui that it joined separate lobby
      * @param game string from server
      */
-    public void goToSeparateLobbyGame(String game) {
+    public void goToSeparateLobby(String game) {
         gameId = game;
         displayInfomsg("INFO you joined game " + gameId);
         //show only players in separate lobby
         for (int i = 0; i < playersInLobby.size(); i++) {
             playersInLobby.remove(i);
         }
+        Client.getInstance().sendMessageToServer("LPUB");
     }
 
 

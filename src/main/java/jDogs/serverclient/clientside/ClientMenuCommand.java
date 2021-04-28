@@ -3,8 +3,6 @@ package jDogs.serverclient.clientside;
 
 import jDogs.gui.GUIManager;
 import jDogs.serverclient.helpers.Queuejd;
-import jDogs.serverclient.serverside.ServerMenuCommand;
-import java.sql.SQLOutput;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,8 +65,6 @@ public class ClientMenuCommand {
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
 
-
-
                 break;
 
             case "WCHT":
@@ -77,21 +73,13 @@ public class ClientMenuCommand {
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
 
-
-
                 break;
             case "LPUB":
 
                 //just compare to existing String/Array and replace if necessary
 
-
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPlayerinPublic(text.substring(5)));
-
-
-
-
-
+                        GUIManager.getInstance().lobbyController.displayPlayer(text.substring(5)));
 
                 System.out.println("LPUB: " + text.substring(5));
                 break;
@@ -108,18 +96,13 @@ public class ClientMenuCommand {
             case "DPER":
 
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.removePlayerinPublic(text.substring(5)));
-
-
-
+                        GUIManager.getInstance().lobbyController.removePlayer(text.substring(5)));
 
                 break;
 
-
-
             case "JOIN":
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.goToSeparateLobbyGame(text.substring(5)));
+                        GUIManager.getInstance().lobbyController.goToSeparateLobby(text.substring(5)));
 
                 System.out.println("start separate lobby");
 
@@ -127,7 +110,6 @@ public class ClientMenuCommand {
                 break;
 
             case "OGAM":
-
                 System.out.println("OGAM: " + text.substring(5));
 
                 Platform.runLater(()->

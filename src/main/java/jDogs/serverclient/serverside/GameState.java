@@ -14,13 +14,13 @@ import java.util.Map;
 public class GameState {
 
     private final Map<String, ArrayList<String>> cards = new HashMap<>();
-    private final GameFile gameFile;
+    private final OpenGameFile openGameFile;
     private ArrayList<Piece> piecesOnTrack;
     int numPlayers;
 
-    public GameState(GameFile gameFile) {
-        this.gameFile = gameFile;
-        this.numPlayers = gameFile.getNumberOfParticipants();
+    public GameState(OpenGameFile openGameFile) {
+        this.openGameFile = openGameFile;
+        this.numPlayers = openGameFile.getNumberOfParticipants();
         this.piecesOnTrack = new ArrayList<>();
     }
 
@@ -32,8 +32,8 @@ public class GameState {
     public void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            gameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
-            cards.put(gameFile.getPlayers().get(counter).getPlayerName(),new ArrayList<>());
+            openGameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
+            cards.put(openGameFile.getPlayers().get(counter).getPlayerName(),new ArrayList<>());
             counter++;
         }
     }
@@ -96,7 +96,7 @@ public class GameState {
 
     private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2) {
         Piece otherPiece = null;
-        for (Player pl : gameFile.getPlayers()) {
+        for (Player pl : openGameFile.getPlayers()) {
             if (pl.equals(player)) {
                 for (Piece p : player.pieces) {
                     if (p.getPositionServer1().equals(newPosition1)
@@ -121,7 +121,7 @@ public class GameState {
     }
 
     public Player getPlayer(String nickname) {
-        for (Player player : gameFile.getPlayers()) {
+        for (Player player : openGameFile.getPlayers()) {
             if (player.getPlayerName().equals(nickname)) {
                 return player;
             }
@@ -130,7 +130,7 @@ public class GameState {
     }
 
     public ArrayList<Player> getPlayersState() {
-        return gameFile.getPlayers();
+        return openGameFile.getPlayers();
     }
 
 

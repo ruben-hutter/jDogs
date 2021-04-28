@@ -1,6 +1,5 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.Main;
 import jDogs.player.Player;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,7 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -30,13 +28,13 @@ public class Server {
     private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
 
     //this list contains all ongoing games and all pendent games
-    ArrayList<GameFile> allGamesNotFinished = new ArrayList<GameFile>();
+    ArrayList<OpenGameFile> allGamesNotFinished = new ArrayList<OpenGameFile>();
     //this list contains all ongoing games
     ArrayList<MainGame> runningGames = new ArrayList<>();
     //this list contains all public lobby guest names
     ArrayList<String> publicLobbyGuests = new ArrayList<>();
     //this list contains all finished games
-    ArrayList<GameFile> finishedGames = new ArrayList<>();
+    ArrayList<OpenGameFile> finishedGames = new ArrayList<>();
     //this list contains all server connections active in the public lobby
     ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
     //this list exists only to store all serverConnections to enable more ServerConnections
@@ -52,7 +50,7 @@ public class Server {
 
      */
     public static void main(String[] args) {
-        new Server();
+        new Server(args);
     }
 
     // return Singleton
@@ -60,14 +58,10 @@ public class Server {
         return instance;
     }
 
-    //public Server(String[] args) {
-    public Server() {
+    public Server(String[] args) {
         try {
-
             instance = this;
-            //serverSocket = new ServerSocket(Integer.parseInt(args[1]));
-            serverSocket = new ServerSocket(8090);
-            System.out.println("server started...");
+            serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             // runs as long as the server is activated
             while(running) {
                 Socket socket = serverSocket.accept();
@@ -75,12 +69,6 @@ public class Server {
                 sc.createConnection();
                 basicConnectionList.add(sc);
 
-                /*
-                // new threads to maintain connection to the individual clients
-                Thread scThread = new Thread(sc);
-                scThread.start();
-
-                 */
                 System.out.println("new client:  " + socket.getInetAddress().getHostName());
                 try {
                     Thread.sleep(30);
@@ -155,7 +143,8 @@ public class Server {
 
 
 
-    public void startGame(MainGame mainGame) {
+    public void startGame(OpenGameFile openGameFile) {
+        MainGame mainGame = new MainGame(openGameFile);
         runningGames.add(mainGame);
     }
 
@@ -171,15 +160,15 @@ public class Server {
 
     /**
      *
-     * @param gameFile
+     * @param openGameFile
      * @return list of server connection objects of clients who participate in this opened game or started game
      */
-    public ArrayList<ServerConnection> getServerConnectionsArray(GameFile gameFile) {
+    public ArrayList<ServerConnection> getServerConnectionsArray(OpenGameFile openGameFile) {
 
         ArrayList<ServerConnection> aList = new ArrayList<>();
-        System.out.println(gameFile.getParticipants());
-        String[] participantArray = gameFile.getParticipantsArray();
-       for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
+        System.out.println(openGameFile.getParticipants());
+        String[] participantArray = openGameFile.getParticipantsArray();
+       for (int i = 0; i < openGameFile.getNumberOfParticipants(); i++) {
            System.out.println(i);
            ServerConnection sc = serverConnectionMap.get(participantArray[i]);
            aList.add(sc);
@@ -188,7 +177,7 @@ public class Server {
         return aList;
     }
 
-    public GameFile getNotFinishedGame(String gameName) {
+    public OpenGameFile getNotFinishedGame(String gameName) {
         for (int i = 0; i < allGamesNotFinished.size(); i++) {
             if (allGamesNotFinished.get(i).getNameId().equals(gameName)) {
                 return allGamesNotFinished.get(i);
@@ -197,32 +186,32 @@ public class Server {
         return null;
     }
 
-    public void removeGameFromSC(GameFile gameFile, String nickname) {
+    public void removeGameFromSC(OpenGameFile openGameFile, String nickname) {
 
-        gameFile.removeFromParticipantServer(nickname);
-        if (gameFile.getHost() == null) {
-            if (gameFile.isPendent()) {
-                sendMessageToAll("DOGA " + gameFile.getSendReady());
-                for (Player player: gameFile.getPlayers()) {
+        openGameFile.removeFromParticipantServer(nickname);
+        if (openGameFile.getHost() == null) {
+            if (openGameFile.isPendent()) {
+                sendMessageToAll("DOGA " + openGameFile.getSendReady());
+                for (Player player: openGameFile.getPlayers()) {
                     if (player.getPlayerName() != nickname) {
                         player.getServerConnection().getMessageHandlerServer().returnToLobby();
                     }
                 }
             } else {
-                for (Player player: gameFile.getPlayers()) {
+                for (Player player: openGameFile.getPlayers()) {
                     if (player.getPlayerName() != nickname) {
                         player.getServerConnection().getMessageHandlerServer().returnToLobby();
                         player.sendMessageToClient("INFO host " + nickname + " quit game..shutdown game");
                     }
                 }
-                runningGames.remove(gameFile);
+                runningGames.remove(openGameFile);
             }
-            finishedGames.remove(gameFile);
+            finishedGames.remove(openGameFile);
         } else {
-            if (gameFile.isPendent()) {
-                sendMessageToAll("DOGA " + gameFile.getSendReady());
+            if (openGameFile.isPendent()) {
+                sendMessageToAll("DOGA " + openGameFile.getSendReady());
             } else {
-                for (Player player: gameFile.getPlayers()) {
+                for (Player player: openGameFile.getPlayers()) {
                     if (player.getPlayerName() != nickname) {
                         player.getServerConnection().getMessageHandlerServer().returnToLobby();
                         player.sendMessageToClient("INFO " + nickname + " quit game..shutdown game");
@@ -231,30 +220,33 @@ public class Server {
             }
         }
     }
+    //TODO remove all serverConnection objects from all methods
+    public void setPlayingState(String nickname, MainGame mainGame) {
+        //serverConnectionMap.get(nickname).getMessageHandlerServer().setPlaying(mainGame);
+    }
+    public void removeGame(OpenGameFile openGameFile) {
 
-    public void removeGame(GameFile gameFile) {
-
-        if (gameFile.isPendent()) {
-            sendMessageToAll("DOGA " + gameFile.getSendReady());
+        if (openGameFile.isPendent()) {
+            sendMessageToAll("DOGA " + openGameFile.getSendReady());
         } else {
             //Server.getInstance().finishedGames.add(gameFile);
-            for (Player player : gameFile.getPlayers()) {
+            for (Player player : openGameFile.getPlayers()) {
                 player.getServerConnection().getMessageHandlerServer().returnToLobby();
             }
             System.out.println("INFO game finished");
         }
 
-        allGamesNotFinished.remove(gameFile);
+        allGamesNotFinished.remove(openGameFile);
         System.out.println("got removed");
         MainGame mainGame;
-        if ((mainGame = getMainGame(gameFile)) != null) {
+        if ((mainGame = getMainGame(openGameFile)) != null) {
             runningGames.remove(mainGame);
         }
     }
 
-    private MainGame getMainGame(GameFile gameFile) {
+    private MainGame getMainGame(OpenGameFile openGameFile) {
         for (MainGame runningGame1 : runningGames) {
-            if (runningGame1.getGameId().equals(gameFile.getNameId())) {
+            if (runningGame1.getGameId().equals(openGameFile.getNameId())) {
                 return runningGame1;
             }
         }

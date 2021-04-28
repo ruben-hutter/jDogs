@@ -35,7 +35,7 @@ public class MessageHandlerServer implements Runnable {
     private String state;
     private String nickname;
     private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
-    private GameFile gameFile;
+    private OpenGameFile openGameFile;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient, Queuejd sendToPub) {
@@ -64,45 +64,39 @@ public class MessageHandlerServer implements Runnable {
         while (running) {
             if (!receivedFromClient.isEmpty()) {
                 text = receivedFromClient.dequeue();
-                System.out.println("messHandlerServer: " + text);
                 if (text.length() >= 4) {
+                    switch (state) {
 
-                switch(state) {
+                        case "playing":
+                            System.out.println("game command case");
+                            serverGameCommand.execute(text);
+                            break;
 
-                    case "playing":
-                        System.out.println("game command case");
-                        serverGameCommand.execute(text);
-                        break;
+                        case "openGame":
+                            System.out.println("open game case");
+                            separateLobbyCommand.execute(text);
+                            break;
 
-                    case "openGame":
-                        System.out.println("open game case");
-                        separateLobbyCommand.execute(text);
-                        break;
-
-
-                    case "publicLobby":
-                        System.out.println("public lobby case");
-                        serverMenuCommand.execute(text);
-                        break;
+                        case "publicLobby":
+                            System.out.println("public lobby case");
+                            serverMenuCommand.execute(text);
+                            break;
 
                     }
 
                 } else {
-
-                    System.err.println("message did not match public, separate or game protocol:  " + text);
+                    System.err.println(
+                            "message did not match public, separate or game protocol:  " + text);
                 }
-            } else {
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            }
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         System.out.println(this.toString() + "  stops now");
     }
-
-
     /**
      * Returns the nickName of the user
      * @return nickName
@@ -110,7 +104,6 @@ public class MessageHandlerServer implements Runnable {
     public String getNickName() {
         return serverMenuCommand.getNickName();
     }
-
     /**
      * Kills thread
      */
@@ -120,32 +113,27 @@ public class MessageHandlerServer implements Runnable {
 
     /**
      *
-     * @param playing true: send messages to GameCommand (a game started)
-     *                false: send messages to public MenuCommand (a game ended)
+     *
      */
-
-    public void setPlaying(boolean playing,MainGame mainGame) {
-        if (playing) {
-            this.gameFile = mainGame.getGameFile();
+    //TODO remove boolean playing
+    public void setPlaying(boolean playing, MainGame mainGame) {
+            this.openGameFile = mainGame.getGameFile();
             serverGameCommand.setMainGame(mainGame);
             state = "playing";
-        } else {
-            state = "publicLobby";
-        }
     }
 
     /**
      *
-     * @param gameFile the openGame the client joins
+     * @param openGameFile the openGame the client joins
      * @param nickname the actual nickname he has(could also be omitted)
      */
-    public void setJoinedOpenGame(GameFile gameFile, String nickname) {
+    public void setJoinedOpenGame(OpenGameFile openGameFile, String nickname) {
         server.removeFromLobby(serverConnection);
         sendToPub.enqueue("DPER " + nickname);
-        this.gameFile = gameFile;
+        this.openGameFile = openGameFile;
         state = "openGame";
         //server.removeSender(serverConnection.getSender());
-        separateLobbyCommand.setJoinedGame(gameFile, nickname);
+        separateLobbyCommand.setJoinedGame(openGameFile, nickname);
         this.nickname = nickname;
     }
 
@@ -155,7 +143,7 @@ public class MessageHandlerServer implements Runnable {
      */
     public void returnToLobby() {
         server.addToLobby(serverConnection);
-        sendToPub.enqueue("DPER " + nickname);
+        sendToPub.enqueue("LPUB " + nickname);
 
         //server.addSender(serverConnection.getSender());
         serverMenuCommand.sendAllPublicGuests();
@@ -177,8 +165,8 @@ public class MessageHandlerServer implements Runnable {
      *
      * @return gameFile of the game or opened game(not playing yet)
      */
-    public GameFile getGameFile() {
-        return gameFile;
+    public OpenGameFile getGameFile() {
+        return openGameFile;
     }
 
     public ServerMenuCommand getServerMenuCommand() {

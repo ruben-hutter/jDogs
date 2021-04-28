@@ -2,7 +2,6 @@ package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
 import jDogs.Alliance_4;
-import jDogs.player.Piece;
 import jDogs.serverclient.helpers.Queuejd;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +24,7 @@ public class ServerGameCommand {
     private boolean loggedIn;
     private String nickname;
     private final ServerParser serverParser;
-    private GameFile gameFile;
+    private OpenGameFile openGameFile;
     private GameState gameState;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
     private ArrayList<Player> players;
@@ -59,20 +58,20 @@ public class ServerGameCommand {
 
         switch (command) {
             case "QUIT":
-                this.gameFile.sendMessageToParticipants("INFO " + nickname + " left game session");
-                this.gameFile.cancel();
+                this.openGameFile.sendMessageToParticipants("INFO " + nickname + " left game session");
+                this.openGameFile.cancel();
                 break;
             case "EXIT":
                 //stop serverConnection
-                this.gameFile.sendMessageToParticipants("INFO " + nickname + " left game session");
-                this.gameFile.cancel();
+                this.openGameFile.sendMessageToParticipants("INFO " + nickname + " left game session");
+                this.openGameFile.cancel();
                 this.serverConnection.kill();
                 break;
 
             case "MOVE":
                 if (text.length() >= 9 && mainGame.getActualPlayer().equals(nickname)) {
                     if (text.substring(5, 9).equals("SURR")) {
-                        gameFile.getPlayer(nickname).setAllowedToPlay(false);
+                        openGameFile.getPlayer(nickname).setAllowedToPlay(false);
                         gameState.getCards().get(nickname).clear();
                         sendToThisClient.enqueue("INFO excluded for this round");
                         mainGame.turnComplete(nickname);
@@ -81,7 +80,7 @@ public class ServerGameCommand {
 
                     String playerName = serverConnection.getNickname();
                     logger.debug("Player nickname: " + playerName);
-                    Player player = gameFile.getPlayer(playerName);
+                    Player player = openGameFile.getPlayer(playerName);
                     logger.debug("Player: " + player);
                     cardToEliminate = text.substring(5, 9);
                     String toCheckMove = rulesCheck.checkCard(text, gameState, nickname);
@@ -96,15 +95,15 @@ public class ServerGameCommand {
                     String card = toCheckMove.substring(0, 4);
                     switch (card) {
                         case "SEVE":
-                            rulesCheck.checkMoveSeven(toCheckMove, gameState, gameFile, mainGame,
+                            rulesCheck.checkMoveSeven(toCheckMove, gameState, openGameFile, mainGame,
                                     nickname);
                             break;
                         case "JACK":
-                            rulesCheck.checkMoveJack(toCheckMove, gameState, gameFile, mainGame,
+                            rulesCheck.checkMoveJack(toCheckMove, gameState, openGameFile, mainGame,
                                     nickname);
                             break;
                         default:
-                            rulesCheck.checkMove(toCheckMove, gameState, gameFile, mainGame,
+                            rulesCheck.checkMove(toCheckMove, gameState, openGameFile, mainGame,
                                     nickname);
                     }
                 }
@@ -116,7 +115,7 @@ public class ServerGameCommand {
             case "LCHT":
                 //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
                 System.out.println("LCHT: " + text.substring(5));
-                gameFile.sendMessageToParticipants(
+                openGameFile.sendMessageToParticipants(
                         "LCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
             //send message to everyone logged in, in lobby, separated or playing
@@ -142,7 +141,7 @@ public class ServerGameCommand {
 
     public void setMainGame(MainGame mainGame) {
         this.mainGame = mainGame;
-        this.gameFile = mainGame.getGameFile();
+        this.openGameFile = mainGame.getGameFile();
         this.gameState = mainGame.getGameState();
         players = mainGame.getGameFile().getPlayers();
         this.nickname = serverConnection.getNickname();

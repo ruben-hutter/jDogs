@@ -19,7 +19,7 @@ public class ServerParser {
      * @param gameSetup required information from server about new open game
      * @return a gameFile in which most information about the game is saved
      */
-    public GameFile setUpGame(String gameSetup) {
+    public OpenGameFile setUpGame(String gameSetup) {
 
         try {
             int nameSeparator = 0;
@@ -59,7 +59,7 @@ public class ServerParser {
                 name = checkName(name);
 
                 if (checkHost(host)) {
-                   return new GameFile(name, host, total, teamMode, serverConnection);
+                   return new OpenGameFile(name, host, total, teamMode, serverConnection);
                 }
                 System.err.println("Gamehost " + host
                                     + " already exists in server.allGamesNotFinished!");

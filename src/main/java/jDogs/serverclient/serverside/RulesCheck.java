@@ -17,7 +17,7 @@ public class RulesCheck {
     private String cardToEliminate;
     Alliance_4 alliance4;
     private GameState gameState;
-    private GameFile gameFile;
+    private OpenGameFile openGameFile;
 
     public RulesCheck(Queuejd sendToThisClient) {
         this.sendToThisClient = sendToThisClient;
@@ -71,14 +71,14 @@ public class RulesCheck {
      * if somebody is eliminated by the action
      * @param completeMove card piece destination
      * @param gameState state of the game
-     * @param gameFile the class which saves al the data of the game
+     * @param openGameFile the class which saves al the data of the game
      * @param mainGame class that starts a new game from the lobby
      * @param nickname name of player
      */
-    protected void checkMove(String completeMove, GameState gameState, GameFile gameFile,
+    protected void checkMove(String completeMove, GameState gameState, OpenGameFile openGameFile,
             MainGame mainGame, String nickname) { // TWOO YELO-1 B04
         this.gameState = gameState;
-        this.gameFile = gameFile;
+        this.openGameFile = openGameFile;
         if (completeMove.length() == 15) {
             String card = null;
             int pieceID = -1;
@@ -124,7 +124,7 @@ public class RulesCheck {
             }
 
             // prevent players from moving with others pieces
-            if (ownPlayer != gameFile.getPlayer(nickname)) {
+            if (ownPlayer != openGameFile.getPlayer(nickname)) {
                 sendToThisClient.enqueue("INFO You cannot move this color");
                 sendToThisClient.enqueue("TURN");
                 return;
@@ -154,11 +154,11 @@ public class RulesCheck {
                 return;
             }
 
-            gameFile.sendMessageToParticipants("BORD");
+            openGameFile.sendMessageToParticipants("BORD");
             //eliminate card
             gameState.getCards().get(nickname).remove(cardToEliminate);
-            gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-            gameFile.sendMessageToParticipants("HAND");
+            openGameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+            openGameFile.sendMessageToParticipants("HAND");
 
             cardToEliminate = null;
             mainGame.turnComplete(nickname);
@@ -174,14 +174,14 @@ public class RulesCheck {
      * Checks move when card JACK is played
      * @param twoPieces pieces to switch position
      * @param gameState the state of the game
-     * @param gameFile class which saves the game data
+     * @param openGameFile class which saves the game data
      * @param mainGame class which starts the game from lobby
      * @param nickname players name
      */
-    protected void checkMoveJack(String twoPieces, GameState gameState, GameFile gameFile,
+    protected void checkMoveJack(String twoPieces, GameState gameState, OpenGameFile openGameFile,
             MainGame mainGame, String nickname) { // JACK YELO-1 BLUE-2
         this.gameState = gameState;
-        this.gameFile = gameFile;
+        this.openGameFile = openGameFile;
         try {
             if (twoPieces.length() == 18) {
                 String ownAlliance = twoPieces.substring(5, 9);
@@ -216,7 +216,7 @@ public class RulesCheck {
                     }
                 }
 
-                if (ownPlayer != gameFile.getPlayer(nickname)) {
+                if (ownPlayer != openGameFile.getPlayer(nickname)) {
                     sendToThisClient.enqueue("INFO You cannot move this color");
                     sendToThisClient.enqueue("TURN");
                 } else {
@@ -231,11 +231,11 @@ public class RulesCheck {
                         simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
                         simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
 
-                        gameFile.sendMessageToParticipants("BORD");
+                        openGameFile.sendMessageToParticipants("BORD");
                         //eliminate card
                         gameState.getCards().get(nickname).remove(cardToEliminate);
-                        gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-                        gameFile.sendMessageToParticipants("HAND");
+                        openGameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                        openGameFile.sendMessageToParticipants("HAND");
 
                         cardToEliminate = null;
                         mainGame.turnComplete(nickname);
@@ -252,14 +252,14 @@ public class RulesCheck {
      * Checks move when card SEVE is played
      * @param completeMove given move
      * @param gameState state of the game
-     * @param gameFile class that saves game
+     * @param openGameFile class that saves game
      * @param mainGame class which starts the game
      * @param nickname player's name
      */
-    protected void checkMoveSeven(String completeMove, GameState gameState, GameFile gameFile,
+    protected void checkMoveSeven(String completeMove, GameState gameState, OpenGameFile openGameFile,
             MainGame mainGame, String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
         this.gameState = gameState;
-        this.gameFile = gameFile;
+        this.openGameFile = openGameFile;
         try {
             int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
             int startIndex = 7;
@@ -312,11 +312,11 @@ public class RulesCheck {
                     eliminatePiece(piece);
                 }
 
-                gameFile.sendMessageToParticipants("BORD");
+                openGameFile.sendMessageToParticipants("BORD");
                 //eliminate card
                 gameState.getCards().get(nickname).remove(cardToEliminate);
-                gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-                gameFile.sendMessageToParticipants("HAND");
+                openGameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                openGameFile.sendMessageToParticipants("HAND");
 
                 cardToEliminate = null;
                 mainGame.turnComplete(nickname);
@@ -361,7 +361,7 @@ public class RulesCheck {
                     startingPosition = player.getStartingPosition();
                 }
             }
-            if (ownPlayer != gameFile.getPlayer(nickname)) {
+            if (ownPlayer != openGameFile.getPlayer(nickname)) {
                 return -1;
             }
             int difference;
@@ -834,7 +834,7 @@ public class RulesCheck {
         }
 
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        openGameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
     }
 
@@ -862,7 +862,7 @@ public class RulesCheck {
         // change hasMoved state to false
         piece.changeHasMoved();
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        openGameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
     }
 }

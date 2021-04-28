@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MainGame {
     private String[] gameArray;
-    private GameFile gameFile;
+    private OpenGameFile openGameFile;
     private int turnNumber;
     private GameState gameState;
     private int numbDealOut;
@@ -20,9 +20,9 @@ public class MainGame {
     private String actualPlayer;
 
 
-    MainGame (GameFile gameFile) {
-        this.gameFile = gameFile;
-        this.gameState = new GameState(gameFile);
+    MainGame (OpenGameFile openGameFile) {
+        this.openGameFile = openGameFile;
+        this.gameState = new GameState(openGameFile);
         setUp();
         startGameRhythm();
     }
@@ -32,13 +32,13 @@ public class MainGame {
      */
     public void setUp() {
         gameState.createPlayers();
-        players = gameFile.getPlayers();
+        players = openGameFile.getPlayers();
 
 
         for (Player player : players) {
             player.getServerConnection().getMessageHandlerServer().setPlaying(true, this);
             player.getServerConnection().getSender().sendStringToClient("GAME "
-                    + gameFile.getNumberOfParticipants() + " " + gameFile.getParticipants());
+                    + openGameFile.getNumberOfParticipants() + " " + openGameFile.getParticipants());
             logger.debug("Player   ServerConnection " + player.getServerConnection());
         }
     }
@@ -61,15 +61,15 @@ public class MainGame {
      * this method sets a random beginner to play the game in a random order
      */
     private void setRandomBeginner() {
-        int random = new Random().nextInt(gameFile.getNumberOfParticipants());
+        int random = new Random().nextInt(openGameFile.getNumberOfParticipants());
 
-        String[] oldArray = gameFile.getParticipantsArray();
+        String[] oldArray = openGameFile.getParticipantsArray();
 
         gameArray = new String[oldArray.length];
         int players = 0;
 
         System.out.println("RANDOM beginner is " + oldArray[random]);
-        gameFile.sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
+        openGameFile.sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
         logger.debug("Random beginner is: " +  oldArray[random]);
 
         for (int i = random; i < oldArray.length; i++) {
@@ -89,7 +89,7 @@ public class MainGame {
         System.out.println("turnNumbers in nextTurn " + turnNumber);
         int numb = turnNumber % players.size();
         actualPlayer = gameArray[numb];
-        if (gameFile.getPlayer(actualPlayer).isAllowedToPlay()) {
+        if (openGameFile.getPlayer(actualPlayer).isAllowedToPlay()) {
             Server.getInstance().getSender(actualPlayer).sendStringToClient("TURN");
         } else {
             turnComplete(actualPlayer);
@@ -106,7 +106,7 @@ public class MainGame {
         String newHand;
         ArrayList<String> newHandArray;
 
-        for (Player player : gameFile.getPlayers()) {
+        for (Player player : openGameFile.getPlayers()) {
             newHand = "ROUN " + number;
 
             for (int j = 0; j < number; j++) {
@@ -120,7 +120,7 @@ public class MainGame {
             player.setAllowedToPlay(true);
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
-        gameFile.sendMessageToParticipants("HAND");
+        openGameFile.sendMessageToParticipants("HAND");
 
 
 
@@ -231,11 +231,11 @@ public class MainGame {
         turnNumber++;
         numberOfRounds++;
         System.out.println("number of rounds " + numberOfRounds);
-        System.out.println("calc numberofrounds/participants " + numberOfRounds / gameFile.getNumberOfParticipants());
+        System.out.println("calc numberofrounds/participants " + numberOfRounds / openGameFile.getNumberOfParticipants());
         System.out.println("numberDeal out 1 " + numbDealOut);
         // new round
         //no cards in any player`s hand
-        if (numberOfRounds / gameFile.getNumberOfParticipants() == numbDealOut) {
+        if (numberOfRounds / openGameFile.getNumberOfParticipants() == numbDealOut) {
             if (numbDealOut == 2) {
                 System.out.println("entered if ");
                 numbDealOut = 6;
@@ -258,15 +258,15 @@ public class MainGame {
      * @return
      */
     public String getGameId() {
-        return gameFile.getNameId();
+        return openGameFile.getNameId();
     }
 
     /**
      * get the gamefile of this game
      * @return
      */
-    public GameFile getGameFile() {
-        return gameFile;
+    public OpenGameFile getGameFile() {
+        return openGameFile;
     }
 
     /**
@@ -282,7 +282,7 @@ public class MainGame {
      * and the main game will be left to the garbage collector
      */
     public void kill() {
-        this.gameFile.cancel();
+        this.openGameFile.cancel();
     }
 
     public String getActualPlayer() {

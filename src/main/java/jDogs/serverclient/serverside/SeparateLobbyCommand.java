@@ -1,7 +1,6 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
-import jDogs.serverclient.clientside.ClientMenuCommand;
 import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +12,7 @@ public class SeparateLobbyCommand {
     private Queuejd sendToPub;
     private SendFromServer[] senderArray;
     private ServerConnection serverConnection;
-    private GameFile gameFile;
+    private OpenGameFile openGameFile;
     private String nickname;
     private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
 
@@ -22,7 +21,7 @@ public class SeparateLobbyCommand {
         this.sendToAll = sendToAll;
         this.serverConnection = serverConnection;
         this.sendToPub = sendToPub;
-        this.gameFile = null;
+        this.openGameFile = null;
     }
 
     public void execute(String text) {
@@ -70,7 +69,7 @@ public class SeparateLobbyCommand {
                     //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
 
                     System.out.println("LCHT: " + text.substring(5));
-                    gameFile.sendMessageToParticipants("LCHT " + "<" + nickname + "> " + text.substring(5));
+                    openGameFile.sendMessageToParticipants("LCHT " + "<" + nickname + "> " + text.substring(5));
                     break;
 
                 case "PCHT":
@@ -81,34 +80,33 @@ public class SeparateLobbyCommand {
 
                 case "TEAM":
                     System.out.println("team " + text.substring(5));
-                    gameFile.changeTeam(text.substring(5));
+                    openGameFile.changeTeam(text.substring(5));
                     break;
 
                 case "STAR":
                     // client confirms to start the game
-
-                    if (gameFile.readyToStart() && gameFile.getHost().equals(nickname)) {
-                        logger.debug("gamefile ready to start? " + gameFile.readyToStart());
+                    if (openGameFile.readyToStart() && openGameFile.getHost().equals(nickname)) {
+                        logger.debug("gamefile ready to start? " + openGameFile.readyToStart());
                         logger.debug("nickname: " + nickname);
-                        logger.debug("host: " +gameFile.getHost());
-                        System.out.println("starting game ");
-                        gameFile.start();
+                        logger.debug("host: " + openGameFile.getHost());
+                        openGameFile.start();
                         logger.debug("Game started");
-
                     }
+                    break;
+
+                case "EXIT":
+                    //TODO write Exit(kill client)
                     break;
 
                 case "QUIT":
 
-
-                    if (this.gameFile.getHost() == nickname) {
-                        this.gameFile.cancel();
-                        Server.getInstance().allGamesNotFinished.remove(this.gameFile);
+                    if (this.openGameFile.getHost() == nickname) {
+                        this.openGameFile.cancel();
+                        Server.getInstance().allGamesNotFinished.remove(this.openGameFile);
                     } else {
-                        this.gameFile.removeParticipant(serverConnection.getNickname());
-                        sendToAll.enqueue("OGAM " + this.gameFile.getSendReady());
+                        this.openGameFile.removeParticipant(serverConnection.getNickname());
+                        sendToAll.enqueue("OGAM " + this.openGameFile.getSendReady());
                     }
-                    System.out.println("passed sepLobComm Quit " + nickname);
                     serverConnection.getMessageHandlerServer().returnToLobby();
                     sendToPub.enqueue("LPUB " + nickname);
                     break;
@@ -130,7 +128,7 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "LPUB":
-                    for (Player player : gameFile.getPlayers())
+                    for (Player player : openGameFile.getPlayers())
                     sendToThisClient.enqueue("LPUB " + player.getPlayerName());
                     break;
 
@@ -144,34 +142,34 @@ public class SeparateLobbyCommand {
 
 
     private boolean isParticipant(String destiny) {
-        for (int i = 0; i < gameFile.getNumberOfParticipants(); i++) {
-            if (gameFile.getParticipantsArray()[i].equals(destiny)) {
+        for (int i = 0; i < openGameFile.getNumberOfParticipants(); i++) {
+            if (openGameFile.getParticipantsArray()[i].equals(destiny)) {
                 return true;
             }
         }
         return false;
     }
 
-    private GameFile getGame(String gameName) {
+    private OpenGameFile getGame(String gameName) {
         return Server.getInstance().getNotFinishedGame(gameName);
     }
 
 
     /**
      *
-     * @param gameFile  the gameFile the client opened
+     * @param openGameFile  the gameFile the client opened
      * @param nickname the nickname of this client
      */
 
     // if client opened the game
-    public void setGameFile(GameFile gameFile, String nickname) {
-        this.gameFile = gameFile;
+    public void setGameFile(OpenGameFile openGameFile, String nickname) {
+        this.openGameFile = openGameFile;
         this.nickname = nickname;
     }
     // if client joined a game
 
-    public void setJoinedGame(GameFile gameFile, String nickname) {
-        this.gameFile = gameFile;
+    public void setJoinedGame(OpenGameFile openGameFile, String nickname) {
+        this.openGameFile = openGameFile;
         this.nickname = nickname;
     }
 }

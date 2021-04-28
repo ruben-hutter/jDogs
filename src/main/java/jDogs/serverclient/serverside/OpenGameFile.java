@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
  * people joined the object of this class
  * is transferred to main game
  */
-public class GameFile {
+public class OpenGameFile {
 
     private final String nameId;
     private final String host;
@@ -24,9 +24,9 @@ public class GameFile {
     private int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
     private int teamIDs;
-    private static final Logger logger = LogManager.getLogger(GameFile.class);
+    private static final Logger logger = LogManager.getLogger(OpenGameFile.class);
 
-    public GameFile(String nameId, String host, String total, int teamMode,
+    public OpenGameFile(String nameId, String host, String total, int teamMode,
             ServerConnection serverConnection) {
         this.nameId = nameId;
         this.host = host;
@@ -304,8 +304,7 @@ public class GameFile {
      */
     public void start() {
         pendent = false;
-        mainGame = new MainGame(this);
-        Server.getInstance().startGame(mainGame);
+        Server.getInstance().startGame(this);
     }
 
     /**
