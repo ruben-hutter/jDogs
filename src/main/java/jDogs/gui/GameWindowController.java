@@ -167,6 +167,13 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private Label nameLabel2;
+    private int gridCount;
+    private int totalSum;
+    private FadeTransition[] fadingGrids;
+    private int circleCount;
+    private String[] clickedCircleIds;
+    private FieldOnBoard[] clickedGridFields;
+    private FadeTransition[] fadingCircles;
 
 
     /**
@@ -198,27 +205,21 @@ public class GameWindowController implements Initializable {
     }
 
     /**
-     * delete all data which was entered via gui while a card was selected
-     */
-    private void deleteSavedData() {
-        endMoveBlinking();
-
-        circle1 = null;
-        circle2 = null;
-        circle3 = null;
-        circle4 = null;
-
-    }
-    /**
      * card field 0 of gridpane
      * @param event onclick
      */
     @FXML
     void onMouseClick0(MouseEvent event) {
         if (yourTurn && cardArray.length > 0 && cardArray[0] != null) {
-            deleteSavedData();
+            deleteClickedData();
             startFadeTransitionCard(imageViewCard0);
             cardClicked = cardArray[0];
+            if (cardClicked.equals("SEVE")) {
+                totalSum = 7;
+            }
+            if (cardClicked.equals("JACK")) {
+                totalSum = 2;
+            }
             checkJokeCase();
         }
     }
@@ -232,9 +233,15 @@ public class GameWindowController implements Initializable {
     @FXML
     void onMouseClick1(MouseEvent event) {
         if (yourTurn && cardArray.length > 1 && cardArray[1] != null) {
-            deleteSavedData();
+            deleteClickedData();
             startFadeTransitionCard(imageViewCard1);
             cardClicked = cardArray[1];
+            if (cardClicked.equals("SEVE")) {
+                totalSum = 7;
+            }
+            if (cardClicked.equals("JACK")) {
+                totalSum = 2;
+            }
             checkJokeCase();
         }
     }
@@ -245,9 +252,15 @@ public class GameWindowController implements Initializable {
     @FXML
     void onMouseClick2(MouseEvent event) {
         if (yourTurn && cardArray.length > 2 && cardArray[2] != null) {
-            deleteSavedData();
+            deleteClickedData();
             startFadeTransitionCard(imageViewCard2);
             cardClicked = cardArray[2];
+            if (cardClicked.equals("SEVE")) {
+                totalSum = 7;
+            }
+            if (cardClicked.equals("JACK")) {
+                totalSum = 2;
+            }
             checkJokeCase();
         }
     }
@@ -258,9 +271,15 @@ public class GameWindowController implements Initializable {
     @FXML
     void onMouseClick3(MouseEvent event) {
         if (yourTurn && cardArray.length > 3 && cardArray[3] != null) {
-            deleteSavedData();
+            deleteClickedData();
             startFadeTransitionCard(imageViewCard3);
             cardClicked = cardArray[3];
+            if (cardClicked.equals("SEVE")) {
+                totalSum = 7;
+            }
+            if (cardClicked.equals("JACK")) {
+                totalSum = 2;
+            }
             checkJokeCase();
         }
     }
@@ -271,9 +290,15 @@ public class GameWindowController implements Initializable {
     @FXML
     void onMouseClick4(MouseEvent event) {
         if (yourTurn && cardArray.length > 4 && cardArray[4] != null) {
-            deleteSavedData();
+            deleteClickedData();
             startFadeTransitionCard(imageViewCard4);
             cardClicked = cardArray[4];
+            if (cardClicked.equals("SEVE")) {
+                totalSum = 7;
+            }
+            if (cardClicked.equals("JACK")) {
+                totalSum = 2;
+            }
             checkJokeCase();
         }
     }
@@ -284,9 +309,15 @@ public class GameWindowController implements Initializable {
     @FXML
     void onMouseClick5(MouseEvent event) {
         if (yourTurn && cardArray.length > 5 && cardArray[5] != null) {
-            deleteSavedData();
+            deleteClickedData();
             startFadeTransitionCard(imageViewCard5);
             cardClicked = cardArray[5];
+            if (cardClicked.equals("SEVE")) {
+                totalSum = 7;
+            }
+            if (cardClicked.equals("JACK")) {
+                totalSum = 2;
+            }
             checkJokeCase();
 
         }
@@ -330,242 +361,107 @@ public class GameWindowController implements Initializable {
     @FXML
     void onMouseClickGrid(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
-        //TODO after move sent set cardClicked to null
-        //TODO if JOKE is chosen, find solution on GUI to transform to desired card
         if (clickedNode != gridPane && cardClicked != null && yourTurn) {
 
             if (clickedNode instanceof Circle) {
-                System.out.println("entered circle");
-
-                if (cardClicked.equals("JACK") && circle1 != null) {
-                    System.out.println("entered jack");
-                    if (fadeTransitionCircle2 != null) {
-                        fadeTransitionCircle2.jumpTo(Duration.seconds(9));
-                        fadeTransitionCircle2.stop();
-                    }
-                    fadeTransitionCircle2 = new FadeTransition(Duration.seconds(0.3), clickedNode);
-                    fadeTransitionCircle2.setFromValue(1.0);
-                    fadeTransitionCircle2.setToValue(0.0);
-                    fadeTransitionCircle2.setCycleCount(Animation.INDEFINITE);
-                    fadeTransitionCircle2.play();
-
-                    circle2 = (Circle) clickedNode;
-
-
+                if (cardClicked.equals("JACK")) {
+                    addToCirclesID(clickedNode);
                 } else {
                     if (cardClicked.equals("SEVE")) {
 
-                        addToCircleArray(clickedNode);
+                        addToCirclesID(clickedNode);
 
                     }
-
-
-                    if (cardClicked.equals("SEVEEEEEEn")) {
-                        if (circle1 != null) {
-                            if (circle2 != null) {
-                                if (circle3 != null) {
-                                    circle4 = (Circle) clickedNode;
-                                    System.out.println("SEVE 4 " + circle4.getId());
-
-                                    if (fadeTransitionCircle4 != null) {
-                                        fadeTransitionCircle4.jumpTo(Duration.ZERO);
-                                        fadeTransitionCircle4.stop();
-                                    }
-                                    fadeTransitionCircle4 = new FadeTransition(
-                                            Duration.seconds(0.9), clickedNode);
-                                    fadeTransitionCircle4.setFromValue(1.0);
-                                    fadeTransitionCircle4.setToValue(0.0);
-                                    fadeTransitionCircle4.setCycleCount(Animation.INDEFINITE);
-                                    fadeTransitionCircle4.play();
-                                } else {
-                                    circle3 = (Circle) clickedNode;
-                                    System.out.println("SEVE 3 " + circle3.getId());
-                                    System.out.println("SEVE 3 1 " + circle1.getId());
-
-                                    if (fadeTransitionCircle3 != null) {
-                                        fadeTransitionCircle3.jumpTo(Duration.ZERO);
-                                        fadeTransitionCircle3.stop();
-                                    }
-                                    fadeTransitionCircle3 = new FadeTransition(
-                                            Duration.seconds(0.9), clickedNode);
-                                    fadeTransitionCircle3.setFromValue(1.0);
-                                    fadeTransitionCircle3.setToValue(0.0);
-                                    fadeTransitionCircle3.setCycleCount(Animation.INDEFINITE);
-                                    fadeTransitionCircle3.play();
-                                }
-                            } else {
-                                circle2 = (Circle) clickedNode;
-                                System.out.println("SEVE 2 " + circle2.getId());
-                                System.out.println("SEVE 2 1 " + circle1.getId());
-
-                                if (fadeTransitionCircle2 != null) {
-                                    fadeTransitionCircle2.jumpTo(Duration.ZERO);
-                                    fadeTransitionCircle2.stop();
-                                }
-                                fadeTransitionCircle2 = new FadeTransition(Duration.seconds(0.9),
-                                        clickedNode);
-                                fadeTransitionCircle2.setFromValue(1.0);
-                                fadeTransitionCircle2.setToValue(0.0);
-                                fadeTransitionCircle2.setCycleCount(Animation.INDEFINITE);
-                                fadeTransitionCircle2.play();
-                            }
-                        } else {
-                            circle1 = (Circle) clickedNode;
-                            System.out.println("SEVE 1 " + circle1.getId());
-                            if (fadeTransitionCircle1 != null) {
-                                fadeTransitionCircle1.jumpTo(Duration.ZERO);
-                                fadeTransitionCircle1.stop();
-                            }
-                            fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9),
-                                    clickedNode);
-                            fadeTransitionCircle1.setFromValue(1.0);
-                            fadeTransitionCircle1.setToValue(0.0);
-                            fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
-                            fadeTransitionCircle1.play();
-                        }
-                        //NOT JACK or SEVE Move
-                    } else {
-                        System.out.println("Entered not jack");
-                        if (fadeTransitionCircle1 != null) {
-                            fadeTransitionCircle1.jumpTo(Duration.ZERO);
-                            fadeTransitionCircle1.stop();
-                        }
-                        fadeTransitionCircle1 = new FadeTransition(Duration.seconds(0.9),
-                                clickedNode);
-                        fadeTransitionCircle1.setFromValue(1.0);
-                        fadeTransitionCircle1.setToValue(0.0);
-                        fadeTransitionCircle1.setCycleCount(Animation.INDEFINITE);
-                        fadeTransitionCircle1.play();
-                        circle1 = (Circle) clickedNode;
+                     else {
+                         addToCirclesID(clickedNode);
                     }
                 }
             } else {
                 if (clickedNode instanceof Pane) {
                     if (cardClicked.equals("SEVE")) {
                         addToGridFields(clickedNode);
-                        addToFadingGrids(clickedNode);
-                    }
-
-
-                    if (cardClicked.equals("SEVEeeenn")) {
-                        if (fadeTransitionGrid1 != null) {
-                            System.out.println("SEVE grid");
-                           if (fadeTransitionGrid2 != null) {
-                               if (fadeTransitionGrid3 != null) {
-                                   if (fadeTransitionGrid4 != null) {
-                                       fadeTransitionGrid4.jumpTo(Duration.ZERO);
-                                       fadeTransitionGrid4.stop();
-                                   }
-                                   colIndexField4 = GridPane.getColumnIndex(clickedNode);
-                                   rowIndexField4 = GridPane.getRowIndex(clickedNode);
-
-                                   fadeTransitionGrid4 = new FadeTransition(Duration.seconds(0.9),
-                                           clickedNode);
-                                   fadeTransitionGrid4.setFromValue(1.0);
-                                   fadeTransitionGrid4.setToValue(0.0);
-                                   fadeTransitionGrid4.setCycleCount(Animation.INDEFINITE);
-                                   fadeTransitionGrid4.play();
-                               } else {
-                                   colIndexField3 = GridPane.getColumnIndex(clickedNode);
-                                   rowIndexField3 = GridPane.getRowIndex(clickedNode);
-
-                                   fadeTransitionGrid3 = new FadeTransition(Duration.seconds(0.9),
-                                           clickedNode);
-                                   fadeTransitionGrid3.setFromValue(1.0);
-                                   fadeTransitionGrid3.setToValue(0.0);
-                                   fadeTransitionGrid3.setCycleCount(Animation.INDEFINITE);
-                                   fadeTransitionGrid3.play();
-                               }
-                           } else {
-                               colIndexField2 = GridPane.getColumnIndex(clickedNode);
-                               rowIndexField2 = GridPane.getRowIndex(clickedNode);
-
-                               fadeTransitionGrid2 = new FadeTransition(Duration.seconds(0.9),
-                                       clickedNode);
-                               fadeTransitionGrid2.setFromValue(1.0);
-                               fadeTransitionGrid2.setToValue(0.0);
-                               fadeTransitionGrid2.setCycleCount(Animation.INDEFINITE);
-                               fadeTransitionGrid2.play();
-
-                           }
-                        } else {
-                            colIndexField1 = GridPane.getColumnIndex(clickedNode);
-                            rowIndexField1 = GridPane.getRowIndex(clickedNode);
-
-                            fadeTransitionGrid1 = new FadeTransition(Duration.seconds(0.9),
-                                    clickedNode);
-                            fadeTransitionGrid1.setFromValue(1.0);
-                            fadeTransitionGrid1.setToValue(0.0);
-                            fadeTransitionGrid1.setCycleCount(Animation.INDEFINITE);
-                            fadeTransitionGrid1.play();
-                        }
                     } else {
-                        // not JACK or SEVE
-                        // stop first field blinking if one clicks another field
-                        if (fadeTransitionGrid1 != null) {
-                            fadeTransitionGrid1.jumpTo(Duration.ZERO);
-                            fadeTransitionGrid1.stop();
-                            fadeTransitionGrid1 = null;
-                        }
-                        colIndexField1 = GridPane.getColumnIndex(clickedNode);
-                        rowIndexField1 = GridPane.getRowIndex(clickedNode);
-
-                        fadeTransitionGrid1 = new FadeTransition(Duration.seconds(0.9),
-                                clickedNode);
-                        fadeTransitionGrid1.setFromValue(1.0);
-                        fadeTransitionGrid1.setToValue(0.0);
-                        fadeTransitionGrid1.setCycleCount(Animation.INDEFINITE);
-                        fadeTransitionGrid1.play();
+                        addToGridFields(clickedNode);
                     }
                 }
             }
         }
     }
-
     private void addToFadingGrids(Node clickedNode) {
-        if (gridCount < 7) {
-            fadingGrids[gridCount++];
+        if (gridCount < totalSum) {
+            fadingGrids[gridCount] = new FadeTransition(Duration.seconds(0.9),
+                    clickedNode);
+            fadingGrids[gridCount].setFromValue(1.0);
+            fadingGrids[gridCount].setToValue(0.0);
+            fadingGrids[gridCount].setCycleCount(Animation.INDEFINITE);
+            fadingGrids[gridCount].play();
+
         } else {
-            fadingGrids[gridCount].set(Duration.ZERO);
+            fadingGrids[gridCount].jumpTo(Duration.ZERO);
             fadingGrids[gridCount].stop();
-            fadingGrids[gridCount] =  new FadeTransition();
+
+            fadingGrids[gridCount] = new FadeTransition(Duration.seconds(0.9),
+                    clickedNode);
+            fadingGrids[gridCount].setFromValue(1.0);
+            fadingGrids[gridCount].setToValue(0.0);
+            fadingGrids[gridCount].setCycleCount(Animation.INDEFINITE);
+            fadingGrids[gridCount].play();
         }
     }
 
     private void addToFadingCircles(Node clickedNode) {
-        if (circleCount < 7) {
-            fadingCircles[circleCount++] = new FadeTransition();
-        } else {
-            fadingCircles[circleCount].set(Duration.ZERO);
-            fadingCircles[circleCount].stop();
-            fadingCircles[circleCount] = new FadeTransition();
-        }
+        if (circleCount < totalSum) {
+            fadingCircles[circleCount] = new FadeTransition(Duration.seconds(0.9),
+                    clickedNode);
+            fadingCircles[circleCount].setFromValue(1.0);
+            fadingCircles[circleCount].setToValue(0.0);
+            fadingCircles[circleCount].setCycleCount(Animation.INDEFINITE);
+            fadingCircles[circleCount].play();
 
+        } else {
+            fadingCircles[circleCount].jumpTo(Duration.ZERO);
+            fadingCircles[circleCount].stop();
+
+            fadingCircles[circleCount] = new FadeTransition(Duration.seconds(0.9),
+                    clickedNode);
+            fadingCircles[circleCount].setFromValue(1.0);
+            fadingCircles[circleCount].setToValue(0.0);
+            fadingCircles[circleCount].setCycleCount(Animation.INDEFINITE);
+            fadingCircles[circleCount].play();
+        }
     }
 
     private void addToGridFields(Node clickedNode) {
-        if (gridCount < 7) {
-            clickedGrids[gridCount++];
+        addToFadingGrids(clickedNode);
+
+        if (gridCount < totalSum) {
+            clickedGridFields[gridCount] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
+                    GridPane.getRowIndex(clickedNode));
+            gridCount++;
         } else {
-            clickedGrids[gridCounter] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode), GridPane.getRowIndex(clickedNode));
+            clickedGridFields[gridCount] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
+                    GridPane.getRowIndex(clickedNode));
         }
     }
 
-    private void addToCircleArray(Node clickedNode) {
-        if (circleCount < 7) {
-            clickedCircles[circleCount++] = (Circle) clickedNode;
+    private void addToCirclesID(Node clickedNode) {
+        addToFadingCircles(clickedNode);
+
+        Circle circle = (Circle) clickedNode;
+        if (circleCount < totalSum) {
+            clickedCircleIds[circleCount] =circle.getId();
+            circleCount++;
         } else {
-            clickedCircles[circleCount] = (Circle) clickedNode;
+            clickedCircleIds[circleCount] = circle.getId();
         }
     }
 
     @FXML
     void makeMoveButtonOnAction(ActionEvent event) {
         if (cardClicked != null && yourTurn) {
-            if (fadeTransitionCircle1 != null) {
-
+            if (clickedCircleIds[0] != null) {
                 if (cardClicked.equals("JACK")) {
-                    if (fadeTransitionCircle2 != null) {
+                    if (clickedCircleIds[1] != null) {
                         int intId1 = Integer.parseInt(circle1.getId());
                         int intId2 = Integer.parseInt(circle2.getId());
 
@@ -580,121 +476,72 @@ public class GameWindowController implements Initializable {
                         if (jokerClicked) {
                             move = "MOVE JOKE JACK ";
                         }
-/*
+
                         Client.getInstance().sendMessageToServer(move + pieceColor1 + "-"
                                 + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
- */
 
                         System.out.println(move + pieceColor1 + "-"
                                 + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
-                        endMoveBlinking();
-                       // yourTurn = false;
+
+                        //yourTurn = false;
+                        deleteClickedData();
                     } else {
-                        System.err.println("didn`t select two pieces for jack");
+                        System.err.println("INFO not clicked a second circle for JACK");
                     }
-                    return;
-                }
-                System.out.println("Circle 1 id before0 " + circle1.getId());
-
-                if (cardClicked.equals("SEVE")) {
-                    System.out.println("SEVE make move button");
-                    System.out.println("Circle 1 id before1 " + circle1.getId());
-
-                    if (fadeTransitionGrid1 != null) {
-                        //TODO i need 4 transition grids clickable if seve add above
-                        if (circle1 != null) {
-                            System.out.println("Circle 1 id before2 " + circle1.getId());
-
-                            int clicked = countCirclesClicked();
-                            System.out.println("Circle 1 id before3 " + circle1.getId());
-                            System.out.println("SEVE chosen " + clicked);
+                } else {
+                    if (clickedGridFields[0] != null) {
+                        if (cardClicked.equals("SEVE")) {
+                            int clicked = circleCount;
                             String message = "MOVE SEVE " + clicked;
                             if (jokerClicked) {
-                               message = "MOVE JOKE SEVE " + clicked;
-                           }
-                           for (int i = 0; i < clicked; i++) {
-                               int id = Integer.parseInt(circle1.getId());
-                               System.out.println("id1 " + id);
-                               int playerNumber = id / 4;
-                               message += " " + getColorOfPiece(id) + "-" + id;
-                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField1,rowIndexField1),playerNumber);
+                                message = "MOVE JOKE SEVE " + clicked;
+                            }
 
-                               i++;
-                               if (i >= clicked) {
-                                   break;
-                               }
+                            for (int i = 0; i < clicked; i++) {
+                                int id = Integer.parseInt(clickedCircleIds[i]);
+                                int playerNumber = id / 4;
+                                String pieceId = "" + ((id % 4) + 1);
+                                message += " " + getColorOfPiece(id) + "-" + pieceId;
+                                message += " " + adaptToGui.getPosNumber(clickedGridFields[i],playerNumber);
+                            }
 
-                               id = Integer.parseInt(circle2.getId());
-                               System.out.println("id2 " + id);
+                            System.out.println(message);
 
-                               playerNumber = id / 4;
-                               message += " " + getColorOfPiece(id) + "-" + id;
-                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField2,rowIndexField2),playerNumber);
+                            Client.getInstance().sendMessageToServer(message);
+                            yourTurn = false;
 
-                               i++;
-                               if (i >= clicked) {
-                                   break;
-                               }
+                            deleteClickedData();
+                        } else {
+                        //not SEVE or JACK
+                            FieldOnBoard destiny = clickedGridFields[0];
+                            int intID = Integer.parseInt(clickedCircleIds[0]);
+                            int playerNumb = intID / 4;
+                            String newPos = adaptToGui.getPosNumber(destiny, playerNumb);
 
-                               id = Integer.parseInt(circle3.getId());
-                               System.out.println("id3 " + id);
+                            String colorPiece = getColorOfPiece(intID);
+                            String pieceID = "" + (((intID) % 4) + 1);
 
-                               playerNumber = id / 4;
-                               message += " " + getColorOfPiece(id) + "-" + id;
-                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField3,rowIndexField3),playerNumber);
+                            String move = "MOVE ";
+                            if (jokerClicked) {
+                                move = "MOVE JOKE ";
+                            }
+                            System.out.println(move + cardClicked + " "
+                                    + colorPiece + "-" + pieceID + " " + newPos);
 
-                               i++;
-                               if (i >= clicked) {
-                                   break;
-                               }
-
-                               id = Integer.parseInt(circle4.getId());
-                               playerNumber = id / 4;
-                               message += " " + getColorOfPiece(id) + "-" + id;
-                               message += " " + adaptToGui.getPosNumber(new FieldOnBoard(colIndexField4,rowIndexField4),playerNumber);
-                           }
-                           System.out.println(message);
-
-                           //Client.getInstance().sendMessageToServer(message);
-                            //yourTurn = false;
-                            endMoveBlinking();
-                        }
-                    }
-                    //not SEVE or JACK
-                } else {
-                    if (fadeTransitionGrid1 != null) {
-                        FieldOnBoard destiny = new FieldOnBoard(colIndexField1, rowIndexField1);
-                        System.out.println(colIndexField1 + " " + rowIndexField1);
-                        String newPos = adaptToGui.getPosNumber(destiny, playerNr);
-
-                            //TODO return if destiny is home position
-
-                        int intId = Integer.parseInt(circle1.getId());
-                        String colorPiece = getColorOfPiece(intId);
-
-                        String pieceID = "" + (((intId) % 4) + 1);
-
-
-                        String move = "MOVE ";
-                        if (jokerClicked) {
-                            move = "MOVE JOKE ";
-                        }
-                        System.out.println(move + cardClicked + " "
-                                + colorPiece + "-" + pieceID + " " + newPos);
-/*
                         Client.getInstance().sendMessageToServer(move + cardClicked + " "
                                 + colorPiece + "-" + pieceID + " " + newPos);
 
- */
 
-                        endMoveBlinking();
-                        //yourTurn = false;
+                            yourTurn = false;
+                            deleteClickedData();
+                        }
                     }
                 }
             }
+        } else {
+            System.err.println("INFO not your turn or no card selected");
         }
-        System.err.println("INFO not your turn or no card selected");
     }
 
     /**
@@ -703,16 +550,13 @@ public class GameWindowController implements Initializable {
      */
     private int countCirclesClicked() {
         int count = 1;
-        if (circle2 != null && rowIndexField2 >= 0 && colIndexField2 >= 0) {
-            count++;
-        }
-        if (circle3 != null && rowIndexField3 >= 0 && colIndexField3 >= 0) {
-            count++;
-        }
-        if (circle4 != null && rowIndexField4 >= 0 && colIndexField4 >= 0) {
-            count++;
-        }
-        return count;
+       for (int i = 0; i < totalSum; i++) {
+           if (clickedCircleIds[i] == null) {
+               return count;
+           }
+           count++;
+       }
+       return count;
     }
 
     /**
@@ -739,14 +583,14 @@ public class GameWindowController implements Initializable {
     void roundOffButtonOnAction(ActionEvent event) {
         if (yourTurn) {
             Client.getInstance().sendMessageToServer("MOVE SURR");
-            endMoveBlinking();
+            deleteClickedData();
         }
     }
 
     /**
      * this method ends any blinking items in the gui when the move is sent
      */
-    private void endMoveBlinking() {
+    private void deleteClickedData() {
         colIndexField1 = -1;
         rowIndexField1 = -1;
 
@@ -758,6 +602,35 @@ public class GameWindowController implements Initializable {
 
         colIndexField4 = -1;
         rowIndexField4 = -1;
+        //stop blinking of fading grids
+
+        for (int i = 0; i < gridCount; i++) {
+            fadingGrids[i].jumpTo(Duration.ZERO);
+            fadingGrids[i].stop();
+        }
+
+        //stop blinking of fading circles
+
+        for (int i = 0; i < circleCount; i++) {
+            fadingCircles[i].jumpTo(Duration.ZERO);
+            fadingCircles[i].stop();
+        }
+
+
+        fadingGrids = null;
+        fadingCircles = null;
+        clickedCircleIds = null;
+        clickedGridFields = null;
+
+        fadingGrids = new FadeTransition[7];
+        fadingCircles = new FadeTransition[7];
+        clickedCircleIds = new String[7];
+        clickedGridFields = new FieldOnBoard[7];
+
+        gridCount = 0;
+        circleCount = 0;
+
+        totalSum = 1;
 
         if (fadeTransitionGrid1 != null) {
             System.out.println("Stop blink1");
@@ -876,7 +749,7 @@ public class GameWindowController implements Initializable {
         jokerClicked = false;
 
         yourTurn = true;
-/*
+
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
@@ -888,7 +761,14 @@ public class GameWindowController implements Initializable {
 
         setPlayerLabels();
 
- */
+
+        fadingGrids = new FadeTransition[7];
+        fadingCircles = new FadeTransition[7];
+        clickedGridFields = new FieldOnBoard[7];
+        clickedCircleIds = new String[7];
+
+        gridCount = 0;
+        circleCount = 0;
 
         setOnHome();
         setAllCardImageViews();
@@ -1132,6 +1012,12 @@ public class GameWindowController implements Initializable {
      */
     public void setCardFromJoker(String card) {
         cardClicked = card;
+        if (card.equals("SEVE")) {
+            totalSum = 7;
+        }
+        if (card.equals("JACK")) {
+            totalSum = 2;
+        }
         allCardsDialog.close();
         imageViewCard7.setImage(new Image(CardUrl.getURL(card).toString()));
         imageViewCard7.setVisible(true);
