@@ -652,7 +652,7 @@ public class RulesCheck {
                         for (int startingPosition : startingPositions) {
                             if (actualPosition2 >= 4 && newPosition2 <= startingPosition
                                     && startingPosition <= actualPosition2) {
-                                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
+                                pieceOnStart = gameState.trackPositionOccupied("B",
                                         startingPosition);
                                 if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
                                         == alliance4.getAlliance(startingPosition)
@@ -661,7 +661,7 @@ public class RulesCheck {
                                 }
                             } else if (actualPosition2 < 4 && startingPosition <= actualPosition2
                                     && actualPosition2 <= newPosition2) {
-                                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
+                                pieceOnStart = gameState.trackPositionOccupied("B",
                                         startingPosition);
                                 if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
                                         == alliance4.getAlliance(startingPosition)
