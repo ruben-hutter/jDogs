@@ -42,7 +42,7 @@ public class ServerMenuCommand {
 
     public void execute(String text) {
         //execute commands
-
+        logger.debug("Entered ServerMenuCommand with: " + text);
         String command = text.substring(0, 4);
         // do not receive any commands but USER before logged in
         if (!loggedIn && !command.equals("USER")) {
@@ -107,11 +107,9 @@ public class ServerMenuCommand {
                     }
                     sendToThisClient.enqueue(list);
                     break;
-                //TODO change to EXIT
-                case "QUIT":
-
+                case "EXIT":
                     sendToThisClient.enqueue("INFO logout now");
-                    logger.debug("logged out");
+                    logger.debug(serverConnection.getNickname() + " logged out");
                     serverConnection.kill();
                     break;
 

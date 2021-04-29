@@ -33,7 +33,7 @@ public enum ServerMenuProtocol {
     /**
      * Command to kill ServerConnection of this client
      */
-    QUIT,
+    EXIT,
     /**
      * Command to tell that a client wants to join the game.
      */

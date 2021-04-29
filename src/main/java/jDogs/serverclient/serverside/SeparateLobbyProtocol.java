@@ -19,9 +19,13 @@ public enum SeparateLobbyProtocol {
      */
     STAT,
     /**
-     * Command to return to stop joining game
+     * Command to return to stop joining game and return to lobby
      */
     QUIT,
+    /**
+     * Command to stop joining game and kill ServerConnection
+     */
+    EXIT,
     /**
      * Command to confirm whether the game should be started under the given conditions.
      */

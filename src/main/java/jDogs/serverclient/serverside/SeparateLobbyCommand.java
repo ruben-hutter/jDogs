@@ -95,7 +95,9 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "EXIT":
-                    //TODO write Exit(kill client)
+                    this.openGameFile.sendMessageToParticipants("INFO " + nickname + " left openGame session");
+                    this.openGameFile.cancel();
+                    this.serverConnection.kill();
                     break;
 
                 case "QUIT":
