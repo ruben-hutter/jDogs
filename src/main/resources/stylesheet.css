@@ -1,0 +1,11 @@
+.root {
+    -fx-font-family: "Amiri Quran";
+    -fx-font-weight: bold;
+    -fx-background-color: lightblue;
+}
+
+#gridPane {
+    -fx-background-image: url(/spielbrett4.png);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
+}
