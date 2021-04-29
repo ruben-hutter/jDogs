@@ -146,6 +146,9 @@ public class ClientMenuCommand {
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
+            case "STAR":
+                GUIManager.getInstance().lobbyController.startGameConfirmation();
+                break;
             default:
                 System.out.println("received from server " + text + ". This command " + command
                         + " is not implemented");

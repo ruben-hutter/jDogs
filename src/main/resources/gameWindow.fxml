@@ -79,7 +79,7 @@
    <center>
       <VBox fx:id="vBoxGridWrapper" prefHeight="382.0" prefWidth="648.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane fx:id="gridPane" gridLinesVisible="true" onMouseClicked="#onMouseClickGrid" prefHeight="374.0" prefWidth="648.0" style="-fx-background-color: #bc8f8f;">
+            <GridPane fx:id="gridPane" gridLinesVisible="true" onMouseClicked="#onMouseClickGrid" prefHeight="374.0" prefWidth="648.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

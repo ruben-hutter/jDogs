@@ -674,20 +674,6 @@ public class GameWindowController implements Initializable {
 
         setOnHome();
         setAllCardImageViews();
-
-
-
-
-      //TODO delete and give Array from ClientGame
-        String[] cardddss = new String[]{"JOKE", "JOKE", "JOKE", "JOKE", "SEVE", "SEVE"};
-        setHand(cardddss);
-
-        makeSingleMove("0",adaptToGui.getTrack(4));
-        makeSingleMove("7",adaptToGui.getTrack(7));
-        makeSingleMove("12",adaptToGui.getTrack(24));
-
-
-
     }
 
     /**

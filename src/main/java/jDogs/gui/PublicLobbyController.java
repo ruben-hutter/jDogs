@@ -46,7 +46,7 @@ import org.checkerframework.checker.units.qual.A;
 /**
  * this class represents the lobby window
  */
-public class LobbyController implements Initializable {
+public class PublicLobbyController implements Initializable {
     @FXML
     ObservableList<OpenGame> openGames;
     @FXML
@@ -153,9 +153,9 @@ public class LobbyController implements Initializable {
     @FXML
     void startButtonOnAction(ActionEvent event) {
         if (startGamePossible) {
-            Client.getInstance().sendMessageToServer("STAR " + gameId);
+            Client.getInstance().sendMessageToServer("STAR");
             //set everything up to game mode
-            startButton.setText("joined");
+            startButton.setText("started");
             startGamePossible = false;
         }
 

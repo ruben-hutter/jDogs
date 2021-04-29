@@ -22,10 +22,10 @@ public class GUIManager extends Application {
     private Stage primaryStage;
     private static GUIManager instance;
     FXMLLoader lobbyLoader;
-    public LobbyController lobbyController;
+    public PublicLobbyController lobbyController;
     FXMLLoader gameLoader;
     private Client client;
-    public GameWindowController gameWindow2Controller;
+    public GameWindowController gameWindowController;
 
     public static void main(String[] args) {
         launch(args);
@@ -166,8 +166,7 @@ public class GUIManager extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //gameWindowController = gameLoader.getController();
-        gameWindow2Controller = gameLoader.getController();
+        gameWindowController = gameLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
 

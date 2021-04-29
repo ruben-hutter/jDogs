@@ -42,8 +42,9 @@ public class SendFromServer implements Runnable {
 
             if (!sendToThisClient.isEmpty()) {
                 String message = sendToThisClient.dequeue();
-                    sendStringToClient(message);
+                sendStringToClient(message);
             }
+
             if (!sendToAll.isEmpty()) {
                 String message = sendToAll.dequeue();
                 sendStringToAllClients(message);

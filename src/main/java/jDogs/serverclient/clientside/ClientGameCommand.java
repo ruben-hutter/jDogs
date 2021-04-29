@@ -44,7 +44,7 @@ public class ClientGameCommand {
                 if (text.length() == command.length()) {
                     System.out.println("TURN: your turn");
                     Platform.runLater(() -> GUIManager.getInstance().
-                            gameWindow2Controller.setYourTurn(true));
+                            gameWindowController.setYourTurn(true));
                 } else {
                     System.out.println("it is " + text.substring(5) + "`s turn");
                 }
@@ -69,6 +69,8 @@ public class ClientGameCommand {
                 clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
                 clientGame.printGameState();
 
+                //move to game-scene in gui manager
+                Platform.runLater(() -> GUIManager.getInstance().startGame());
                 break;
 
             case "MOVE": // MOVE YELO-1 B20

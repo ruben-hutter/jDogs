@@ -26,7 +26,7 @@ public class AllCardsDialogController implements Initializable {
     @FXML
     void chooseButtonOnAction(ActionEvent event) {
         String card = CardUrl.getCardNameByNumber(count % 13);
-        GUIManager.getInstance().gameWindow2Controller.setCardFromJoker(card);
+        GUIManager.getInstance().gameWindowController.setCardFromJoker(card);
     }
 
 

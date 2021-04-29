@@ -26,8 +26,6 @@ public class ClientGame {
         createGame(playerNames);
         instance = this;
 
-        //move to game-scene in gui manager
-        Platform.runLater(() -> GUIManager.getInstance().startGame());
 
         for (int i = 0; i < playerNames.length; i++) {
             System.out.println(playerNames[i]);
@@ -107,21 +105,21 @@ public class ClientGame {
         switch(newPosition.substring(0, 1)) {
             case "A":
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindow2Controller.makeHomeMove(playerNumber, pieceID));
+                        gameWindowController.makeHomeMove(playerNumber, pieceID));
 
                 player.changePositionClient(pieceID, board.allHomeTiles.
                         get(player.getAlliance())[pieceID - 1]);
                 break;
             case "B":
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindow2Controller.makeSingleMoveTrack(playerNumber, pieceID,newPos));
+                        gameWindowController.makeSingleMoveTrack(playerNumber, pieceID,newPos));
 
                 player.changePositionClient(pieceID, board.allTrackTiles[Integer
                         .parseInt(newPosition.substring(1))]);
                 break;
             case "C":
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindow2Controller.makeHeavenMove(playerNumber, pieceID,newPos));
+                        gameWindowController.makeHeavenMove(playerNumber, pieceID,newPos));
 
                 player.changePositionClient(pieceID, board.allHeavenTiles.
                         get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
@@ -163,7 +161,7 @@ public class ClientGame {
         }
 
         Platform.runLater(() -> GUIManager.getInstance().
-                gameWindow2Controller.setHand(cardsArray));
+                gameWindowController.setHand(cardsArray));
     }
 
     //String hand = number + " ACEE ACEE TENN TWOO EIGT NINE";
@@ -200,7 +198,7 @@ public class ClientGame {
     public void remove(String card) {
         cards.remove(card);
         Platform.runLater(() -> GUIManager.getInstance().
-                gameWindow2Controller.removeCard(card));
+                gameWindowController.removeCard(card));
     }
 
     public int getNumPlayers() {

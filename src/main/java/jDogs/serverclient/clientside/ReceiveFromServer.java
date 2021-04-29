@@ -40,8 +40,7 @@ public class ReceiveFromServer implements Runnable {
                     message = din.readUTF();
 
                     if (message.equalsIgnoreCase("ping")) {
-                        //client.monitorMsg(System.currentTimeMillis());
-                        //connectionToServerMonitor.sendSignal();
+                        //Do nothing
                     } else {
                         receiveQueue.enqueue(message);
                     }

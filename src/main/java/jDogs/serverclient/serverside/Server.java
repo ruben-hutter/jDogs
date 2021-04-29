@@ -236,7 +236,7 @@ public class Server {
             System.out.println("INFO game finished");
         }
 
-        allGamesNotFinished.remove(openGameFile);
+        System.out.println(allGamesNotFinished.remove(openGameFile) + " open game removed");
         System.out.println("got removed");
         MainGame mainGame;
         if ((mainGame = getMainGame(openGameFile)) != null) {
