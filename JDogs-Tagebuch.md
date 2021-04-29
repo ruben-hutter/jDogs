@@ -316,3 +316,20 @@ Bis Mittwoch kümmert sich Gregor um das flackernde Fenster und SURR, Ruben impl
 
 **Nächstes Treffen:** Mittwoch, 28.04.21, 10:15 Uhr
 
+---
+
+*29.04.2021, 10 Uhr, Johanna*
+
+### Protokoll#17 - Protokoll
+
+Gestern Nachmittag und heute Morgen gingen wir gemeinsam den Code von Server und Client und den dazugehörigen Klassen durch, damit alle den Ablauf besser verstehen. Wir besprachen bestehende Probleme und Lösungsvorschläge. 
+- SendFromServer Absturz: Dieses Problem könnte wohl mit einer Blocking Queue gelöst werden. Die Behebung dieses Fehlverhaltens scheint uns aber nicht prioritär, da wir uns zuerst um die Meilenstein-Achievements sowie einen übersichtlicheren Code kümmern wollen. 
+
+Bis zum nächsten Treffen bearbeiten wir folgende Aufgaben:
+- Gregor: GUI vervollständigen, so dass der Chat und die Log-Infos angezeigt werden. Herausfinden, wieso ein OpenGame nicht gelöscht wird, obwohl es eigentlich von der Liste der AllGamesNotFinished entfernt wird. Hintergrundbild für das Spielbrett (falls mit wenig Aufwand möglich). 
+- Ruben: Victory und TeamMode. Falls die Zeit reicht, XML-File erstellen, um die Spielstatistiken zu speichern. 
+- Johanna: EXIT und QUIT vereinheitlichen. JUnit-Tests für GameLogic. 
+
+Ruben machte uns darauf aufmerksam, dass die Javadoc-Kommentare vollständig und korrekt sein müssen und man sich doch darauf achten soll, wenn man den Code bearbeitet. 
+
+**Nächstes Treffen:** Montag, 03.05.21, 09:00 Uhr
