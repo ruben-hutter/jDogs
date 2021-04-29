@@ -160,9 +160,9 @@ public class Server {
 
     public ServerConnection getServerConnection(String nickname) {
 
-        for (int i = 0; i < basicConnectionList.size(); i++) {
-            if (basicConnectionList.get(i).getNickname().equals(nickname)) {
-                return basicConnectionList.get(i);
+        for (ServerConnection serverConnection : basicConnectionList) {
+            if (serverConnection.getNickname().equals(nickname)) {
+                return serverConnection;
             }
         }
         return null;

@@ -26,7 +26,9 @@ public class RulesCheck {
     /**
      * Checks if the given card is in the players hand
      * @param text MOVE command from user
-     * @param gameState
+     * @param gameState state of the actual game
+     * @param nickname player's nickname
+     * @param cardToEliminate the played card
      * @return null if invalid card or the move (with translation if JOKE)
      */
     protected String checkCard(String text, GameState gameState, String nickname,
@@ -613,7 +615,7 @@ public class RulesCheck {
      */
     private boolean checkForBlock(String card, String actualPosition1, int actualPosition2,
             String newPosition1, int newPosition2, Player player) {
-        int [] startingPositions = new int[] {0, 16, 32, 48};
+        int[] startingPositions = new int[] {0, 16, 32, 48};
         int[] cardValues = getCardValues(card);
         Piece pieceOnStart;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
@@ -699,25 +701,6 @@ public class RulesCheck {
         }
         return false;
     }
-
-    /*
-    private boolean checkForBlockSeven(String actualPosition1, int actualPosition2,
-            String newPosition1, int newPosition2, Player player, int pieceID) {
-        if (actualPosition1.equals("B") && newPosition1.equals("B")) {
-            // continue on track
-            return checkForBlockHelper(actualPosition2, newPosition1, newPosition2, player,
-                    startingPositions);
-        } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
-            // go heaven
-            for (Piece piece : player.pieces) {
-                if (piece.getPositionServer1().equals("B") && !piece.getHasMoved()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-     */
 
     /**
      * Checks if on the destination is already a piece
@@ -816,7 +799,7 @@ public class RulesCheck {
         String pieceAlliance = convertAlliance(piece.getPieceAlliance());
 
         // change hasMoved state to true if piece moves for first time on track
-        if (!piece.getHasMoved()) {
+        if (piece.getPositionServer1().equals("B") && !piece.getHasMoved()) {
             piece.changeHasMoved();
         }
 

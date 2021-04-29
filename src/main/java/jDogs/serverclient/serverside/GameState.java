@@ -67,9 +67,6 @@ public class GameState {
         if (isPieceOnTrack(piece)) {
             if (!newPosition1.equals("B")) {
                 piecesOnTrack.remove(piece);
-                if (newPosition1.equals("A")) {
-                    piece.changeHasMoved();
-                }
             }
         } else if (!isPieceOnTrack(piece)) {
             if (newPosition1.equals("B")) {

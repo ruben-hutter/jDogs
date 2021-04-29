@@ -1,6 +1,5 @@
 package jDogs.serverclient.serverside;
 
-
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
 import java.net.InetAddress;
@@ -69,10 +68,8 @@ public class ServerConnection {
 
         // detect connection problems thread
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new ConnectionToClientMonitor
-                        (this, sendToThisClient, monitorCS), 5000,5000, TimeUnit.MILLISECONDS);
-
-
+        scheduledExecutorService.scheduleAtFixedRate(new ConnectionToClientMonitor(this,
+                        sendToThisClient, monitorCS), 5000,5000, TimeUnit.MILLISECONDS);
 
 
         // receiveFromClient thread
