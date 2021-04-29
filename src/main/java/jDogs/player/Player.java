@@ -4,7 +4,6 @@ import jDogs.Alliance_4;
 import jDogs.board.Board;
 import jDogs.board.Tile;
 import jDogs.serverclient.serverside.ServerConnection;
-import java.util.ArrayList;
 import java.util.Comparator;
 
 /**

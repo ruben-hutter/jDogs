@@ -35,9 +35,6 @@ public class RulesCheck {
             String cardToEliminate) {
         this.cardToEliminate = cardToEliminate;
         String card = text.substring(5, 9);
-        if (card.equals("ACE1") || card.equals("AC11")) {
-            card = "ACEE";
-        }
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
         ArrayList<String> hand = gameState.getCards().get(nickname);
@@ -49,22 +46,14 @@ public class RulesCheck {
         logger.debug("Player's hand: " + hand);
         logger.debug("Deck contains card? " + hand.contains(card));
         if (hand.contains(card)) {
-            switch (card) {
-                case "JOKE":
-                    String value = text.substring(10, 14);
-                    toCheckMove = value + " " + text.substring(15);
-                    logger.debug(
-                            "This string is send to checkMove (without Joker): " + toCheckMove);
-                    break;
-                case "ACEE":
-                    String ass = text.substring(5, 9);
-                    this.cardToEliminate = "ACEE";
-                    toCheckMove = ass + " " + text.substring(10);
-                    logger.debug("This string is send to checkMove (without ACEE): " + toCheckMove);
-                    break;
-                default:
-                    toCheckMove = card + " " + text.substring(10);
-                    logger.debug("This string is send to checkMove: " + toCheckMove);
+            if ("JOKE".equals(card)) {
+                String value = text.substring(10, 14);
+                toCheckMove = value + " " + text.substring(15);
+                logger.debug(
+                        "This string is send to checkMove (without Joker): " + toCheckMove);
+            } else {
+                toCheckMove = card + " " + text.substring(10);
+                logger.debug("This string is send to checkMove: " + toCheckMove);
             }
         }
         return toCheckMove;
@@ -133,7 +122,7 @@ public class RulesCheck {
 
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                    newPosition2, startingPosition, hasMoved, completeMove)) {
+                    newPosition2, startingPosition, hasMoved, ownPlayer, pieceID)) {
                 sendToThisClient.enqueue("INFO Check your move's validity");
                 return;
             }
@@ -420,7 +409,7 @@ public class RulesCheck {
             // called only with card SEVE
             difference = Math.floorMod(newPosition2 - actualPosition2, 64);
             for (int i = 1; i <= difference; i++) {
-                pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
+                pieceOnPath = gameState.trackPositionOccupied(actualPosition1,
                         (actualPosition2 + i) % 64);
                 if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
                         != ownPlayer.getAlliance()) {
@@ -451,7 +440,7 @@ public class RulesCheck {
             }
             difference = Math.floorMod(startingPosition - actualPosition2, 64);
             for (int i = 1; i <= difference; i++) {
-                pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
+                pieceOnPath = gameState.trackPositionOccupied(actualPosition1,
                         (actualPosition2 + i) % 64);
                 if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
                         != ownPlayer.getAlliance()) {
@@ -462,7 +451,7 @@ public class RulesCheck {
                 }
             }
             for (int i = 0; i <= newPosition2; i++) {
-                pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
+                pieceOnPath = gameState.trackPositionOccupied(newPosition1, i);
                 if (pieceOnPath != null) {
                     return null;
                 }
@@ -477,7 +466,7 @@ public class RulesCheck {
                 // TODO all different cases (2, 3)
             }
             for (int i = actualPosition2; i <= newPosition2; i++) {
-                pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
+                pieceOnPath = gameState.trackPositionOccupied(newPosition1, i);
                 if (pieceOnPath != null) {
                     return null;
                 }
@@ -553,7 +542,7 @@ public class RulesCheck {
      */
     private boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
-            boolean hasMoved, String completeMove) {
+            boolean hasMoved, Player ownPlayer, int pieceID) {
         int[] cardValues = getCardValues(card);
         int difference;
         if (cardValues == null) {
@@ -561,7 +550,7 @@ public class RulesCheck {
         }
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
             // you play an exit card and you exit on your starting position
-            return (card.equals("ACE1") || card.equals("AC11") || card.equals("KING"))
+            return (card.equals("ACEE") || card.equals("KING"))
                     && newPosition2 == startingPosition;
         } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
@@ -579,11 +568,12 @@ public class RulesCheck {
                         }
                     }
                 }
-            }
-            difference = Math.floorMod(newPosition2 - actualPosition2, 64);
-            for (int cardValue : cardValues) {
-                if (cardValue == difference) {
-                    return true;
+            } else {
+                difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+                for (int cardValue : cardValues) {
+                    if (cardValue == difference) {
+                        return true;
+                    }
                 }
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
@@ -591,9 +581,12 @@ public class RulesCheck {
             if (!hasMoved) {
                 return false;
             }
-            if (piecesOnPath(completeMove.substring(5), card) == null) {
-                sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
-                return false;
+            for (Piece piece : ownPlayer.pieces) {
+                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
+                        && piece.getPositionServer2() <= newPosition2) {
+                    sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                    return false;
+                }
             }
             if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
@@ -609,18 +602,28 @@ public class RulesCheck {
                         }
                     }
                 }
-                return false;
-            }
-            difference = Math.floorMod(startingPosition - actualPosition2, 64) + newPosition2 + 1;
-            for (int cardValue : cardValues) {
-                return cardValue == difference;
+            } else {
+                difference = Math.floorMod(startingPosition - actualPosition2, 64) + newPosition2 + 1;
+                for (int cardValue : cardValues) {
+                    if (cardValue == difference) {
+                        return true;
+                    }
+                }
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-            if (piecesOnPath(completeMove.substring(5), card) == null) {
-                sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
-                return false;
+            for (Piece piece : ownPlayer.pieces) {
+                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
+                        && piece.getPositionServer2() <= newPosition2) {
+                    sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                    return false;
+                }
             }
-            return card.equals("ACE1") || card.equals("TWOO") || card.equals("THRE");
+            difference = newPosition2 - actualPosition2;
+            for (int cardValue : cardValues) {
+                if (cardValue == difference) {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -649,7 +652,7 @@ public class RulesCheck {
                         for (int startingPosition : startingPositions) {
                             if (actualPosition2 >= 4 && newPosition2 <= startingPosition
                                     && startingPosition <= actualPosition2) {
-                                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
                                         startingPosition);
                                 if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
                                         == alliance4.getAlliance(startingPosition)
@@ -658,7 +661,7 @@ public class RulesCheck {
                                 }
                             } else if (actualPosition2 < 4 && startingPosition <= actualPosition2
                                     && actualPosition2 <= newPosition2) {
-                                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
                                         startingPosition);
                                 if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
                                         == alliance4.getAlliance(startingPosition)
@@ -703,7 +706,7 @@ public class RulesCheck {
         for (int startingPosition : startingPositions) {
             if (actualPosition2 < startingPosition && startingPosition
                     <= newPosition2) {
-                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
                         startingPosition);
                 if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
                         == alliance4.getAlliance(startingPosition)
@@ -712,7 +715,7 @@ public class RulesCheck {
                 }
             } else if (newPosition2 < actualPosition2 && startingPosition
                     <= newPosition2) {
-                pieceOnStart = gameState.newPositionOccupied(player, newPosition1,
+                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
                         startingPosition);
                 if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
                         == alliance4.getAlliance(startingPosition)
@@ -734,16 +737,12 @@ public class RulesCheck {
      */
     private boolean checkWhichMove(Player player, int pieceID, String newPosition1,
             int newPosition2) {
-        Piece pieceOnNewPosition = gameState.newPositionOccupied(player, newPosition1, newPosition2);
-        if (pieceOnNewPosition != null) {
-            if (player.getAlliance() == pieceOnNewPosition.getPieceAlliance()) {
-                return false;
-            } else {
-                attackMove(player, pieceID, newPosition1, newPosition2, pieceOnNewPosition);
-                return true;
-            }
+        Piece pieceToEliminate = gameState.trackPositionOccupied(newPosition1, newPosition2);
+        if (pieceToEliminate != null) {
+            attackMove(player, pieceID, newPosition1, newPosition2, pieceToEliminate);
+        } else {
+            simpleMove(player, pieceID, newPosition1, newPosition2);
         }
-        simpleMove(player, pieceID, newPosition1, newPosition2);
         return true;
     }
 
@@ -755,11 +754,8 @@ public class RulesCheck {
     private int[] getCardValues(String card) {
         int[] possibleValues;
         switch (card) {
-            case "ACE1":
-                possibleValues = new int[]{1};
-                break;
-            case "AC11":
-                possibleValues = new int[]{11};
+            case "ACEE":
+                possibleValues = new int[]{1, 11};
                 break;
             case "TWOO":
                 possibleValues = new int[]{2};
