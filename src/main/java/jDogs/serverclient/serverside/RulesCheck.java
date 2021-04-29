@@ -417,15 +417,20 @@ public class RulesCheck {
         assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // track -> track
+            // called only with card SEVE
             difference = Math.floorMod(newPosition2 - actualPosition2, 64);
             for (int i = 1; i <= difference; i++) {
                 pieceOnPath = gameState.newPositionOccupied(ownPlayer, actualPosition1,
                         (actualPosition2 + i) % 64);
                 if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
                         != ownPlayer.getAlliance()) {
-                    piecesToEliminate.add(pieceOnPath);
+                    if (!pieceOnPath.getHasMoved()) {
+                        return null;
+                    } else {
+                        piecesToEliminate.add(pieceOnPath);
+                    }
                 } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
-                        == ownPlayer.getAlliance() && card.equals("SEVE")) {
+                        == ownPlayer.getAlliance()) {
                     return null;
                 }
             }
@@ -433,6 +438,16 @@ public class RulesCheck {
             // track -> heaven
             if (card.equals("FOUR")) {
                 // TODO case four heaven (4, -4)
+                // ci possono essere proprie biglie su B, su C no
+            } else if (card.equals("SEVE")) {
+                // TODO case seve
+                // non ci possono essere mai proprie biglie sul percorso
+            } else if (card.equals("ACEE")) {
+                // TODO card acee
+                // ci possono essere proprie biglie su B, su C no
+            } else {
+                // TODO all different cases
+                // ci possono essere proprie biglie su B, su C no
             }
             difference = Math.floorMod(startingPosition - actualPosition2, 64);
             for (int i = 1; i <= difference; i++) {
@@ -454,6 +469,13 @@ public class RulesCheck {
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             // heaven -> heaven
+            if (card.equals("SEVE")) {
+                // TODO case seve
+            } else if (card.equals("ACEE")) {
+                // TODO case ACEE as 1
+            } else {
+                // TODO all different cases (2, 3)
+            }
             for (int i = actualPosition2; i <= newPosition2; i++) {
                 pieceOnPath = gameState.newPositionOccupied(ownPlayer, newPosition1, i);
                 if (pieceOnPath != null) {
