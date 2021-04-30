@@ -77,14 +77,12 @@ public class GameState {
 
     /**
      * Checks if a given track position is occupied.
-     * @param newPosition1 A, B or C
      * @param newPosition2 int between 0-63
      * @return a piece, or null if not occupied
      */
-    public Piece trackPositionOccupied(String newPosition1, int newPosition2) {
+    public Piece trackPositionOccupied(int newPosition2) {
         for (Piece p : piecesOnTrack) {
-            if (p.getPositionServer1().equals(newPosition1)
-                    && p.getPositionServer2() == newPosition2) {
+            if (p.getPositionServer2() == newPosition2) {
                 return p;
             }
         }

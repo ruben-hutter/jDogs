@@ -261,7 +261,7 @@ public class RulesCheck {
                     return;
                 }
                 singleEliminations = piecesOnPath(completeMove.substring(startIndex,
-                        startIndex + 10), "SEVE");
+                        startIndex + 10));
                 if (singleEliminations == null) {
                     sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
                     return;
@@ -353,13 +353,8 @@ public class RulesCheck {
                 if (!hasMoved) {
                     return -1;
                 }
-                difference = startingPosition - actualPosition2;
-                if (difference < 0) {
-                    difference = difference + 64 + newPosition2 + 1;
-                } else {
-                    difference = difference + newPosition2 + 1;
-                }
-                return difference;
+                difference = Math.floorMod(startingPosition - actualPosition2, 64);
+                return difference + newPosition2 + 1;
             }
             return -1;
         } catch (Exception e) {
@@ -375,14 +370,13 @@ public class RulesCheck {
      * @return null if illegal move, empty list if nobody is eliminated
      * and with elements if somebody is eliminated
      */
-    private ArrayList<Piece> piecesOnPath(String move, String card) { // YELO-1 B04
+    private ArrayList<Piece> piecesOnPath(String move) { // YELO-1 B04
         String alliance = move.substring(0, 4);
         int pieceID = Integer.parseInt(move.substring(5, 6));
         String newPosition1 = move.substring(7, 8);
         int newPosition2 = Integer.parseInt(move.substring(8));
         String actualPosition1 = null;
         int actualPosition2 = -1;
-        boolean hasMoved = false;
         int startingPosition = -1;
         Player ownPlayer = null;
         Alliance_4 alliance4 = convertAlliance(alliance);
@@ -396,83 +390,68 @@ public class RulesCheck {
                 logger.debug("actual position1: " + actualPosition1);
                 actualPosition2 = player.receivePosition2Server(pieceID);
                 logger.debug("actual position2: " + actualPosition2);
-                hasMoved = player.receiveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
             }
         }
 
-        Piece pieceOnPath;
-        int difference;
         assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // track -> track
-            // called only with card SEVE
-            difference = Math.floorMod(newPosition2 - actualPosition2, 64);
-            for (int i = 1; i <= difference; i++) {
-                pieceOnPath = gameState.trackPositionOccupied(actualPosition1,
-                        (actualPosition2 + i) % 64);
-                if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
-                        != ownPlayer.getAlliance()) {
-                    if (!pieceOnPath.getHasMoved()) {
-                        return null;
-                    } else {
-                        piecesToEliminate.add(pieceOnPath);
-                    }
-                } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
-                        == ownPlayer.getAlliance()) {
-                    return null;
-                }
+            if (piecesOnPathHelper(actualPosition2, newPosition2, ownPlayer, piecesToEliminate)) {
+                return null;
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // track -> heaven
-            if (card.equals("FOUR")) {
-                // TODO case four heaven (4, -4)
-                // ci possono essere proprie biglie su B, su C no
-            } else if (card.equals("SEVE")) {
-                // TODO case seve
-                // non ci possono essere mai proprie biglie sul percorso
-            } else if (card.equals("ACEE")) {
-                // TODO card acee
-                // ci possono essere proprie biglie su B, su C no
-            } else {
-                // TODO all different cases
-                // ci possono essere proprie biglie su B, su C no
+            if (piecesOnPathHelper(actualPosition2, startingPosition, ownPlayer,
+                    piecesToEliminate)) {
+                return null;
             }
-            difference = Math.floorMod(startingPosition - actualPosition2, 64);
-            for (int i = 1; i <= difference; i++) {
-                pieceOnPath = gameState.trackPositionOccupied(actualPosition1,
-                        (actualPosition2 + i) % 64);
-                if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
-                        != ownPlayer.getAlliance()) {
-                    piecesToEliminate.add(pieceOnPath);
-                } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
-                        == ownPlayer.getAlliance()) {
-                    return null;
-                }
-            }
-            for (int i = 0; i <= newPosition2; i++) {
-                pieceOnPath = gameState.trackPositionOccupied(newPosition1, i);
-                if (pieceOnPath != null) {
+            for (Piece piece : ownPlayer.pieces) {
+                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
+                        && piece.getPositionServer2() <= newPosition2) {
                     return null;
                 }
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             // heaven -> heaven
-            if (card.equals("SEVE")) {
-                // TODO case seve
-            } else if (card.equals("ACEE")) {
-                // TODO case ACEE as 1
-            } else {
-                // TODO all different cases (2, 3)
-            }
-            for (int i = actualPosition2; i <= newPosition2; i++) {
-                pieceOnPath = gameState.trackPositionOccupied(newPosition1, i);
-                if (pieceOnPath != null) {
+            for (Piece piece : ownPlayer.pieces) {
+                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
+                        && piece.getPositionServer2() <= newPosition2) {
                     return null;
                 }
             }
         }
         return piecesToEliminate;
+    }
+
+    /**
+     * Helper method for pieces on path check.
+     * @param actualPosition2 piece's position 0-63
+     * @param destinationOnTrack last position on track
+     * @param ownPlayer player moving
+     * @param piecesToEliminate array with possible pieces that are eliminated by the move
+     * @return true if invalid move, false if not
+     */
+    private boolean piecesOnPathHelper(int actualPosition2, int destinationOnTrack, Player ownPlayer,
+            ArrayList<Piece> piecesToEliminate) {
+        int difference;
+        Piece pieceOnPath;
+        difference = Math.floorMod(destinationOnTrack - actualPosition2, 64);
+        for (int i = 1; i <= difference; i++) {
+            pieceOnPath = gameState.trackPositionOccupied((actualPosition2 + i) % 64);
+            if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
+                    != ownPlayer.getAlliance()) {
+                if (!pieceOnPath.getHasMoved()) {
+                    return true;
+                } else {
+                    piecesToEliminate.add(pieceOnPath);
+                }
+            } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
+                    == ownPlayer.getAlliance()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -636,13 +615,14 @@ public class RulesCheck {
      * @param newPosition1 A, B or C
      * @param newPosition2 int between 0-3 or 0-63 on track
      * @param player this player
-     * @return true if you are blocked
+     * @return true if you are blocked, false if not
      */
     private boolean checkForBlock(String card, String actualPosition1, int actualPosition2,
             String newPosition1, int newPosition2, Player player) {
         int[] startingPositions = new int[] {0, 16, 32, 48};
         int[] cardValues = getCardValues(card);
         Piece pieceOnStart;
+        int difference;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
             if (card.equals("FOUR")) {
@@ -650,36 +630,26 @@ public class RulesCheck {
                 for (int cardValue : cardValues) {
                     if (cardValue == -4) {
                         for (int startingPosition : startingPositions) {
-                            if (actualPosition2 >= 4 && newPosition2 <= startingPosition
-                                    && startingPosition <= actualPosition2) {
-                                pieceOnStart = gameState.trackPositionOccupied("B",
-                                        startingPosition);
-                                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                                        == alliance4.getAlliance(startingPosition)
-                                        && !pieceOnStart.getHasMoved()) {
-                                    return true;
-                                }
-                            } else if (actualPosition2 < 4 && startingPosition <= actualPosition2
-                                    && actualPosition2 <= newPosition2) {
-                                pieceOnStart = gameState.trackPositionOccupied("B",
-                                        startingPosition);
-                                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                                        == alliance4.getAlliance(startingPosition)
-                                        && !pieceOnStart.getHasMoved()) {
-                                    return true;
+                            for (int i = -1; i >= cardValue; i--) {
+                                if ((actualPosition2 + i) % 64 == startingPosition) {
+                                    pieceOnStart = gameState.trackPositionOccupied(startingPosition);
+                                    if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
+                                            == alliance4.getAlliance(startingPosition)) {
+                                        return true;
+                                    }
                                 }
                             }
                         }
                     } else if (cardValue == 4) {
-                        if (checkForBlockHelper(actualPosition2, newPosition1, newPosition2, player,
-                                startingPositions)) {
+                        if (checkForBlockHelper(actualPosition2, startingPositions, cardValue)) {
                             return true;
                         }
                     }
                 }
+            } else {
+                difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+                return checkForBlockHelper(actualPosition2, startingPositions, difference);
             }
-            return checkForBlockHelper(actualPosition2, newPosition1, newPosition2, player,
-                    startingPositions);
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // go heaven
             for (Piece piece : player.pieces) {
@@ -692,35 +662,24 @@ public class RulesCheck {
     }
 
     /**
-     * Helper method for block check, for positive card values
-     * @param actualPosition2 int between 0-63
-     * @param newPosition1 B or C
-     * @param newPosition2 int between 0-3 or 0-63 on track
-     * @param player this player
-     * @param startingPositions an int[] with the possible starting positions
-     * @return true if the move is blocked and can't be done
+     * Helper method for checking blocks. Calculates if a piece is blocked,
+     * for positive card values.
+     * @param actualPosition2 piece's position between 0-63
+     * @param startingPositions array which contains the 4 possible starting positions
+     * @param steps number of steps from actualPosition2 to newPosition2
+     * @return true if the piece is blocked, false if not
      */
-    private boolean checkForBlockHelper(int actualPosition2, String newPosition1, int newPosition2,
-            Player player, int[] startingPositions) {
+    private boolean checkForBlockHelper(int actualPosition2, int[] startingPositions,
+            int steps) {
         Piece pieceOnStart;
         for (int startingPosition : startingPositions) {
-            if (actualPosition2 < startingPosition && startingPosition
-                    <= newPosition2) {
-                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
-                        startingPosition);
-                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                        == alliance4.getAlliance(startingPosition)
-                        && !pieceOnStart.getHasMoved()) {
-                    return true;
-                }
-            } else if (newPosition2 < actualPosition2 && startingPosition
-                    <= newPosition2) {
-                pieceOnStart = gameState.trackPositionOccupied(newPosition1,
-                        startingPosition);
-                if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                        == alliance4.getAlliance(startingPosition)
-                        && !pieceOnStart.getHasMoved()) {
-                    return true;
+            for (int i = 1; i <= steps; i++) {
+                if ((actualPosition2 + i) % 64 == startingPosition) {
+                    pieceOnStart = gameState.trackPositionOccupied(startingPosition);
+                    if (pieceOnStart != null) {
+                        return pieceOnStart.getPieceAlliance()
+                                == alliance4.getAlliance(startingPosition);
+                    }
                 }
             }
         }
@@ -737,7 +696,7 @@ public class RulesCheck {
      */
     private boolean checkWhichMove(Player player, int pieceID, String newPosition1,
             int newPosition2) {
-        Piece pieceToEliminate = gameState.trackPositionOccupied(newPosition1, newPosition2);
+        Piece pieceToEliminate = gameState.trackPositionOccupied(newPosition2);
         if (pieceToEliminate != null) {
             attackMove(player, pieceID, newPosition1, newPosition2, pieceToEliminate);
         } else {
