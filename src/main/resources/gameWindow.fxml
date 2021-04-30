@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.GameWindowController">
+<BorderPane prefHeight="700.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.GameWindowController">
    <top>
       <MenuBar fx:id="menuBar" prefHeight="30.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <menus>
