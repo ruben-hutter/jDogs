@@ -26,6 +26,7 @@ public class GUIManager extends Application {
     FXMLLoader gameLoader;
     private Client client;
     public GameWindowController gameWindowController;
+    private boolean isPlaying;
 
     public static void main(String[] args) {
         launch(args);
@@ -46,7 +47,6 @@ public class GUIManager extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-
         setLoginScene();
 
     }
@@ -94,6 +94,8 @@ public class GUIManager extends Application {
      * sets up the lobby window
      */
     public void setLobbyScene() {
+        isPlaying = false;
+
         String lobbyPath = "src/main/resources/lobbyWindow.fxml";
         // activate Window
         //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
@@ -114,8 +116,6 @@ public class GUIManager extends Application {
         lobbyController = lobbyLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
-
-
 
     }
 
@@ -140,6 +140,7 @@ public class GUIManager extends Application {
      * starts the game
      */
     public void startGame() {
+        isPlaying = true;
         setGameScene();
     }
 
@@ -171,5 +172,42 @@ public class GUIManager extends Application {
         primaryStage.getScene().setRoot(root);
 
     }
+
+    /**
+     * display PCHT message in gui
+     * @param message from client
+     */
+    public void sendPCHTToGui (String message) {
+        if (isPlaying) {
+            gameWindowController.displayPCHTmsg (message);
+        } else {
+            lobbyController.displayPCHTmsg (message);
+        }
+    }
+
+    /**
+     * display LCHT message in gui
+     * @param message from participants
+     */
+    public void sendLCHTToGui (String message) {
+        if (isPlaying) {
+            gameWindowController.displayLCHTmsg (message);
+        } else {
+            lobbyController.displayPCHTmsg (message);
+        }
+    }
+
+    /**
+     * display info in gui
+     * @param info INFO from server
+     */
+    public void sendINFOtoGui (String info) {
+        if (isPlaying) {
+            gameWindowController.displayInfoFromServer(info);
+        } else {
+            lobbyController.displayInfomsg(info);
+        }
+    }
+
 
 }

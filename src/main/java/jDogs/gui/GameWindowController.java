@@ -910,4 +910,21 @@ public class GameWindowController implements Initializable {
         imageViewCard7.setImage(new Image(CardUrl.getURL(card).toString()));
         imageViewCard7.setVisible(true);
     }
+
+    /**
+     * displays infos from Server
+     * @param message
+     */
+    public void displayInfoFromServer(String message) {
+        textLogServer.appendText(message);
+
+    }
+
+    /**
+     * displays important info from client to the gui(instead of commandline)
+     * @param message
+     */
+    public void displayInfoFromClient(String message) {
+        textLogClient.appendText(message);
+    }
 }

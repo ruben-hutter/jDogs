@@ -403,6 +403,10 @@ public class PublicLobbyController implements Initializable {
         playersInLobby.add(new Participant(player));
     }
 
+    /**
+     * removes a player from the playersInLobby list
+     * @param player displayed name
+     */
     public void removePlayer(String player) {
         try {
             Participant participant = new Participant(player);
@@ -490,7 +494,6 @@ public class PublicLobbyController implements Initializable {
                 });
 
         rotate.play();
-
     }
 
     /**

@@ -141,8 +141,6 @@ public class ClientMenuCommand {
                         GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
 
 
-
-
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
