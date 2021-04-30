@@ -53,18 +53,14 @@ public class ClientMenuCommand {
                     Platform.runLater(() -> GUIManager.getInstance().lobbyController.
                             displayInfomsg("INFO from server. Your new nick is " + name));
 
-
                     System.out.println("your new nick is " + name);
-
                 }
                 break;
 
             case "PCHT":
                 System.out.println("PCHT: " + text.substring(4));
-
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPCHTmsg(text.substring(5)));
-
+                        GUIManager.getInstance().sendPCHTToGui(text.substring(5)));
                 break;
 
             case "WCHT":
@@ -75,9 +71,7 @@ public class ClientMenuCommand {
 
                 break;
             case "LPUB":
-
                 //just compare to existing String/Array and replace if necessary
-
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPlayer(text.substring(5)));
 
@@ -85,19 +79,15 @@ public class ClientMenuCommand {
                 break;
 
             case "LCHT":
-
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayLCHTmsg(text.substring(5)));
-
+                        GUIManager.getInstance().sendLCHTToGui(text.substring(5)));
 
                 System.out.println("LCHT " + text.substring(5));
                 break;
 
             case "DPER":
-
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePlayer(text.substring(5)));
-
                 break;
 
             case "JOIN":
@@ -114,8 +104,6 @@ public class ClientMenuCommand {
 
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
-
-
                 break;
 
             case "DOGA":
@@ -124,10 +112,6 @@ public class ClientMenuCommand {
 
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
-
-
-
-
                 break;
 
             case "STAT":
@@ -136,17 +120,15 @@ public class ClientMenuCommand {
 
 
             case "INFO":
-
                 Platform.runLater(()->
                         GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
-
-
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 
             case "STAR":
                 GUIManager.getInstance().lobbyController.startGameConfirmation();
                 break;
+
             default:
                 System.out.println("received from server " + text + ". This command " + command
                         + " is not implemented");

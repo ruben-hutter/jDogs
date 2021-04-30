@@ -23,9 +23,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -79,6 +82,12 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private TextArea textLogServer;
+
+    @FXML
+    private TextArea messageReceiveTextArea;
+
+    @FXML
+    private TextField sendMessageTextField;
 
     @FXML
     private MenuBar menuBar;
@@ -916,15 +925,38 @@ public class GameWindowController implements Initializable {
      * @param message
      */
     public void displayInfoFromServer(String message) {
-        textLogServer.appendText(message);
-
+        textLogServer.appendText(message + "\n");
     }
 
     /**
      * displays important info from client to the gui(instead of commandline)
-     * @param message
+     * @param message from client methods
      */
     public void displayInfoFromClient(String message) {
-        textLogClient.appendText(message);
+        textLogClient.appendText(message + "\n");
+    }
+
+    /**
+     * display messages from public lobby (if this is necessary
+     * otherwise we delete it)
+     * @param message from public client
+     */
+    public void displayPCHTmsg(String message) {
+    }
+
+    /**
+     * display a message from another participant of the game
+     * @param message from participant
+     */
+    public void displayLCHTmsg(String message) {
+        messageReceiveTextArea.appendText(message + "\n");
+    }
+
+    @FXML
+    void onEnterPressed(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER) {
+            Client.getInstance().sendMessageToServer("LCHT " + sendMessageTextField.getText());
+            sendMessageTextField.clear();
+        }
     }
 }
