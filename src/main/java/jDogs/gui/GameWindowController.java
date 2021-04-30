@@ -669,6 +669,7 @@ public class GameWindowController implements Initializable {
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
+            displayInfoFromClient("SEVERE ERROR couldn t find nickname in list of game names");
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
         // set color - string
@@ -692,7 +693,6 @@ public class GameWindowController implements Initializable {
 
         // set up an array with imageViews for cards
         setAllCardImageViews();
-
     }
 
     /**
@@ -786,7 +786,7 @@ public class GameWindowController implements Initializable {
         //TODO send message to user in GUI : your turn
         this.yourTurn = value;
         if (yourTurn) {
-            System.out.println("your turn message arrived");
+            displayInfoFromServer("it is your turn");
             Alert alert = new Alert(AlertType.INFORMATION,"It is your turn");
             alert.show();
         }
@@ -800,14 +800,8 @@ public class GameWindowController implements Initializable {
      */
     public void makeSingleMoveTrack(int playerNr, int pieceID, int newPosition) {
         String circleID = getCircleID(playerNr, pieceID);
-        System.out.println("circle ID for makeSingleMoveTrack " + circleID);
-        System.out.println("Player NR " + playerNr);
-        System.out.println("pieceId " + pieceID);
         FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
-        System.out.println("new Pos " + newPos.getX() + " " + newPos.getY());
-        System.out.println("CircleID " + circleID);
         makeSingleMove(circleID, newPos);
-
     }
 
     /**
@@ -846,37 +840,17 @@ public class GameWindowController implements Initializable {
      * makes a move with jack. It removes circle1 from gui,
      * removes and adds circle2 to position of circle1,
      * adds circle1 to position of circle2
-     */
-
-
-    /**
-     * makes a move with jack. It removes circle1 from gui,
-     * removes and adds circle2 to position of circle1,
-     * adds circle1 to position of circle2
      * @param text format "YELO-1 GREN-4"
      */
     public void makeJackMove(String text) {
         int playerID1 = GuiParser.getNumber(text.substring(0,4));
         int playerID2 = GuiParser.getNumber(text.substring(7,11));
-        System.out.println("player1 nr " +playerID1);
-        System.out.println("player2 nr " +playerID2);
 
         int pieceID1 = (text.charAt(5) - 48);
         int pieceID2 = (text.charAt(12) - 48);
-        System.out.println("pieceID1 -48 " + ((int) text.charAt(5)));
-        System.out.println("pieceid2 -48 " + ((int) text.charAt(12)));
-
-        System.out.println("pieceID 1 " +pieceID1);
-        System.out.println("pieceID 2 " +pieceID2);
-
-
 
         String circleID1 = getCircleID(playerID1, pieceID1);
         String circleID2 = getCircleID(playerID2, pieceID2);
-
-        System.out.println("circleid 1 " + circleID1);
-        System.out.println("circleid 2 " + circleID2);
-
 
         int colIndex1 = -1;
         int rowIndex1 = -1;
@@ -891,7 +865,6 @@ public class GameWindowController implements Initializable {
             if (node instanceof Circle) {
                 circleJack1 = (Circle) node;
                 if (circleJack1.getId().equals(circleID1)) {
-                    System.out.println("entered circlejack1 ");
                     colIndex1 = GridPane.getColumnIndex(circleJack1);
                     rowIndex1 = GridPane.getRowIndex(circleJack1);
                     gridPane.getChildren().remove(circleJack1);
@@ -907,7 +880,6 @@ public class GameWindowController implements Initializable {
             if (node instanceof Circle) {
                 circleJack2 = (Circle) node;
                 if (circleJack2.getId().equals(circleID2)) {
-                    System.out.println("entered circlejack2 ");
                     colIndex2 = GridPane.getColumnIndex(circleJack2);
                     rowIndex2 = GridPane.getRowIndex(circleJack2);
                     gridPane.getChildren().remove(circleJack2);
@@ -919,8 +891,6 @@ public class GameWindowController implements Initializable {
         //add move circle1 again
         gridPane.add(circleJack1, colIndex2, rowIndex2);
     }
-
-
     /**
      * sets a piece to a position in heaven
      * @param playerNumber 0-3
@@ -943,7 +913,6 @@ public class GameWindowController implements Initializable {
         int startPos = playerNumber * 16;
         FieldOnBoard homeField = adaptToGui.getHomeField(startPos,pieceID);
         makeSingleMove(circleID, homeField);
-
     }
 
     /**

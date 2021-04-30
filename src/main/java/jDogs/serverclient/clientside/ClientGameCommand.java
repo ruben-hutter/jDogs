@@ -46,7 +46,8 @@ public class ClientGameCommand {
                     Platform.runLater(() -> GUIManager.getInstance().
                             gameWindowController.setYourTurn(true));
                 } else {
-                    System.out.println("it is " + text.substring(5) + "`s turn");
+                    Platform.runLater(() -> GUIManager.getInstance().
+                            gameWindowController.displayInfoFromClient(text));
                 }
                 break;
 
@@ -97,7 +98,6 @@ public class ClientGameCommand {
                 break;
 
             case "JACK":
-
                 Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
                 break;
             //TODO delete this

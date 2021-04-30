@@ -38,9 +38,9 @@
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="394.0" prefWidth="117.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="374.0" prefWidth="65.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="leftBoardSide" prefHeight="394.0" prefWidth="76.0" style="-fx-background-color: #6495ed;" VBox.vgrow="ALWAYS">
+            <Pane fx:id="leftBoardSide" prefHeight="374.0" prefWidth="78.0" style="-fx-background-color: #6495ed;" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets right="4.0" />
                </padding>
@@ -48,8 +48,8 @@
                   <Insets right="2.0" />
                </VBox.margin>
                <children>
-                  <Label fx:id="labelPlayer0" layoutX="58.0" layoutY="28.0" text="Label" />
-                  <Label fx:id="labelPlayer1" layoutX="58.0" layoutY="324.0" text="Label" />
+                  <Label fx:id="labelPlayer0" layoutX="21.0" layoutY="28.0" text="Label" />
+                  <Label fx:id="labelPlayer1" layoutX="21.0" layoutY="324.0" text="Label" />
                </children></Pane>
          </children>
       </VBox>
@@ -234,15 +234,15 @@
       </VBox>
    </center>
    <bottom>
-      <HBox fx:id="playerDisplay" prefHeight="282.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="playerDisplay" prefHeight="265.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="276.0" prefWidth="165.0" style="-fx-background-color: #e9967a;">
+            <Pane prefHeight="266.0" prefWidth="160.0" style="-fx-background-color: #e9967a;">
                <children>
-                  <Label fx:id="nameLabel1" layoutX="15.0" layoutY="6.0" prefHeight="51.0" prefWidth="88.0" />
+                  <Label fx:id="nameLabel1" layoutX="15.0" layoutY="42.0" prefHeight="51.0" prefWidth="88.0" />
                   <Label fx:id="nameLabel2" layoutX="15.0" layoutY="68.0" prefHeight="51.0" prefWidth="88.0" />
                   <ScrollPane layoutX="8.0" layoutY="116.0">
                      <content>
-                        <TextArea fx:id="textLogClient" prefHeight="156.0" prefWidth="104.0" text="ClientNews/GUI&#10;Problems&#10;" />
+                        <TextArea fx:id="textLogClient" prefHeight="142.0" prefWidth="104.0" text="ClientNews/GUI&#10;Problems&#10;" />
                      </content>
                   </ScrollPane>
                </children></Pane>
