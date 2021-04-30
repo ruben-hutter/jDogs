@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.board.Board;
 import jDogs.serverclient.clientside.Client;
@@ -23,9 +24,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -79,6 +83,12 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private TextArea textLogServer;
+
+    @FXML
+    private TextArea messageReceiveTextArea;
+
+    @FXML
+    private TextField sendMessageTextField;
 
     @FXML
     private MenuBar menuBar;
@@ -647,32 +657,41 @@ public class GameWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // create object to translate track numbers to gui positions
         adaptToGui = new AdaptToGui();
+
+        // initialise boolean values
         jokerClicked = false;
+        yourTurn = false;
 
-        yourTurn = true;
 
+        // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
+            displayInfoFromClient("SEVERE ERROR couldn t find nickname in list of game names");
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
-
+        // set color - string
         color = ColorAbbreviations.values()[playerNr].toString();
+
+        // set labels on the board
         nameLabel2.setText(color.toString());
         nameLabel1.setText(Client.getInstance().getNickname());
-
         setPlayerLabels();
 
-
+        // prepare click grids and circles
         fadingGrids = new FadeTransition[7];
         fadingCircles = new FadeTransition[7];
         clickedGridFields = new FieldOnBoard[7];
         clickedCircleIds = new String[7];
-
         gridCount = 0;
         circleCount = 0;
 
+        // set circles on home
         setOnHome();
+
+        // set up an array with imageViews for cards
         setAllCardImageViews();
     }
 
@@ -767,7 +786,7 @@ public class GameWindowController implements Initializable {
         //TODO send message to user in GUI : your turn
         this.yourTurn = value;
         if (yourTurn) {
-            System.out.println("your turn message arrived");
+            displayInfoFromServer("it is your turn");
             Alert alert = new Alert(AlertType.INFORMATION,"It is your turn");
             alert.show();
         }
@@ -781,14 +800,8 @@ public class GameWindowController implements Initializable {
      */
     public void makeSingleMoveTrack(int playerNr, int pieceID, int newPosition) {
         String circleID = getCircleID(playerNr, pieceID);
-        System.out.println("circle ID for makeSingleMoveTrack " + circleID);
-        System.out.println("Player NR " + playerNr);
-        System.out.println("pieceId " + pieceID);
         FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
-        System.out.println("new Pos " + newPos.getX() + " " + newPos.getY());
-        System.out.println("CircleID " + circleID);
         makeSingleMove(circleID, newPos);
-
     }
 
     /**
@@ -805,6 +818,11 @@ public class GameWindowController implements Initializable {
         }
     }
 
+    /**
+     * make a single move
+     * @param circleID 0 - 15
+     * @param newPos FieldOnBoard(x,y)
+     */
     private void makeSingleMove(String circleID, FieldOnBoard newPos) {
         for (Node node : gridPane.getChildren()) {
             if (node instanceof Circle) {
@@ -822,12 +840,15 @@ public class GameWindowController implements Initializable {
      * makes a move with jack. It removes circle1 from gui,
      * removes and adds circle2 to position of circle1,
      * adds circle1 to position of circle2
-     * @param playerID1 0,1,2,3
-     * @param pieceID1 0,..,3
-     * @param playerID2 0,..,3
-     * @param pieceID2 0,..,3
+     * @param text format "YELO-1 GREN-4"
      */
-    public void makeJackMove(int playerID1, int pieceID1,int playerID2, int pieceID2) {
+    public void makeJackMove(String text) {
+        int playerID1 = GuiParser.getNumber(text.substring(0,4));
+        int playerID2 = GuiParser.getNumber(text.substring(7,11));
+
+        int pieceID1 = (text.charAt(5) - 48);
+        int pieceID2 = (text.charAt(12) - 48);
+
         String circleID1 = getCircleID(playerID1, pieceID1);
         String circleID2 = getCircleID(playerID2, pieceID2);
 
@@ -836,7 +857,9 @@ public class GameWindowController implements Initializable {
 
         int colIndex2 = -1;
         int rowIndex2 = -1;
+
         //remove circle1
+
         Circle circleJack1 = null;
         for (Node node : gridPane.getChildren()) {
             if (node instanceof Circle) {
@@ -849,6 +872,7 @@ public class GameWindowController implements Initializable {
                 }
             }
         }
+
         //remove circle2 and set on position of circle1
         Circle circleJack2 = null;
 
@@ -867,8 +891,6 @@ public class GameWindowController implements Initializable {
         //add move circle1 again
         gridPane.add(circleJack1, colIndex2, rowIndex2);
     }
-
-
     /**
      * sets a piece to a position in heaven
      * @param playerNumber 0-3
@@ -891,7 +913,6 @@ public class GameWindowController implements Initializable {
         int startPos = playerNumber * 16;
         FieldOnBoard homeField = adaptToGui.getHomeField(startPos,pieceID);
         makeSingleMove(circleID, homeField);
-
     }
 
     /**
@@ -909,5 +930,45 @@ public class GameWindowController implements Initializable {
         allCardsDialog.close();
         imageViewCard7.setImage(new Image(CardUrl.getURL(card).toString()));
         imageViewCard7.setVisible(true);
+    }
+
+    /**
+     * displays infos from Server
+     * @param message
+     */
+    public void displayInfoFromServer(String message) {
+        textLogServer.appendText(message + "\n");
+    }
+
+    /**
+     * displays important info from client to the gui(instead of commandline)
+     * @param message from client methods
+     */
+    public void displayInfoFromClient(String message) {
+        textLogClient.appendText(message + "\n");
+    }
+
+    /**
+     * display messages from public lobby (if this is necessary
+     * otherwise we delete it)
+     * @param message from public client
+     */
+    public void displayPCHTmsg(String message) {
+    }
+
+    /**
+     * display a message from another participant of the game
+     * @param message from participant
+     */
+    public void displayLCHTmsg(String message) {
+        messageReceiveTextArea.appendText(message + "\n");
+    }
+
+    @FXML
+    void onEnterPressed(KeyEvent event) {
+        if(event.getCode() == KeyCode.ENTER) {
+            Client.getInstance().sendMessageToServer("LCHT " + sendMessageTextField.getText());
+            sendMessageTextField.clear();
+        }
     }
 }

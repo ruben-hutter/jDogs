@@ -17,10 +17,16 @@ public enum ClientGameProtocol {
      */
     EXIT,
     /**
-     * Information about other player who made a move.
+     * Information about other player who made a simple move.
      * Parameters are: piece-ID, goalposition.
      */
     MOVE,
+    /**
+     *Information about a jack move which cannot be displayed as a simple move
+     * used Parameters are: color-pieceID1, color-pieceID2
+     *
+     */
+    JACK,
     /**
      * Command to print out actual board state
      */

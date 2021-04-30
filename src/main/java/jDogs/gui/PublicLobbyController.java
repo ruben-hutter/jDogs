@@ -15,6 +15,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -402,6 +403,10 @@ public class PublicLobbyController implements Initializable {
         playersInLobby.add(new Participant(player));
     }
 
+    /**
+     * removes a player from the playersInLobby list
+     * @param player displayed name
+     */
     public void removePlayer(String player) {
         try {
             Participant participant = new Participant(player);
@@ -483,11 +488,12 @@ public class PublicLobbyController implements Initializable {
         rotate.setByAngle(360);
         rotate.setCycleCount(Animation.INDEFINITE);
         rotate.setInterpolator(Interpolator.LINEAR);
-
-        startButton.setGraphic(rectHolder);
+        Platform.runLater(
+                () -> {
+                    startButton.setGraphic(rectHolder);
+                });
 
         rotate.play();
-
     }
 
     /**

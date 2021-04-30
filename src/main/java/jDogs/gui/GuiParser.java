@@ -112,4 +112,21 @@ public class GuiParser {
         array[arrayCount - 1] = activeUsers.substring(first);
         return array;
     }
+
+    /**
+     * returns the number in the abbreviation enum
+     * @param colorAbb
+     * @return
+     */
+    public static int getNumber(String colorAbb) {
+        int count = 0;
+        for (ColorAbbreviations colorAbbreviations1 : ColorAbbreviations.values()) {
+            System.out.println("colorabb " + colorAbbreviations1.toString());
+            if (colorAbb.equals(colorAbbreviations1.toString())) {
+                return count;
+            }
+            count++;
+        }
+        return -1;
+    }
 }
