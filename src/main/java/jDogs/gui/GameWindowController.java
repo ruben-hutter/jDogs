@@ -660,7 +660,7 @@ public class GameWindowController implements Initializable {
         adaptToGui = new AdaptToGui();
         jokerClicked = false;
 
-        yourTurn = true;
+        yourTurn = false;
 
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -672,6 +672,8 @@ public class GameWindowController implements Initializable {
         nameLabel1.setText(Client.getInstance().getNickname());
 
         setPlayerLabels();
+
+
 
 
         fadingGrids = new FadeTransition[7];
@@ -815,6 +817,11 @@ public class GameWindowController implements Initializable {
         }
     }
 
+    /**
+     * make a single move
+     * @param circleID 0 - 15
+     * @param newPos FieldOnBoard(x,y)
+     */
     private void makeSingleMove(String circleID, FieldOnBoard newPos) {
         for (Node node : gridPane.getChildren()) {
             if (node instanceof Circle) {
@@ -843,13 +850,26 @@ public class GameWindowController implements Initializable {
      */
     public void makeJackMove(String text) {
         int playerID1 = GuiParser.getNumber(text.substring(0,4));
-        int playerID2 = GuiParser.getNumber(text.substring(4,9));
+        int playerID2 = GuiParser.getNumber(text.substring(7,11));
+        System.out.println("player1 nr " +playerID1);
+        System.out.println("player2 nr " +playerID2);
 
-        int pieceID1 = (text.charAt(5) + 48);
-        int pieceID2 = (text.charAt(12) + 48);
+        int pieceID1 = (text.charAt(5) - 48);
+        int pieceID2 = (text.charAt(12) - 48);
+        System.out.println("pieceID1 -48 " + ((int) text.charAt(5)));
+        System.out.println("pieceid2 -48 " + ((int) text.charAt(12)));
+
+        System.out.println("pieceID 1 " +pieceID1);
+        System.out.println("pieceID 2 " +pieceID2);
+
+
 
         String circleID1 = getCircleID(playerID1, pieceID1);
         String circleID2 = getCircleID(playerID2, pieceID2);
+
+        System.out.println("circleid 1 " + circleID1);
+        System.out.println("circleid 2 " + circleID2);
+
 
         int colIndex1 = -1;
         int rowIndex1 = -1;
@@ -864,6 +884,7 @@ public class GameWindowController implements Initializable {
             if (node instanceof Circle) {
                 circleJack1 = (Circle) node;
                 if (circleJack1.getId().equals(circleID1)) {
+                    System.out.println("entered circlejack1 ");
                     colIndex1 = GridPane.getColumnIndex(circleJack1);
                     rowIndex1 = GridPane.getRowIndex(circleJack1);
                     gridPane.getChildren().remove(circleJack1);
@@ -871,6 +892,7 @@ public class GameWindowController implements Initializable {
                 }
             }
         }
+
         //remove circle2 and set on position of circle1
         Circle circleJack2 = null;
 
@@ -878,6 +900,7 @@ public class GameWindowController implements Initializable {
             if (node instanceof Circle) {
                 circleJack2 = (Circle) node;
                 if (circleJack2.getId().equals(circleID2)) {
+                    System.out.println("entered circlejack2 ");
                     colIndex2 = GridPane.getColumnIndex(circleJack2);
                     rowIndex2 = GridPane.getRowIndex(circleJack2);
                     gridPane.getChildren().remove(circleJack2);
