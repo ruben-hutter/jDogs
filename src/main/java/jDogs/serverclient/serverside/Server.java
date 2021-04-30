@@ -186,7 +186,7 @@ public class Server {
         return null;
     }
 
-    public void removeGameFromSC(OpenGameFile openGameFile, String nickname) {
+    public synchronized void removeGameFromSC(OpenGameFile openGameFile, String nickname) {
 
         openGameFile.removeFromParticipantServer(nickname);
         if (openGameFile.getHost() == null) {
@@ -206,10 +206,10 @@ public class Server {
                 }
                 runningGames.remove(openGameFile);
             }
-            finishedGames.remove(openGameFile);
+            allGamesNotFinished.remove(openGameFile);
         } else {
             if (openGameFile.isPendent()) {
-                sendMessageToAll("DOGA " + openGameFile.getSendReady());
+                sendMessageToAll("OGAM " + openGameFile.getSendReady());
             } else {
                 for (Player player: openGameFile.getPlayers()) {
                     if (player.getPlayerName() != nickname) {

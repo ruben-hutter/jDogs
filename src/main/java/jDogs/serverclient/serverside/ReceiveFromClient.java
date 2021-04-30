@@ -60,7 +60,7 @@ public class ReceiveFromClient implements Runnable {
     /**
      * Kills thread
      */
-    public void kill() {
+    public synchronized void kill() {
         running = false;
     }
 }

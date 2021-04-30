@@ -105,7 +105,7 @@ public class SendFromServer implements Runnable {
     /**
      * Kills thread
      */
-    public void kill() {
+    public synchronized void kill() {
         running = false;
     }
 }

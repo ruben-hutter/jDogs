@@ -107,7 +107,7 @@ public class MessageHandlerServer implements Runnable {
     /**
      * Kills thread
      */
-    public void kill() {
+    public synchronized void kill() {
         running = false;
     }
 
@@ -141,7 +141,7 @@ public class MessageHandlerServer implements Runnable {
      * this method is used to set instructions to public lobby
      * from game or from separate lobby
      */
-    public void returnToLobby() {
+    public synchronized void returnToLobby() {
         server.addToLobby(serverConnection);
         sendToPub.enqueue("LPUB " + nickname);
 
