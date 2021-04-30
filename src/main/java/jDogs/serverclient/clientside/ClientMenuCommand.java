@@ -132,7 +132,5 @@ public class ClientMenuCommand {
                 System.out.println("received from server " + text + ". This command " + command
                         + " is not implemented");
         }
-
     }
-
 }

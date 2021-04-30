@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 public class OpenGameFile {
 
     private final String nameId;
-    private final String host;
+    private String host;
     private int numberParticipants;
     private int total;
     private boolean pendent;
@@ -168,8 +168,12 @@ public class OpenGameFile {
         }
     }
     public void removeFromParticipantServer(String nickname) {
-        if (!players.remove(nickname)) {
+        if (nickname.equals(host)) {
+            host = null;
+        }
+        if (!players.remove(getPlayer(nickname))) {
             System.out.println("couldn t remove " + nickname + " from players list");
+            System.out.println("nickname on list found " + getPlayer(nickname).getPlayerName());
         }
 
     }

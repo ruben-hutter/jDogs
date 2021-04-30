@@ -187,6 +187,7 @@ public class Server {
     }
 
     public synchronized void removeGameFromSC(OpenGameFile openGameFile, String nickname) {
+        System.out.println("removeGameFromSC method on server entered");
 
         openGameFile.removeFromParticipantServer(nickname);
         if (openGameFile.getHost() == null) {
@@ -208,6 +209,7 @@ public class Server {
             }
             allGamesNotFinished.remove(openGameFile);
         } else {
+            System.out.println("openGame host " + openGameFile.getHost());
             if (openGameFile.isPendent()) {
                 sendMessageToAll("OGAM " + openGameFile.getSendReady());
             } else {
@@ -224,8 +226,9 @@ public class Server {
     public void setPlayingState(String nickname, MainGame mainGame) {
         //serverConnectionMap.get(nickname).getMessageHandlerServer().setPlaying(mainGame);
     }
-    public void removeGame(OpenGameFile openGameFile) {
 
+    public void removeGame(OpenGameFile openGameFile) {
+        System.out.println("remove game method on server entered");
         if (openGameFile.isPendent()) {
             sendMessageToAll("DOGA " + openGameFile.getSendReady());
         } else {
