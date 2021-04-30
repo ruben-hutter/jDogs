@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.board.Board;
 import jDogs.serverclient.clientside.Client;
@@ -831,12 +832,22 @@ public class GameWindowController implements Initializable {
      * makes a move with jack. It removes circle1 from gui,
      * removes and adds circle2 to position of circle1,
      * adds circle1 to position of circle2
-     * @param playerID1 0,1,2,3
-     * @param pieceID1 0,..,3
-     * @param playerID2 0,..,3
-     * @param pieceID2 0,..,3
      */
-    public void makeJackMove(int playerID1, int pieceID1,int playerID2, int pieceID2) {
+
+
+    /**
+     * makes a move with jack. It removes circle1 from gui,
+     * removes and adds circle2 to position of circle1,
+     * adds circle1 to position of circle2
+     * @param text format "YELO-1 GREN-4"
+     */
+    public void makeJackMove(String text) {
+        int playerID1 = GuiParser.getNumber(text.substring(0,4));
+        int playerID2 = GuiParser.getNumber(text.substring(4,9));
+
+        int pieceID1 = (text.charAt(5) + 48);
+        int pieceID2 = (text.charAt(12) + 48);
+
         String circleID1 = getCircleID(playerID1, pieceID1);
         String circleID2 = getCircleID(playerID2, pieceID2);
 
@@ -845,7 +856,9 @@ public class GameWindowController implements Initializable {
 
         int colIndex2 = -1;
         int rowIndex2 = -1;
+
         //remove circle1
+
         Circle circleJack1 = null;
         for (Node node : gridPane.getChildren()) {
             if (node instanceof Circle) {

@@ -228,8 +228,10 @@ public class RulesCheck {
                         sendToThisClient.enqueue("INFO You can't switch this pieces!");
                         sendToThisClient.enqueue("TURN");
                     } else {
-                        simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
-                        simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
+                        //TODO replace with jackMove and send JACK color-pieceID1 color-pieceID2
+                        jackMove(ownPlayer, otherPlayer, ownPieceID, otherPieceID, otherActualPosition2, ownActualPosition2);
+                        //simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
+                        //simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
 
                         openGameFile.sendMessageToParticipants("BORD");
                         //eliminate card
@@ -837,6 +839,34 @@ public class RulesCheck {
         openGameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
     }
+
+    private void jackMove(Player player1, Player player2, int pieceID1, int pieceID2 ,int newPositionOf1, int newPositionOf2) {
+        // updates piece position server
+        player1.changePositionServer(pieceID1, "B", newPositionOf1);
+        player2.changePositionServer(pieceID2, "B", newPositionOf2);
+
+        // updates piecesOnTrack in gameState
+        Piece piece1 = player1.getPiece(pieceID1);
+        Piece piece2 = player2.getPiece(pieceID2);
+
+        gameState.updatePiecesOnTrack(piece1, "B");
+        gameState.updatePiecesOnTrack(piece2, "B");
+        String pieceAlliance1 = convertAlliance(piece1.getPieceAlliance());
+        String pieceAlliance2 = convertAlliance(piece2.getPieceAlliance());
+
+        // change hasMoved state to true if active piece1 moves for first time on track
+        if (!piece1.getHasMoved()) {
+            piece1.changeHasMoved();
+        }
+        System.out.println("JACK " + pieceAlliance1 + "-" + pieceID1 + " "
+                + pieceAlliance2 + "-" + pieceID2);
+        // updates client side
+        openGameFile.sendMessageToParticipants("JACK " + pieceAlliance1 + "-" + pieceID1 + " "
+                + pieceAlliance2 + "-" + pieceID2);
+    }
+
+
+
 
     private void eliminatePiece(Piece piece) {
         int pieceID = piece.getPieceID();

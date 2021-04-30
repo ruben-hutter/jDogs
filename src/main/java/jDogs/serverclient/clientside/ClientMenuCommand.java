@@ -118,10 +118,9 @@ public class ClientMenuCommand {
                 System.out.println("all Games " + text.substring(5));
                 break;
 
-
             case "INFO":
                 Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPCHTmsg("INFO " + text.substring(5)));
+                        GUIManager.getInstance().sendINFOtoGui(text.substring(5)));
                 System.out.println("SRVRINFO: " + text.substring(5));
                 break;
 

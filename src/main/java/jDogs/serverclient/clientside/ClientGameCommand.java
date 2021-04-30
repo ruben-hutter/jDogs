@@ -97,7 +97,8 @@ public class ClientGameCommand {
                 break;
 
             case "JACK":
-                //TODO make a special move in the gui
+
+                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
                 break;
             //TODO delete this
             case "BORD":
