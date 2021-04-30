@@ -228,10 +228,8 @@ public class RulesCheck {
                         sendToThisClient.enqueue("INFO You can't switch this pieces!");
                         sendToThisClient.enqueue("TURN");
                     } else {
-                        //TODO replace with jackMove and send JACK color-pieceID1 color-pieceID2
+
                         jackMove(ownPlayer, otherPlayer, ownPieceID, otherPieceID, otherActualPosition2, ownActualPosition2);
-                        //simpleMove(ownPlayer, ownPieceID, otherActualPosition1, otherActualPosition2);
-                        //simpleMove(otherPlayer, otherPieceID, ownActualPosition1, ownActualPosition2);
 
                         openGameFile.sendMessageToParticipants("BORD");
                         //eliminate card
@@ -840,6 +838,15 @@ public class RulesCheck {
                 + newPosition1 + newPosition2);
     }
 
+    /**
+     * make a jack move
+     * @param player1 1-4
+     * @param player2 1-4
+     * @param pieceID1 1-4
+     * @param pieceID2 1-4
+     * @param newPositionOf1 track number 0-63
+     * @param newPositionOf2 track number 0-63
+     */
     private void jackMove(Player player1, Player player2, int pieceID1, int pieceID2 ,int newPositionOf1, int newPositionOf2) {
         // updates piece position server
         player1.changePositionServer(pieceID1, "B", newPositionOf1);
@@ -858,8 +865,7 @@ public class RulesCheck {
         if (!piece1.getHasMoved()) {
             piece1.changeHasMoved();
         }
-        System.out.println("JACK " + pieceAlliance1 + "-" + pieceID1 + " "
-                + pieceAlliance2 + "-" + pieceID2);
+
         // updates client side
         openGameFile.sendMessageToParticipants("JACK " + pieceAlliance1 + "-" + pieceID1 + " "
                 + pieceAlliance2 + "-" + pieceID2);

@@ -657,35 +657,42 @@ public class GameWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        adaptToGui = new AdaptToGui();
-        jokerClicked = false;
 
+        // create object to translate track numbers to gui positions
+        adaptToGui = new AdaptToGui();
+
+        // initialise boolean values
+        jokerClicked = false;
         yourTurn = false;
 
+
+        // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
-
+        // set color - string
         color = ColorAbbreviations.values()[playerNr].toString();
+
+        // set labels on the board
         nameLabel2.setText(color.toString());
         nameLabel1.setText(Client.getInstance().getNickname());
-
         setPlayerLabels();
 
-
-
-
+        // prepare click grids and circles
         fadingGrids = new FadeTransition[7];
         fadingCircles = new FadeTransition[7];
         clickedGridFields = new FieldOnBoard[7];
         clickedCircleIds = new String[7];
-
         gridCount = 0;
         circleCount = 0;
 
+        // set circles on home
         setOnHome();
+
+        // set up an array with imageViews for cards
         setAllCardImageViews();
+
     }
 
     /**

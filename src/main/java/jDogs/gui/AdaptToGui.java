@@ -47,7 +47,7 @@ public class AdaptToGui {
         int trackCounter = 0;
         int leftestPoint = 4;
         int rightestPoint = 20;
-        int highestPoint = 1;
+        int highestPoint = 2;
         int lowestPoint = 18;
 
         //left side from yellow to green (4/2,4/3,4/5....4/17)
@@ -97,14 +97,14 @@ public class AdaptToGui {
                int count = 0;
                while (count < boardSize) {
                    /**
-                    * order: 2/2 is startingPos 0
-                    *       2/17 is startingPos 16
+                    * order: 4/2 is startingPos 0
+                    *       4/18 is startingPos 16
                     *       etc..
                     */
 
-                   // from 4/1 -> +1/+1
+                   // from 4/2 -> +1/+1
                    int startX = 4;
-                   int startY = 1;
+                   int startY = 2;
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(++startX,++startY);
                    }
@@ -127,9 +127,9 @@ public class AdaptToGui {
                    }
                    count++;
 
-                   // from 17/2 -> -1/+1
+                   // from 20/2 -> -1/+1
                    startX = 20;
-                   startY = 1;
+                   startY = 2;
 
                    for (int j = 0; j < NUM_PIECES; j++) {
                        fieldsOnHeaven[count][j] = new FieldOnBoard(--startX,++startY);
@@ -150,20 +150,14 @@ public class AdaptToGui {
         switch (boardSize) {
             case 4:
 
-                //starting positions are 2/2 2/17 17/17 17/2
-                // home positions are next to starting positions so
-                // 2/2: 0/0 0/1 1/0 1/1
-                // 2/17: 0/17 0/18 1/17 1/18
-                // 17/17: 19/17 19/18 18/17 18/18
-                // 17/2: 19/0 19/1 18/0 18/1
-
                 fieldsOnHome = new FieldOnBoard[boardSize][NUM_PIECES];
                 int count = 0;
                 while ( count < boardSize) {
 
                     int x = 1;
-                    int y = 1;
+                    int y = 2;
                     int j = 0;
+
                     // YELLOW
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);
                     fieldsOnHome[count][j + 1] = new FieldOnBoard(x, y + 1);
@@ -192,7 +186,7 @@ public class AdaptToGui {
 
                     count++;
                     x = 23;
-                    y = 1;
+                    y = 2;
                     j = 0;
                     // RED
                     fieldsOnHome[count][j] = new FieldOnBoard(x, y);
