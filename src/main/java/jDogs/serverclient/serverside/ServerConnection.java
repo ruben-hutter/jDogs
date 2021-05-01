@@ -40,6 +40,7 @@ public class ServerConnection {
     private String nickname;
     private ServerParser serverParser;
     ScheduledExecutorService scheduledExecutorService = null;
+    private String gameID;
 
 
     public ServerConnection(Socket socket, Server server) {
@@ -99,9 +100,9 @@ public class ServerConnection {
 
     synchronized public void kill() {
 
-        if (!messageHandlerServer.getState().equals("publicLobby")) {
-            messageHandlerServer.returnToLobby();
-            server.removeGameFromSC(messageHandlerServer.getGameFile(), nickname);
+        if (gameID != null) {
+            server.removeGameFromSC(gameID, nickname);
+            gameID = null;
         }
 
         this.listeningToClient.kill();
@@ -140,6 +141,10 @@ public class ServerConnection {
 
     public MessageHandlerServer getMessageHandlerServer() {
         return messageHandlerServer;
+    }
+
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
     }
 }
 

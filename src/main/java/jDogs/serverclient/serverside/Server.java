@@ -182,11 +182,14 @@ public class Server {
         return aList;
     }
 
-
-    public synchronized void removeGameFromSC(OpenGameFile openGameFile, String nickname) {
+    //TODO rewrite method so that not only open games can be removed but also mainGame objects
+    public synchronized void removeGameFromSC(String gameID, String nickname) {
         System.out.println("removeGameFromSC method on server entered");
+        OpenGameFile openGameFile = getOpenGameFile(gameID);
+        if (openGameFile != null) {
+            openGameFile.removeFromParticipantServer(nickname);
 
-        openGameFile.removeFromParticipantServer(nickname);
+        }
         if (openGameFile.getHost() == null) {
             if (openGameFile.isPendent()) {
                 sendMessageToAll("DOGA " + openGameFile.getSendReady());
