@@ -10,11 +10,10 @@ public class SeparateLobbyCommand {
     private Queuejd sendToThisClient;
     private Queuejd sendToAll;
     private Queuejd sendToPub;
-    private SendFromServer[] senderArray;
     private ServerConnection serverConnection;
-    private String nickname;
     private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
     private String openGameFileID;
+    private String nickname;
 
     SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, Queuejd sendToPub, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;
@@ -75,7 +74,6 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "TEAM":
-                    System.out.println("team " + text.substring(5));
                     Server.getInstance().getOpenGameFile(openGameFileID).changeTeam(text.substring(5));
                     break;
 
@@ -151,5 +149,6 @@ public class SeparateLobbyCommand {
 
     public void setJoinedGame(String openGameFileID) {
         this.openGameFileID = openGameFileID;
+        this.nickname = serverConnection.getNickname();
     }
 }

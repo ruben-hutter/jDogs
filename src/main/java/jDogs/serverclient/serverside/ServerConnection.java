@@ -99,8 +99,9 @@ public class ServerConnection {
 
 
     synchronized public void kill() {
-
+        System.out.println("Game id before " + gameID);
         if (gameID != null) {
+            System.out.println("GameID in SC " + gameID);
             server.removeGameFromSC(gameID, nickname);
             gameID = null;
         }
@@ -144,6 +145,7 @@ public class ServerConnection {
     }
 
     public void setGameID(String gameID) {
+        System.out.println("GameID method " + gameID);
         this.gameID = gameID;
     }
 }

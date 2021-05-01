@@ -150,7 +150,7 @@ public class Server {
         runningGames.add(mainGame);
 
         // remove open game file
-        allOpenGames.remove(openGameFile);
+       allOpenGames.remove(openGameFile);
     }
 
     public ServerConnection getServerConnection(String nickname) {
