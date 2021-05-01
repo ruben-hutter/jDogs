@@ -12,16 +12,16 @@ public class SeparateLobbyCommand {
     private Queuejd sendToPub;
     private SendFromServer[] senderArray;
     private ServerConnection serverConnection;
-    private OpenGameFile openGameFile;
     private String nickname;
     private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
+    private String openGameFileID;
 
     SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, Queuejd sendToPub, ServerConnection serverConnection) {
         this.sendToThisClient = sendToThisClient;
         this.sendToAll = sendToAll;
         this.serverConnection = serverConnection;
         this.sendToPub = sendToPub;
-        this.openGameFile = null;
+        this.openGameFileID = null;
     }
 
     public void execute(String text) {
@@ -66,51 +66,42 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "LCHT":
-                    //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
-
-                    System.out.println("LCHT: " + text.substring(5));
-                    openGameFile.sendMessageToParticipants("LCHT " + "<" + nickname + "> " + text.substring(5));
+                    Server.getInstance().getOpenGameFile(openGameFileID).sendMessageToParticipants("LCHT " + "<" + nickname + "> " + text.substring(5));
                     break;
 
                 case "PCHT":
                     //send message to everyone logged in, in lobby, separated or playing
-
                     sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
                     break;
 
                 case "TEAM":
                     System.out.println("team " + text.substring(5));
-                    openGameFile.changeTeam(text.substring(5));
+                    Server.getInstance().getOpenGameFile(openGameFileID).changeTeam(text.substring(5));
                     break;
 
                 case "STAR":
                     // client confirms to start the game
-                    if (openGameFile.readyToStart() && openGameFile.getHost().equals(nickname)) {
-                        logger.debug("gamefile ready to start? " + openGameFile.readyToStart());
-                        logger.debug("nickname: " + nickname);
-                        logger.debug("host: " + openGameFile.getHost());
-                        openGameFile.start();
-                        logger.debug("Game started");
+                    if (Server.getInstance().getOpenGameFile(openGameFileID).readyToStart() && Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(nickname)) {
+                        Server.getInstance().getOpenGameFile(openGameFileID).start();
                     }
                     break;
 
                 case "EXIT":
-                    this.openGameFile.sendMessageToParticipants("INFO " + nickname + " left openGame session");
-                    this.openGameFile.cancel();
+                    Server.getInstance().getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO " + nickname + " left openGame session");
+                    if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
+                        Server.getInstance().removeOpenGame(openGameFileID);
+                    }
                     this.serverConnection.kill();
                     break;
 
                 case "QUIT":
 
-                    if (this.openGameFile.getHost() == nickname) {
-                        this.openGameFile.cancel();
-                        Server.getInstance().allGamesNotFinished.remove(this.openGameFile);
+                    if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
+                        Server.getInstance().removeOpenGame(openGameFileID);
                     } else {
-                        this.openGameFile.removeParticipant(serverConnection.getNickname());
-                        sendToAll.enqueue("OGAM " + this.openGameFile.getSendReady());
+                        Server.getInstance().getOpenGameFile(openGameFileID).removeParticipant(serverConnection.getNickname());
                     }
                     serverConnection.getMessageHandlerServer().returnToLobby();
-                    sendToPub.enqueue("LPUB " + nickname);
                     break;
 
                 case "STAT":
@@ -130,7 +121,7 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "LPUB":
-                    for (Player player : openGameFile.getPlayers())
+                    for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers())
                     sendToThisClient.enqueue("LPUB " + player.getPlayerName());
                     break;
 
@@ -142,36 +133,23 @@ public class SeparateLobbyCommand {
             }
         }
 
-
+    /**
+     * check if name is in participants array
+     * @param destiny name of possible participant
+     * @return boolean
+     */
     private boolean isParticipant(String destiny) {
-        for (int i = 0; i < openGameFile.getNumberOfParticipants(); i++) {
-            if (openGameFile.getParticipantsArray()[i].equals(destiny)) {
+        for (String name : Server.getInstance().getOpenGameFile(openGameFileID).getParticipantsArray()) {
+            if (name.equals(destiny)) {
                 return true;
             }
         }
         return false;
     }
 
-    private OpenGameFile getGame(String gameName) {
-        return Server.getInstance().getNotFinishedGame(gameName);
-    }
 
 
-    /**
-     *
-     * @param openGameFile  the gameFile the client opened
-     * @param nickname the nickname of this client
-     */
-
-    // if client opened the game
-    public void setGameFile(OpenGameFile openGameFile, String nickname) {
-        this.openGameFile = openGameFile;
-        this.nickname = nickname;
-    }
-    // if client joined a game
-
-    public void setJoinedGame(OpenGameFile openGameFile, String nickname) {
-        this.openGameFile = openGameFile;
-        this.nickname = nickname;
+    public void setJoinedGame(String openGameFileID) {
+        this.openGameFileID = openGameFileID;
     }
 }

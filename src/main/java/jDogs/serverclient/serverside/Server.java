@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -27,8 +28,6 @@ public class Server {
 
     private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
 
-    //this list contains all ongoing games and all pendent games
-    ArrayList<OpenGameFile> allGamesNotFinished = new ArrayList<OpenGameFile>();
     //this list contains all ongoing games
     ArrayList<MainGame> runningGames = new ArrayList<>();
     //this list contains all public lobby guest names
@@ -44,11 +43,14 @@ public class Server {
 
     boolean running = true;
 
-    /*public static void main(String[] args) {
-        new Server(args);
-    }
+    // contains all names of openGameFiles and running games
+    private ArrayList<String> allGamesNotFinishedNames = new ArrayList<>();
 
-     */
+    // contains all openGameFiles
+    private ArrayList<OpenGameFile> allOpenGames = new ArrayList<>();
+
+
+
     public static void main(String[] args) {
         new Server(args);
     }
@@ -177,14 +179,6 @@ public class Server {
         return aList;
     }
 
-    public OpenGameFile getNotFinishedGame(String gameName) {
-        for (int i = 0; i < allGamesNotFinished.size(); i++) {
-            if (allGamesNotFinished.get(i).getNameId().equals(gameName)) {
-                return allGamesNotFinished.get(i);
-            }
-        }
-        return null;
-    }
 
     public synchronized void removeGameFromSC(OpenGameFile openGameFile, String nickname) {
         System.out.println("removeGameFromSC method on server entered");
@@ -207,7 +201,7 @@ public class Server {
                 }
                 runningGames.remove(openGameFile);
             }
-            allGamesNotFinished.remove(openGameFile);
+            //allGamesNotFinished.remove(openGameFile);
         } else {
             System.out.println("openGame host " + openGameFile.getHost());
             if (openGameFile.isPendent()) {
@@ -239,7 +233,6 @@ public class Server {
             System.out.println("INFO game finished");
         }
 
-        System.out.println(allGamesNotFinished.remove(openGameFile) + " open game removed");
         System.out.println("got removed");
         MainGame mainGame;
         if ((mainGame = getMainGame(openGameFile)) != null) {
@@ -257,8 +250,8 @@ public class Server {
     }
 
     /**
-     *
-     * @param message to clients wherever they are
+     * sends message to clients wherever they are
+     * @param message
      */
     public void sendMessageToAll(String message) {
         for (ServerConnection activeServerConnection1 : basicConnectionList) {
@@ -302,5 +295,67 @@ public class Server {
 
     public Map<String, ServerConnection> getServerConnectionMap() {
         return serverConnectionMap;
+    }
+
+    /**
+     * add an "openGameFile" to openGames
+     * and add name to list of games
+     * that did not finish(prevent name duplicates)
+     * @param openGameFile
+     */
+    public void addOpenGame(OpenGameFile openGameFile) {
+        allGamesNotFinishedNames.add(openGameFile.getNameId());
+        allOpenGames.add(openGameFile);
+        sendMessageToAll("OGAM " + openGameFile.getSendReady());
+    }
+
+    /**
+     * remove an "openGame" from openGameList and from names
+     * @param openGameFileID
+     */
+    public void removeOpenGame(String openGameFileID) {
+
+        // send INFO message
+        getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO delete this open game now");
+
+        // send message to public
+        // TODO for DOGA send only nameID not all data
+        sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
+
+        // send participants back to lobby
+        for (Player player : getOpenGameFile(openGameFileID).getPlayers()) {
+            player.getServerConnection().getMessageHandlerServer().returnToLobby();
+        }
+
+        // remove
+
+        for (int i = 0; i < allOpenGames.size(); i++) {
+            if (allOpenGames.get(i).getNameId().equals(openGameFileID)) {
+                allOpenGames.remove(i);
+                System.out.println("removed open game from server");
+            }
+        }
+    }
+
+    /**
+     * returns the openGameFile with the same name
+     * @param openGameID name of game
+     * @return openGameFile
+     */
+    public OpenGameFile getOpenGameFile (String openGameID) {
+        for (OpenGameFile openGameFile : allOpenGames) {
+            if (openGameFile.getNameId().equals(openGameID)) {
+                return openGameFile;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * returns the list of all open games
+     * @return not started games
+     */
+    public ArrayList<OpenGameFile> getOpenGameList() {
+        return allOpenGames;
     }
 }

@@ -123,17 +123,15 @@ public class MessageHandlerServer implements Runnable {
     }
 
     /**
-     *
-     * @param openGameFile the openGame the client joins
-     * @param nickname the actual nickname he has(could also be omitted)
+     * sets state to "openGame" and
+     * sends gameFileID to separateLobbyCommand
+     * @param openGameFileID
      */
-    public void setJoinedOpenGame(OpenGameFile openGameFile, String nickname) {
+    public void setJoinedOpenGame(String openGameFileID) {
         server.removeFromLobby(serverConnection);
         sendToPub.enqueue("DPER " + nickname);
-        this.openGameFile = openGameFile;
         state = "openGame";
-        //server.removeSender(serverConnection.getSender());
-        separateLobbyCommand.setJoinedGame(openGameFile, nickname);
+        separateLobbyCommand.setJoinedGame(openGameFileID);
         this.nickname = nickname;
     }
 

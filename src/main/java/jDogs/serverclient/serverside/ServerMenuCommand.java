@@ -183,11 +183,9 @@ public class ServerMenuCommand {
                     break;
 
                 case "SESS":
-                    for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
-                        if (server.allGamesNotFinished.get(i).isPendent()) {
+                    for (OpenGameFile openGameFile : Server.getInstance().getOpenGameList()) {
                             sendToThisClient.enqueue(
-                                    "OGAM " + server.allGamesNotFinished.get(i).getSendReady());
-                        }
+                                    "OGAM " + openGameFile.getSendReady());
                     }
                     break;
 
@@ -197,23 +195,21 @@ public class ServerMenuCommand {
 
                 case "JOIN":
                     //join a game with this command
-                    System.out.println("JOIN from " + nickName + " : " + text);
                     try {
-                        OpenGameFile game = getGame(text.substring(5));
-                        if (game == null) {
-                            sendToThisClient
-                                    .enqueue("INFO join not possible,game name does not exist");
-                        } else {
-                            sendToThisClient.enqueue("JOIN " + game.getNameId());
-                            game.addParticipant(serverConnection);
-                            sendToAll.enqueue("OGAM " + game.getSendReady());
-                            messageHandlerServer.setJoinedOpenGame(game, nickName);
-                            logger.debug("User " + nickName + " has joined game " + game.getNameId());
+                        String openGameId = text.substring(5);
 
-                            // all required players are set, then send start request to host
-                            if (game.readyToStart()) {
-                                game.sendConfirmationMessage();
-                            }
+                        Server.getInstance().getOpenGameFile(openGameId)
+                                .addParticipant(serverConnection);
+                        messageHandlerServer.setJoinedOpenGame(openGameId);
+                        logger.debug("User " + nickName + " has joined game " + openGameId);
+                        sendToThisClient.enqueue("JOIN " + openGameId);
+                        sendToAll.enqueue("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
+                                .getSendReady());
+
+                        // all required players are set, then send start request to host
+                        if (Server.getInstance().getOpenGameFile(openGameId).readyToStart()) {
+                            Server.getInstance().getOpenGameFile(openGameId)
+                                    .sendConfirmationMessage();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -223,35 +219,19 @@ public class ServerMenuCommand {
             }
         }
     }
-    /**
-     * This method return a gamefile
-     * @param gameName is the name of the game which was sent to the server
-     * @return returns a game if it exists in the server ArrayList of unfinished games
-     */
-    private OpenGameFile getGame (String gameName){
-        for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
-            if (server.allGamesNotFinished.get(i).getNameId().equals(gameName)) {
-                return server.allGamesNotFinished.get(i);
-            }
-        }
-        return null;
-    }
 
     /**
-     *
-     * @param game sets up a game if someone sends the command "OGAM" with the fitting parameters
+     *sets up a game if someone sends the command "OGAM" with the fitting parameters
+     * @param game
      */
-
-    private void setUpGame (String game){
+    private void setUpGame (String game) {
         OpenGameFile openGameFile = serverParser.setUpGame(game);
         if (openGameFile == null) {
             System.err.println("ERROR setUpGame");
             sendToThisClient.enqueue("INFO wrong game file format");
         } else {
-            System.out.println("set up game <" + openGameFile.getNameId() + "> worked");
-            server.allGamesNotFinished.add(openGameFile);
-            messageHandlerServer.setJoinedOpenGame(openGameFile, nickName);
-            sendToAll.enqueue("OGAM " + openGameFile.getSendReady());
+            server.addOpenGame(openGameFile);
+            messageHandlerServer.setJoinedOpenGame(openGameFile.getNameId());
         }
     }
 
@@ -277,6 +257,9 @@ public class ServerMenuCommand {
         return nickName;
     }
 
+    /**
+     * sends all public lobby guests to this client
+     */
     public void sendAllPublicGuests () {
         for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
             sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
