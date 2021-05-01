@@ -4,6 +4,8 @@ package jDogs.serverclient.serverside;
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,10 +29,10 @@ public class ServerConnection {
 
     private final Server server;
     private final Socket socket;
-    private final Queuejd sendToAll;
-    private final Queuejd sendToThisClient;
+    private final BlockingQueue<String> sendToAll;
+    private final BlockingQueue<String> sendToThisClient;
     private final Queuejd receivedFromClient;
-    private final Queuejd sendToPub;
+    private final BlockingQueue<String> sendToPub;
     private SendFromServer sender;
     private ReceiveFromClient listeningToClient;
     private MessageHandlerServer messageHandlerServer;
@@ -47,9 +49,9 @@ public class ServerConnection {
     public ServerConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
-        this.sendToAll = new Queuejd();
-        this.sendToPub = new Queuejd();
-        this.sendToThisClient = new Queuejd();
+        this.sendToAll = new ArrayBlockingQueue<>(10);
+        this.sendToPub = new ArrayBlockingQueue<>(10);
+        this.sendToThisClient = new ArrayBlockingQueue<>(10);
         this.receivedFromClient = new Queuejd();
         this.running = true;
         this.loggedIn = false;
@@ -59,9 +61,9 @@ public class ServerConnection {
 
 
     public void createConnection() {
-        System.out.println("serverConnection");
 
-        // sender thread
+       SenderContainer senderContainer = new SenderContainer(sendToAll, sendToPub, sendToThisClient);
+
         sender = new SendFromServer(socket, server, sendToAll, sendToThisClient,
                 sendToPub,this);
         Thread senderThread = new Thread(sender);

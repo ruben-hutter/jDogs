@@ -233,7 +233,7 @@ public class Server {
         publicLobbyConnections.remove(serverConnection);
     }
 
-    public void removeServerConnection(ServerConnection serverConnection) {
+    public synchronized void removeServerConnection(ServerConnection serverConnection) {
         allNickNames.remove(serverConnection.getNickname());
         serverConnectionMap.remove(serverConnection.getNickname());
         publicLobbyConnections.remove(serverConnection);
@@ -269,7 +269,7 @@ public class Server {
      * (keep in mind: messagehandlerstate is not changed here)
      * @param openGameFileID
      */
-    public void removeOpenGame(String openGameFileID) {
+    public synchronized void removeOpenGame(String openGameFileID) {
         // send INFO message
         getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO deleted this open game now");
 
@@ -347,7 +347,7 @@ public class Server {
      * just remove this participant
      * @param gameID openGameId
      */
-    public void errorRemoveOpenGame(String gameID, String nickname) {
+    public synchronized void errorRemoveOpenGame(String gameID, String nickname) {
         if (getOpenGameFile(gameID).getHost().equals(nickname)) {
             for (Player player : getOpenGameFile(gameID).getPlayers()) {
                 if (!player.getPlayerName().equals(nickname)) {
@@ -365,7 +365,7 @@ public class Server {
      * @param gameID
      * @param nickname
      */
-    public void errorRemoveMainGame(String gameID, String nickname) {
+    public synchronized void errorRemoveMainGame(String gameID, String nickname) {
         for (Player player : getRunningGame(gameID).getPlayersArray()) {
             if (!player.getPlayerName().equals(nickname)) {
                 player.getServerConnection().getMessageHandlerServer().returnToLobby();

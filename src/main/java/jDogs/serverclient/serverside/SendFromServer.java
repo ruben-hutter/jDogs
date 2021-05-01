@@ -88,7 +88,7 @@ public class SendFromServer implements Runnable {
 
     /**
      * Sends a message to all clients active
-     * @param text a String message
+     * @param text a message
      */
     synchronized public void sendStringToAllClients(String text) {
        for (ServerConnection serverConnection : server.getBasicConnections()) {
@@ -96,6 +96,10 @@ public class SendFromServer implements Runnable {
        }
     }
 
+    /**
+     * sends a message to all clients in public lobby
+     * @param text a message
+     */
     synchronized public void sendStringToPublicLobbyGuests(String text) {
         for (ServerConnection serverConnection : server.getPublicLobbyConnections()) {
             serverConnection.getSender().sendStringToClient(text);
