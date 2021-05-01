@@ -8,12 +8,12 @@ import org.apache.logging.log4j.Logger;
 
 public class MainGame {
     private String[] gameArray;
-    private GameFile gameFile;
+    private final GameFile gameFile;
     private int turnNumber;
-    private GameState gameState;
+    private final GameState gameState;
     private int numbDealOut;
     private ArrayList<String> deck;
-    private Random random = new Random();
+    private final Random random = new Random();
     private ArrayList<Player> players;
     private static final Logger logger = LogManager.getLogger(MainGame.class);
     private int numberOfRounds;
@@ -103,20 +103,20 @@ public class MainGame {
     private void dealOutCards(int number) {
         //deal out cards from here by using a certain procedure
 
-        String newHand;
+        StringBuilder newHand;
         ArrayList<String> newHandArray;
 
         for (Player player : gameFile.getPlayers()) {
-            newHand = "ROUN " + number;
+            newHand = new StringBuilder("ROUN " + number);
 
             for (int j = 0; j < number; j++) {
                 int randomNumber = random.nextInt(deck.size());
                 String card = deck.remove(randomNumber);
-                newHand += " " + card;
+                newHand.append(" ").append(card);
                 gameState.getCards().get(player.getPlayerName()).add(card);
             }
             // send newHand to player and to client here
-            player.sendMessageToClient(newHand);
+            player.sendMessageToClient(newHand.toString());
             player.setAllowedToPlay(true);
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }

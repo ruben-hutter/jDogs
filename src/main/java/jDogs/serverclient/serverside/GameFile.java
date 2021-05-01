@@ -18,10 +18,10 @@ public class GameFile {
     private final String nameId;
     private final String host;
     private int numberParticipants;
-    private int total;
+    private final int total;
     private boolean pendent;
     private MainGame mainGame;
-    private int teamMode;
+    private final int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
     private int teamIDs;
     private static final Logger logger = LogManager.getLogger(GameFile.class);

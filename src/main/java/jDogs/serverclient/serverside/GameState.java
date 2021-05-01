@@ -24,25 +24,6 @@ public class GameState {
         teamMode = gameFile.isTeamMode();
     }
 
-    // TODO check if player has 4 in heaven, end game
-    public boolean checkGameFinished() {
-        int counter = 0;
-        if (teamMode) {
-            // team mode
-            for (Player player : getPlayersState()) {
-                for (Piece piece : player.pieces) {
-                    if (piece.getPositionServer1().equals("C")) {
-                        counter++;
-                    }
-                    //if counter
-                }
-            }
-        } else {
-            // single player
-        }
-        return false;
-    }
-
     /**
      * Creates the players for the game
      */
@@ -106,6 +87,11 @@ public class GameState {
         return null;
     }
 
+    /**
+     * Gives a player for a given nickname.
+     * @param nickname player's name
+     * @return a player or null if it doesn't exist
+     */
     public Player getPlayer(String nickname) {
         for (Player player : gameFile.getPlayers()) {
             if (player.getPlayerName().equals(nickname)) {
@@ -115,7 +101,59 @@ public class GameState {
         return null;
     }
 
+    /**
+     * Gives the players of the game.
+     * @return an array list with the players
+     */
     public ArrayList<Player> getPlayersState() {
         return gameFile.getPlayers();
+    }
+
+    /**
+     * Checks if there is a winner
+     */
+    public void checkForVictory() {
+        if (teamMode) {
+            if (checkTeamVictory() != null) {
+                // TODO send winners and terminate game, write stats
+                // TODO checkFinished() in Player
+            }
+        } else {
+            if (checkSingleVictory() != null) {
+                // TODO send winner and terminate game, write stats
+            }
+        }
+    }
+
+    /**
+     * Checks if a player won.
+     * @return the winning player or null
+     */
+    private Player checkSingleVictory() {
+        for (Player player : getPlayersState()) {
+            if (player.getFinished()) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if a team won.
+     * @return an array with the winners or null
+     */
+    private Player[] checkTeamVictory() {
+        Player[] winningTeam = new Player[2];
+        int count = 0;
+        for (Player player : getPlayersState()) {
+            if (player.getFinished()) {
+                winningTeam[count++] = player;
+            }
+        }
+        if (winningTeam[1] != null) {
+            return winningTeam;
+        } else {
+            return null;
+        }
     }
 }

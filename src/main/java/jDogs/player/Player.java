@@ -21,6 +21,7 @@ public class Player {
     private ServerConnection serverConnection;
     private int teamID;
     private boolean allowedToPlay;
+    private boolean finished;
 
     /**
      * Player instance for server
@@ -32,6 +33,7 @@ public class Player {
         this.serverConnection = serverConnection;
         this.allowedToPlay = false;
         teamID = -1;
+        finished = false;
     }
 
     /**
@@ -229,6 +231,30 @@ public class Player {
      */
     public void excludeForRound() {
         this.allowedToPlay = false;
+    }
+
+    /**
+     * Gives back if the player has al the pieces in heaven.
+     * @return true if finished, false if not
+     */
+    public boolean getFinished() {
+        return finished;
+    }
+
+    /**
+     * Checks if all the pieces are in heaven
+     * and if so, change finished state to true.
+     */
+    public void checkFinished() {
+        int count = 0;
+        for (Piece piece : pieces) {
+            if (piece.getPositionServer1().equals("C")) {
+                count++;
+            }
+        }
+        if (count == 4) {
+            finished = true;
+        }
     }
 
     /**

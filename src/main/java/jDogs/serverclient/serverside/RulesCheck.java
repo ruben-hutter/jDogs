@@ -141,6 +141,9 @@ public class RulesCheck {
                 return;
             }
 
+            // check if there is a winner
+            gameState.checkForVictory();
+
             gameFile.sendMessageToParticipants("BORD");
             //eliminate card
             gameState.getCards().get(nickname).remove(cardToEliminate);
