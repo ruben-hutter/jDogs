@@ -144,13 +144,15 @@ public class Server {
      * @param openGameFile extract necessary data and delete it
      */
     public void startGame(OpenGameFile openGameFile) {
-        MainGame mainGame = new MainGame(openGameFile.getPlayersArray(),openGameFile.isTeamMode());
+        MainGame mainGame = new MainGame(openGameFile.getPlayersArray(), openGameFile.getNameId(), openGameFile.isTeamMode());
 
         // add running game
         runningGames.add(mainGame);
-
         // remove open game file
-       allOpenGames.remove(openGameFile);
+        removeOpenGame(openGameFile.getNameId());
+        //add name
+        allGamesNotFinishedNames.add(openGameFile.getNameId());
+
     }
 
     public ServerConnection getServerConnection(String nickname) {
@@ -180,51 +182,6 @@ public class Server {
            System.out.println(i);
         }
         return aList;
-    }
-
-    //TODO rewrite method so that not only open games can be removed but also mainGame objects
-    public synchronized void removeGameFromSC(String gameID, String nickname) {
-        System.out.println("removeGameFromSC method on server entered");
-        OpenGameFile openGameFile = getOpenGameFile(gameID);
-        if (openGameFile != null) {
-            openGameFile.removeFromParticipantServer(nickname);
-
-        }
-        if (openGameFile.getHost() == null) {
-            if (openGameFile.isPendent()) {
-                sendMessageToAll("DOGA " + openGameFile.getSendReady());
-                for (Player player: openGameFile.getPlayers()) {
-                    if (player.getPlayerName() != nickname) {
-                        player.getServerConnection().getMessageHandlerServer().returnToLobby();
-                    }
-                }
-            } else {
-                for (Player player: openGameFile.getPlayers()) {
-                    if (player.getPlayerName() != nickname) {
-                        player.getServerConnection().getMessageHandlerServer().returnToLobby();
-                        player.sendMessageToClient("INFO host " + nickname + " quit game..shutdown game");
-                    }
-                }
-                runningGames.remove(openGameFile);
-            }
-            //allGamesNotFinished.remove(openGameFile);
-        } else {
-            System.out.println("openGame host " + openGameFile.getHost());
-            if (openGameFile.isPendent()) {
-                sendMessageToAll("OGAM " + openGameFile.getSendReady());
-            } else {
-                for (Player player: openGameFile.getPlayers()) {
-                    if (player.getPlayerName() != nickname) {
-                        player.getServerConnection().getMessageHandlerServer().returnToLobby();
-                        player.sendMessageToClient("INFO " + nickname + " quit game..shutdown game");
-                    }
-                }
-            }
-        }
-    }
-    //TODO remove all serverConnection objects from all methods
-    public void setPlayingState(String nickname, MainGame mainGame) {
-        //serverConnectionMap.get(nickname).getMessageHandlerServer().setPlaying(mainGame);
     }
 
     public void removeGame(OpenGameFile openGameFile) {
@@ -278,9 +235,9 @@ public class Server {
 
     public void removeServerConnection(ServerConnection serverConnection) {
         allNickNames.remove(serverConnection.getNickname());
+        serverConnectionMap.remove(serverConnection.getNickname());
         publicLobbyConnections.remove(serverConnection);
         basicConnectionList.remove(serverConnection);
-        serverConnectionMap.remove(serverConnection);
     }
 
     public ArrayList<ServerConnection> getBasicConnections() {
@@ -309,27 +266,21 @@ public class Server {
 
     /**
      * remove an "openGame" from openGameList and from names
+     * (keep in mind: messagehandlerstate is not changed here)
      * @param openGameFileID
      */
     public void removeOpenGame(String openGameFileID) {
-
         // send INFO message
-        getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO delete this open game now");
+        getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO deleted this open game now");
 
         // send message to public
         // TODO for DOGA send only nameID not all data
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
 
-        // send participants back to lobby
-        for (Player player : getOpenGameFile(openGameFileID).getPlayers()) {
-            player.getServerConnection().getMessageHandlerServer().returnToLobby();
-        }
-
         // remove file
         for (int i = 0; i < allOpenGames.size(); i++) {
             if (allOpenGames.get(i).getNameId().equals(openGameFileID)) {
                 allOpenGames.remove(i);
-                System.out.println("removed open game from server");
             }
         }
 
@@ -388,5 +339,40 @@ public class Server {
     public void deleteMainGame(MainGame mainGame) {
         //TODO collect data from mainGame in XML sheet
         runningGames.remove(mainGame);
+    }
+
+    /**
+     * remove open game when a client disconnected abruptly and is host
+     * else
+     * just remove this participant
+     * @param gameID openGameId
+     */
+    public void errorRemoveOpenGame(String gameID, String nickname) {
+        if (getOpenGameFile(gameID).getHost().equals(nickname)) {
+            for (Player player : getOpenGameFile(gameID).getPlayers()) {
+                if (!player.getPlayerName().equals(nickname)) {
+                    player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                }
+            }
+            removeOpenGame(gameID);
+        } else {
+            getOpenGameFile(gameID).removeParticipant(nickname);
+        }
+    }
+
+    /**
+     * remove main game after a client disconnected abruptly
+     * @param gameID
+     * @param nickname
+     */
+    public void errorRemoveMainGame(String gameID, String nickname) {
+        for (Player player : getRunningGame(gameID).getPlayersArray()) {
+            if (!player.getPlayerName().equals(nickname)) {
+                player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                player.sendMessageToClient("INFO shutdown game.Client "
+                        + nickname + " just left session.");
+            }
+        }
+        runningGames.remove(getRunningGame(gameID));
     }
 }

@@ -22,10 +22,11 @@ public class MainGame {
     private String nameID;
 
 
-    MainGame (Player[] playersArray,boolean teamMode) {
+    MainGame (Player[] playersArray,String nameID, boolean teamMode) {
         this.teamMode = teamMode;
         this.playersArray = playersArray;
         this.gameState = new GameState(this);
+        this.nameID = nameID;
         setUp();
         startGameRhythm();
     }

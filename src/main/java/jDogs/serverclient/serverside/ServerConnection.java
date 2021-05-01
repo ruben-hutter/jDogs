@@ -41,6 +41,7 @@ public class ServerConnection {
     private ServerParser serverParser;
     ScheduledExecutorService scheduledExecutorService = null;
     private String gameID;
+    private int stateNumber;
 
 
     public ServerConnection(Socket socket, Server server) {
@@ -99,10 +100,12 @@ public class ServerConnection {
 
 
     synchronized public void kill() {
-        System.out.println("Game id before " + gameID);
         if (gameID != null) {
-            System.out.println("GameID in SC " + gameID);
-            server.removeGameFromSC(gameID, nickname);
+            if (stateNumber == 0) {
+                server.errorRemoveOpenGame(gameID, nickname);
+            } else {
+                server.errorRemoveMainGame(gameID, nickname);
+            }
             gameID = null;
         }
 
@@ -114,13 +117,7 @@ public class ServerConnection {
 
         System.out.println("stop ServerConnection..." + nickname);
 
-        System.out.println(scheduledExecutorService.toString() + " stops now");
-
         server.removeServerConnection(this);
-
-        server.removeNickname(messageHandlerServer.getNickName());
-
-
     }
 
     public void updateNickname(String nickName) {
@@ -145,8 +142,11 @@ public class ServerConnection {
     }
 
     public void setGameID(String gameID) {
-        System.out.println("GameID method " + gameID);
         this.gameID = gameID;
+    }
+
+    public void setState(int number) {
+        stateNumber = number;
     }
 }
 

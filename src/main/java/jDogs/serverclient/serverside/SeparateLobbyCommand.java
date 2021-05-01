@@ -99,7 +99,6 @@ public class SeparateLobbyCommand {
                     } else {
                         Server.getInstance().getOpenGameFile(openGameFileID).removeParticipant(serverConnection.getNickname());
                     }
-                    serverConnection.getMessageHandlerServer().returnToLobby();
                     break;
 
                 case "STAT":

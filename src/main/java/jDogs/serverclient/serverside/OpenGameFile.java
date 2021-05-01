@@ -193,8 +193,7 @@ public class OpenGameFile {
             if (pendent) {
                 numberParticipants--;
                 sendMessageToParticipants("DPER " + nickname);
-                Server.getInstance().getSender(nickname)
-                        .sendStringToAllClients("OGAM " + getSendReady());
+                Server.getInstance().sendMessageToAll("OGAM " + getSendReady());
             } else {
                 // if serverConnection of a client stops while playing the server sends all clients back to public lobby
                 sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");

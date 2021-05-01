@@ -112,6 +112,7 @@ public class MessageHandlerServer implements Runnable {
 
 
     public void setPlaying(String mainGameID) {
+            serverConnection.setState(1);
             serverConnection.setGameID(mainGameID);
             serverGameCommand.setMainGame(mainGameID);
             state = "playing";
@@ -123,6 +124,7 @@ public class MessageHandlerServer implements Runnable {
      * @param openGameFileID
      */
     public void setJoinedOpenGame(String openGameFileID) {
+        serverConnection.setState(0);
         serverConnection.setGameID(openGameFileID);
         server.removeFromLobby(serverConnection);
         sendToPub.enqueue("DPER " + nickname);
@@ -143,7 +145,6 @@ public class MessageHandlerServer implements Runnable {
         //server.addSender(serverConnection.getSender());
         serverMenuCommand.sendAllPublicGuests();
         state = "publicLobby";
-
     }
 
     /**
