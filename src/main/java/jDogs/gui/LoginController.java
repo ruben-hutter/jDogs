@@ -43,7 +43,6 @@ public class LoginController {
         } else {
             System.out.println(nickname);
             GUIManager.getInstance().goToLobby(nickname);
-
         }
 
     }

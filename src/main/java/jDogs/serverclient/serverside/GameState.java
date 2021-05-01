@@ -16,15 +16,32 @@ public class GameState {
     private final Map<String, ArrayList<String>> cards = new HashMap<>();
     private final GameFile gameFile;
     private ArrayList<Piece> piecesOnTrack;
-    int numPlayers;
+    private final boolean teamMode;
 
     public GameState(GameFile gameFile) {
         this.gameFile = gameFile;
-        this.numPlayers = gameFile.getNumberOfParticipants();
         this.piecesOnTrack = new ArrayList<>();
+        teamMode = gameFile.isTeamMode();
     }
 
     // TODO check if player has 4 in heaven, end game
+    public boolean checkGameFinished() {
+        int counter = 0;
+        if (teamMode) {
+            // team mode
+            for (Player player : getPlayersState()) {
+                for (Piece piece : player.pieces) {
+                    if (piece.getPositionServer1().equals("C")) {
+                        counter++;
+                    }
+                    //if counter
+                }
+            }
+        } else {
+            // single player
+        }
+        return false;
+    }
 
     /**
      * Creates the players for the game

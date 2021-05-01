@@ -175,7 +175,6 @@ public class RulesCheck {
                 String ownActualPosition1 = null;
                 int ownActualPosition2 = -1;
                 Player ownPlayer = null;
-                boolean ownHasMoved = false;
                 Alliance_4 ownAlliance4 = convertAlliance(ownAlliance);
 
                 String otherAlliance = twoPieces.substring(12, 16);
@@ -183,7 +182,6 @@ public class RulesCheck {
                 String otherActualPosition1 = null;
                 int otherActualPosition2 = -1;
                 boolean otherHasMoved = false;
-                int otherStartingPosition = -1;
                 Player otherPlayer = null;
                 Alliance_4 otherAlliance4 = convertAlliance(otherAlliance);
 
@@ -192,13 +190,11 @@ public class RulesCheck {
                         ownPlayer = player;
                         ownActualPosition1 = player.receivePosition1Server(ownPieceID);
                         ownActualPosition2 = player.receivePosition2Server(ownPieceID);
-                        ownHasMoved = player.receiveHasMoved(ownPieceID);
                     } else if (player.getAlliance() == otherAlliance4) {
                         otherPlayer = player;
                         otherActualPosition1 = player.receivePosition1Server(otherPieceID);
                         otherActualPosition2 = player.receivePosition2Server(otherPieceID);
                         otherHasMoved = player.receiveHasMoved(otherPieceID);
-                        otherStartingPosition = player.getStartingPosition();
                     }
                 }
                 if (ownPlayer != gameFile.getPlayer(nickname)) {
@@ -263,7 +259,7 @@ public class RulesCheck {
                 singleEliminations = piecesOnPath(completeMove.substring(startIndex,
                         startIndex + 10));
                 if (singleEliminations == null) {
-                    sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                    sendToThisClient.enqueue("INFO You can't jump over your own or blocking pieces!");
                     return;
                 }
                 piecesToEliminate.addAll(singleEliminations);
@@ -529,8 +525,11 @@ public class RulesCheck {
         }
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
             // you play an exit card and you exit on your starting position
+            Piece pieceOnStart = gameState.trackPositionOccupied(newPosition2);
             return (card.equals("ACEE") || card.equals("KING"))
-                    && newPosition2 == startingPosition;
+                    && newPosition2 == startingPosition
+                    && (pieceOnStart == null || pieceOnStart.getPieceAlliance()
+                    != ownPlayer.getAlliance());
         } else if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
             if (card.equals("FOUR")) {
@@ -633,8 +632,8 @@ public class RulesCheck {
                             for (int i = -1; i >= cardValue; i--) {
                                 if ((actualPosition2 + i) % 64 == startingPosition) {
                                     pieceOnStart = gameState.trackPositionOccupied(startingPosition);
-                                    if (pieceOnStart != null && pieceOnStart.getPieceAlliance()
-                                            == alliance4.getAlliance(startingPosition)) {
+                                    if (pieceOnStart != null && pieceOnStart.getPieceAlliance().getStartingPosition()
+                                            == startingPosition) {
                                         return true;
                                     }
                                 }
@@ -676,9 +675,8 @@ public class RulesCheck {
             for (int i = 1; i <= steps; i++) {
                 if ((actualPosition2 + i) % 64 == startingPosition) {
                     pieceOnStart = gameState.trackPositionOccupied(startingPosition);
-                    if (pieceOnStart != null) {
-                        return pieceOnStart.getPieceAlliance()
-                                == alliance4.getAlliance(startingPosition);
+                    if (pieceOnStart.getPieceAlliance().getStartingPosition() == startingPosition) {
+                        return true;
                     }
                 }
             }
@@ -766,19 +764,20 @@ public class RulesCheck {
      * Move a piece without eliminating any
      */
     private void simpleMove(Player player, int pieceID, String newPosition1, int newPosition2) {
-        // updates piece position server
-        player.changePositionServer(pieceID, newPosition1, newPosition2);
 
-        // updates piecesOnTrack in gameState
         Piece piece = player.getPiece(pieceID);
-        gameState.updatePiecesOnTrack(piece, newPosition1);
-
         String pieceAlliance = convertAlliance(piece.getPieceAlliance());
 
         // change hasMoved state to true if piece moves for first time on track
         if (piece.getPositionServer1().equals("B") && !piece.getHasMoved()) {
             piece.changeHasMoved();
         }
+
+        // updates piece position server
+        player.changePositionServer(pieceID, newPosition1, newPosition2);
+
+        // updates piecesOnTrack in gameState
+        gameState.updatePiecesOnTrack(piece, newPosition1);
 
         // updates client side
         gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
