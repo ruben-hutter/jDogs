@@ -14,13 +14,13 @@ import java.util.Map;
 public class GameState {
 
     private final Map<String, ArrayList<String>> cards = new HashMap<>();
-    private final OpenGameFile openGameFile;
     private ArrayList<Piece> piecesOnTrack;
-    int numPlayers;
+    private int numPlayers;
+    private MainGame mainGame;
 
-    public GameState(OpenGameFile openGameFile) {
-        this.openGameFile = openGameFile;
-        this.numPlayers = openGameFile.getNumberOfParticipants();
+    public GameState(MainGame mainGame) {
+        this.mainGame = mainGame;
+        this.numPlayers = mainGame.getPlayersArray().length;
         this.piecesOnTrack = new ArrayList<>();
     }
 
@@ -32,8 +32,8 @@ public class GameState {
     public void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            openGameFile.getPlayers().get(counter).setUpPlayerOnServer(alliance_4);
-            cards.put(openGameFile.getPlayers().get(counter).getPlayerName(),new ArrayList<>());
+            mainGame.getPlayersArray()[counter].setUpPlayerOnServer(alliance_4);
+            cards.put(mainGame.getPlayersArray()[counter].getPlayerName(),new ArrayList<>());
             counter++;
         }
     }
@@ -96,7 +96,7 @@ public class GameState {
 
     private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2) {
         Piece otherPiece = null;
-        for (Player pl : openGameFile.getPlayers()) {
+        for (Player pl : mainGame.getPlayersArray()) {
             if (pl.equals(player)) {
                 for (Piece p : player.pieces) {
                     if (p.getPositionServer1().equals(newPosition1)
@@ -121,7 +121,7 @@ public class GameState {
     }
 
     public Player getPlayer(String nickname) {
-        for (Player player : openGameFile.getPlayers()) {
+        for (Player player : mainGame.getPlayersArray()) {
             if (player.getPlayerName().equals(nickname)) {
                 return player;
             }
@@ -129,9 +129,8 @@ public class GameState {
         return null;
     }
 
-    public ArrayList<Player> getPlayersState() {
-        return openGameFile.getPlayers();
+    public Player[] getPlayers() {
+        return mainGame.getPlayersArray();
     }
-
 
 }

@@ -3,9 +3,7 @@ package jDogs.serverclient.serverside;
 
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * here are lie the three Queues(sendtoClient, sendToAll, receivedFromClient)
  * used by the threads.
  * the threads are started here
- * the connection to the client can be ended here by other threads by kill()
+ * the connection to the client can be ended here by other threads by delete()
  *
  * it is doubtful if serverConnection needs to be a thread since
  * it does not execute any commands or listens to client etc.
@@ -39,7 +37,7 @@ public class ServerConnection {
     public boolean loggedIn;
     private boolean running;
     private Monitorcs monitorCS;
-    private String nickName;
+    private String nickname;
     private ServerParser serverParser;
     ScheduledExecutorService scheduledExecutorService = null;
 
@@ -54,6 +52,7 @@ public class ServerConnection {
         this.running = true;
         this.loggedIn = false;
         this.monitorCS = new Monitorcs();
+        this.nickname = null;
     }
 
 
@@ -102,7 +101,7 @@ public class ServerConnection {
 
         if (!messageHandlerServer.getState().equals("publicLobby")) {
             messageHandlerServer.returnToLobby();
-            server.removeGameFromSC(messageHandlerServer.getGameFile(), nickName);
+            server.removeGameFromSC(messageHandlerServer.getGameFile(), nickname);
         }
 
         this.listeningToClient.kill();
@@ -111,7 +110,7 @@ public class ServerConnection {
         this.messageHandlerServer.kill();
 
 
-        System.out.println("stop ServerConnection..." + nickName );
+        System.out.println("stop ServerConnection..." + nickname);
 
         System.out.println(scheduledExecutorService.toString() + " stops now");
 
@@ -124,18 +123,18 @@ public class ServerConnection {
 
     public void updateNickname(String nickName) {
         loggedIn = true;
-        this.nickName = nickName;
+        this.nickname = nickName;
 
     }
 
     public String getDefaultName() {
         loggedIn = true;
-        nickName = socket.getLocalAddress().getHostName();
-        return nickName;
+        nickname = socket.getLocalAddress().getHostName();
+        return nickname;
     }
 
     public String getNickname() {
-        return nickName;
+        return nickname;
     }
 
 
@@ -143,3 +142,4 @@ public class ServerConnection {
         return messageHandlerServer;
     }
 }
+

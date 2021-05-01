@@ -24,7 +24,6 @@ public class ServerMenuCommand {
     private boolean loggedIn;
     private String nickName;
     private final ServerParser serverParser;
-    private String actualGame;
     private static final Logger logger = LogManager.getLogger(ServerMenuCommand.class);
 
     public ServerMenuCommand(Server server, ServerConnection serverConnection,
@@ -54,12 +53,12 @@ public class ServerMenuCommand {
                     if (text.length() < 6) {
                         sendToThisClient.enqueue("INFO No username entered");
                     } else {
-                        String oldNick = nickName;
+                        String oldNick = serverConnection.getNickname();
                         nickName = text.substring(5);
-                        logger.debug("Nickname is: " + nickName);
+                        logger.debug("oldNickname is: " + oldNick);
 
                         if (!validCharacters(nickName)) {
-                            serverConnection.getDefaultName();
+                           nickName = serverConnection.getDefaultName();
                         }
 
                         if (!server.isValidNickName(nickName)) {
@@ -84,17 +83,13 @@ public class ServerMenuCommand {
                                 + nickName);
                         sendToAll.enqueue("LPUB " + nickName);
 
-                        System.out.println("login worked " + "USER " + nickName);
-
                         // if you are not logged in you are not added to the serverConnections lists
                         if (!loggedIn) {
                             server.addToLobby(serverConnection);
+                            loggedIn = true;
                         }
                         server.addNickname(nickName, serverConnection);
                         serverConnection.updateNickname(nickName);
-                        logger.debug("Added nickname.");
-
-                        loggedIn = true;
                     }
                     break;
 
@@ -107,6 +102,7 @@ public class ServerMenuCommand {
                     }
                     sendToThisClient.enqueue(list);
                     break;
+
                 case "EXIT":
                     sendToThisClient.enqueue("INFO logout now");
                     logger.debug(serverConnection.getNickname() + " logged out");
@@ -117,14 +113,11 @@ public class ServerMenuCommand {
                     String running = "";
                     for (MainGame mainGame : server.runningGames) {
                         running += mainGame.getGameId() + " ";
-
                     }
                     String finished = "";
-
                     for (OpenGameFile openGameFile1 : server.finishedGames) {
                         finished += openGameFile1.getNameId() + " ";
                     }
-
                     sendToThisClient
                             .enqueue("STAT " + "runningGames " + server.runningGames.size()
                                     + running
@@ -136,7 +129,6 @@ public class ServerMenuCommand {
 
                 case "WCHT":
                     //send private message
-
                     int separator = -1;
                     for (int i = 0; i < text.substring(5).length(); i++) {
                         if (Character.isWhitespace(text.substring(5).charAt(i))) {
@@ -144,16 +136,13 @@ public class ServerMenuCommand {
                             break;
                         }
                     }
-
                     if (separator == -1) {
                         sendToThisClient.enqueue("INFO " + "wrong WCHT format");
                     } else {
                         String adressor = text.substring(5, 5 + separator);
                         logger.debug("adressor: " + adressor);
-                        System.out.println("adressor " + adressor);
                         String message = text.substring(5 + separator);
                         logger.debug("message: " + message);
-                        System.out.println("mess " + message);
                         try {
                             server.getSender(adressor)
                                     .sendStringToClient(
@@ -197,7 +186,6 @@ public class ServerMenuCommand {
                     //join a game with this command
                     try {
                         String openGameId = text.substring(5);
-
                         Server.getInstance().getOpenGameFile(openGameId)
                                 .addParticipant(serverConnection);
                         messageHandlerServer.setJoinedOpenGame(openGameId);
@@ -205,7 +193,6 @@ public class ServerMenuCommand {
                         sendToThisClient.enqueue("JOIN " + openGameId);
                         sendToAll.enqueue("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
                                 .getSendReady());
-
                         // all required players are set, then send start request to host
                         if (Server.getInstance().getOpenGameFile(openGameId).readyToStart()) {
                             Server.getInstance().getOpenGameFile(openGameId)

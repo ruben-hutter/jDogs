@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * starts threads for sending/receiving to/from server
  * instantiates receiver and sender Queue
- * kill client from here
+ * delete client from here
  */
 public class Client {
 

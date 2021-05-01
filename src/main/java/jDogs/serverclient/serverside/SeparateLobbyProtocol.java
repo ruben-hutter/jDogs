@@ -23,7 +23,7 @@ public enum SeparateLobbyProtocol {
      */
     QUIT,
     /**
-     * Command to stop joining game and kill ServerConnection
+     * Command to stop joining game and delete ServerConnection
      */
     EXIT,
     /**

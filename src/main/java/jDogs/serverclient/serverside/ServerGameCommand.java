@@ -32,6 +32,7 @@ public class ServerGameCommand {
     private String cardToEliminate;
     private Alliance_4 alliance4;
     private RulesCheck rulesCheck;
+    private String mainGameID;
 
     public ServerGameCommand(Server server, ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
@@ -139,11 +140,8 @@ public class ServerGameCommand {
         return null;
     }
 
-    public void setMainGame(MainGame mainGame) {
-        this.mainGame = mainGame;
-        this.openGameFile = mainGame.getGameFile();
-        this.gameState = mainGame.getGameState();
-        players = mainGame.getGameFile().getPlayers();
-        this.nickname = serverConnection.getNickname();
+    public void setMainGame(String mainGameID) {
+        this.mainGameID = mainGameID;
+        this.mainGame = Server.getInstance().getRunningGame(mainGameID);
     }
 }

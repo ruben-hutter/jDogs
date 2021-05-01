@@ -139,15 +139,18 @@ public class Server {
         return serverConnectionMap.get(nickname).getSender();
     }
 
-    // add sender object from publicChatList
-
-    // remove sender object from publicChatList
-
-
-
+    /**
+     * start game by creating mainGame and delete openGame file
+     * @param openGameFile extract necessary data and delete it
+     */
     public void startGame(OpenGameFile openGameFile) {
-        MainGame mainGame = new MainGame(openGameFile);
+        MainGame mainGame = new MainGame(openGameFile.getPlayersArray(),openGameFile.isTeamMode());
+
+        // add running game
         runningGames.add(mainGame);
+
+        // remove open game file
+        allOpenGames.remove(openGameFile);
     }
 
     public ServerConnection getServerConnection(String nickname) {
@@ -235,19 +238,11 @@ public class Server {
 
         System.out.println("got removed");
         MainGame mainGame;
-        if ((mainGame = getMainGame(openGameFile)) != null) {
+        if ((mainGame = getRunningGame(openGameFile.getNameId())) != null) {
             runningGames.remove(mainGame);
         }
     }
 
-    private MainGame getMainGame(OpenGameFile openGameFile) {
-        for (MainGame runningGame1 : runningGames) {
-            if (runningGame1.getGameId().equals(openGameFile.getNameId())) {
-                return runningGame1;
-            }
-        }
-        return null;
-    }
 
     /**
      * sends message to clients wherever they are
@@ -327,14 +322,16 @@ public class Server {
             player.getServerConnection().getMessageHandlerServer().returnToLobby();
         }
 
-        // remove
-
+        // remove file
         for (int i = 0; i < allOpenGames.size(); i++) {
             if (allOpenGames.get(i).getNameId().equals(openGameFileID)) {
                 allOpenGames.remove(i);
                 System.out.println("removed open game from server");
             }
         }
+
+        // remove name
+        allGamesNotFinishedNames.remove(openGameFileID);
     }
 
     /**
@@ -357,5 +354,36 @@ public class Server {
      */
     public ArrayList<OpenGameFile> getOpenGameList() {
         return allOpenGames;
+    }
+
+    /**
+     * get all names of not finished games
+     * @return list with all names
+     */
+    public ArrayList<String> getAllGamesNotFinishedNames() {
+        return allGamesNotFinishedNames;
+    }
+
+    /**
+     * get the main game running by name
+     * @param mainGameID a string
+     * @return mainGame container
+     */
+    public MainGame getRunningGame(String mainGameID) {
+        for (MainGame mainGame : runningGames) {
+            if (mainGame.getGameId().equals(mainGameID)) {
+                return mainGame;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * delete this mainGame
+     * @param mainGame
+     */
+    public void deleteMainGame(MainGame mainGame) {
+        //TODO collect data from mainGame in XML sheet
+        runningGames.remove(mainGame);
     }
 }

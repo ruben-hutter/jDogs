@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * Receives any input from client
  * blank/empty lines are ignored
- * "quit" activates client.kill()
+ * "quit" activates client.delete()
  * every other message is sent to
  * sendQueue(to be sent to server)
  */

@@ -79,8 +79,8 @@ public class ServerParser {
      */
     //TODO delete method
     private boolean checkHost(String host) {
-        for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
-            if (server.allGamesNotFinished.get(i).getHost().equals(host)) {
+        for (OpenGameFile openGameFile : Server.getInstance().getOpenGameList()) {
+            if (openGameFile.getHost().equals(host)) {
                 return false;
             }
         }
@@ -95,12 +95,12 @@ public class ServerParser {
      */
     private String checkName(String name) {
         int problem = -1;
-        for (int i = 0; i < server.allGamesNotFinished.size(); i++) {
-            if (server.allGamesNotFinished.get(i).getNameId().equals(name)) {
+        for (String gameName : Server.getInstance().getAllGamesNotFinishedNames()) {
+            if (gameName.equals(name)) {
                 int num = 1;
                 while (true) {
                     num++;
-                    if (!server.allGamesNotFinished.get(i).getNameId().equals(name + num)) {
+                    if (!gameName.equals(name + num)) {
                         break;
                     }
                 }

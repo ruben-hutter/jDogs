@@ -104,7 +104,7 @@ public class RulesCheck {
 
                 alliance4 = convertAlliance(alliance);
 
-                for (Player player : gameState.getPlayersState()) {
+                for (Player player : gameState.getPlayers()) {
                     if (player.getAlliance() == alliance4) {
                         logger.debug("Alliance Player: " + player.getAlliance());
                         ownPlayer = player;
@@ -201,7 +201,7 @@ public class RulesCheck {
                 Player otherPlayer = null;
                 Alliance_4 otherAlliance4 = convertAlliance(otherAlliance);
 
-                for (Player player : gameState.getPlayersState()) {
+                for (Player player : gameState.getPlayers()) {
                     if (player.getAlliance() == ownAlliance4) {
                         ownPlayer = player;
                         ownActualPosition1 = player.receivePosition1Server(ownPieceID);
@@ -349,7 +349,7 @@ public class RulesCheck {
             Player ownPlayer = null;
             Alliance_4 alliance4 = convertAlliance(alliance);
 
-            for (Player player : gameState.getPlayersState()) {
+            for (Player player : gameState.getPlayers()) {
                 if (player.getAlliance() == alliance4) {
                     logger.debug("Alliance Player: " + player.getAlliance());
                     ownPlayer = player;
@@ -411,7 +411,7 @@ public class RulesCheck {
         Alliance_4 alliance4 = convertAlliance(alliance);
         ArrayList<Piece> piecesToEliminate = new ArrayList<>();
 
-        for (Player player : gameState.getPlayersState()) {
+        for (Player player : gameState.getPlayers()) {
             if (player.getAlliance() == alliance4) {
                 logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;

@@ -35,7 +35,6 @@ public class MessageHandlerServer implements Runnable {
     private String state;
     private String nickname;
     private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
-    private OpenGameFile openGameFile;
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient, Queuejd sendToPub) {
@@ -111,14 +110,9 @@ public class MessageHandlerServer implements Runnable {
         running = false;
     }
 
-    /**
-     *
-     *
-     */
-    //TODO remove boolean playing
-    public void setPlaying(boolean playing, MainGame mainGame) {
-            this.openGameFile = mainGame.getGameFile();
-            serverGameCommand.setMainGame(mainGame);
+
+    public void setPlaying(String mainGameID) {
+            serverGameCommand.setMainGame(mainGameID);
             state = "playing";
     }
 
@@ -157,14 +151,6 @@ public class MessageHandlerServer implements Runnable {
      */
     public String getState() {
         return state;
-    }
-
-    /**
-     *
-     * @return gameFile of the game or opened game(not playing yet)
-     */
-    public OpenGameFile getGameFile() {
-        return openGameFile;
     }
 
     public ServerMenuCommand getServerMenuCommand() {

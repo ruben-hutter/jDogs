@@ -79,7 +79,7 @@ public class SendFromServer implements Runnable {
         } catch (IOException e) {
             // e.printStackTrace();
             System.out.println("ServerConnection error 1: send String to Client error...." + serverConnection.getNickname());
-            // kill this serverConnection:
+            // delete this serverConnection:
             running = false;
             serverConnection.kill();
             // here: error handling needed, when Server can t be reached, program gets stuck here

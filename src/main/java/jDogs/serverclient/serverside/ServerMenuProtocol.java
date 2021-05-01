@@ -31,7 +31,7 @@ public enum ServerMenuProtocol {
      */
     STAT,
     /**
-     * Command to kill ServerConnection of this client
+     * Command to delete ServerConnection of this client
      */
     EXIT,
     /**
