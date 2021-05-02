@@ -40,7 +40,8 @@ public class SeparateLobbyCommand {
                         serverConnection.sendToClient("INFO " + "wrong WCHT format");
                         break;
                     }
-                    String destiny = text.substring(0, separator);
+                    separator = separator + 5;
+                    String destiny = text.substring(5, separator);
                     String message = text.substring(separator + 1);
 
                     if (!isParticipant(destiny)) {
