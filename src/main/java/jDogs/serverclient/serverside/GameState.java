@@ -114,46 +114,16 @@ public class GameState {
      */
     public void checkForVictory() {
         if (teamMode) {
-            if (checkTeamVictory() != null) {
+            Player[] winners = VictoryCheck.checkTeamVictory(this);
+            if (winners != null) {
                 // TODO send winners and terminate game, write stats
                 // TODO checkFinished() in Player
             }
         } else {
-            if (checkSingleVictory() != null) {
+            Player winner = VictoryCheck.checkSingleVictory(this);
+            if (winner != null) {
                 // TODO send winner and terminate game, write stats
             }
-        }
-    }
-
-    /**
-     * Checks if a player won.
-     * @return the winning player or null
-     */
-    private Player checkSingleVictory() {
-        for (Player player : getPlayersState()) {
-            if (player.getFinished()) {
-                return player;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Checks if a team won.
-     * @return an array with the winners or null
-     */
-    private Player[] checkTeamVictory() {
-        Player[] winningTeam = new Player[2];
-        int count = 0;
-        for (Player player : getPlayersState()) {
-            if (player.getFinished()) {
-                winningTeam[count++] = player;
-            }
-        }
-        if (winningTeam[1] != null) {
-            return winningTeam;
-        } else {
-            return null;
         }
     }
 }

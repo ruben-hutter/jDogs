@@ -141,9 +141,6 @@ public class RulesCheck {
                 return;
             }
 
-            // check if there is a winner
-            gameState.checkForVictory();
-
             gameFile.sendMessageToParticipants("BORD");
             //eliminate card
             gameState.getCards().get(nickname).remove(cardToEliminate);
@@ -153,9 +150,12 @@ public class RulesCheck {
             cardToEliminate = null;
             mainGame.turnComplete(nickname);
 
+            // check if there is a winner
+            gameState.checkForVictory();
+
         } else {
             sendToThisClient.enqueue("INFO Entered command does`t fit the length(15) for"
-                    + "checkmove()");
+                    + "checkMove()");
         }
     }
 
