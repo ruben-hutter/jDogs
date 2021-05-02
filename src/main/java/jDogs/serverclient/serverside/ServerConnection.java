@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This thread is the main thread of the connection to the client
- * here are lie the three Queues(sendtoClient, sendToAll, receivedFromClient)
+ * here are lie the three Queues(sendtoClient, sendAll, receivedFromClient)
  * used by the threads.
  * the threads are started here
  * the connection to the client can be ended here by other threads by delete()
@@ -29,10 +29,10 @@ public class ServerConnection {
 
     private final Server server;
     private final Socket socket;
-    private final BlockingQueue<String> sendToAll;
-    private final BlockingQueue<String> sendToThisClient;
+    private final BlockingQueue<String> sendAll;
+    private final BlockingQueue<String> sendThisClient;
     private final Queuejd receivedFromClient;
-    private final BlockingQueue<String> sendToPub;
+    private final BlockingQueue<String> sendPub;
     private SendFromServer sender;
     private ReceiveFromClient listeningToClient;
     private MessageHandlerServer messageHandlerServer;
@@ -44,14 +44,15 @@ public class ServerConnection {
     ScheduledExecutorService scheduledExecutorService = null;
     private String gameID;
     private int stateNumber;
+    private SenderContainer senderContainer;
 
 
     public ServerConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
-        this.sendToAll = new ArrayBlockingQueue<>(10);
-        this.sendToPub = new ArrayBlockingQueue<>(10);
-        this.sendToThisClient = new ArrayBlockingQueue<>(10);
+        this.sendAll = new ArrayBlockingQueue<>(10);
+        this.sendPub = new ArrayBlockingQueue<>(10);
+        this.sendThisClient = new ArrayBlockingQueue<>(10);
         this.receivedFromClient = new Queuejd();
         this.running = true;
         this.loggedIn = false;
@@ -62,39 +63,62 @@ public class ServerConnection {
 
     public void createConnection() {
 
-       SenderContainer senderContainer = new SenderContainer(sendToAll, sendToPub, sendToThisClient);
-
-        sender = new SendFromServer(socket, server, sendToAll, sendToThisClient,
-                sendToPub,this);
+       senderContainer = new SenderContainer(this, socket, sendAll, sendPub,
+               sendThisClient);
+/*
+        sender = new SendFromServer(socket, server, sendAll, sendThisClient,
+                sendPub,this);
         Thread senderThread = new Thread(sender);
         senderThread.start();
+
+ */
 
 
         // detect connection problems thread
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(new ConnectionToClientMonitor
-                        (this, sendToThisClient, monitorCS), 5000,5000, TimeUnit.MILLISECONDS);
+                        (this, monitorCS), 5000,5000, TimeUnit.MILLISECONDS);
 
 
 
 
         // receiveFromClient thread
-        listeningToClient = new ReceiveFromClient(socket, sendToThisClient,receivedFromClient,
+        listeningToClient = new ReceiveFromClient(socket, receivedFromClient,
                 this);
         Thread listener = new Thread(listeningToClient);
         listener.start();
 
         // messageHandlerServer Thread
         messageHandlerServer = new MessageHandlerServer(server,
-                this, sendToThisClient, sendToAll, receivedFromClient, sendToPub);
+                this, sendThisClient, sendAll, receivedFromClient, sendPub);
         Thread messenger = new Thread(messageHandlerServer);
         messenger.start();
     }
 
-
-    public SendFromServer getSender () {
-        return sender;
+    public void sendToClient(String message) {
+        try {
+            sendThisClient.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void sendToAll(String message) {
+        try {
+            sendAll.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendToPub(String message) {
+        try {
+            sendPub.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void monitorMsg(long time) {
         this.monitorCS.receivedMsg(time);

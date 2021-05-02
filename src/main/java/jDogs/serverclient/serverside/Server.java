@@ -134,11 +134,6 @@ public class Server {
         allNickNames.remove(nickname);
     }
 
-    //returns sender object to send private message
-    public SendFromServer getSender(String nickname) {
-        return serverConnectionMap.get(nickname).getSender();
-    }
-
     /**
      * start game by creating mainGame and delete openGame file
      * @param openGameFile extract necessary data and delete it
@@ -210,7 +205,7 @@ public class Server {
      */
     public void sendMessageToAll(String message) {
         for (ServerConnection activeServerConnection1 : basicConnectionList) {
-            activeServerConnection1.getSender().sendStringToClient(message);
+            activeServerConnection1.sendToClient(message);
         }
     }
 
@@ -220,7 +215,7 @@ public class Server {
      */
     public void sendMessageToPublicLobby(String message) {
         for (ServerConnection publicLobbyConnection1 : publicLobbyConnections) {
-            publicLobbyConnection1.getSender().sendStringToClient(message);
+            publicLobbyConnection1.sendToClient(message);
         }
 
     }

@@ -432,14 +432,13 @@ public class PublicLobbyController implements Initializable {
     }
 
     /**
-     *  this method receives from the createGameWindowController
+     *  this method receives a new openGame from the createGameWindowController
      * @param gameId this is the game name
-     * @param total the total number of participants till starting the game
      * @param teamMode 0 for singleMode and 1 for teamMode
      */
-    public void sendNewGame(String gameId, String total, String teamMode) {
+    public void sendNewGame(String gameId, String teamMode) {
         System.out.println("Send new game");
-        Client.getInstance().sendMessageToServer("OGAM " + gameId + " " + total + " " + teamMode);
+        Client.getInstance().sendMessageToServer("OGAM " + gameId + " " + teamMode);
         gameDialog.close();
     }
 

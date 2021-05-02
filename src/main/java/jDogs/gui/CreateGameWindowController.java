@@ -47,7 +47,7 @@ public class CreateGameWindowController {
             teamMode = "0";
         }
         System.out.println("teamMode " + teamMode);
-        GUIManager.getInstance().lobbyController.sendNewGame(gameNameField.getText(), gameTotalField.getText(), teamMode);
+        GUIManager.getInstance().lobbyController.sendNewGame(gameNameField.getText(),teamMode);
     }
 
 }

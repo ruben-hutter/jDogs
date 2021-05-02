@@ -16,11 +16,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class ServerGameCommand {
 
-    private final Server server;
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
-    private final Queuejd sendToThisClient;
-    private final Queuejd sendToAll;
     private boolean loggedIn;
     private String nickname;
     private final ServerParser serverParser;
@@ -34,18 +31,15 @@ public class ServerGameCommand {
     private RulesCheck rulesCheck;
     private String mainGameID;
 
-    public ServerGameCommand(Server server, ServerConnection serverConnection,
-            MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient, Queuejd sendToAll) {
-        this.server = server;
+    public ServerGameCommand(ServerConnection serverConnection,
+            MessageHandlerServer messageHandlerServer) {
         this.serverConnection = serverConnection;
         this.messageHandlerServer = messageHandlerServer;
-        this.sendToThisClient = sendToThisClient;
-        this.sendToAll = sendToAll;
         this.loggedIn = false;
-        this.serverParser = new ServerParser(server, serverConnection);
+        this.serverParser = new ServerParser(serverConnection);
         this.players = null;
         this.cardToEliminate = null;
-        this.rulesCheck = new RulesCheck(sendToThisClient);
+        this.rulesCheck = new RulesCheck(serverConnection);
     }
 
     /**
@@ -74,7 +68,7 @@ public class ServerGameCommand {
                     if (text.substring(5, 9).equals("SURR")) {
                         openGameFile.getPlayer(nickname).setAllowedToPlay(false);
                         gameState.getCards().get(nickname).clear();
-                        sendToThisClient.enqueue("INFO excluded for this round");
+                        serverConnection.sendToClient("INFO excluded for this round");
                         mainGame.turnComplete(nickname);
                         break;
                     }
@@ -86,8 +80,8 @@ public class ServerGameCommand {
                     cardToEliminate = text.substring(5, 9);
                     String toCheckMove = rulesCheck.checkCard(text, gameState, nickname);
                     if (toCheckMove == null) {
-                        sendToThisClient.enqueue("INFO Invalid card or no hand");
-                        sendToThisClient.enqueue("TURN");
+                        serverConnection.sendToClient("INFO Invalid card or no hand");
+                        serverConnection.sendToClient("TURN");
                         logger.debug("You don't have this card on your hand");
                         return;
                     }
@@ -121,7 +115,7 @@ public class ServerGameCommand {
                 break;
             //send message to everyone logged in, in lobby, separated or playing
             case "PCHT":
-                sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                serverConnection.sendToAll("PCHT " + "<" + nickname + "> " + text.substring(5));
                 break;
         }
     }

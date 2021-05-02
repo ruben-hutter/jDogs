@@ -18,7 +18,7 @@ public class OpenGameFile {
     private final String nameId;
     private String host;
     private int numberParticipants;
-    private int total;
+    private int total = 4;
     private boolean pendent;
     private MainGame mainGame;
     private int teamMode;
@@ -26,11 +26,10 @@ public class OpenGameFile {
     private int teamIDs;
     private static final Logger logger = LogManager.getLogger(OpenGameFile.class);
 
-    public OpenGameFile(String nameId, String host, String total, int teamMode,
+    public OpenGameFile(String nameId, String host, int teamMode,
             ServerConnection serverConnection) {
         this.nameId = nameId;
         this.host = host;
-        this.total = Integer.parseInt(total);
         this.numberParticipants = 1;
         this.pendent = true;
         this.teamMode = teamMode;
@@ -143,7 +142,7 @@ public class OpenGameFile {
     public void sendMessageToParticipants(String message) {
         logger.debug("message for players of " + nameId + " : " + message);
         for (Player player : players) {
-            player.getServerConnection().getSender().sendStringToClient(message);
+            player.getServerConnection().sendToClient(message);
         }
     }
 
@@ -164,7 +163,7 @@ public class OpenGameFile {
             }
 
         } else {
-            serverConnection.getSender().sendStringToClient("INFO no more players allowed in game");
+            serverConnection.sendToClient("INFO no more players allowed in game");
         }
     }
     public void removeFromParticipantServer(String nickname) {
@@ -332,7 +331,7 @@ public class OpenGameFile {
      */
     private void sendMessageToAll(String message) {
         for (ServerConnection serverConnection1 : Server.getInstance().getBasicConnections()) {
-            serverConnection1.getSender().sendStringToClient(message);
+            serverConnection1.sendToClient(message);
         }
     }
 

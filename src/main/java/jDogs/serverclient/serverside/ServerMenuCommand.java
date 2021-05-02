@@ -1,8 +1,6 @@
 package jDogs.serverclient.serverside;
 
 
-import jDogs.serverclient.helpers.Queuejd;
-
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -16,27 +14,20 @@ import org.apache.logging.log4j.LogManager;
 
 public class ServerMenuCommand {
 
-    private final Server server;
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
-    private final Queuejd sendToThisClient;
-    private final Queuejd sendToAll;
     private boolean loggedIn;
     private String nickName;
     private final ServerParser serverParser;
     private static final Logger logger = LogManager.getLogger(ServerMenuCommand.class);
 
-    public ServerMenuCommand(Server server, ServerConnection serverConnection,
-            MessageHandlerServer messageHandlerServer, Queuejd sendToThisClient,
-            Queuejd sendToAll) {
-        this.server = server;
+    public ServerMenuCommand(ServerConnection serverConnection,
+            MessageHandlerServer messageHandlerServer) {
         this.serverConnection = serverConnection;
         this.messageHandlerServer = messageHandlerServer;
-        this.sendToThisClient = sendToThisClient;
-        this.sendToAll = sendToAll;
         this.loggedIn = false;
         this.nickName = null;
-        this.serverParser = new ServerParser(server, serverConnection);
+        this.serverParser = new ServerParser(serverConnection);
     }
 
     public void execute(String text) {
@@ -45,13 +36,13 @@ public class ServerMenuCommand {
         String command = text.substring(0, 4);
         // do not receive any commands but USER before logged in
         if (!loggedIn && !command.equals("USER")) {
-            sendToThisClient.enqueue("INFO please log in first");
+            serverConnection.sendToClient("INFO please log in first");
 
         } else {
             switch (command) {
                 case "USER":
                     if (text.length() < 6) {
-                        sendToThisClient.enqueue("INFO No username entered");
+                        serverConnection.sendToClient("INFO No username entered");
                     } else {
                         String oldNick = serverConnection.getNickname();
                         nickName = text.substring(5);
@@ -61,11 +52,11 @@ public class ServerMenuCommand {
                            nickName = serverConnection.getDefaultName();
                         }
 
-                        if (!server.isValidNickName(nickName)) {
+                        if (!Server.getInstance().isValidNickName(nickName)) {
                             logger.debug("Nickname " + nickName + " is already used.");
                             int number = 2;
                             while (true) {
-                                if (server.isValidNickName(nickName + number)) {
+                                if (Server.getInstance().isValidNickName(nickName + number)) {
                                     nickName = nickName + number;
                                     logger.debug("New nickname is " + nickName);
                                     break;
@@ -76,55 +67,55 @@ public class ServerMenuCommand {
                         }
 
                         if (oldNick != null) {
-                            server.removeNickname(oldNick);
-                            sendToAll.enqueue("DPER " + oldNick);
+                            Server.getInstance().removeNickname(oldNick);
+                            serverConnection.sendToPub("DPER " + oldNick);
                         }
-                        sendToThisClient.enqueue("USER "
+                       serverConnection.sendToClient("USER "
                                 + nickName);
-                        sendToAll.enqueue("LPUB " + nickName);
+                        serverConnection.sendToPub("LPUB " + nickName);
 
                         // if you are not logged in you are not added to the serverConnections lists
                         if (!loggedIn) {
-                            server.addToLobby(serverConnection);
+                            Server.getInstance().addToLobby(serverConnection);
                             loggedIn = true;
                         }
-                        server.addNickname(nickName, serverConnection);
+                        Server.getInstance().addNickname(nickName, serverConnection);
                         serverConnection.updateNickname(nickName);
                     }
                     break;
 
                 case "ACTI":
                     String list = "INFO all active Players ";
-                    for (int i = 0; i < server.allNickNames.size(); i++) {
+                    for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
-                        list += server.allNickNames.get(i) + " ";
+                        list += Server.getInstance().allNickNames.get(i) + " ";
                         list += "\n";
                     }
-                    sendToThisClient.enqueue(list);
+                    serverConnection.sendToClient(list);
                     break;
 
                 case "EXIT":
-                    sendToThisClient.enqueue("INFO logout now");
+                    serverConnection.sendToClient("INFO logout now");
                     logger.debug(serverConnection.getNickname() + " logged out");
                     serverConnection.kill();
                     break;
 
                 case "STAT":
                     String running = "";
-                    for (MainGame mainGame : server.runningGames) {
+                    for (MainGame mainGame : Server.getInstance().runningGames) {
                         running += mainGame.getGameId() + " ";
                     }
                     String finished = "";
-                    for (OpenGameFile openGameFile1 : server.finishedGames) {
+                    for (OpenGameFile openGameFile1 : Server.getInstance().finishedGames) {
                         finished += openGameFile1.getNameId() + " ";
                     }
-                    sendToThisClient
-                            .enqueue("STAT " + "runningGames " + server.runningGames.size()
+                    serverConnection.sendToClient
+                            ("STAT " + "runningGames " + Server.getInstance().runningGames.size()
                                     + running
-                                    + " finishedGames " + server.finishedGames.size()
+                                    + " finishedGames " + Server.getInstance().finishedGames.size()
                                     + finished);
-                    logger.debug("runningGames " + server.runningGames.size()
-                            + " finishedGames " + server.finishedGames.size());
+                    logger.debug("runningGames " + Server.getInstance().runningGames.size()
+                            + " finishedGames " + Server.getInstance().finishedGames.size());
                     break;
 
                 case "WCHT":
@@ -137,26 +128,26 @@ public class ServerMenuCommand {
                         }
                     }
                     if (separator == -1) {
-                        sendToThisClient.enqueue("INFO " + "wrong WCHT format");
+                        serverConnection.sendToClient("INFO " + "wrong WCHT format");
                     } else {
                         String adressor = text.substring(5, 5 + separator);
                         logger.debug("adressor: " + adressor);
                         String message = text.substring(5 + separator);
                         logger.debug("message: " + message);
                         try {
-                            server.getSender(adressor)
-                                    .sendStringToClient(
+                            Server.getInstance().getServerConnection(adressor)
+                                    .sendToClient(
                                             "WCHT " + "@" + nickName + ": " + message);
                         } catch (Exception e) {
                             //prevent shutdown if nickname doesn`t exist in hashmap
-                            sendToThisClient.enqueue("INFO nickname unknown");
+                            serverConnection.sendToClient("INFO nickname unknown");
                         }
                     }
                     break;
 
                 case "PCHT":
                     // send to all in public lobby
-                    sendToAll.enqueue("PCHT " + "<" + nickName + ">" + text.substring(4));
+                    serverConnection.sendToAll("PCHT " + "<" + nickName + ">" + text.substring(4));
                     break;
 
                 case "OGAM":
@@ -166,20 +157,19 @@ public class ServerMenuCommand {
                     } catch (Exception e) {
                         logger.error("Error while building up new game file.");
                         e.printStackTrace();
-                        sendToThisClient.enqueue("INFO error while building up new game file");
-
+                        serverConnection.sendToClient("INFO error while building up new game file");
                     }
                     break;
 
                 case "SESS":
                     for (OpenGameFile openGameFile : Server.getInstance().getOpenGameList()) {
-                            sendToThisClient.enqueue(
+                            serverConnection.sendToClient(
                                     "OGAM " + openGameFile.getSendReady());
                     }
                     break;
 
                 case "LPUB":
-                    sendAllPublicGuests();
+                    sendListOfPublicGuests();
                     break;
 
                 case "JOIN":
@@ -190,8 +180,8 @@ public class ServerMenuCommand {
                                 .addParticipant(serverConnection);
                         messageHandlerServer.setJoinedOpenGame(openGameId);
                         logger.debug("User " + nickName + " has joined game " + openGameId);
-                        sendToThisClient.enqueue("JOIN " + openGameId);
-                        sendToAll.enqueue("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
+                        serverConnection.sendToClient("JOIN " + openGameId);
+                        serverConnection.sendToAll("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
                                 .getSendReady());
                         // all required players are set, then send start request to host
                         if (Server.getInstance().getOpenGameFile(openGameId).readyToStart()) {
@@ -200,7 +190,7 @@ public class ServerMenuCommand {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        sendToThisClient.enqueue("INFO wrong format,you cannot join");
+                        serverConnection.sendToClient("INFO wrong format,you cannot join");
                     }
                     break;
             }
@@ -215,9 +205,9 @@ public class ServerMenuCommand {
         OpenGameFile openGameFile = serverParser.setUpGame(game);
         if (openGameFile == null) {
             System.err.println("ERROR setUpGame");
-            sendToThisClient.enqueue("INFO wrong game file format");
+            serverConnection.sendToClient("INFO wrong game file format");
         } else {
-            server.addOpenGame(openGameFile);
+            Server.getInstance().addOpenGame(openGameFile);
             messageHandlerServer.setJoinedOpenGame(openGameFile.getNameId());
         }
     }
@@ -247,9 +237,9 @@ public class ServerMenuCommand {
     /**
      * sends all public lobby guests to this client
      */
-    public void sendAllPublicGuests () {
-        for (int i = 0; i < server.publicLobbyGuests.size(); i++) {
-            sendToThisClient.enqueue("LPUB " + server.publicLobbyGuests.get(i));
+    public void sendListOfPublicGuests() {
+        for (int i = 0; i < Server.getInstance().publicLobbyGuests.size(); i++) {
+            serverConnection.sendToClient("LPUB " + Server.getInstance().publicLobbyGuests.get(i));
         }
     }
 }

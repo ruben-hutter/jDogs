@@ -7,19 +7,14 @@ import org.apache.logging.log4j.Logger;
 
 public class SeparateLobbyCommand {
 
-    private Queuejd sendToThisClient;
-    private Queuejd sendToAll;
-    private Queuejd sendToPub;
     private ServerConnection serverConnection;
-    private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
     private String openGameFileID;
     private String nickname;
+    private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
 
-    SeparateLobbyCommand (Queuejd sendToThisClient, Queuejd sendToAll, Queuejd sendToPub, ServerConnection serverConnection) {
-        this.sendToThisClient = sendToThisClient;
-        this.sendToAll = sendToAll;
+
+    SeparateLobbyCommand (ServerConnection serverConnection) {
         this.serverConnection = serverConnection;
-        this.sendToPub = sendToPub;
         this.openGameFileID = null;
     }
 
@@ -42,25 +37,25 @@ public class SeparateLobbyCommand {
                     }
 
                     if (separator == -1) {
-                        sendToThisClient.enqueue("INFO " + "wrong WCHT format");
+                        serverConnection.sendToClient("INFO " + "wrong WCHT format");
                         break;
                     }
                     String destiny = text.substring(0, separator);
                     String message = text.substring(separator + 1);
 
                     if (!isParticipant(destiny)) {
-                        sendToThisClient
-                                .enqueue("INFO " + destiny + " is not part of the joined group.");
+                        serverConnection.sendToClient
+                                ("INFO " + destiny + " is not part of the joined group.");
                         break;
                     }
 
                     try {
-                        Server.getInstance().getSender(destiny).
-                                sendStringToClient("WCHT " + "@" + serverConnection.getNickname()
+                        Server.getInstance().getServerConnection(destiny).
+                                sendToClient("WCHT " + "@" + serverConnection.getNickname()
                                         + ": " + message);
                     } catch (Exception e) {
                         //prevent shutdown if nickname doesn`t exist in hashmap
-                        sendToThisClient.enqueue("INFO nickname unknown");
+                        serverConnection.sendToClient("INFO nickname unknown");
                     }
                     break;
 
@@ -70,7 +65,7 @@ public class SeparateLobbyCommand {
 
                 case "PCHT":
                     //send message to everyone logged in, in lobby, separated or playing
-                    sendToAll.enqueue("PCHT " + "<" + nickname + "> " + text.substring(5));
+                    serverConnection.sendToAll("PCHT " + "<" + nickname + "> " + text.substring(5));
                     break;
 
                 case "TEAM":
@@ -102,7 +97,7 @@ public class SeparateLobbyCommand {
                     break;
 
                 case "STAT":
-                    sendToThisClient.enqueue(
+                    serverConnection.sendToClient(
                             "STAT " + "runningGames " + Server.getInstance().runningGames.size() +
                                     " finishedGames " + Server.getInstance().finishedGames.size());
                     break;
@@ -114,16 +109,16 @@ public class SeparateLobbyCommand {
                         list += Server.getInstance().allNickNames.get(i) + " ";
                         list += "\n";
                     }
-                    sendToThisClient.enqueue(list);
+                    serverConnection.sendToClient(list);
                     break;
 
                 case "LPUB":
                     for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers())
-                    sendToThisClient.enqueue("LPUB " + player.getPlayerName());
+                        serverConnection.sendToClient("LPUB " + player.getPlayerName());
                     break;
 
                 default:
-                    sendToThisClient.enqueue(
+                    serverConnection.sendToClient(
                             "INFO this command " + command + " is not implemented in lobby");
                     System.err.println("received unknown message in lobby from " + nickname);
                     System.err.println(text);
@@ -131,7 +126,7 @@ public class SeparateLobbyCommand {
         }
 
     /**
-     * check if name is in participants array
+     * checks if name is in participants array
      * @param destiny name of possible participant
      * @return boolean
      */
@@ -145,7 +140,10 @@ public class SeparateLobbyCommand {
     }
 
 
-
+    /**
+     * adds the name of the joined game to the class
+     * @param openGameFileID name of game
+     */
     public void setJoinedGame(String openGameFileID) {
         this.openGameFileID = openGameFileID;
         this.nickname = serverConnection.getNickname();

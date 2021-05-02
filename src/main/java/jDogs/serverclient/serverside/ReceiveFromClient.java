@@ -15,11 +15,10 @@ public class ReceiveFromClient implements Runnable {
     private final Socket socket;
     private boolean running;
     private DataInputStream din;
-    private Queuejd sendToAllClients;
     private final Queuejd receivedFromThisClient;
     private ServerConnection serverConnection;
 
-    public ReceiveFromClient(Socket socket, Queuejd sendToThisClient, Queuejd receivedFromThisClient,
+    public ReceiveFromClient(Socket socket, Queuejd receivedFromThisClient,
             ServerConnection serverConnection) {
         this.socket = socket;
         this.serverConnection = serverConnection;

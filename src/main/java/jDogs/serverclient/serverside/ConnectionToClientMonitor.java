@@ -3,15 +3,14 @@ package jDogs.serverclient.serverside;
 
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
+import java.util.concurrent.BlockingQueue;
 
 public class ConnectionToClientMonitor implements Runnable {
 
-    Queuejd sendToClient;
     Monitorcs monitorCS;
     ServerConnection serverConnection;
 
-    ConnectionToClientMonitor(ServerConnection serverConnection, Queuejd sendToClient, Monitorcs monitorCS) {
-        this.sendToClient = sendToClient;
+    ConnectionToClientMonitor(ServerConnection serverConnection, Monitorcs monitorCS) {
         this.monitorCS = monitorCS;
         this.serverConnection = serverConnection;
     }

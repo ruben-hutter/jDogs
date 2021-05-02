@@ -38,7 +38,7 @@ public class MainGame {
         gameState.createPlayers();
         for (Player player : playersArray) {
             player.getServerConnection().getMessageHandlerServer().setPlaying(nameID);
-            player.getServerConnection().getSender().sendStringToClient("GAME "
+            player.getServerConnection().sendToClient("GAME "
                     + playersArray.length + " " + getParticipants());
             logger.debug("Player   ServerConnection " + player.getServerConnection());
         }
@@ -107,7 +107,7 @@ public class MainGame {
         int numb = turnNumber % playersArray.length;
         actualPlayer = gameArray[numb];
         if (getPlayer(actualPlayer).isAllowedToPlay()) {
-            Server.getInstance().getSender(actualPlayer).sendStringToClient("TURN");
+            Server.getInstance().getServerConnection(actualPlayer).sendToClient("TURN");
         } else {
             turnComplete(actualPlayer);
         }
@@ -266,7 +266,7 @@ public class MainGame {
      */
     private void sendMessageToParticipants(String message) {
         for (Player player : playersArray) {
-            player.getServerConnection().getSender().sendStringToClient(message);
+            player.getServerConnection().sendToClient(message);
         }
     }
 

@@ -1,27 +1,35 @@
 package jDogs.serverclient.serverside;
 
-public class SendToPub implements Runnable {
-    boolean running;
+import java.util.concurrent.BlockingQueue;
 
-    public SendToPub() {
+public class SendToPub implements Runnable {
+
+    private final BlockingQueue<String> sendPub;
+    private boolean running;
+
+    public SendToPub(BlockingQueue<String> sendPub) {
+        this.sendPub = sendPub;
         this.running = true;
     }
 
-        @Override
-        public void run() {
+    @Override
+    public void run() {
 
-            while (running) {
-
-                sender.sendToPub(sendQueue.take());
-
+        while (running) {
+            try {
+                Server.getInstance().sendMessageToAll(sendPub.take());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("set running false");
+                kill();
             }
-
-            System.out.println(this.toString() + " stopps now");
         }
-
-        public void kill() {
-            this.running = false;
-        }
+        System.out.println(this.toString() + " stopps now");
     }
 
+    public void kill() {
+        this.running = false;
+    }
 }
+
+

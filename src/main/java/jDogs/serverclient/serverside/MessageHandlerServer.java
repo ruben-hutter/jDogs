@@ -2,6 +2,7 @@ package jDogs.serverclient.serverside;
 
 
 import jDogs.serverclient.helpers.Queuejd;
+import java.util.concurrent.BlockingQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,13 +22,9 @@ import org.apache.logging.log4j.Logger;
 
 public class MessageHandlerServer implements Runnable {
 
-    private final Queuejd sendToAll;
-    private final Queuejd sendToThisClient;
     private final Queuejd receivedFromClient;
-    private final Queuejd sendToPub;
     private boolean running;
     private boolean loggedIn;
-    private final Server server;
     private final ServerConnection serverConnection;
     private ServerGameCommand serverGameCommand;
     private ServerMenuCommand serverMenuCommand;
@@ -37,18 +34,15 @@ public class MessageHandlerServer implements Runnable {
     private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
-            Queuejd sendToThisClient, Queuejd sendToAll, Queuejd receivedFromClient, Queuejd sendToPub) {
-        this.sendToPub = sendToPub;
-        this.sendToAll = sendToAll;
-        this.sendToThisClient = sendToThisClient;
+            BlockingQueue<String> sendToThisClient, BlockingQueue<String> sendToAll, Queuejd receivedFromClient, BlockingQueue<String> sendToPub) {
+
         this.receivedFromClient = receivedFromClient;
-        this.server = server;
         this.serverConnection = serverConnection;
         this.running = true;
         this.loggedIn = false;
-        this.serverMenuCommand = new ServerMenuCommand(server, serverConnection,this,sendToThisClient, sendToAll);
-        this.serverGameCommand = new ServerGameCommand(server, serverConnection,this,sendToThisClient, sendToAll);
-        this.separateLobbyCommand = new SeparateLobbyCommand(sendToThisClient, sendToAll, sendToPub, serverConnection);
+        this.serverMenuCommand = new ServerMenuCommand(serverConnection,this);
+        this.serverGameCommand = new ServerGameCommand(serverConnection, this);
+        this.separateLobbyCommand = new SeparateLobbyCommand(serverConnection);
         this.state = "publicLobby";
     }
 
@@ -57,7 +51,7 @@ public class MessageHandlerServer implements Runnable {
         String text;
 
         // get loggedIn
-        sendToThisClient.enqueue("USER");
+        serverConnection.sendToClient("USER");
 
         //while()-loop always running
         while (running) {
@@ -110,7 +104,12 @@ public class MessageHandlerServer implements Runnable {
         running = false;
     }
 
-
+    /**
+     * sets messsageHandler to "playing" state and
+     * sends the gameID to serverConnection
+     * and serverGameCommand
+     * @param mainGameID name of game
+     */
     public void setPlaying(String mainGameID) {
             serverConnection.setState(1);
             serverConnection.setGameID(mainGameID);
@@ -126,8 +125,8 @@ public class MessageHandlerServer implements Runnable {
     public void setJoinedOpenGame(String openGameFileID) {
         serverConnection.setState(0);
         serverConnection.setGameID(openGameFileID);
-        server.removeFromLobby(serverConnection);
-        sendToPub.enqueue("DPER " + nickname);
+        Server.getInstance().removeFromLobby(serverConnection);
+        serverConnection.sendToPub("DPER " + serverConnection.getNickname());
         state = "openGame";
         separateLobbyCommand.setJoinedGame(openGameFileID);
         this.nickname = nickname;
@@ -139,11 +138,9 @@ public class MessageHandlerServer implements Runnable {
      */
     public synchronized void returnToLobby() {
         serverConnection.setGameID(null);
-        server.addToLobby(serverConnection);
-        sendToPub.enqueue("LPUB " + nickname);
-
-        //server.addSender(serverConnection.getSender());
-        serverMenuCommand.sendAllPublicGuests();
+        Server.getInstance().addToLobby(serverConnection);
+        serverConnection.sendToPub("LPUB " + serverConnection.getNickname());
+        serverMenuCommand.sendListOfPublicGuests();
         state = "publicLobby";
     }
 
