@@ -6,6 +6,10 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * this class contains a game of 4 participants
+ * from here the whole game is organized
+ */
 public class MainGame {
 
     private final boolean teamMode;
@@ -120,7 +124,6 @@ public class MainGame {
             turnComplete(actualPlayer);
         }
     }
-
 
     /**
      * this method deals out cards after all cards are played or when the game starts
@@ -278,7 +281,6 @@ public class MainGame {
             player.getServerConnection().sendToClient(message);
         }
     }
-
 
     /**
      * get the gameState of the maingame
