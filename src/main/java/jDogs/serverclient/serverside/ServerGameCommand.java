@@ -32,7 +32,6 @@ public class ServerGameCommand {
         this.loggedIn = false;
         this.serverParser = new ServerParser(serverConnection);
         this.players = null;
-        this.rulesCheck = new RulesCheck(serverConnection);
     }
 
     /**
@@ -82,7 +81,7 @@ public class ServerGameCommand {
                     String card = toCheckMove.substring(0, 4);
                     switch (card) {
                         case "SEVE":
-                            rulesCheck.checkMoveSeven(toCheckMove, gameState, mainGame,
+                            rulesCheck.checkMoveSeven(toCheckMove,
                                     serverConnection.getNickname());
                             break;
                         case "JACK":
@@ -90,7 +89,7 @@ public class ServerGameCommand {
                                     serverConnection.getNickname());
                             break;
                         default:
-                            rulesCheck.checkMove(toCheckMove, gameState, mainGame,
+                            rulesCheck.checkMove(toCheckMove,
                                     serverConnection.getNickname());
                     }
                 }
@@ -114,6 +113,7 @@ public class ServerGameCommand {
     public void setMainGame(String mainGameID) {
         this.mainGameID = mainGameID;
         this.mainGame = Server.getInstance().getRunningGame(mainGameID);
-        this.gameState = mainGame.getGameState();
+        this.rulesCheck = new RulesCheck(serverConnection, mainGame);
+
     }
 }

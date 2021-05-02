@@ -17,10 +17,12 @@ public class RulesCheck {
     private String cardToEliminate;
     private Alliance_4 alliance4;
     private GameState gameState;
-    private OpenGameFile openGameFile;
+    private MainGame mainGame;
 
-    public RulesCheck(ServerConnection serverConnection) {
+    public RulesCheck(ServerConnection serverConnection, MainGame mainGame) {
         this.serverConnection = serverConnection;
+        this.mainGame = mainGame;
+        this.gameState = mainGame.getGameState();
     }
 
     /**
@@ -70,13 +72,9 @@ public class RulesCheck {
      * if for the given card you can go to the desired position
      * if somebody is eliminated by the action
      * @param completeMove card piece destination
-     * @param gameState state of the game
-     * @param mainGame class that starts a new game from the lobby
      * @param nickname name of player
      */
-    protected void checkMove(String completeMove, GameState gameState,
-            MainGame mainGame, String nickname) { // TWOO YELO-1 B04
-        this.gameState = gameState;
+    protected void checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
         if (completeMove.length() == 15) {
             String card = null;
             int pieceID = -1;
@@ -122,7 +120,7 @@ public class RulesCheck {
             }
 
             // prevent players from moving with others pieces
-            if (ownPlayer != openGameFile.getPlayer(nickname)) {
+            if (ownPlayer != mainGame.getPlayer(nickname)) {
                 serverConnection.sendToClient("INFO You cannot move this color");
                 serverConnection.sendToClient("TURN");
                 return;
@@ -152,11 +150,11 @@ public class RulesCheck {
                 return;
             }
 
-            openGameFile.sendMessageToParticipants("BORD");
+            mainGame.sendMessageToParticipants("BORD");
             //eliminate card
             gameState.getCards().get(nickname).remove(cardToEliminate);
-            openGameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-            openGameFile.sendMessageToParticipants("HAND");
+            mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+            mainGame.sendMessageToParticipants("HAND");
 
             cardToEliminate = null;
             mainGame.turnComplete(nickname);
@@ -213,7 +211,7 @@ public class RulesCheck {
                     }
                 }
 
-                if (ownPlayer != openGameFile.getPlayer(nickname)) {
+                if (ownPlayer != mainGame.getPlayer(nickname)) {
                     serverConnection.sendToClient("INFO You cannot move this color");
                     serverConnection.sendToClient("TURN");
                 } else {
@@ -228,11 +226,11 @@ public class RulesCheck {
 
                         jackMove(ownPlayer, otherPlayer, ownPieceID, otherPieceID, otherActualPosition2, ownActualPosition2);
 
-                        openGameFile.sendMessageToParticipants("BORD");
+                        mainGame.sendMessageToParticipants("BORD");
                         //eliminate card
                         gameState.getCards().get(nickname).remove(cardToEliminate);
-                        openGameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-                        openGameFile.sendMessageToParticipants("HAND");
+                        mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                        mainGame.sendMessageToParticipants("HAND");
 
                         cardToEliminate = null;
                         mainGame.turnComplete(nickname);
@@ -248,14 +246,10 @@ public class RulesCheck {
     /**
      * Checks move when card SEVE is played
      * @param completeMove given move
-     * @param gameState state of the game
-     * @param mainGame class which saves the game environment
      * @param nickname player's name
      */
-    protected void checkMoveSeven(String completeMove, GameState gameState,
-            MainGame mainGame, String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
-        this.gameState = gameState;
-
+    protected void checkMoveSeven(String completeMove,
+            String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
         try {
             int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
             int startIndex = 7;
@@ -308,11 +302,11 @@ public class RulesCheck {
                     eliminatePiece(piece);
                 }
 
-                openGameFile.sendMessageToParticipants("BORD");
+                mainGame.sendMessageToParticipants("BORD");
                 //eliminate card
                 gameState.getCards().get(nickname).remove(cardToEliminate);
-                openGameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-                openGameFile.sendMessageToParticipants("HAND");
+                mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+                mainGame.sendMessageToParticipants("HAND");
 
                 cardToEliminate = null;
                 mainGame.turnComplete(nickname);
@@ -357,7 +351,7 @@ public class RulesCheck {
                     startingPosition = player.getStartingPosition();
                 }
             }
-            if (ownPlayer != openGameFile.getPlayer(nickname)) {
+            if (ownPlayer != mainGame.getPlayer(nickname)) {
                 return -1;
             }
             int difference;
@@ -830,7 +824,7 @@ public class RulesCheck {
         }
 
         // updates client side
-        openGameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
     }
 
@@ -863,7 +857,7 @@ public class RulesCheck {
         }
 
         // updates client side
-        openGameFile.sendMessageToParticipants("JACK " + pieceAlliance1 + "-" + pieceID1 + " "
+        mainGame.sendMessageToParticipants("JACK " + pieceAlliance1 + "-" + pieceID1 + " "
                 + pieceAlliance2 + "-" + pieceID2);
     }
 
@@ -894,7 +888,7 @@ public class RulesCheck {
         // change hasMoved state to false
         piece.changeHasMoved();
         // updates client side
-        openGameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
     }
 }
