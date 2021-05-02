@@ -30,13 +30,14 @@ public class RulesCheck {
      * @param text MOVE command from user
      * @return null if invalid card or the move (with translation if JOKE)
      */
-    protected String checkCard(String text, GameState gameState, String nickname) {
+    protected String checkCard(String text, String nickname) {
         String card = text.substring(5, 9);
         if (card.equals("ACE1") || card.equals("AC11")) {
             card = "ACEE";
         }
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
+
         ArrayList<String> hand = gameState.getCards().get(nickname);
 
         if (hand == null) {
@@ -169,13 +170,11 @@ public class RulesCheck {
     /**
      * Checks move when card JACK is played
      * @param twoPieces pieces to switch position
-     * @param gameState the state of the game
      * @param mainGame class which starts the game from lobby
      * @param nickname players name
      */
-    protected void checkMoveJack(String twoPieces, GameState gameState,
+    protected void checkMoveJack(String twoPieces,
             MainGame mainGame, String nickname) { // JACK YELO-1 BLUE-2
-        this.gameState = gameState;
 
         try {
             if (twoPieces.length() == 18) {

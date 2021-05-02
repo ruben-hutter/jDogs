@@ -96,6 +96,7 @@ public class MainGame {
 
         sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
         actualPlayer = oldArray[random];
+        getPlayer(actualPlayer).setAllowedToPlay(true);
 
         for (int i = random; i < oldArray.length; i++) {
             gameArray[playersNumb] = oldArray[i];
@@ -139,10 +140,11 @@ public class MainGame {
                 String card = deck.remove(randomNumber);
                 newHand += " " + card;
                 gameState.getCards().get(player.getPlayerName()).add(card);
+
             }
             // send newHand to player and to client here
             player.sendMessageToClient(newHand);
-            player.setAllowedToPlay(true);
+            //player.setAllowedToPlay(true);
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
         sendMessageToParticipants("HAND");

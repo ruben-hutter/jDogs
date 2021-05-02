@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class GameState {
 
-    private final Map<String, ArrayList<String>> cards = new HashMap<>();
+    private Map<String, ArrayList<String>> cards;
     private ArrayList<Piece> piecesOnTrack;
     private int numPlayers;
     private MainGame mainGame;
@@ -22,6 +22,7 @@ public class GameState {
         this.mainGame = mainGame;
         this.numPlayers = mainGame.getPlayersArray().length;
         this.piecesOnTrack = new ArrayList<>();
+        this.cards = new HashMap<>();
     }
 
     // TODO check if player has 4 in heaven, end game

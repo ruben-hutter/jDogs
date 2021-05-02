@@ -18,7 +18,6 @@ public class ServerGameCommand {
     private final MessageHandlerServer messageHandlerServer;
     private boolean loggedIn;
     private final ServerParser serverParser;
-    private GameState gameState;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
     private ArrayList<Player> players;
     private MainGame mainGame;
@@ -59,7 +58,7 @@ public class ServerGameCommand {
                 if (text.length() >= 9 && mainGame.getActualPlayer().equals(serverConnection.getNickname())) {
                     if (text.substring(5, 9).equals("SURR")) {
                         mainGame.getPlayer(serverConnection.getNickname()).setAllowedToPlay(false);
-                        gameState.getCards().get(serverConnection.getNickname()).clear();
+                        mainGame.getGameState().getCards().get(serverConnection.getNickname()).clear();
                         serverConnection.sendToClient("INFO excluded for this round");
                         mainGame.turnComplete(serverConnection.getNickname());
                         break;
@@ -69,7 +68,7 @@ public class ServerGameCommand {
                     logger.debug("Player nickname: " + playerName);
                     Player player = mainGame.getPlayer(playerName);
                     logger.debug("Player: " + player);
-                    String toCheckMove = rulesCheck.checkCard(text, gameState, serverConnection.getNickname());
+                    String toCheckMove = rulesCheck.checkCard(text, serverConnection.getNickname());
                     if (toCheckMove == null) {
                         serverConnection.sendToClient("INFO Invalid card or no hand");
                         serverConnection.sendToClient("TURN");
@@ -85,7 +84,7 @@ public class ServerGameCommand {
                                     serverConnection.getNickname());
                             break;
                         case "JACK":
-                            rulesCheck.checkMoveJack(toCheckMove, gameState, mainGame,
+                            rulesCheck.checkMoveJack(toCheckMove, mainGame,
                                     serverConnection.getNickname());
                             break;
                         default:
