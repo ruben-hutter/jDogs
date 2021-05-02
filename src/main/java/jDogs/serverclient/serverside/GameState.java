@@ -114,15 +114,16 @@ public class GameState {
      */
     public void checkForVictory() {
         if (teamMode) {
-            Player[] winners = VictoryCheck.checkTeamVictory(this);
-            if (winners != null) {
+            int winningTeam = VictoryCheck.checkTeamVictory(this);
+            if (winningTeam > -1) {
                 // TODO send winners and terminate game, write stats
-                // TODO checkFinished() in Player
+                gameFile.sendMessageToParticipants("VICT " + winningTeam);
             }
         } else {
             Player winner = VictoryCheck.checkSingleVictory(this);
             if (winner != null) {
                 // TODO send winner and terminate game, write stats
+                gameFile.sendMessageToParticipants("VICT " + winner.getPlayerName());
             }
         }
     }

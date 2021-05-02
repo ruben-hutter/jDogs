@@ -18,7 +18,7 @@ public enum ClientGameProtocol {
     EXIT,
     /**
      * Information about other player who made a move.
-     * Parameters are: piece-ID, goalposition.
+     * Parameters are: piece-ID, destination.
      */
     MOVE,
     /**
@@ -49,7 +49,11 @@ public enum ClientGameProtocol {
     /**
      * Information to actualize the whole board.
      */
-    ANEW;
+    ANEW,
+    /**
+     * Information about a winner or winning team
+     */
+    VICT;
 
 
     /**

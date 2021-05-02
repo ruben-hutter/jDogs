@@ -19,20 +19,26 @@ public class VictoryCheck {
 
     /**
      * Checks if a team won.
-     * @return an array with the winners or null
+     * @return teamID of winners or -1
      */
-    protected static Player[] checkTeamVictory(GameState gameState) {
-        Player[] winningTeam = new Player[2];
-        int count = 0;
+    protected static int checkTeamVictory(GameState gameState) {
+        int countTeam0 = 0;
+        int countTeam1 = 0;
         for (Player player : gameState.getPlayersState()) {
             if (player.getFinished()) {
-                winningTeam[count++] = player;
+                if (player.getTeamID() == 0) {
+                    countTeam0++;
+                } else if (player.getTeamID() == 1) {
+                    countTeam1++;
+                }
             }
         }
-        if (winningTeam[1] != null) {
-            return winningTeam;
+        if (countTeam0 == 2) {
+            return 0;
+        } else if (countTeam1 == 2) {
+            return 1;
         } else {
-            return null;
+            return -1;
         }
     }
 }
