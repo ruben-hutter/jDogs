@@ -140,14 +140,13 @@ public class Server {
      */
     public void startGame(OpenGameFile openGameFile) {
         MainGame mainGame = new MainGame(openGameFile.getPlayersArray(), openGameFile.getNameId(), openGameFile.isTeamMode());
-
         // add running game
         runningGames.add(mainGame);
         // remove open game file
         removeOpenGame(openGameFile.getNameId());
         //add name
         allGamesNotFinishedNames.add(openGameFile.getNameId());
-
+        mainGame.start();
     }
 
     public ServerConnection getServerConnection(String nickname) {

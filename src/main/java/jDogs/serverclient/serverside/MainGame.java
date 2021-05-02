@@ -11,15 +11,15 @@ public class MainGame {
     private final boolean teamMode;
     private String[] gameArray;
     private int turnNumber;
-    private GameState gameState;
+    private final GameState gameState;
     private int numbDealOut;
     private ArrayList<String> deck;
     private Random random = new Random();
-    private Player[] playersArray;
+    private final Player[] playersArray;
     private static final Logger logger = LogManager.getLogger(MainGame.class);
     private int numberOfRounds;
     private String actualPlayer;
-    private String nameID;
+    private final String nameID;
 
 
     MainGame (Player[] playersArray,String nameID, boolean teamMode) {
@@ -27,6 +27,13 @@ public class MainGame {
         this.playersArray = playersArray;
         this.gameState = new GameState(this);
         this.nameID = nameID;
+    }
+
+    /**
+     * this method starts the mainGame after the mainGame was added to serverlist
+     * (otherwise there will be a conflict)
+     */
+    public void start() {
         setUp();
         startGameRhythm();
     }
@@ -88,7 +95,7 @@ public class MainGame {
         int playersNumb = 0;
 
         sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
-        logger.debug("Random beginner is: " +  oldArray[random]);
+        actualPlayer = oldArray[random];
 
         for (int i = random; i < oldArray.length; i++) {
             gameArray[playersNumb] = oldArray[i];
@@ -292,6 +299,7 @@ public class MainGame {
      * @return name of player
      */
     public String getActualPlayer() {
+        System.out.println("actual player " + actualPlayer);
         return actualPlayer;
     }
 

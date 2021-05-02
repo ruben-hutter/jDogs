@@ -19,7 +19,6 @@ public class ServerGameCommand {
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
     private boolean loggedIn;
-    private String nickname;
     private final ServerParser serverParser;
     private GameState gameState;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
@@ -52,23 +51,23 @@ public class ServerGameCommand {
 
         switch (command) {
             case "QUIT":
-                this.mainGame.sendMessageToParticipants("INFO " + nickname + " left game session");
+                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname() + " left game session");
                 this.mainGame.delete();
                 break;
             case "EXIT":
                 //stop serverConnection
-                this.mainGame.sendMessageToParticipants("INFO " + nickname + " left game session");
+                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname() + " left game session");
                 this.mainGame.delete();
                 this.serverConnection.kill();
                 break;
 
             case "MOVE":
-                if (text.length() >= 9 && mainGame.getActualPlayer().equals(nickname)) {
+                if (text.length() >= 9 && mainGame.getActualPlayer().equals(serverConnection.getNickname())) {
                     if (text.substring(5, 9).equals("SURR")) {
-                        mainGame.getPlayer(nickname).setAllowedToPlay(false);
-                        gameState.getCards().get(nickname).clear();
+                        mainGame.getPlayer(serverConnection.getNickname()).setAllowedToPlay(false);
+                        gameState.getCards().get(serverConnection.getNickname()).clear();
                         serverConnection.sendToClient("INFO excluded for this round");
-                        mainGame.turnComplete(nickname);
+                        mainGame.turnComplete(serverConnection.getNickname());
                         break;
                     }
 
@@ -77,7 +76,7 @@ public class ServerGameCommand {
                     Player player = mainGame.getPlayer(playerName);
                     logger.debug("Player: " + player);
                     cardToEliminate = text.substring(5, 9);
-                    String toCheckMove = rulesCheck.checkCard(text, gameState, nickname);
+                    String toCheckMove = rulesCheck.checkCard(text, gameState, serverConnection.getNickname());
                     if (toCheckMove == null) {
                         serverConnection.sendToClient("INFO Invalid card or no hand");
                         serverConnection.sendToClient("TURN");
@@ -90,15 +89,15 @@ public class ServerGameCommand {
                     switch (card) {
                         case "SEVE":
                             rulesCheck.checkMoveSeven(toCheckMove, gameState, mainGame,
-                                    nickname);
+                                    serverConnection.getNickname());
                             break;
                         case "JACK":
                             rulesCheck.checkMoveJack(toCheckMove, gameState, mainGame,
-                                    nickname);
+                                    serverConnection.getNickname());
                             break;
                         default:
                             rulesCheck.checkMove(toCheckMove, gameState, mainGame,
-                                    nickname);
+                                    serverConnection.getNickname());
                     }
                 }
                 break;
@@ -110,11 +109,11 @@ public class ServerGameCommand {
                 //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
                 System.out.println("LCHT: " + text.substring(5));
                 mainGame.sendMessageToParticipants(
-                        "LCHT " + "<" + nickname + "> " + text.substring(5));
+                        "LCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
                 break;
             //send message to everyone logged in, in lobby, separated or playing
             case "PCHT":
-                serverConnection.sendToAll("PCHT " + "<" + nickname + "> " + text.substring(5));
+                serverConnection.sendToAll("PCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
                 break;
         }
     }
