@@ -92,7 +92,7 @@ public class SendFromServer implements Runnable {
      */
     synchronized public void sendStringToAllClients(String text) {
        for (ServerConnection serverConnection : server.getBasicConnections()) {
-           serverConnection.getSender().sendStringToClient(text);
+           serverConnection.sendToClient(text);
        }
     }
 
@@ -102,7 +102,7 @@ public class SendFromServer implements Runnable {
      */
     synchronized public void sendStringToPublicLobbyGuests(String text) {
         for (ServerConnection serverConnection : server.getPublicLobbyConnections()) {
-            serverConnection.getSender().sendStringToClient(text);
+            serverConnection.sendToClient(text);
         }
     }
 

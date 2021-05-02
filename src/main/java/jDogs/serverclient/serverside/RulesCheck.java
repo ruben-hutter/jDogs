@@ -71,14 +71,12 @@ public class RulesCheck {
      * if somebody is eliminated by the action
      * @param completeMove card piece destination
      * @param gameState state of the game
-     * @param openGameFile the class which saves al the data of the game
      * @param mainGame class that starts a new game from the lobby
      * @param nickname name of player
      */
-    protected void checkMove(String completeMove, GameState gameState, OpenGameFile openGameFile,
+    protected void checkMove(String completeMove, GameState gameState,
             MainGame mainGame, String nickname) { // TWOO YELO-1 B04
         this.gameState = gameState;
-        this.openGameFile = openGameFile;
         if (completeMove.length() == 15) {
             String card = null;
             int pieceID = -1;
@@ -174,14 +172,13 @@ public class RulesCheck {
      * Checks move when card JACK is played
      * @param twoPieces pieces to switch position
      * @param gameState the state of the game
-     * @param openGameFile class which saves the game data
      * @param mainGame class which starts the game from lobby
      * @param nickname players name
      */
-    protected void checkMoveJack(String twoPieces, GameState gameState, OpenGameFile openGameFile,
+    protected void checkMoveJack(String twoPieces, GameState gameState,
             MainGame mainGame, String nickname) { // JACK YELO-1 BLUE-2
         this.gameState = gameState;
-        this.openGameFile = openGameFile;
+
         try {
             if (twoPieces.length() == 18) {
                 String ownAlliance = twoPieces.substring(5, 9);
@@ -252,14 +249,13 @@ public class RulesCheck {
      * Checks move when card SEVE is played
      * @param completeMove given move
      * @param gameState state of the game
-     * @param openGameFile class that saves game
-     * @param mainGame class which starts the game
+     * @param mainGame class which saves the game environment
      * @param nickname player's name
      */
-    protected void checkMoveSeven(String completeMove, GameState gameState, OpenGameFile openGameFile,
+    protected void checkMoveSeven(String completeMove, GameState gameState,
             MainGame mainGame, String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
         this.gameState = gameState;
-        this.openGameFile = openGameFile;
+
         try {
             int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
             int startIndex = 7;

@@ -243,7 +243,7 @@ public class MainGame {
      * @param actualPlayer nickname
      * @return player container
      */
-    private Player getPlayer(String actualPlayer) {
+    public Player getPlayer(String actualPlayer) {
         for (Player player : playersArray) {
             if (player.getPlayerName().equals(actualPlayer)) {
                 return player;
@@ -264,7 +264,7 @@ public class MainGame {
      * send message to participants of game
      * @param message
      */
-    private void sendMessageToParticipants(String message) {
+    public void sendMessageToParticipants(String message) {
         for (Player player : playersArray) {
             player.getServerConnection().sendToClient(message);
         }

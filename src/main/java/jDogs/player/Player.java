@@ -214,7 +214,7 @@ public class Player {
      * @param message to the client concerning this game
      */
     public void sendMessageToClient(String message) {
-        this.serverConnection.getSender().sendStringToClient(message);
+        this.serverConnection.sendToClient(message);
     }
 
     /**
