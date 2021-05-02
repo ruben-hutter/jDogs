@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 public class MessageHandlerServer implements Runnable {
 
-    private final Queuejd receivedFromClient;
+    private final BlockingQueue<String> receivedFromClient;
     private boolean running;
     private boolean loggedIn;
     private final ServerConnection serverConnection;
@@ -34,7 +34,7 @@ public class MessageHandlerServer implements Runnable {
     private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
 
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
-            BlockingQueue<String> sendToThisClient, BlockingQueue<String> sendToAll, Queuejd receivedFromClient, BlockingQueue<String> sendToPub) {
+            BlockingQueue<String> sendToThisClient, BlockingQueue<String> sendToAll, BlockingQueue<String> receivedFromClient, BlockingQueue<String> sendToPub) {
 
         this.receivedFromClient = receivedFromClient;
         this.serverConnection = serverConnection;
@@ -54,40 +54,43 @@ public class MessageHandlerServer implements Runnable {
         serverConnection.sendToClient("USER");
 
         //while()-loop always running
-        while (running) {
-            if (!receivedFromClient.isEmpty()) {
-                text = receivedFromClient.dequeue();
-                if (text.length() >= 4) {
-                    switch (state) {
+        try {
+            while (running) {
+                    text = receivedFromClient.take();
+                    if (text.length() >= 4) {
+                        switch (state) {
 
-                        case "playing":
-                            System.out.println("game command case");
-                            serverGameCommand.execute(text);
-                            break;
+                            case "playing":
+                                System.out.println("game command case");
+                                serverGameCommand.execute(text);
+                                break;
 
-                        case "openGame":
-                            System.out.println("open game case");
-                            separateLobbyCommand.execute(text);
-                            break;
+                            case "openGame":
+                                System.out.println("open game case");
+                                separateLobbyCommand.execute(text);
+                                break;
 
-                        case "publicLobby":
-                            System.out.println("public lobby case");
-                            serverMenuCommand.execute(text);
-                            break;
+                            case "publicLobby":
+                                System.out.println("public lobby case");
+                                serverMenuCommand.execute(text);
+                                break;
 
+                        }
+
+                    } else {
+                        System.err.println(
+                                "message did not match public, separate or game protocol:  " + text);
                     }
-
-                } else {
-                    System.err.println(
-                            "message did not match public, separate or game protocol:  " + text);
                 }
-            }
-            try {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
                 Thread.sleep(30);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+
         System.out.println(this.toString() + "  stops now");
     }
     /**

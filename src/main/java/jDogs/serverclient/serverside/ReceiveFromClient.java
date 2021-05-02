@@ -4,6 +4,7 @@ import jDogs.serverclient.helpers.Queuejd;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * This thread is receiving messages from client
@@ -15,10 +16,10 @@ public class ReceiveFromClient implements Runnable {
     private final Socket socket;
     private boolean running;
     private DataInputStream din;
-    private final Queuejd receivedFromThisClient;
+    private final BlockingQueue<String> receivedFromThisClient;
     private ServerConnection serverConnection;
 
-    public ReceiveFromClient(Socket socket, Queuejd receivedFromThisClient,
+    public ReceiveFromClient(Socket socket, BlockingQueue<String> receivedFromThisClient,
             ServerConnection serverConnection) {
         this.socket = socket;
         this.serverConnection = serverConnection;
@@ -41,11 +42,14 @@ public class ReceiveFromClient implements Runnable {
                     serverConnection.monitorMsg(System.currentTimeMillis());
                     //write to receiver-queue
                     if (!textIn.equals("pong")) {
-                        receivedFromThisClient.enqueue(textIn);
+                        receivedFromThisClient.put(textIn);
                     }
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (InterruptedException e) {
             e.printStackTrace();
         }
         try {

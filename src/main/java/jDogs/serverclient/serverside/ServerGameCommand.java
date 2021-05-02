@@ -1,8 +1,6 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
-import jDogs.Alliance_4;
-import jDogs.serverclient.helpers.Queuejd;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,8 +22,6 @@ public class ServerGameCommand {
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
     private ArrayList<Player> players;
     private MainGame mainGame;
-    private String cardToEliminate;
-    private Alliance_4 alliance4;
     private RulesCheck rulesCheck;
     private String mainGameID;
 
@@ -36,7 +32,6 @@ public class ServerGameCommand {
         this.loggedIn = false;
         this.serverParser = new ServerParser(serverConnection);
         this.players = null;
-        this.cardToEliminate = null;
         this.rulesCheck = new RulesCheck(serverConnection);
     }
 
@@ -75,7 +70,6 @@ public class ServerGameCommand {
                     logger.debug("Player nickname: " + playerName);
                     Player player = mainGame.getPlayer(playerName);
                     logger.debug("Player: " + player);
-                    cardToEliminate = text.substring(5, 9);
                     String toCheckMove = rulesCheck.checkCard(text, gameState, serverConnection.getNickname());
                     if (toCheckMove == null) {
                         serverConnection.sendToClient("INFO Invalid card or no hand");
@@ -117,23 +111,9 @@ public class ServerGameCommand {
                 break;
         }
     }
-
-    /**
-     *
-     * @param actualGame is the ongoing game which should be found
-     * @return the game or null
-     */
-    private MainGame getRunningGame(String actualGame) {
-        for (int i = 0; i < Server.getInstance().runningGames.size(); i++) {
-            if (Server.getInstance().runningGames.get(i).getGameId().equals(actualGame)) {
-                return Server.getInstance().runningGames.get(i);
-            }
-        }
-        return null;
-    }
-
     public void setMainGame(String mainGameID) {
         this.mainGameID = mainGameID;
         this.mainGame = Server.getInstance().getRunningGame(mainGameID);
+        this.gameState = mainGame.getGameState();
     }
 }

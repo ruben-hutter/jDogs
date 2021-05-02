@@ -31,7 +31,7 @@ public class ServerConnection {
     private final Socket socket;
     private final BlockingQueue<String> sendAll;
     private final BlockingQueue<String> sendThisClient;
-    private final Queuejd receivedFromClient;
+    private final BlockingQueue<String> receivedFromClient;
     private final BlockingQueue<String> sendPub;
     private SendFromServer sender;
     private ReceiveFromClient listeningToClient;
@@ -53,7 +53,7 @@ public class ServerConnection {
         this.sendAll = new ArrayBlockingQueue<>(10);
         this.sendPub = new ArrayBlockingQueue<>(10);
         this.sendThisClient = new ArrayBlockingQueue<>(10);
-        this.receivedFromClient = new Queuejd();
+        this.receivedFromClient = new ArrayBlockingQueue<>(10);
         this.running = true;
         this.loggedIn = false;
         this.monitorCS = new Monitorcs();
