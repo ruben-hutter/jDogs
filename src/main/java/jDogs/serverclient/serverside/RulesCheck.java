@@ -67,7 +67,6 @@ public class RulesCheck {
      * @param nickname name of player
      */
     protected void checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
-        this.teamMode = gameState.isTeamMode();
         if (completeMove.length() == 15) {
             String card = null;
             int pieceID = -1;
@@ -107,7 +106,6 @@ public class RulesCheck {
             } catch (Exception e) {
                 serverConnection.sendToClient("INFO Format exception in checkMove");
                 serverConnection.sendToClient("TURN");
-
                 return;
             }
 
