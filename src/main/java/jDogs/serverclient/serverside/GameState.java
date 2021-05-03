@@ -15,6 +15,7 @@ public class GameState {
 
     private Map<String, ArrayList<String>> cards;
     private ArrayList<Piece> piecesOnTrack;
+    private final boolean teamMode;
     private int numPlayers;
     private MainGame mainGame;
 
@@ -22,10 +23,9 @@ public class GameState {
         this.mainGame = mainGame;
         this.numPlayers = mainGame.getPlayersArray().length;
         this.piecesOnTrack = new ArrayList<>();
+        teamMode = mainGame.isTeamMode();
         this.cards = new HashMap<>();
     }
-
-    // TODO check if player has 4 in heaven, end game
 
     /**
      * Creates the players for the game
@@ -38,7 +38,6 @@ public class GameState {
             counter++;
         }
     }
-
 
     public ArrayList<Piece> getSortedPiecesOnTrack() {
         Collections.sort(piecesOnTrack);
@@ -68,9 +67,6 @@ public class GameState {
         if (isPieceOnTrack(piece)) {
             if (!newPosition1.equals("B")) {
                 piecesOnTrack.remove(piece);
-                if (newPosition1.equals("A")) {
-                    piece.changeHasMoved();
-                }
             }
         } else if (!isPieceOnTrack(piece)) {
             if (newPosition1.equals("B")) {
@@ -80,49 +76,27 @@ public class GameState {
         piecesOnTrack = getSortedPiecesOnTrack();
     }
 
-    public Piece newPositionOccupied(Player player, String newPosition1, int newPosition2) {
-        Piece otherPiece = null;
-        if (newPosition1.equals("C")) {
-            otherPiece = newPositionOccupiedHelper(player, newPosition1, newPosition2);
-        } else if (newPosition1.equals("B")) {
-            for (Piece p : piecesOnTrack) {
-                if (p.getPositionServer1().equals(newPosition1)
-                        && p.getPositionServer2() == newPosition2) {
-                    otherPiece = p;
-                }
+    /**
+     * Checks if a given track position is occupied.
+     * @param newPosition2 int between 0-63
+     * @return a piece, or null if not occupied
+     */
+    public Piece trackPositionOccupied(int newPosition2) {
+        for (Piece p : piecesOnTrack) {
+            if (p.getPositionServer2() == newPosition2) {
+                return p;
             }
         }
-        return otherPiece;
+        return null;
     }
 
-    private Piece newPositionOccupiedHelper(Player player, String newPosition1, int newPosition2) {
-        Piece otherPiece = null;
-        for (Player pl : mainGame.getPlayersArray()) {
-            if (pl.equals(player)) {
-                for (Piece p : player.pieces) {
-                    if (p.getPositionServer1().equals(newPosition1)
-                            && p.getPositionServer2() == newPosition2) {
-                        otherPiece = p;
-                    }
-                }
-            }
-            break;
-        }
-        return otherPiece;
-    }
-
-    private static boolean isInTest(ArrayList<Piece> test, Piece piece) {
-        for (Piece p : test) {
-            if (p.getPieceAlliance() == piece.getPieceAlliance()
-                    && p.getPieceID() == piece.getPieceID()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /**
+     * Gives a player for a given nickname.
+     * @param nickname player's name
+     * @return a player or null if it doesn't exist
+     */
     public Player getPlayer(String nickname) {
-        for (Player player : mainGame.getPlayersArray()) {
+        for (Player player : getPlayers()) {
             if (player.getPlayerName().equals(nickname)) {
                 return player;
             }
@@ -132,6 +106,38 @@ public class GameState {
 
     public Player[] getPlayers() {
         return mainGame.getPlayersArray();
+    /**
+     * Gives the players of the game.
+     * @return an array list with the players
+     */
+    public ArrayList<Player> getPlayersState() {
+        return gameFile.getPlayers();
     }
 
+    /**
+     * Gives the mode of the game
+     * @return true if team mode, false if not
+     */
+    public boolean isTeamMode() {
+        return teamMode;
+    }
+
+    /**
+     * Checks if there is a winner
+     */
+    public void checkForVictory() {
+        if (teamMode) {
+            int winningTeam = VictoryCheck.checkTeamVictory(this);
+            if (winningTeam > -1) {
+                // TODO send winners and terminate game, write stats
+                gameFile.sendMessageToParticipants("VICT " + winningTeam);
+            }
+        } else {
+            Player winner = VictoryCheck.checkSingleVictory(this);
+            if (winner != null) {
+                // TODO send winner and terminate game, write stats
+                gameFile.sendMessageToParticipants("VICT " + winner.getPlayerName());
+            }
+        }
+    }
 }

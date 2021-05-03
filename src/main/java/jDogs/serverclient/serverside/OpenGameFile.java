@@ -18,10 +18,10 @@ public class OpenGameFile {
     private final String nameId;
     private String host;
     private int numberParticipants;
-    private int total = 4;
+    private final int total = 4;
     private boolean pendent;
     private MainGame mainGame;
-    private int teamMode;
+    private final int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
     private int teamIDs;
     private static final Logger logger = LogManager.getLogger(OpenGameFile.class);
