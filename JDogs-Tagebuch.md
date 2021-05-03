@@ -333,3 +333,19 @@ Bis zum nächsten Treffen bearbeiten wir folgende Aufgaben:
 Ruben machte uns darauf aufmerksam, dass die Javadoc-Kommentare vollständig und korrekt sein müssen und man sich doch darauf achten soll, wenn man den Code bearbeitet. 
 
 **Nächstes Treffen:** Montag, 03.05.21, 09:00 Uhr
+
+---
+03.05.2021, 9 Uhr, Johanna*
+
+### Protokoll#18 - Protokoll
+
+In der heutigen Sitzung besprachen wir die gemachten Änderungen. Es mussten einige Dinge im Code angepasst werden, da beispielsweise nun immer über das MainGame auf die Informationen zum Spiel zugegriffen wird und nicht mehr direkt über den GameState oder das GameFile. Zudem hat Gregor BlockingQueues eingebaut. Bezüglich GUI denken wir, dass es schwierig ist, einen dynamischen Hintergrund zu erstellen. Bis zur Übungsstunde am Mittwoch sind die folgenden Aufgaben zu erledigen:
+- Ruben stellt den Spezialfall Seven fertig, so dass jede gültige Kombination mit der Karte Seven gespielt werden kann. 
+- Gregor stellt das Vicotry-Fenster im GUI dar und behebt einen Darstellungsfehler (die Zuordnung Spieler - Farbe war auf dem Spielbrett vertauscht).
+- Johanna kümmert sich weiter um die JUnit-Tests.
+- Ruben fragt bei Tim nach, ob die Library, die er für die Erstellung der HighScore-XML-Datei verwenden möchte, verwendet werden darf.
+- Alle testen das Spiel, indem sie es v.a. im TeamMode spielen. 
+
+**Nächstes Treffen:** Mittwoch, 05.05.21, 10:15 Uhr
+
+
