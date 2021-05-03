@@ -10,14 +10,13 @@ import org.apache.logging.log4j.Logger;
 
 public class RulesCheck {
 
-    // TODO teamMode implementation for hole class
-
     private static final Logger logger = LogManager.getLogger(RulesCheck.class);
     private final Queuejd sendToThisClient;
     private String cardToEliminate;
     Alliance_4 alliance4;
     private GameState gameState;
     private GameFile gameFile;
+    private boolean teamMode;
 
     public RulesCheck(Queuejd sendToThisClient) {
         this.sendToThisClient = sendToThisClient;
@@ -73,6 +72,7 @@ public class RulesCheck {
             MainGame mainGame, String nickname) { // TWOO YELO-1 B04
         this.gameState = gameState;
         this.gameFile = gameFile;
+        this.teamMode = gameState.isTeamMode();
         RulesCheckHelper rulesCheckHelper = new RulesCheckHelper(sendToThisClient, gameState,
                 gameFile);
         if (completeMove.length() == 15) {
@@ -85,6 +85,7 @@ public class RulesCheck {
             boolean hasMoved = false;
             int startingPosition = -1;
             Player ownPlayer = null;
+            int teamID = -1;
             try {
                 card = completeMove.substring(0, 4);
                 String alliance = completeMove.substring(5, 9);
@@ -107,6 +108,7 @@ public class RulesCheck {
                 actualPosition2 = playersActualInfo.getActualPosition2();
                 hasMoved = playersActualInfo.getHasMoved();
                 startingPosition = playersActualInfo.getStartingPosition();
+                teamID = playersActualInfo.getTeamID();
 
             } catch (Exception e) {
                 sendToThisClient.enqueue("INFO Format exception in checkMove");
@@ -114,9 +116,18 @@ public class RulesCheck {
             }
 
             // prevent players from moving with others pieces
-            if (ownPlayer != gameState.getPlayer(nickname)) {
-                sendToThisClient.enqueue("INFO You cannot move this color");
-                return;
+            Player nowPlaying = gameState.getPlayer(nickname);
+            if (teamID < 0) {
+                if (ownPlayer != nowPlaying) {
+                    sendToThisClient.enqueue("INFO You cannot move this color");
+                    return;
+                }
+            } else {
+                if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
+                        && ownPlayer.getTeamID() != nowPlaying.getTeamID())) {
+                    sendToThisClient.enqueue("INFO You cannot move this color");
+                    return;
+                }
             }
 
             // if card not ok with destination, return to client
@@ -160,6 +171,7 @@ public class RulesCheck {
             MainGame mainGame, String nickname) { // JACK YELO-1 BLUE-2
         this.gameState = gameState;
         this.gameFile = gameFile;
+        this.teamMode = gameState.isTeamMode();
         RulesCheckHelper rulesCheckHelper = new RulesCheckHelper(sendToThisClient, gameState,
                 gameFile);
         try {
@@ -170,6 +182,7 @@ public class RulesCheck {
                 int ownActualPosition2 = -1;
                 Player ownPlayer = null;
                 Alliance_4 ownAlliance4 = rulesCheckHelper.convertAlliance(ownAlliance);
+                int ownTeamID = -1;
 
                 String otherAlliance = twoPieces.substring(12, 16);
                 int otherPieceID = Integer.parseInt(twoPieces.substring(17));
@@ -184,6 +197,7 @@ public class RulesCheck {
                         ownPlayer = player;
                         ownActualPosition1 = player.receivePosition1Server(ownPieceID);
                         ownActualPosition2 = player.receivePosition2Server(ownPieceID);
+                        ownTeamID = player.getTeamID();
                     } else if (player.getAlliance() == otherAlliance4) {
                         otherPlayer = player;
                         otherActualPosition1 = player.receivePosition1Server(otherPieceID);
@@ -191,23 +205,34 @@ public class RulesCheck {
                         otherHasMoved = player.receiveHasMoved(otherPieceID);
                     }
                 }
-                if (ownPlayer != gameState.getPlayer(nickname)) {
-                    sendToThisClient.enqueue("INFO You cannot move this color");
-                } else {
-                    assert ownActualPosition1 != null;
-                    assert otherActualPosition1 != null;
-                    if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
-                            || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
-                            || !otherHasMoved) {
-                        sendToThisClient.enqueue("INFO You can't switch this pieces!");
-                    } else {
-                        rulesCheckHelper.simpleMove(ownPlayer, ownPieceID, otherActualPosition1,
-                                otherActualPosition2);
-                        rulesCheckHelper.simpleMove(otherPlayer, otherPieceID, ownActualPosition1,
-                                ownActualPosition2);
-
-                        rulesCheckHelper.updateGame(nickname, mainGame, cardToEliminate);
+                // prevent players from moving with others pieces
+                Player nowPlaying = gameState.getPlayer(nickname);
+                if (ownTeamID < 0) {
+                    if (ownPlayer != nowPlaying) {
+                        sendToThisClient.enqueue("INFO You cannot move this color");
+                        return;
                     }
+                } else {
+                    if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
+                            && ownPlayer.getTeamID() != nowPlaying.getTeamID())) {
+                        sendToThisClient.enqueue("INFO You cannot move this color");
+                        return;
+                    }
+                }
+
+                assert ownActualPosition1 != null;
+                assert otherActualPosition1 != null;
+                if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
+                        || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
+                        || !otherHasMoved) {
+                    sendToThisClient.enqueue("INFO You can't switch this pieces!");
+                } else {
+                    rulesCheckHelper.simpleMove(ownPlayer, ownPieceID, otherActualPosition1,
+                            otherActualPosition2);
+                    rulesCheckHelper.simpleMove(otherPlayer, otherPieceID, ownActualPosition1,
+                            ownActualPosition2);
+
+                    rulesCheckHelper.updateGame(nickname, mainGame, cardToEliminate);
                 }
             }
         } catch (Exception e) {
@@ -227,6 +252,7 @@ public class RulesCheck {
             MainGame mainGame, String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
         this.gameState = gameState;
         this.gameFile = gameFile;
+        this.teamMode = gameState.isTeamMode();
         RulesCheckHelper rulesCheckHelper = new RulesCheckHelper(sendToThisClient, gameState,
                 gameFile);
         try {
@@ -305,6 +331,7 @@ public class RulesCheck {
             int actualPosition2 = -1;
             boolean hasMoved = false;
             int startingPosition = -1;
+            int teamID = -1;
             Player ownPlayer = null;
             Alliance_4 alliance4 = rulesCheckHelper.convertAlliance(alliance);
 
@@ -315,10 +342,20 @@ public class RulesCheck {
             actualPosition2 = playersActualInfo.getActualPosition2();
             hasMoved = playersActualInfo.getHasMoved();
             startingPosition = playersActualInfo.getStartingPosition();
+            teamID = playersActualInfo.getTeamID();
 
-            if (ownPlayer != gameFile.getPlayer(nickname)) {
-                return -1;
+            // checks if pieces are own or from team
+            Player nowPlaying = gameState.getPlayer(nickname);
+            if (teamID < 0) {
+                if (ownPlayer != nowPlaying) {
+                    return -1;
+                }
+            } else {
+                if (ownPlayer != nowPlaying && ownPlayer.getTeamID() != nowPlaying.getTeamID()) {
+                    return -1;
+                }
             }
+
             int difference;
             assert actualPosition1 != null;
             if (actualPosition1.equals("B") && newPosition1.equals("B")

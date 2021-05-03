@@ -131,9 +131,10 @@ public class RulesCheckHelper {
     protected PlayersActualInfo getPlayerInfo(int pieceID, Alliance_4 alliance4) {
         Player ownPlayer = null;
         String actualPosition1 = null;
-        int actualPosition2 = 0;
+        int actualPosition2 = -1;
         boolean hasMoved = false;
-        int startingPosition = 0;
+        int startingPosition = -1;
+        int teamID = -1;
 
         for (Player player : gameState.getPlayersState()) {
             if (player.getAlliance() == alliance4) {
@@ -145,10 +146,19 @@ public class RulesCheckHelper {
                 logger.debug("actual position2: " + actualPosition2);
                 hasMoved = player.receiveHasMoved(pieceID);
                 startingPosition = player.getStartingPosition();
+                teamID = player.getTeamID();
             }
         }
         return new PlayersActualInfo(ownPlayer, actualPosition1, actualPosition2, hasMoved,
-                startingPosition);
+                startingPosition, teamID);
+    }
+
+    /**
+     * Checks if a player can move the chosen color
+     * @return true if the move is ok, false if not
+     */
+    protected boolean checkMovedAlliance() {
+        return false;
     }
 
     /**

@@ -12,14 +12,16 @@ public class PlayersActualInfo {
     private final int actualPosition2;
     private final boolean hasMoved;
     private final int startingPosition;
+    private final int teamID;
 
     PlayersActualInfo(Player player, String actualPosition1, int actualPosition2, boolean hasMoved,
-            int startingPosition) {
+            int startingPosition, int teamID) {
         this.player = player;
         this.actualPosition1 = actualPosition1;
         this.actualPosition2 = actualPosition2;
         this.hasMoved = hasMoved;
         this.startingPosition = startingPosition;
+        this.teamID = teamID;
     }
 
     /**
@@ -60,5 +62,13 @@ public class PlayersActualInfo {
      */
     public int getStartingPosition() {
         return startingPosition;
+    }
+
+    /**
+     * Gives the teamID of the player
+     * @return 0 or 1 for the team, -1 if single player mode
+     */
+    public int getTeamID() {
+        return teamID;
     }
 }

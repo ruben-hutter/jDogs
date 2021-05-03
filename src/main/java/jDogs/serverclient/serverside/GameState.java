@@ -110,6 +110,14 @@ public class GameState {
     }
 
     /**
+     * Gives the mode of the game
+     * @return true if team mode, false if not
+     */
+    public boolean isTeamMode() {
+        return teamMode;
+    }
+
+    /**
      * Checks if there is a winner
      */
     public void checkForVictory() {
