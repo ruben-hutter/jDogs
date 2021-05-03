@@ -146,7 +146,7 @@ public class MainGame {
             }
             // send newHand to player and to client here
             player.sendMessageToClient(newHand.toString());
-            //player.setAllowedToPlay(true);
+            player.setAllowedToPlay(true);
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
         sendMessageToParticipants("HAND");
@@ -314,4 +314,11 @@ public class MainGame {
         return playersArray;
     }
 
+    /**
+     * Gives team mode state
+     * @return true if team mode on, false if not
+     */
+    public boolean isTeamMode() {
+        return teamMode;
+    }
 }

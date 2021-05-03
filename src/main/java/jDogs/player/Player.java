@@ -31,7 +31,7 @@ public class Player {
     public Player(String playerName, ServerConnection serverConnection) {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
-        this.allowedToPlay = false;
+        allowedToPlay = false;
         teamID = -1;
         finished = false;
     }
@@ -262,7 +262,7 @@ public class Player {
      * @return true if allowed
      */
     public boolean isAllowedToPlay() {
-        return this.allowedToPlay;
+        return allowedToPlay;
     }
 
     /**

@@ -10,14 +10,12 @@ import org.apache.logging.log4j.Logger;
 public class RulesCheckHelper {
 
     private static final Logger logger = LogManager.getLogger(RulesCheckHelper.class);
-    private final Queuejd sendToThisClient;
-    private final GameState gameState;
-    private final GameFile gameFile;
+    private final MainGame mainGame;
+    private final ServerConnection serverConnection;
 
-    public RulesCheckHelper(Queuejd sendToThisClient, GameState gameState, GameFile gameFile) {
-        this.sendToThisClient = sendToThisClient;
-        this.gameState = gameState;
-        this.gameFile = gameFile;
+    public RulesCheckHelper(MainGame mainGame, ServerConnection serverConnection) {
+        this.mainGame = mainGame;
+        this.serverConnection = serverConnection;
     }
 
     /**
@@ -42,7 +40,7 @@ public class RulesCheckHelper {
                 break;
             default:
                 // if command piece not correct, return to client
-                sendToThisClient.enqueue("INFO Piece isn't entered correctly");
+                serverConnection.sendToClient("INFO Piece isn't entered correctly");
                 return null;
         }
         return alliance;
@@ -116,7 +114,7 @@ public class RulesCheckHelper {
                 possibleValues = new int[]{13};
                 break;
             default:
-                sendToThisClient.enqueue("Invalid card!");
+                serverConnection.sendToClient("Invalid card!");
                 return null;
         }
         return possibleValues;
@@ -136,7 +134,7 @@ public class RulesCheckHelper {
         int startingPosition = -1;
         int teamID = -1;
 
-        for (Player player : gameState.getPlayersState()) {
+        for (Player player : mainGame.getPlayersArray()) {
             if (player.getAlliance() == alliance4) {
                 logger.debug("Alliance Player: " + player.getAlliance());
                 ownPlayer = player;
@@ -171,7 +169,7 @@ public class RulesCheckHelper {
      */
     protected boolean checkWhichMove(Player player, int pieceID, String newPosition1,
             int newPosition2) {
-        Piece pieceToEliminate = gameState.trackPositionOccupied(newPosition2);
+        Piece pieceToEliminate = mainGame.getGameState().trackPositionOccupied(newPosition2);
         if (pieceToEliminate != null) {
             attackMove(player, pieceID, newPosition1, newPosition2, pieceToEliminate);
         } else {
@@ -215,10 +213,10 @@ public class RulesCheckHelper {
         player.changePositionServer(pieceID, newPosition1, newPosition2);
 
         // updates piecesOnTrack in gameState
-        gameState.updatePiecesOnTrack(piece, newPosition1);
+        mainGame.getGameState().updatePiecesOnTrack(piece, newPosition1);
 
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
     }
 
@@ -231,7 +229,7 @@ public class RulesCheckHelper {
         String newPosition1 = "A";
         int newPosition2 = pieceID - 1;
         piece.setPositionServer(newPosition1, newPosition2);
-        gameState.updatePiecesOnTrack(piece, "A");
+        mainGame.getGameState().updatePiecesOnTrack(piece, "A");
         String pieceAlliance = "";
         switch(piece.getPieceAlliance()) {
             case YELLOW:
@@ -250,7 +248,7 @@ public class RulesCheckHelper {
         // change hasMoved state to false
         piece.changeHasMoved();
         // updates client side
-        gameFile.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
     }
 
@@ -262,15 +260,15 @@ public class RulesCheckHelper {
      * @param mainGame were the game has been started
      */
     protected void updateGame(String nickname, MainGame mainGame, String cardToEliminate) {
-        gameFile.sendMessageToParticipants("BORD");
+        mainGame.sendMessageToParticipants("BORD");
         //eliminate card
-        gameState.getCards().get(nickname).remove(cardToEliminate);
-        gameFile.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-        gameFile.sendMessageToParticipants("HAND");
+        mainGame.getGameState().getCards().get(nickname).remove(cardToEliminate);
+        mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+        mainGame.sendMessageToParticipants("HAND");
 
         mainGame.turnComplete(nickname);
 
         // check if there is a winner
-        gameState.checkForVictory();
+        mainGame.getGameState().checkForVictory();
     }
 }

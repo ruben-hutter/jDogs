@@ -34,7 +34,7 @@ public class GameState {
         int counter = 0;
         for (Alliance_4 alliance_4 : Alliance_4.values()) {
             mainGame.getPlayersArray()[counter].setUpPlayerOnServer(alliance_4);
-            cards.put(mainGame.getPlayersArray()[counter].getPlayerName(),new ArrayList<>());
+            cards.put(mainGame.getPlayersArray()[counter].getPlayerName(), new ArrayList<>());
             counter++;
         }
     }
@@ -60,7 +60,8 @@ public class GameState {
 
     /**
      * Updates ArrayList when a move is done
-     * @param piece piece which changes position
+     *
+     * @param piece        piece which changes position
      * @param newPosition1 A, B or C
      */
     public void updatePiecesOnTrack(Piece piece, String newPosition1) {
@@ -78,6 +79,7 @@ public class GameState {
 
     /**
      * Checks if a given track position is occupied.
+     *
      * @param newPosition2 int between 0-63
      * @return a piece, or null if not occupied
      */
@@ -92,6 +94,7 @@ public class GameState {
 
     /**
      * Gives a player for a given nickname.
+     *
      * @param nickname player's name
      * @return a player or null if it doesn't exist
      */
@@ -106,37 +109,39 @@ public class GameState {
 
     public Player[] getPlayers() {
         return mainGame.getPlayersArray();
+    }
+
     /**
      * Gives the players of the game.
-     * @return an array list with the players
+     * @return an list with the players
      */
-    public ArrayList<Player> getPlayersState() {
-        return gameFile.getPlayers();
+    public Player[] getPlayersState () {
+        return mainGame.getPlayersArray();
     }
 
     /**
      * Gives the mode of the game
      * @return true if team mode, false if not
      */
-    public boolean isTeamMode() {
+    public boolean isTeamMode () {
         return teamMode;
     }
 
     /**
      * Checks if there is a winner
      */
-    public void checkForVictory() {
+    public void checkForVictory () {
         if (teamMode) {
             int winningTeam = VictoryCheck.checkTeamVictory(this);
             if (winningTeam > -1) {
                 // TODO send winners and terminate game, write stats
-                gameFile.sendMessageToParticipants("VICT " + winningTeam);
+                mainGame.sendMessageToParticipants("VICT " + winningTeam);
             }
         } else {
             Player winner = VictoryCheck.checkSingleVictory(this);
             if (winner != null) {
                 // TODO send winner and terminate game, write stats
-                gameFile.sendMessageToParticipants("VICT " + winner.getPlayerName());
+                mainGame.sendMessageToParticipants("VICT " + winner.getPlayerName());
             }
         }
     }

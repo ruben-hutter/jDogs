@@ -3,7 +3,6 @@ package jDogs.serverclient.serverside;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.player.Player;
-import jDogs.serverclient.helpers.Queuejd;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,24 +16,25 @@ public class RulesCheck {
     private GameState gameState;
     private MainGame mainGame;
     private boolean teamMode;
+    RulesCheckHelper rulesCheckHelper;
 
     public RulesCheck(ServerConnection serverConnection, MainGame mainGame) {
         this.serverConnection = serverConnection;
         this.mainGame = mainGame;
         this.gameState = mainGame.getGameState();
+        this.teamMode = mainGame.isTeamMode();
+        rulesCheckHelper = new RulesCheckHelper(mainGame, serverConnection);
     }
 
     /**
      * Checks if the given card is in the players hand
      * @param text MOVE command from user
-     * @param gameState state of the actual game
      * @param nickname player's nickname
-     * @param cardToEliminate the played card
      * @return null if invalid card or the move (with translation if JOKE)
      */
     protected String checkCard(String text, String nickname) {
-        this.cardToEliminate = cardToEliminate;
         String card = text.substring(5, 9);
+        this.cardToEliminate = card;
         logger.debug("Card in checkCard: " + card);
         String toCheckMove = null;
         ArrayList<String> hand = gameState.getCards().get(nickname);
@@ -68,8 +68,6 @@ public class RulesCheck {
      */
     protected void checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
         this.teamMode = gameState.isTeamMode();
-        RulesCheckHelper rulesCheckHelper = new RulesCheckHelper(sendToThisClient, gameState,
-                gameFile);
         if (completeMove.length() == 15) {
             String card = null;
             int pieceID = -1;
@@ -133,7 +131,8 @@ public class RulesCheck {
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
                     newPosition2, startingPosition, hasMoved, ownPlayer, pieceID, rulesCheckHelper)) {
-                sendToThisClient.enqueue("INFO Check your move's validity");
+                serverConnection.sendToClient("INFO Check your move's validity");
+                serverConnection.sendToClient("TURN");
                 return;
             }
 
@@ -168,7 +167,6 @@ public class RulesCheck {
      * @param nickname players name
      */
     protected void checkMoveJack(String twoPieces, String nickname) { // JACK YELO-1 BLUE-2
-
         try {
             if (twoPieces.length() == 18) {
                 String ownAlliance = twoPieces.substring(5, 9);
@@ -222,7 +220,7 @@ public class RulesCheck {
                 if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
                         || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
                         || !otherHasMoved) {
-                    sendToThisClient.enqueue("INFO You can't switch this pieces!");
+                    serverConnection.sendToClient("INFO You can't switch this pieces!");
                     serverConnection.sendToClient("TURN");
                 } else {
                     rulesCheckHelper.simpleMove(ownPlayer, ownPieceID, otherActualPosition1,
@@ -460,7 +458,7 @@ public class RulesCheck {
     }
 
     /**
-     * Checks if newPosition is ok with played card
+     * Checks if newPosition is ok with played cardmainGame
      * @param card played card
      * @param actualPosition1 A, B or C
      * @param actualPosition2 int between 0-3 or on track 0-63
@@ -517,7 +515,7 @@ public class RulesCheck {
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
-                    sendToThisClient.enqueue("INFO You can't jump over your own pieces!");
+                    serverConnection.sendToClient("INFO You can't jump over your own pieces!");
                     return false;
                 }
             }
