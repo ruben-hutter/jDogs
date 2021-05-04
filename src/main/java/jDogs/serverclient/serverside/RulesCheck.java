@@ -66,16 +66,16 @@ public class RulesCheck {
      */
     protected int checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
         if (completeMove.length() == 15) {
-            String card = null;
-            int pieceID = -1;
-            String newPosition1 = null;
-            int newPosition2 = -1;
-            String actualPosition1 = null;
-            int actualPosition2 = -1;
-            boolean hasMoved = false;
-            int startingPosition = -1;
-            Player ownPlayer = null;
-            int ownTeamID = -1;
+            String card;
+            int pieceID;
+            String newPosition1;
+            int newPosition2;
+            String actualPosition1;
+            int actualPosition2;
+            boolean hasMoved;
+            int startingPosition;
+            Player ownPlayer;
+            int ownTeamID;
             try {
                 card = completeMove.substring(0, 4);
                 String alliance = completeMove.substring(5, 9);
