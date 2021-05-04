@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -302,7 +303,6 @@ public class GameWindowController implements Initializable {
                 totalSum = 2;
             }
             checkJokeCase();
-
         }
     }
 
@@ -665,7 +665,7 @@ public class GameWindowController implements Initializable {
         jokerClicked = false;
         yourTurn = false;
 
-
+/*
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -679,6 +679,8 @@ public class GameWindowController implements Initializable {
         nameLabel2.setText(color.toString());
         nameLabel1.setText(Client.getInstance().getNickname());
         setPlayerLabels();
+
+ */
 
         // prepare click grids and circles
         fadingGrids = new FadeTransition[7];
@@ -702,8 +704,9 @@ public class GameWindowController implements Initializable {
 
         labelPlayer0.setText(ClientGame.getInstance().getPlayerNames()[0]);
         labelPlayer1.setText(ClientGame.getInstance().getPlayerNames()[1]);
-        labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[2]);
-        labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[3]);
+        labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[2]);
+        labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[3]);
+
     }
 
     /**
@@ -767,6 +770,7 @@ public class GameWindowController implements Initializable {
                 cardArray[i] = null;
                 setCardBlended(i);
                 System.out.println("card " + card + " was removed from deck");
+                break;
             }
         }
     }
@@ -783,7 +787,6 @@ public class GameWindowController implements Initializable {
      * @param value true, if it`s his or her turn
      */
     public void setYourTurn(boolean value) {
-        //TODO send message to user in GUI : your turn
         this.yourTurn = value;
         if (yourTurn) {
             displayInfoFromServer("it is your turn");
@@ -964,11 +967,33 @@ public class GameWindowController implements Initializable {
         messageReceiveTextArea.appendText(message + "\n");
     }
 
+    /**
+     * by clicking enter a LCHT-message is sent to server
+     * @param event enter on keyboard
+     */
     @FXML
     void onEnterPressed(KeyEvent event) {
         if(event.getCode() == KeyCode.ENTER) {
             Client.getInstance().sendMessageToServer("LCHT " + sendMessageTextField.getText());
             sendMessageTextField.clear();
         }
+    }
+
+    /**
+     * declares that the submitted name won the game
+     * and returns to lobby after clicking ok
+     * @param winner name
+     */
+    public void declareVictory(String winner) {
+        Alert victoryAlert = new Alert(AlertType.INFORMATION, "winner is " + winner);
+        victoryAlert.showAndWait().filter(response -> response == ButtonType.OK)
+                .ifPresent(response -> returnToLobby());
+    }
+
+    /**
+     * return to lobby-gui
+     */
+    public void returnToLobby() {
+        GUIManager.getInstance().goToLobby(Client.getInstance().getNickname());
     }
 }

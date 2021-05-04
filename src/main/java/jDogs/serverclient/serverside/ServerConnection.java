@@ -32,7 +32,6 @@ public class ServerConnection {
     private final BlockingQueue<String> sendThisClient;
     private final BlockingQueue<String> receivedFromClient;
     private final BlockingQueue<String> sendPub;
-    private SendFromServer sender;
     private ReceiveFromClient listeningToClient;
     private MessageHandlerServer messageHandlerServer;
     public boolean loggedIn;
@@ -64,14 +63,6 @@ public class ServerConnection {
 
        senderContainer = new SenderContainer(this, socket, sendAll, sendPub,
                sendThisClient);
-/*
-        sender = new SendFromServer(socket, server, sendAll, sendThisClient,
-                sendPub,this);
-        Thread senderThread = new Thread(sender);
-        senderThread.start();
-
- */
-
 
         // detect connection problems thread
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
@@ -133,9 +124,8 @@ public class ServerConnection {
             }
             gameID = null;
         }
-
+        this.senderContainer.kill();
         this.listeningToClient.kill();
-        this.sender.kill();
         this.scheduledExecutorService.shutdown();
         this.messageHandlerServer.kill();
 

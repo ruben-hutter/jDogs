@@ -61,4 +61,13 @@ public class SenderContainer {
             // here: error handling needed, when Server can t be reached, program gets stuck here
         }
     }
+
+    /**
+     * stop all three sender threads
+     */
+    public void kill() {
+        sendClient.kill();
+        sendPub.kill();
+        sendAll.kill();
+    }
 }

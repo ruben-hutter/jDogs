@@ -128,10 +128,6 @@ public class ClientMenuCommand {
                 GUIManager.getInstance().lobbyController.startGameConfirmation();
                 break;
 
-            case "VICT":
-                // TODO send message of a victory with the winner's name/s
-                // TODO if they click ok, terminate game and return lobby
-                break;
 
             default:
                 System.out.println("received from server " + text + ". This command " + command

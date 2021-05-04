@@ -52,7 +52,6 @@ public class ClientGameCommand {
                 break;
 
             case "ROUN":
-                //TODO received hand of cards display in Game GUI
                 clientGame.setCards(text.substring(5));
                 break;
 
@@ -100,10 +99,23 @@ public class ClientGameCommand {
             case "JACK":
                 Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
                 break;
+
             //TODO delete this
             case "BORD":
                 clientGame.printGameState();
                 break;
+
+            case "VICT":
+                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.declareVictory(text.substring(5)));
+                break;
+
+            case "STOP":
+                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
+                break;
+
+            default:
+                System.err.println("Received unknow message from server: " + text);
         }
+
     }
 }
