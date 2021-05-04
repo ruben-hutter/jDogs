@@ -665,7 +665,7 @@ public class GameWindowController implements Initializable {
         jokerClicked = false;
         yourTurn = false;
 
-/*
+
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -680,7 +680,6 @@ public class GameWindowController implements Initializable {
         nameLabel1.setText(Client.getInstance().getNickname());
         setPlayerLabels();
 
- */
 
         // prepare click grids and circles
         fadingGrids = new FadeTransition[7];

@@ -42,8 +42,7 @@ public class LoginController {
             //open AlertWindow here
         } else {
             System.out.println(nickname);
-            //GUIManager.getInstance().goToLobby(nickname);
-            GUIManager.getInstance().startGame();
+            GUIManager.getInstance().goToLobby(nickname);
         }
     }
 }
