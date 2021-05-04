@@ -45,6 +45,10 @@ public enum ServerGameProtocol {
      */
     TURN,
     /**
+     * Stop Game and return to Lobby
+     */
+    STOP,
+    /**
      * Command to provide information to actualize the whole board.
      */
     ANEW;

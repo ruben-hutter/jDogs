@@ -987,7 +987,13 @@ public class GameWindowController implements Initializable {
     public void declareVictory(String winner) {
         Alert victoryAlert = new Alert(AlertType.INFORMATION, "winner is " + winner);
         victoryAlert.showAndWait().filter(response -> response == ButtonType.OK)
-                .ifPresent(response -> GUIManager.getInstance().goToLobby(Client.getInstance()
-                        .getNickname()));
+                .ifPresent(response -> returnToLobby());
+    }
+
+    /**
+     * return to lobby-gui
+     */
+    public void returnToLobby() {
+        GUIManager.getInstance().goToLobby(Client.getInstance().getNickname());
     }
 }

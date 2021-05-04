@@ -356,6 +356,7 @@ public class Server {
 
     /**
      * remove main game after a client disconnected abruptly
+     * and inform clients
      * @param gameID
      * @param nickname
      */
@@ -365,6 +366,7 @@ public class Server {
                 player.getServerConnection().getMessageHandlerServer().returnToLobby();
                 player.sendMessageToClient("INFO shutdown game.Client "
                         + nickname + " just left session.");
+                player.sendMessageToClient("STOP");
             }
         }
         runningGames.remove(getRunningGame(gameID));
