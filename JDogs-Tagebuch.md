@@ -335,7 +335,7 @@ Ruben machte uns darauf aufmerksam, dass die Javadoc-Kommentare vollständig und
 **Nächstes Treffen:** Montag, 03.05.21, 09:00 Uhr
 
 ---
-03.05.2021, 9 Uhr, Johanna*
+03.05.2021, 9 Uhr, Johanna
 
 ### Protokoll#18 - Protokoll
 
@@ -348,4 +348,13 @@ In der heutigen Sitzung besprachen wir die gemachten Änderungen. Es mussten ein
 
 **Nächstes Treffen:** Mittwoch, 05.05.21, 10:15 Uhr
 
+---
 
+04.05.2021, 15:30 Uhr, Johanna
+
+### Protokoll#19 - Protokoll
+
+Ruben und ich trafen uns heute mit Tim, um über die Unit-Tests zu sprechen. Wir hatten das Problem, dass wir nicht genau wussten, wie wir unseren Code testen können, da wir z.B. den Status des Spielbretts nicht überblicken können und die Player eine ServerConnection verlangen. Tim meinte, wir sollten im RuleCheck die Regelüberprüfung von den Nachrichten, die an die Clients gesendet werden, trennen. Die Methoden im RulesCheck sollten nicht void sein, sondern etwas an ServerGameCommand zurückgeben. Aus dem ServerGameCommand heraus kann dann eine Nachricht an die Clients gesendet werden. Dann könnten wir die Regelüberprüfung isoliert testen. Zudem schlug er vor, das Spielbrett auch auf Serverseite als Array darzustellen, sodass wir jederzeit einen Überblick über das ganze Spielbrett haben und es auch für Testzwecke gezielt manipulieren können. 
+Wir haben uns nun für folgendes Vorgehen entschieden: Aus dem RulesCheck werden alle ServerConnections entfernt. Die Regelüberprüfungsmethoden geben einen Integer-Wert an ServerGameCommand zurück. Wir können das Spielbrett zum Testen herrichten, indem wir die einzelnen Figuren gezielt auf ein Feld setzen. So sollte es möglich sein, Unit-Tests zu schreiben. 
+
+**Nächstes Treffen:** Mittwoch, 05.05.21, 10:15 Uhr
