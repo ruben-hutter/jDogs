@@ -100,10 +100,16 @@ public class ClientGameCommand {
             case "JACK":
                 Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
                 break;
+
             //TODO delete this
             case "BORD":
                 clientGame.printGameState();
                 break;
+
+            case "VICT":
+                // TODO send message of a victory with the winner's name/s
+                // TODO if they click ok, terminate game and return lobby
+                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.declareVictory(text.substring(5)));                break;
         }
     }
 }
