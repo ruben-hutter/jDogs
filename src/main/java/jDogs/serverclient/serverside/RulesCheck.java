@@ -10,20 +10,17 @@ import org.apache.logging.log4j.Logger;
 public class RulesCheck {
 
     private static final Logger logger = LogManager.getLogger(RulesCheck.class);
-    private final ServerConnection serverConnection;
     private String cardToEliminate;
-    private Alliance_4 alliance4;
-    private GameState gameState;
-    private MainGame mainGame;
-    private boolean teamMode;
+    private final GameState gameState;
+    private final MainGame mainGame;
+    private final boolean teamMode;
     RulesCheckHelper rulesCheckHelper;
 
-    public RulesCheck(ServerConnection serverConnection, MainGame mainGame) {
-        this.serverConnection = serverConnection;
+    public RulesCheck(MainGame mainGame) {
         this.mainGame = mainGame;
         this.gameState = mainGame.getGameState();
         this.teamMode = mainGame.isTeamMode();
-        rulesCheckHelper = new RulesCheckHelper(mainGame, serverConnection);
+        rulesCheckHelper = new RulesCheckHelper(mainGame);
     }
 
     /**
@@ -65,8 +62,9 @@ public class RulesCheck {
      * if somebody is eliminated by the action
      * @param completeMove card piece destination
      * @param nickname name of player
+     * @return 0 if move is done correctly, x for 0 < x if move not possible
      */
-    protected void checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
+    protected int checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
         if (completeMove.length() == 15) {
             String card = null;
             int pieceID = -1;
@@ -77,7 +75,7 @@ public class RulesCheck {
             boolean hasMoved = false;
             int startingPosition = -1;
             Player ownPlayer = null;
-            int teamID = -1;
+            int ownTeamID = -1;
             try {
                 card = completeMove.substring(0, 4);
                 String alliance = completeMove.substring(5, 9);
@@ -86,12 +84,10 @@ public class RulesCheck {
                 newPosition2 = Integer.parseInt(completeMove.substring(13));
 
                 if (newPosition1.equals("A")) {
-                    serverConnection.sendToClient("INFO You can't move a piece in home.");
-                    serverConnection.sendToClient("TURN");
-                    return;
+                    return 1;
                 }
 
-                alliance4 = rulesCheckHelper.convertAlliance(alliance);
+                Alliance_4 alliance4 = rulesCheckHelper.convertAlliance(alliance);
 
                 // gets all the actual player infos
                 PlayersActualInfo playersActualInfo = rulesCheckHelper.getPlayerInfo(pieceID,
@@ -101,70 +97,58 @@ public class RulesCheck {
                 actualPosition2 = playersActualInfo.getActualPosition2();
                 hasMoved = playersActualInfo.getHasMoved();
                 startingPosition = playersActualInfo.getStartingPosition();
-                teamID = playersActualInfo.getTeamID();
+                ownTeamID = playersActualInfo.getTeamID();
 
             } catch (Exception e) {
-                serverConnection.sendToClient("INFO Format exception in checkMove");
-                serverConnection.sendToClient("TURN");
-                return;
+                return 2;
             }
 
             // prevent players from moving with others pieces
             Player nowPlaying = gameState.getPlayer(nickname);
-            if (teamID < 0) {
-                if (ownPlayer != nowPlaying) {
-                    serverConnection.sendToClient("INFO You cannot move this color");
-                    serverConnection.sendToClient("TURN");
-                    return;
+            if (teamMode) {
+                if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
+                        && ownTeamID != nowPlaying.getTeamID())) {
+                    return 3;
                 }
             } else {
-                if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
-                        && ownPlayer.getTeamID() != nowPlaying.getTeamID())) {
-                    serverConnection.sendToClient("INFO Check your move's validity");
-                    serverConnection.sendToClient("TURN");
-                    return;
+                if (ownPlayer != nowPlaying) {
+                    return 4;
                 }
             }
 
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
                     newPosition2, startingPosition, hasMoved, ownPlayer, pieceID, rulesCheckHelper)) {
-                serverConnection.sendToClient("INFO Check your move's validity");
-                serverConnection.sendToClient("TURN");
-                return;
+                return 5;
             }
 
             // if move passes an occupied starting position, and that piece haven't moved
             assert actualPosition1 != null;
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
                     ownPlayer, rulesCheckHelper)) {
-                serverConnection.sendToClient("INFO Someone blocks you");
-                serverConnection.sendToClient("TURN");
-                return;
+                return 6;
             }
 
             // check if there is a piece on destination
             if (!rulesCheckHelper.checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
-                serverConnection.sendToClient("INFO You eliminate yourself!");
-                serverConnection.sendToClient("TURN");
-                return;
+                return 7;
             }
 
             rulesCheckHelper.updateGame(nickname, mainGame, cardToEliminate);
 
         } else {
-            serverConnection.sendToClient("INFO Entered command does`t fit the length(15) for"
-                    + "checkMove()");
-            serverConnection.sendToClient("TURN");
+            return 8;
         }
+        return 0;
     }
 
     /**
      * Checks move when card JACK is played
      * @param twoPieces pieces to switch position
      * @param nickname players name
+     * @return 0 if move is done correctly, x for 0 < x if move not possible
      */
-    protected void checkMoveJack(String twoPieces, String nickname) { // JACK YELO-1 BLUE-2
+    protected int checkMoveJack(String twoPieces, String nickname) { // JACK YELO-1 BLUE-2
         try {
             if (twoPieces.length() == 18) {
                 String ownAlliance = twoPieces.substring(5, 9);
@@ -198,18 +182,14 @@ public class RulesCheck {
                 }
                 // prevent players from moving with others pieces
                 Player nowPlaying = gameState.getPlayer(nickname);
-                if (ownTeamID < 0) {
-                    if (ownPlayer != nowPlaying) {
-                        serverConnection.sendToClient("INFO You cannot move this color");
-                        serverConnection.sendToClient("TURN");
-                        return;
+                if (teamMode) {
+                    if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer !=
+                            nowPlaying && ownTeamID != nowPlaying.getTeamID())) {
+                        return 2;
                     }
                 } else {
-                    if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
-                            && ownPlayer.getTeamID() != nowPlaying.getTeamID())) {
-                        serverConnection.sendToClient("INFO You cannot move this color");
-                        serverConnection.sendToClient("TURN");
-                        return;
+                    if (ownPlayer != nowPlaying) {
+                        return 1;
                     }
                 }
 
@@ -218,8 +198,7 @@ public class RulesCheck {
                 if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
                         || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
                         || !otherHasMoved) {
-                    serverConnection.sendToClient("INFO You can't switch this pieces!");
-                    serverConnection.sendToClient("TURN");
+                    return 3;
                 } else {
                     rulesCheckHelper.simpleMove(ownPlayer, ownPieceID, otherActualPosition1,
                             otherActualPosition2);
@@ -230,18 +209,18 @@ public class RulesCheck {
                 }
             }
         } catch (Exception e) {
-            serverConnection.sendToClient("INFO wrong format for jack");
-            serverConnection.sendToClient("TURN");
+            return 4;
         }
+        return 0;
     }
 
     /**
      * Checks move when card SEVE is played
      * @param completeMove given move
      * @param nickname player's name
+     * @return 0 if move is done correctly, x for 0 < x if move not possible
      */
-    protected void checkMoveSeven(String completeMove,
-            String nickname) { // SEVE 2 YELO-1 B20 GREN-2 C01
+    protected int checkMoveSeven(String completeMove, String nickname) {
         try {
             int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
             int startIndex = 7;
@@ -253,22 +232,16 @@ public class RulesCheck {
                 moveValue = checkSingleSeven(completeMove.substring(startIndex, startIndex + 10),
                         nickname, rulesCheckHelper);
                 if (moveValue < 0) {
-                    serverConnection.sendToClient("INFO At least one invalid destination or piece!");
-                    serverConnection.sendToClient("TURN");
-                    return;
+                    return 1;
                 }
                 countToSeven += moveValue;
                 if (countToSeven > 7) {
-                    serverConnection.sendToClient("INFO You moved more than 7!");
-                    serverConnection.sendToClient("TURN");
-                    return;
+                    return 2;
                 }
                 singleEliminations = piecesOnPath(completeMove.substring(startIndex,
                         startIndex + 10), rulesCheckHelper);
                 if (singleEliminations == null) {
-                    serverConnection.sendToClient("INFO You can't jump over your own pieces!");
-                    serverConnection.sendToClient("TURN");
-                    return;
+                    return 3;
                 }
                 piecesToEliminate.addAll(singleEliminations);
                 startIndex += 11;
@@ -298,13 +271,12 @@ public class RulesCheck {
                 rulesCheckHelper.updateGame(nickname, mainGame, cardToEliminate);
 
             } else {
-                serverConnection.sendToClient("INFO You don't move a total of 7!");
-                serverConnection.sendToClient("TURN");
+                return 4;
             }
         } catch (Exception e) {
-            serverConnection.sendToClient("INFO wrong format for seven");
-            serverConnection.sendToClient("TURN");
+            return 5;
         }
+        return 0;
     }
 
     /**
@@ -323,7 +295,7 @@ public class RulesCheck {
             int actualPosition2 = -1;
             boolean hasMoved = false;
             int startingPosition = -1;
-            int teamID = -1;
+            int ownTeamID = -1;
             Player ownPlayer = null;
             Alliance_4 alliance4 = rulesCheckHelper.convertAlliance(alliance);
 
@@ -334,16 +306,16 @@ public class RulesCheck {
             actualPosition2 = playersActualInfo.getActualPosition2();
             hasMoved = playersActualInfo.getHasMoved();
             startingPosition = playersActualInfo.getStartingPosition();
-            teamID = playersActualInfo.getTeamID();
+            ownTeamID = playersActualInfo.getTeamID();
 
             // checks if pieces are own or from team
             Player nowPlaying = gameState.getPlayer(nickname);
-            if (teamID < 0) {
-                if (ownPlayer != nowPlaying) {
+            if (teamMode) {
+                if (ownPlayer != nowPlaying && ownTeamID != nowPlaying.getTeamID()) {
                     return -1;
                 }
             } else {
-                if (ownPlayer != nowPlaying && ownPlayer.getTeamID() != nowPlaying.getTeamID()) {
+                if (ownPlayer != nowPlaying) {
                     return -1;
                 }
             }
@@ -513,7 +485,6 @@ public class RulesCheck {
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
-                    serverConnection.sendToClient("INFO You can't jump over your own pieces!");
                     return false;
                 }
             }
@@ -543,8 +514,6 @@ public class RulesCheck {
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
-                    serverConnection.sendToClient("INFO You can't jump over your own pieces!");
-                    serverConnection.sendToClient("TURN");
                     return false;
                 }
             }

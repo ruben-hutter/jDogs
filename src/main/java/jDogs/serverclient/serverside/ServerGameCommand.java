@@ -78,15 +78,99 @@ public class ServerGameCommand {
 
                     // special cases (move command syntax different from normal)
                     String card = toCheckMove.substring(0, 4);
+                    int returnValue;
                     switch (card) {
                         case "SEVE":
-                            rulesCheck.checkMoveSeven(toCheckMove, serverConnection.getNickname());
+                            returnValue = rulesCheck.checkMoveSeven(toCheckMove, serverConnection.
+                                    getNickname());
+                            switch (returnValue) {
+                                case 1:
+                                    serverConnection.sendToClient("INFO At least one invalid"
+                                            + "destination or piece!");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 2:
+                                    serverConnection.sendToClient("INFO You moved more than 7!");
+                                    serverConnection.sendToClient("TURN");
+                                case 3:
+                                    serverConnection.sendToClient("INFO You can't jump over your own"
+                                            + "pieces!");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 4:
+                                    serverConnection.sendToClient("INFO You don't move a total of 7!");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 5:
+                                    serverConnection.sendToClient("INFO wrong format for seven");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                            }
                             break;
                         case "JACK":
-                            rulesCheck.checkMoveJack(toCheckMove, serverConnection.getNickname());
+                            returnValue = rulesCheck.checkMoveJack(toCheckMove, serverConnection.
+                                    getNickname());
+                            switch (returnValue) {
+                                case 1:
+                                    serverConnection.sendToClient("INFO You cannot move this color");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 2:
+                                    serverConnection.sendToClient("INFO You have not finished");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 3:
+                                    serverConnection.sendToClient("INFO You can't switch this"
+                                            + "pieces!");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 4:
+                                    serverConnection.sendToClient("INFO wrong format for jack");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                            }
                             break;
                         default:
-                            rulesCheck.checkMove(toCheckMove, serverConnection.getNickname());
+                            returnValue = rulesCheck.checkMove(toCheckMove, serverConnection.
+                                    getNickname());
+                            switch(returnValue) {
+                                case 1:
+                                    serverConnection.sendToClient("INFO You can't move a piece in"
+                                            + "home");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 2:
+                                    serverConnection.sendToClient("INFO Format exception in"
+                                            + "checkMove");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 3:
+                                    serverConnection.sendToClient("INFO You have not finished");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 4:
+                                    serverConnection.sendToClient("INFO You cannot move this color");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 5:
+                                    serverConnection.sendToClient("INFO Check your move's validity");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 6:
+                                    serverConnection.sendToClient("INFO Someone blocks you");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 7:
+                                    serverConnection.sendToClient("INFO You eliminate yourself!");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                                case 8:
+                                    serverConnection.sendToClient("INFO Entered command does`t fit"
+                                            + "the length(15) for checkMove()");
+                                    serverConnection.sendToClient("TURN");
+                                    break;
+                            }
+                            break;
                     }
                 }
                 break;
@@ -110,6 +194,6 @@ public class ServerGameCommand {
     public void setMainGame(String mainGameID) {
         this.mainGameID = mainGameID;
         this.mainGame = Server.getInstance().getRunningGame(mainGameID);
-        this.rulesCheck = new RulesCheck(serverConnection, mainGame);
+        this.rulesCheck = new RulesCheck(mainGame);
     }
 }
