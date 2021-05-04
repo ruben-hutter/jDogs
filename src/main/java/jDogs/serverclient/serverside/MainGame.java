@@ -42,6 +42,7 @@ public class MainGame {
         setUp();
         startGameRhythm();
     }
+
     /**
      * sets up the main game after calling the constructor
      */
@@ -54,6 +55,7 @@ public class MainGame {
             logger.debug("Player   ServerConnection " + player.getServerConnection());
         }
     }
+
 
     /**
      * String of participants to send to clients
@@ -86,6 +88,7 @@ public class MainGame {
         dealOutCards(numbDealOut);
         nextTurn();
     }
+
 
     /**
      * this method sets a random beginner to play the game in a random order
@@ -150,6 +153,8 @@ public class MainGame {
         }
         sendMessageToParticipants("HAND");
     }
+
+
 
     /**
      *get deck for this round (6 hands distributed)

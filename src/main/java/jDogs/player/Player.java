@@ -36,6 +36,13 @@ public class Player {
         finished = false;
     }
 
+    public Player(String playerName) {
+        this.playerName = playerName;
+        allowedToPlay = false;
+        teamID = -1;
+        finished = false;
+    }
+
     /**
      * Player instance for client
      * @param playerName name of player
