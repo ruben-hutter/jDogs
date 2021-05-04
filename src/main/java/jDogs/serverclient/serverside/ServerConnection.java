@@ -1,6 +1,5 @@
 package jDogs.serverclient.serverside;
 
-
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
 import java.net.Socket;

@@ -80,16 +80,13 @@ public class ServerGameCommand {
                     String card = toCheckMove.substring(0, 4);
                     switch (card) {
                         case "SEVE":
-                            rulesCheck.checkMoveSeven(toCheckMove,
-                                    serverConnection.getNickname());
+                            rulesCheck.checkMoveSeven(toCheckMove, serverConnection.getNickname());
                             break;
                         case "JACK":
-                            rulesCheck.checkMoveJack(toCheckMove, mainGame,
-                                    serverConnection.getNickname());
+                            rulesCheck.checkMoveJack(toCheckMove, serverConnection.getNickname());
                             break;
                         default:
-                            rulesCheck.checkMove(toCheckMove,
-                                    serverConnection.getNickname());
+                            rulesCheck.checkMove(toCheckMove, serverConnection.getNickname());
                     }
                 }
                 break;
@@ -109,10 +106,10 @@ public class ServerGameCommand {
                 break;
         }
     }
+
     public void setMainGame(String mainGameID) {
         this.mainGameID = mainGameID;
         this.mainGame = Server.getInstance().getRunningGame(mainGameID);
         this.rulesCheck = new RulesCheck(serverConnection, mainGame);
-
     }
 }

@@ -4,7 +4,6 @@ import jDogs.Alliance_4;
 import jDogs.board.Board;
 import jDogs.board.Tile;
 import jDogs.serverclient.serverside.ServerConnection;
-import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
@@ -22,6 +21,7 @@ public class Player {
     private ServerConnection serverConnection;
     private int teamID;
     private boolean allowedToPlay;
+    private boolean finished;
 
     /**
      * Player instance for server
@@ -31,8 +31,9 @@ public class Player {
     public Player(String playerName, ServerConnection serverConnection) {
         this.playerName = playerName;
         this.serverConnection = serverConnection;
-        this.allowedToPlay = false;
+        allowedToPlay = false;
         teamID = -1;
+        finished = false;
     }
 
     /**
@@ -233,11 +234,35 @@ public class Player {
     }
 
     /**
+     * Gives back if the player has al the pieces in heaven.
+     * @return true if finished, false if not
+     */
+    public boolean getFinished() {
+        return finished;
+    }
+
+    /**
+     * Checks if all the pieces are in heaven
+     * and if so, change finished state to true.
+     */
+    public void checkFinished() {
+        int count = 0;
+        for (Piece piece : pieces) {
+            if (piece.getPositionServer1().equals("C")) {
+                count++;
+            }
+        }
+        if (count == 4) {
+            finished = true;
+        }
+    }
+
+    /**
      * Returns if the player is or not allowed to play
      * @return true if allowed
      */
     public boolean isAllowedToPlay() {
-        return this.allowedToPlay;
+        return allowedToPlay;
     }
 
     /**
