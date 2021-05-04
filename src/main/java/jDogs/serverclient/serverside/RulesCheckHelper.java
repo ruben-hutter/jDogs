@@ -11,11 +11,9 @@ public class RulesCheckHelper {
 
     private static final Logger logger = LogManager.getLogger(RulesCheckHelper.class);
     private final MainGame mainGame;
-    private final ServerConnection serverConnection;
 
-    public RulesCheckHelper(MainGame mainGame, ServerConnection serverConnection) {
+    public RulesCheckHelper(MainGame mainGame) {
         this.mainGame = mainGame;
-        this.serverConnection = serverConnection;
     }
 
     /**
@@ -39,9 +37,7 @@ public class RulesCheckHelper {
                 alliance = Alliance_4.GREEN;
                 break;
             default:
-                // if command piece not correct, return to client
-                serverConnection.sendToClient("INFO Piece isn't entered correctly");
-                return null;
+                throw new IllegalStateException("Unexpected value: " + allianceString);
         }
         return alliance;
     }
@@ -114,7 +110,6 @@ public class RulesCheckHelper {
                 possibleValues = new int[]{13};
                 break;
             default:
-                serverConnection.sendToClient("Invalid card!");
                 return null;
         }
         return possibleValues;
