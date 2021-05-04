@@ -397,7 +397,7 @@ public class RulesCheck {
      * Helper method for pieces on path check.
      * @param actualPosition2 piece's position 0-63
      * @param destinationOnTrack last position on track
-     * @param ownPlayer player moving
+     * @param ownPlayer owner of this marble
      * @param piecesToEliminate array with possible pieces that are eliminated by the move
      * @return true if invalid move, false if not
      */
@@ -428,10 +428,13 @@ public class RulesCheck {
      * @param card played card
      * @param actualPosition1 A, B or C
      * @param actualPosition2 int between 0-3 or on track 0-63
-     * @param newPosition1 A, B or C
+     * @param newPosition1 B or C
      * @param newPosition2 int between 0-3 or on track 0-63
      * @param startingPosition player's startingPosition (0, 16, ...)
      * @param hasMoved false if player is or has just left home
+     * @param ownPlayer owner of this marble
+     * @param pieceID int between 1-4
+     * @param rulesCheckHelper helper object for this class
      * @return false if card can't correspond with destination
      */
     private boolean checkCardWithNewPosition(String card, String actualPosition1,
@@ -531,6 +534,7 @@ public class RulesCheck {
      * @param newPosition1 A, B or C
      * @param newPosition2 int between 0-3 or 0-63 on track
      * @param player this player
+     * @param rulesCheckHelper helper object for this class
      * @return true if you are blocked, false if not
      */
     private boolean checkForBlock(String card, String actualPosition1, int actualPosition2,
