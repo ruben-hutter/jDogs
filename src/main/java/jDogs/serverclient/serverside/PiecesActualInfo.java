@@ -5,7 +5,7 @@ import jDogs.player.Player;
 /**
  * Saves all the infos needed to check a move in RulesCheck
  */
-public class PlayersActualInfo {
+public class PiecesActualInfo {
 
     private final Player player;
     private final String actualPosition1;
@@ -14,7 +14,7 @@ public class PlayersActualInfo {
     private final int startingPosition;
     private final int teamID;
 
-    PlayersActualInfo(Player player, String actualPosition1, int actualPosition2, boolean hasMoved,
+    PiecesActualInfo(Player player, String actualPosition1, int actualPosition2, boolean hasMoved,
             int startingPosition, int teamID) {
         this.player = player;
         this.actualPosition1 = actualPosition1;

@@ -81,16 +81,16 @@ public class RulesCheck {
                 String alliance = completeMove.substring(5, 9);
                 Alliance_4 alliance4 = rulesCheckHelper.convertAlliance(alliance);
                 pieceID = Integer.parseInt(completeMove.substring(10, 11));
-                PlayersActualInfo playersActualInfo = rulesCheckHelper.getPlayerInfo(pieceID,
+                PiecesActualInfo piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID,
                         alliance4);
                 newPosition1 = completeMove.substring(12, 13);
                 newPosition2 = Integer.parseInt(completeMove.substring(13));
-                ownPlayer = playersActualInfo.getPlayer();
-                actualPosition1 = playersActualInfo.getActualPosition1();
-                actualPosition2 = playersActualInfo.getActualPosition2();
-                hasMoved = playersActualInfo.getHasMoved();
-                startingPosition = playersActualInfo.getStartingPosition();
-                ownTeamID = playersActualInfo.getTeamID();
+                ownPlayer = piecesActualInfo.getPlayer();
+                actualPosition1 = piecesActualInfo.getActualPosition1();
+                actualPosition2 = piecesActualInfo.getActualPosition2();
+                hasMoved = piecesActualInfo.getHasMoved();
+                startingPosition = piecesActualInfo.getStartingPosition();
+                ownTeamID = piecesActualInfo.getTeamID();
 
                 if (newPosition1.equals("A")) {
                     return 1;
@@ -233,22 +233,25 @@ public class RulesCheck {
             boolean hasMoved;
             int startingPosition;
             int ownTeamID;
+            PiecesActualInfo piecesActualInfo;
             ArrayList<Piece> piecesToEliminate = new ArrayList<>();
             ArrayList<Piece> singleEliminations;
+            GameState tempGameState = new GameState(gameState);
             for (int i = 0; i < piecesToMove; i++) {
                 move = completeMove.substring(startIndex, startIndex + 10);
                 alliance = move.substring(0, 4);
                 alliance4 = rulesCheckHelper.convertAlliance(alliance);
                 pieceID = Integer.parseInt(move.substring(5, 6));
-                PlayersActualInfo playersActualInfo = rulesCheckHelper.getPlayerInfo(pieceID, alliance4);
+                piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID, alliance4);
                 newPosition1 = move.substring(7, 8);
                 newPosition2 = Integer.parseInt(move.substring(8));
-                ownPlayer = playersActualInfo.getPlayer();
-                actualPosition1 = playersActualInfo.getActualPosition1();
-                actualPosition2 = playersActualInfo.getActualPosition2();
-                hasMoved = playersActualInfo.getHasMoved();
-                startingPosition = playersActualInfo.getStartingPosition();
-                ownTeamID = playersActualInfo.getTeamID();
+                ownPlayer = piecesActualInfo.getPlayer();
+                actualPosition1 = piecesActualInfo.getActualPosition1();
+                actualPosition2 = piecesActualInfo.getActualPosition2();
+                hasMoved = piecesActualInfo.getHasMoved();
+                startingPosition = piecesActualInfo.getStartingPosition();
+                ownTeamID = piecesActualInfo.getTeamID();
+
                 moveValue = checkSingleSeven(nickname, newPosition1, newPosition2, ownPlayer,
                         actualPosition1, actualPosition2, hasMoved, startingPosition, ownTeamID);
                 if (moveValue < 0) {
@@ -270,14 +273,17 @@ public class RulesCheck {
             // if you move a total of 7 correctly
             if (countToSeven == 7) {
                 startIndex = 7;
-                Player player = gameState.getPlayer(nickname);
                 for (int i = 0; i < piecesToMove; i++) {
                     move = completeMove.substring(startIndex, startIndex + 10);
+                    alliance = move.substring(0, 4);
+                    alliance4 = rulesCheckHelper.convertAlliance(alliance);
                     pieceID = Integer.parseInt(move.substring(5, 6));
+                    piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID, alliance4);
                     newPosition1 = move.substring(7, 8);
                     newPosition2 = Integer.parseInt(move.substring(8));
+                    ownPlayer = piecesActualInfo.getPlayer();
 
-                    rulesCheckHelper.simpleMove(player, pieceID, newPosition1, newPosition2);
+                    rulesCheckHelper.simpleMove(ownPlayer, pieceID, newPosition1, newPosition2);
                     startIndex += 11;
                 }
                 for (Piece piece : piecesToEliminate) {
@@ -362,7 +368,6 @@ public class RulesCheck {
     private ArrayList<Piece> piecesOnPath(String newPosition1, int newPosition2, Player ownPlayer,
             String actualPosition1, int actualPosition2, int startingPosition, int pieceID) {
         ArrayList<Piece> piecesToEliminate = new ArrayList<>();
-
         assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // track -> track
@@ -403,6 +408,7 @@ public class RulesCheck {
      */
     private boolean piecesOnPathHelper(int actualPosition2, int destinationOnTrack, Player ownPlayer,
             ArrayList<Piece> piecesToEliminate) {
+        // TODO compare with tempGameState obj
         int difference;
         Piece pieceOnPath;
         difference = Math.floorMod(destinationOnTrack - actualPosition2, 64);

@@ -13,18 +13,27 @@ import java.util.Map;
  */
 public class GameState {
 
-    private Map<String, ArrayList<String>> cards;
+    private final Map<String, ArrayList<String>> cards;
     private ArrayList<Piece> piecesOnTrack;
     private final boolean teamMode;
-    private int numPlayers;
-    private MainGame mainGame;
+    private final MainGame mainGame;
 
     public GameState(MainGame mainGame) {
         this.mainGame = mainGame;
-        this.numPlayers = mainGame.getPlayersArray().length;
-        this.piecesOnTrack = new ArrayList<>();
+        piecesOnTrack = new ArrayList<>();
         teamMode = mainGame.isTeamMode();
-        this.cards = new HashMap<>();
+        cards = new HashMap<>();
+    }
+
+    /**
+     * Copy constructor used to check move SEVE
+     * @param gameState the actual gameState
+     */
+    public GameState(GameState gameState) {
+        cards = gameState.getCards();
+        piecesOnTrack = gameState.getSortedPiecesOnTrack();
+        teamMode = gameState.getTeamMode();
+        mainGame = gameState.getMainGame();
     }
 
     /**
@@ -39,11 +48,20 @@ public class GameState {
         }
     }
 
+    /**
+     * Get pieces that are on track in ascending order
+     * @return arraylist with the track pieces
+     */
     public ArrayList<Piece> getSortedPiecesOnTrack() {
         Collections.sort(piecesOnTrack);
         return piecesOnTrack;
     }
 
+    /**
+     * Checks if a piece is on track (on B)
+     * @param piece given piece
+     * @return true if on track, false if not
+     */
     public boolean isPieceOnTrack(Piece piece) {
         for (Piece p : piecesOnTrack) {
             if (p.getPieceAlliance() == piece.getPieceAlliance()
@@ -54,14 +72,33 @@ public class GameState {
         return false;
     }
 
+    /**
+     * Get team mode
+     * @return true if team mode on, false if single player
+     */
+    public boolean getTeamMode() {
+        return teamMode;
+    }
+
+    /**
+     * Gets the mainGame object
+     * @return mainGame object
+     */
+    public MainGame getMainGame() {
+        return mainGame;
+    }
+
+    /**
+     * Get cards as map of player name and associated cards
+     * @return map with the cards
+     */
     public Map<String, ArrayList<String>> getCards() {
         return cards;
     }
 
     /**
      * Updates ArrayList when a move is done
-     *
-     * @param piece        piece which changes position
+     * @param piece piece which changes position
      * @param newPosition1 A, B or C
      */
     public void updatePiecesOnTrack(Piece piece, String newPosition1) {
@@ -79,7 +116,6 @@ public class GameState {
 
     /**
      * Checks if a given track position is occupied.
-     *
      * @param newPosition2 int between 0-63
      * @return a piece, or null if not occupied
      */
@@ -94,7 +130,6 @@ public class GameState {
 
     /**
      * Gives a player for a given nickname.
-     *
      * @param nickname player's name
      * @return a player or null if it doesn't exist
      */
@@ -107,24 +142,12 @@ public class GameState {
         return null;
     }
 
+    /**
+     * Gets all the players of the game
+     * @return an array with the players
+     */
     public Player[] getPlayers() {
         return mainGame.getPlayersArray();
-    }
-
-    /**
-     * Gives the players of the game.
-     * @return an list with the players
-     */
-    public Player[] getPlayersState () {
-        return mainGame.getPlayersArray();
-    }
-
-    /**
-     * Gives the mode of the game
-     * @return true if team mode, false if not
-     */
-    public boolean isTeamMode () {
-        return teamMode;
     }
 
     /**

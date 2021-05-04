@@ -3,7 +3,6 @@ package jDogs.serverclient.serverside;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.player.Player;
-import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -119,9 +118,10 @@ public class RulesCheckHelper {
      * Takes all the infos to check a move and saves it to
      * a PlayersActualInfo object.
      * @param pieceID int between 1-4
+     * @param alliance4 alliance of piece
      * @return an object with all the infos
      */
-    protected PlayersActualInfo getPlayerInfo(int pieceID, Alliance_4 alliance4) {
+    protected PiecesActualInfo getPieceInfo(int pieceID, Alliance_4 alliance4) {
         Player ownPlayer = null;
         String actualPosition1 = null;
         int actualPosition2 = -1;
@@ -142,16 +142,8 @@ public class RulesCheckHelper {
                 teamID = player.getTeamID();
             }
         }
-        return new PlayersActualInfo(ownPlayer, actualPosition1, actualPosition2, hasMoved,
+        return new PiecesActualInfo(ownPlayer, actualPosition1, actualPosition2, hasMoved,
                 startingPosition, teamID);
-    }
-
-    /**
-     * Checks if a player can move the chosen color
-     * @return true if the move is ok, false if not
-     */
-    protected boolean checkMovedAlliance() {
-        return false;
     }
 
     /**
@@ -253,6 +245,7 @@ public class RulesCheckHelper {
      * gives to the clients the new board state.
      * @param nickname player's name
      * @param mainGame were the game has been started
+     * @param cardToEliminate the played card to eliminate from player's hand
      */
     protected void updateGame(String nickname, MainGame mainGame, String cardToEliminate) {
         mainGame.sendMessageToParticipants("BORD");
