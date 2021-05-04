@@ -302,7 +302,6 @@ public class GameWindowController implements Initializable {
                 totalSum = 2;
             }
             checkJokeCase();
-
         }
     }
 
@@ -702,8 +701,9 @@ public class GameWindowController implements Initializable {
 
         labelPlayer0.setText(ClientGame.getInstance().getPlayerNames()[0]);
         labelPlayer1.setText(ClientGame.getInstance().getPlayerNames()[1]);
-        labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[2]);
-        labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[3]);
+        labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[2]);
+        labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[3]);
+
     }
 
     /**
@@ -767,6 +767,7 @@ public class GameWindowController implements Initializable {
                 cardArray[i] = null;
                 setCardBlended(i);
                 System.out.println("card " + card + " was removed from deck");
+                break;
             }
         }
     }

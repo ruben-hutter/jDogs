@@ -41,7 +41,6 @@ public class MainGame {
         setUp();
         startGameRhythm();
     }
-
     /**
      * sets up the main game after calling the constructor
      */
