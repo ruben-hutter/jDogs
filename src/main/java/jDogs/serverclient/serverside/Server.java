@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import javax.imageio.stream.ImageInputStreamImpl;
 
 /**
  * Server waits for new clients trying to connect to server,
@@ -51,7 +52,6 @@ public class Server {
     private ArrayList<OpenGameFile> allOpenGames = new ArrayList<>();
 
 
-
     public static void main(String[] args) {
         new Server(args);
     }
@@ -68,7 +68,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             // runs as long as the server is activated
-            while(running) {
+            while (running) {
                 Socket socket = serverSocket.accept();
                 ServerConnection sc = new ServerConnection(socket, this);
                 sc.createConnection();
@@ -89,6 +89,7 @@ public class Server {
 
     /**
      * Checks if a nickname is valid, if it doesn't already exist
+     *
      * @param newNick a given nickname String
      * @return true if it is a valid nickname
      */
@@ -109,14 +110,16 @@ public class Server {
     }
 
     /**
-     * this methlod is needed to send messages to clients which are connected by public lobbies or by a common game
-     * @param nickname a new nickname of a client
+     * this methlod is needed to send messages to clients which are connected by public lobbies or
+     * by a common game
+     *
+     * @param nickname         a new nickname of a client
      * @param serverConnection is the sC of this client
      */
     public void addNickname(String nickname, ServerConnection serverConnection) {
 
         //scMap
-        serverConnectionMap.put(nickname,serverConnection);
+        serverConnectionMap.put(nickname, serverConnection);
         // add to lobbyGuests
         publicLobbyGuests.add(nickname);
 
@@ -139,10 +142,12 @@ public class Server {
 
     /**
      * start game by creating mainGame and delete openGame file
+     *
      * @param openGameFile extract necessary data and delete it
      */
     public void startGame(OpenGameFile openGameFile) {
-        MainGame mainGame = new MainGame(openGameFile.getPlayersArray(), openGameFile.getNameId(), openGameFile.isTeamMode());
+        MainGame mainGame = new MainGame(openGameFile.getPlayersArray(), openGameFile.getNameId(),
+                openGameFile.isTeamMode());
         // add running game
         runningGames.add(mainGame);
         // remove open game file
@@ -163,20 +168,20 @@ public class Server {
     }
 
     /**
-     *
      * @param openGameFile
-     * @return list of server connection objects of clients who participate in this opened game or started game
+     * @return list of server connection objects of clients who participate in this opened game or
+     * started game
      */
     public ArrayList<ServerConnection> getServerConnectionsArray(OpenGameFile openGameFile) {
 
         ArrayList<ServerConnection> aList = new ArrayList<>();
         System.out.println(openGameFile.getParticipants());
         String[] participantArray = openGameFile.getParticipantsArray();
-       for (int i = 0; i < openGameFile.getNumberOfParticipants(); i++) {
-           System.out.println(i);
-           ServerConnection sc = serverConnectionMap.get(participantArray[i]);
-           aList.add(sc);
-           System.out.println(i);
+        for (int i = 0; i < openGameFile.getNumberOfParticipants(); i++) {
+            System.out.println(i);
+            ServerConnection sc = serverConnectionMap.get(participantArray[i]);
+            aList.add(sc);
+            System.out.println(i);
         }
         return aList;
     }
@@ -203,6 +208,7 @@ public class Server {
 
     /**
      * sends message to clients wherever they are
+     *
      * @param message
      */
     public void sendMessageToAll(String message) {
@@ -212,7 +218,6 @@ public class Server {
     }
 
     /**
-     *
      * @param message to clients in public lobby explicitly
      */
     public void sendMessageToPublicLobby(String message) {
@@ -250,9 +255,9 @@ public class Server {
     }
 
     /**
-     * add an "openGameFile" to openGames
-     * and add name to list of games
-     * that did not finish(prevent name duplicates)
+     * add an "openGameFile" to openGames and add name to list of games that did not finish(prevent
+     * name duplicates)
+     *
      * @param openGameFile
      */
     public void addOpenGame(OpenGameFile openGameFile) {
@@ -262,13 +267,15 @@ public class Server {
     }
 
     /**
-     * remove an "openGame" from openGameList and from names
-     * (keep in mind: messagehandlerstate is not changed here)
+     * remove an "openGame" from openGameList and from names (keep in mind: messagehandlerstate is
+     * not changed here)
+     *
      * @param openGameFileID
      */
     public synchronized void removeOpenGame(String openGameFileID) {
         // send INFO message
-        getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO deleted this open game now");
+        getOpenGameFile(openGameFileID)
+                .sendMessageToParticipants("INFO deleted this open game now");
 
         // send message to public
         // TODO for DOGA send only nameID not all data
@@ -287,10 +294,11 @@ public class Server {
 
     /**
      * returns the openGameFile with the same name
+     *
      * @param openGameID name of game
      * @return openGameFile
      */
-    public OpenGameFile getOpenGameFile (String openGameID) {
+    public OpenGameFile getOpenGameFile(String openGameID) {
         for (OpenGameFile openGameFile : allOpenGames) {
             if (openGameFile.getNameId().equals(openGameID)) {
                 return openGameFile;
@@ -301,6 +309,7 @@ public class Server {
 
     /**
      * returns the list of all open games
+     *
      * @return not started games
      */
     public ArrayList<OpenGameFile> getOpenGameList() {
@@ -309,6 +318,7 @@ public class Server {
 
     /**
      * get all names of not finished games
+     *
      * @return list with all names
      */
     public ArrayList<String> getAllGamesNotFinishedNames() {
@@ -317,6 +327,7 @@ public class Server {
 
     /**
      * get the main game running by name
+     *
      * @param mainGameID a string
      * @return mainGame container
      */
@@ -331,6 +342,7 @@ public class Server {
 
     /**
      * delete this mainGame
+     *
      * @param mainGame
      */
     public void deleteMainGame(MainGame mainGame) {
@@ -339,9 +351,9 @@ public class Server {
     }
 
     /**
-     * remove open game when a client disconnected abruptly and is host
-     * else
-     * just remove this participant
+     * remove open game when a client disconnected abruptly and is host else just remove this
+     * participant
+     *
      * @param gameID openGameId
      */
     public synchronized void errorRemoveOpenGame(String gameID, String nickname) {
@@ -358,8 +370,8 @@ public class Server {
     }
 
     /**
-     * remove main game after a client disconnected abruptly
-     * and inform clients
+     * remove main game after a client disconnected abruptly and inform clients
+     *
      * @param gameID
      * @param nickname
      */
@@ -377,15 +389,86 @@ public class Server {
 
     /**
      * stores user data after victory
+     *
      * @param gameID
      */
     public void storeGame(String gameID, String winner) {
         MainGame mainGame = getRunningGame(gameID);
+        //TODO get winner-names as String from GameState
+        String name = "mainGame.getGameState().getWinner()";
 
+        // if 2 winners
+        if (mainGame.isTeamMode()) {
+            int separator = -1;
+            for (int i = 0; i < name.length(); i++) {
+                if (name.charAt(i) == ',') {
+                    separator = i;
+                    break;
+                }
+            }
 
+            String winner1 = name.substring(0, separator);
+            String winner2 = name.substring(separator + 1);
+            int count = -1;
 
-        csvWriter.rankList();
-        csvWriter.writeCSV();
+            for (Player player : mainGame.getPlayersArray()) {
+                // check with highScoreList
+                for (SavedUser savedUser : csvWriter.getUsersHighScore()) {
+                    if (savedUser.getName().equals(player.getPlayerName())) {
+                        if (player.getPlayerName().equals(winner1) || player.getPlayerName()
+                                .equals(winner2)) {
+                            savedUser.addVictory();
+                        } else {
+                            savedUser.addDefeat();
+                        }
+                        count = 0;
+                        break;
+                    }
+                }
+                // if username is not in highScoreList: add it here
+                if (count == -1) {
+                    SavedUser savedUser = new SavedUser(player.getPlayerName());
+                    if (player.getPlayerName().equals(winner1) || player.getPlayerName()
+                            .equals(winner2)) {
+                        savedUser.addVictory();
+                    } else {
+                        savedUser.addDefeat();
+                    }
+                    csvWriter.addUser(savedUser);
+                } else {
+                    count = -1;
+                }
+            }
+            //else one winner
+        } else {
+            // check highScoreList
+            int count = -1;
+            Player player = mainGame.getPlayer(winner);
+            for (SavedUser savedUser : csvWriter.getUsersHighScore()) {
+                if (savedUser.getName().equals(player.getPlayerName())) {
+                    if (player.getPlayerName().equals(winner)) {
+                        savedUser.addVictory();
+                    } else {
+                        savedUser.addDefeat();
+                    }
+                    count = 0;
+                    break;
+                }
+            }
+            // if username is not in highScoreList: add it here
+            if (count == -1) {
+                SavedUser savedUser = new SavedUser(player.getPlayerName());
+                if (player.getPlayerName().equals(winner)) {
+                    savedUser.addVictory();
+                } else {
+                    savedUser.addDefeat();
+                }
+                csvWriter.addUser(savedUser);
+            }
 
+            csvWriter.rankList();
+            csvWriter.writeCSV();
+        }
     }
 }
+
