@@ -351,7 +351,7 @@ public class MainGame {
 
     /**
      * this method is used to check the gameID
-     * @return
+     * @return the gameID
      */
     public String getGameId() {
         return nameID;
@@ -369,7 +369,7 @@ public class MainGame {
 
     /**
      * get the gameState of the maingame
-     * @return
+     * @return actual game state
      */
     public GameState getGameState() {
         return gameState;

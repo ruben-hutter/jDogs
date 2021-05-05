@@ -9,7 +9,7 @@ public class VictoryCheck {
      * @return the winning player or null
      */
     protected static Player checkSingleVictory(GameState gameState) {
-        for (Player player : gameState.getPlayersState()) {
+        for (Player player : gameState.getPlayers()) {
             player.checkFinished();
             if (player.getFinished()) {
                 return player;
@@ -25,7 +25,7 @@ public class VictoryCheck {
     protected static int checkTeamVictory(GameState gameState) {
         int countTeam0 = 0;
         int countTeam1 = 0;
-        for (Player player : gameState.getPlayersState()) {
+        for (Player player : gameState.getPlayers()) {
             player.checkFinished();
             if (player.getFinished()) {
                 if (player.getTeamID() == 0) {

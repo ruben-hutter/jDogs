@@ -3,7 +3,6 @@ package jDogs.serverclient.serverside;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.player.Player;
-import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -119,9 +118,11 @@ public class RulesCheckHelper {
      * Takes all the infos to check a move and saves it to
      * a PlayersActualInfo object.
      * @param pieceID int between 1-4
+     * @param alliance4 alliance of piece
+     * @param mainGame object that contains the main game infos
      * @return an object with all the infos
      */
-    protected PlayersActualInfo getPlayerInfo(int pieceID, Alliance_4 alliance4) {
+    protected PiecesActualInfo getPieceInfo(int pieceID, Alliance_4 alliance4, MainGame mainGame) {
         Player ownPlayer = null;
         String actualPosition1 = null;
         int actualPosition2 = -1;
@@ -142,16 +143,63 @@ public class RulesCheckHelper {
                 teamID = player.getTeamID();
             }
         }
-        return new PlayersActualInfo(ownPlayer, actualPosition1, actualPosition2, hasMoved,
+        return new PiecesActualInfo(ownPlayer, actualPosition1, actualPosition2, hasMoved,
                 startingPosition, teamID);
     }
 
     /**
-     * Checks if a player can move the chosen color
-     * @return true if the move is ok, false if not
+     * Make a move on the tempGameState to check SEVE moves
+     * @param player owner of marble
+     * @param pieceID int between 1-4
+     * @param newPosition1 B or C
+     * @param newPosition2 int between 0-63
+     * @param mainGame tempMainGame
      */
-    protected boolean checkMovedAlliance() {
-        return false;
+    protected void simpleMoveSEVE(Player player, int pieceID, String newPosition1, int newPosition2,
+            MainGame mainGame) {
+        Piece piece = player.getPiece(pieceID);
+        String pieceAlliance = convertAlliance(piece.getPieceAlliance());
+
+        // change hasMoved state to true if piece moves for first time on track
+        if (piece.getPositionServer1().equals("B") && !piece.getHasMoved()) {
+            piece.changeHasMoved();
+        }
+
+        // updates piece position server
+        player.changePositionServer(pieceID, newPosition1, newPosition2);
+
+        // updates piecesOnTrack in gameState
+        mainGame.getGameState().updatePiecesOnTrack(piece, newPosition1);
+    }
+
+    /**
+     * Eliminates a piece on the tempGameState to check SEVE moves
+     * @param piece the piece to eliminate
+     * @param mainGame tempMainGame
+     */
+    protected void eliminatePieceSEVE(Piece piece, MainGame mainGame) {
+        int pieceID = piece.getPieceID();
+        String newPosition1 = "A";
+        int newPosition2 = pieceID - 1;
+        piece.setPositionServer(newPosition1, newPosition2);
+        mainGame.getGameState().updatePiecesOnTrack(piece, "A");
+        String pieceAlliance = "";
+        switch(piece.getPieceAlliance()) {
+            case YELLOW:
+                pieceAlliance = "YELO";
+                break;
+            case GREEN:
+                pieceAlliance = "GREN";
+                break;
+            case BLUE:
+                pieceAlliance = "BLUE";
+                break;
+            case RED:
+                pieceAlliance = "REDD";
+                break;
+        }
+        // change hasMoved state to false
+        piece.changeHasMoved();
     }
 
     /**
@@ -252,9 +300,9 @@ public class RulesCheckHelper {
      * sends to the client the updated hand,
      * gives to the clients the new board state.
      * @param nickname player's name
-     * @param mainGame were the game has been started
+     * @param cardToEliminate the played card to eliminate from player's hand
      */
-    protected void updateGame(String nickname, MainGame mainGame, String cardToEliminate) {
+    protected void updateGame(String nickname, String cardToEliminate) {
         mainGame.sendMessageToParticipants("BORD");
         //eliminate card
         mainGame.getGameState().getCards().get(nickname).remove(cardToEliminate);
