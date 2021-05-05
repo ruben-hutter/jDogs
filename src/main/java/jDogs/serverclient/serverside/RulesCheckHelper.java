@@ -204,45 +204,52 @@ public class RulesCheckHelper {
 
     /**
      * Checks if on the destination is already a piece
-     * @param player this player
+     * @param player owner of marble
      * @param pieceID int 1-4
      * @param newPosition1 A, B or C
      * @param newPosition2 int between 0-3 or 0-63 on track
+     * @param updateClient an object that contains a return value and, if the move is legal,
+     * the moves and elimination moves to communicate to the clients
      * @return false if you eliminate yourself
      */
     protected boolean checkWhichMove(Player player, int pieceID, String newPosition1,
-            int newPosition2) {
+            int newPosition2, UpdateClient updateClient) {
         Piece pieceToEliminate = mainGame.getGameState().trackPositionOccupied(newPosition2);
         if (pieceToEliminate != null) {
-            attackMove(player, pieceID, newPosition1, newPosition2, pieceToEliminate);
+            attackMove(player, pieceID, newPosition1, newPosition2, pieceToEliminate, updateClient);
         } else {
-            simpleMove(player, pieceID, newPosition1, newPosition2);
+            simpleMove(player, pieceID, newPosition1, newPosition2, updateClient);
         }
         return true;
     }
 
     /**
      * Move a piece and eliminate enemy
-     * @param player player moving pieces
+     * @param player owner of marble
      * @param pieceID 1-4
      * @param newPosition1 B or C
      * @param newPosition2 0-63
      * @param toEliminate the eliminated piece
+     * @param updateClient an object that contains a return value and, if the move is legal,
+     * the moves and elimination moves to communicate to the clients
      */
     protected void attackMove(Player player, int pieceID, String newPosition1, int newPosition2,
-            Piece toEliminate) {
-        simpleMove(player, pieceID, newPosition1, newPosition2);
-        eliminatePiece(toEliminate);
+            Piece toEliminate, UpdateClient updateClient) {
+        simpleMove(player, pieceID, newPosition1, newPosition2, updateClient);
+        eliminatePiece(toEliminate, updateClient);
     }
 
     /**
      * Move a piece without eliminating any
-     * @param player player moving pieces
+     * @param player owner of marble
      * @param pieceID 1-4
      * @param newPosition1 B or C
      * @param newPosition2 0-63
+     * @param updateClient an object that contains a return value and, if the move is legal,
+     * the moves and elimination moves to communicate to the clients
      */
-    protected void simpleMove(Player player, int pieceID, String newPosition1, int newPosition2) {
+    protected void simpleMove(Player player, int pieceID, String newPosition1, int newPosition2,
+            UpdateClient updateClient) {
 
         Piece piece = player.getPiece(pieceID);
         String pieceAlliance = convertAlliance(piece.getPieceAlliance());
@@ -258,18 +265,18 @@ public class RulesCheckHelper {
         // updates piecesOnTrack in gameState
         mainGame.getGameState().updatePiecesOnTrack(piece, newPosition1);
 
-        /*
         // updates client side
-        mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        updateClient.addToMoves("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
-         */
     }
 
     /**
      * Puts a given piece back to home.
      * @param piece eliminated piece
+     * @param updateClient an object that contains a return value and, if the move is legal,
+     * the moves and elimination moves to communicate to the clients
      */
-    protected void eliminatePiece(Piece piece) {
+    protected void eliminatePiece(Piece piece, UpdateClient updateClient) {
         int pieceID = piece.getPieceID();
         String newPosition1 = "A";
         int newPosition2 = pieceID - 1;
@@ -293,11 +300,9 @@ public class RulesCheckHelper {
         // change hasMoved state to false
         piece.changeHasMoved();
 
-        /*
         // updates client side
-        mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
+        updateClient.addToMoves("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
-         */
     }
 
     /**
@@ -307,11 +312,12 @@ public class RulesCheckHelper {
      * @param nickname player's name
      * @param cardToEliminate the played card to eliminate from player's hand
      */
-    protected void updateGame(String nickname, String cardToEliminate) {
+    protected void updateGame(String nickname, String cardToEliminate, UpdateClient updateClient) {
         //mainGame.sendMessageToParticipants("BORD");
         //eliminate card
         mainGame.getGameState().getCards().get(nickname).remove(cardToEliminate);
         //mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+        updateClient.addCardToEliminate(cardToEliminate);
         //mainGame.sendMessageToParticipants("HAND");
 
         mainGame.turnComplete(nickname);
