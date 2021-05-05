@@ -375,8 +375,13 @@ public class Server {
         runningGames.remove(getRunningGame(gameID));
     }
 
-    public void storeGame(String gameID) {
+    /**
+     * stores user data after victory
+     * @param gameID
+     */
+    public void storeGame(String gameID, String winner) {
         MainGame mainGame = getRunningGame(gameID);
+
 
 
         csvWriter.rankList();

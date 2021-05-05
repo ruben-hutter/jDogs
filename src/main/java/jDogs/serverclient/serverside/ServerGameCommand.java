@@ -178,6 +178,10 @@ public class ServerGameCommand {
                                             + "the length(15) for checkMove()");
                                     serverConnection.sendToClient("TURN");
                                     break;
+                                case 9:
+                                    String winner = null;
+                                    Server.getInstance().storeGame(mainGame.getGameId(), winner);
+                                    break;
                             }
                             break;
                     }
