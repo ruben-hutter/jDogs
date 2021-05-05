@@ -105,21 +105,21 @@ public class ClientGame {
         switch(newPosition.substring(0, 1)) {
             case "A":
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindowController.makeHomeMove(playerNumber, pieceID));
+                        gameWindowController.makeHomeMove(playerNumber, pieceID - 1));
 
                 player.changePositionClient(pieceID, board.allHomeTiles.
                         get(player.getAlliance())[pieceID - 1]);
                 break;
             case "B":
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindowController.makeSingleMoveTrack(playerNumber, pieceID,newPos));
+                        gameWindowController.makeTrackMove(playerNumber, pieceID - 1,newPos));
 
                 player.changePositionClient(pieceID, board.allTrackTiles[Integer
                         .parseInt(newPosition.substring(1))]);
                 break;
             case "C":
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindowController.makeHeavenMove(playerNumber, pieceID,newPos));
+                        gameWindowController.makeHeavenMove(playerNumber, pieceID - 1,newPos));
 
                 player.changePositionClient(pieceID, board.allHeavenTiles.
                         get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);

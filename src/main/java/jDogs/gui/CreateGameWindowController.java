@@ -3,6 +3,7 @@ package jDogs.gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 public class CreateGameWindowController {
@@ -12,10 +13,7 @@ public class CreateGameWindowController {
     private TextField gameNameField;
 
     @FXML
-    private TextField gameTotalField;
-
-    @FXML
-    private TextField teamModeField;
+    private CheckBox checkBox;
 
     @FXML
     private Button createButton;
@@ -39,9 +37,9 @@ public class CreateGameWindowController {
      */
     @FXML
     void createButtonOnAction(ActionEvent event) {
-        String teamMode = teamModeField.getText();
+    String teamMode;
 
-        if (teamMode.equals("yes")) {
+        if ((checkBox.isSelected())) {
             teamMode = "1";
         } else {
             teamMode = "0";

@@ -499,10 +499,8 @@ public class GameWindowController implements Initializable {
                         //not SEVE or JACK
                             FieldOnBoard destiny = clickedGridFields[0];
                             int intID = Integer.parseInt(clickedCircleIds[0]);
-                            System.out.println("circleID " + intID);
                             int playerNumb = intID / 4;
                             String newPos = adaptToGui.getPosNumber(destiny, playerNumb);
-
                             String colorPiece = getColorOfPiece(intID);
                             String pieceID = "" + (((intID) % 4) + 1);
 
@@ -680,7 +678,6 @@ public class GameWindowController implements Initializable {
         nameLabel1.setText(Client.getInstance().getNickname());
         setPlayerLabels();
 
-
         // prepare click grids and circles
         fadingGrids = new FadeTransition[7];
         fadingCircles = new FadeTransition[7];
@@ -735,13 +732,11 @@ public class GameWindowController implements Initializable {
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorFXEnum.getColor());
                 circle.setId("" + (count));
-                System.out.println("circle ids " + (count));
                 gridPane.add(circle, homeArray[count].getX(), homeArray[count].getY());
                 count++;
             }
         }
     }
-
 
     /**
      * client game sends the cards for this round to the gui here
@@ -752,9 +747,21 @@ public class GameWindowController implements Initializable {
         int count = 0;
         for(String card : cardArray) {
             URL url = CardUrl.getURL(card);
+            setAllCArdImageViewsInvisible();
             Image image = new Image(url.toString());
             allCardImageViews[count].setImage(image);
+            allCardImageViews[count].setVisible(true);
             count++;
+        }
+    }
+
+    /**
+     * sets all imageViews invisible, so that users don`t see
+     * old cards but not replaced this round
+     */
+    private void setAllCArdImageViewsInvisible() {
+        for (ImageView imageView : allCardImageViews) {
+            imageView.setVisible(false);
         }
     }
 
@@ -799,7 +806,7 @@ public class GameWindowController implements Initializable {
      * @param pieceID 0,1,2,3
      * @param newPosition position nr on server
      */
-    public void makeSingleMoveTrack(int playerNr, int pieceID, int newPosition) {
+    public void makeTrackMove(int playerNr, int pieceID, int newPosition) {
         String circleID = getCircleID(playerNr, pieceID);
         FieldOnBoard newPos = adaptToGui.getTrack(newPosition);
         makeSingleMove(circleID, newPos);
@@ -807,16 +814,12 @@ public class GameWindowController implements Initializable {
 
     /**
      * returns the ID given to the piece in gui at the beginning(by command setOnHome())
-      * @param playerNr 0-3
+      * @param playerNumber 0-3
      * @param pieceID 0-3
      * @return circleID for circle in gui
      */
-    private String getCircleID(int playerNr, int pieceID) {
-        if (playerNr == 0) {
-            return "" + ((1 * pieceID) - 1);
-        } else {
-            return "" + ((playerNr * 4 + pieceID) - 1);
-        }
+    private String getCircleID(int playerNumber, int pieceID) {
+        return "" + ((playerNumber * 4) + pieceID);
     }
 
     /**
@@ -899,7 +902,7 @@ public class GameWindowController implements Initializable {
      * @param newPos 0-3
      */
     public void makeHeavenMove(int playerNumber, int pieceID, int newPos) {
-        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
+        String circleID = getCircleID(playerNumber, pieceID);
         FieldOnBoard heavenField = adaptToGui.getHeavenField(playerNumber, newPos);
         makeSingleMove(circleID,heavenField);
     }
@@ -910,7 +913,7 @@ public class GameWindowController implements Initializable {
      * @param pieceID
      */
     public void makeHomeMove(int playerNumber, int pieceID) {
-        String circleID ="" + ((playerNr + 1) * (pieceID + 1));
+        String circleID = getCircleID(playerNumber, pieceID);
         int startPos = playerNumber * 16;
         FieldOnBoard homeField = adaptToGui.getHomeField(startPos,pieceID);
         makeSingleMove(circleID, homeField);
