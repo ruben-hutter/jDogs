@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class AllCardsDialogController implements Initializable {
 
-    int count;
+    private int count;
 
     @FXML
     private Button chooseButton;

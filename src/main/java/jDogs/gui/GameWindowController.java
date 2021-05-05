@@ -747,11 +747,21 @@ public class GameWindowController implements Initializable {
         int count = 0;
         for(String card : cardArray) {
             URL url = CardUrl.getURL(card);
+            setAllCArdImageViewsInvisible();
             Image image = new Image(url.toString());
-            allCardImageViews[count].setVisible(false);
             allCardImageViews[count].setImage(image);
             allCardImageViews[count].setVisible(true);
             count++;
+        }
+    }
+
+    /**
+     * sets all imageViews invisible, so that users don`t see
+     * old cards but not replaced this round
+     */
+    private void setAllCArdImageViewsInvisible() {
+        for (ImageView imageView : allCardImageViews) {
+            imageView.setVisible(false);
         }
     }
 
