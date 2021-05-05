@@ -258,9 +258,11 @@ public class RulesCheckHelper {
         // updates piecesOnTrack in gameState
         mainGame.getGameState().updatePiecesOnTrack(piece, newPosition1);
 
+        /*
         // updates client side
         mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
+         */
     }
 
     /**
@@ -290,9 +292,12 @@ public class RulesCheckHelper {
         }
         // change hasMoved state to false
         piece.changeHasMoved();
+
+        /*
         // updates client side
         mainGame.sendMessageToParticipants("MOVE " + pieceAlliance + "-" + pieceID + " "
                 + newPosition1 + newPosition2);
+         */
     }
 
     /**
@@ -303,11 +308,11 @@ public class RulesCheckHelper {
      * @param cardToEliminate the played card to eliminate from player's hand
      */
     protected void updateGame(String nickname, String cardToEliminate) {
-        mainGame.sendMessageToParticipants("BORD");
+        //mainGame.sendMessageToParticipants("BORD");
         //eliminate card
         mainGame.getGameState().getCards().get(nickname).remove(cardToEliminate);
-        mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
-        mainGame.sendMessageToParticipants("HAND");
+        //mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
+        //mainGame.sendMessageToParticipants("HAND");
 
         mainGame.turnComplete(nickname);
 
