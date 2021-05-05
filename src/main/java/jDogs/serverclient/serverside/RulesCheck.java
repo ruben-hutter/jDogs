@@ -82,7 +82,7 @@ public class RulesCheck {
                 Alliance_4 alliance4 = rulesCheckHelper.convertAlliance(alliance);
                 pieceID = Integer.parseInt(completeMove.substring(10, 11));
                 PiecesActualInfo piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID,
-                        alliance4);
+                        alliance4, mainGame);
                 newPosition1 = completeMove.substring(12, 13);
                 newPosition2 = Integer.parseInt(completeMove.substring(13));
                 ownPlayer = piecesActualInfo.getPlayer();
@@ -130,7 +130,7 @@ public class RulesCheck {
                 return 7;
             }
 
-            rulesCheckHelper.updateGame(nickname, mainGame, cardToEliminate);
+            rulesCheckHelper.updateGame(nickname, cardToEliminate);
 
         } else {
             return 8;
@@ -200,7 +200,7 @@ public class RulesCheck {
                     rulesCheckHelper.simpleMove(otherPlayer, otherPieceID, ownActualPosition1,
                             ownActualPosition2);
 
-                    rulesCheckHelper.updateGame(nickname, mainGame, cardToEliminate);
+                    rulesCheckHelper.updateGame(nickname, cardToEliminate);
                 }
             }
         } catch (Exception e) {
@@ -237,12 +237,13 @@ public class RulesCheck {
             ArrayList<Piece> piecesToEliminate = new ArrayList<>();
             ArrayList<Piece> singleEliminations;
             GameState tempGameState = new GameState(gameState);
+            MainGame tempMainGame = tempGameState.getMainGame();
             for (int i = 0; i < piecesToMove; i++) {
                 move = completeMove.substring(startIndex, startIndex + 10);
                 alliance = move.substring(0, 4);
                 alliance4 = rulesCheckHelper.convertAlliance(alliance);
                 pieceID = Integer.parseInt(move.substring(5, 6));
-                piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID, alliance4);
+                piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID, alliance4, tempMainGame);
                 newPosition1 = move.substring(7, 8);
                 newPosition2 = Integer.parseInt(move.substring(8));
                 ownPlayer = piecesActualInfo.getPlayer();
@@ -262,7 +263,8 @@ public class RulesCheck {
                     return 2;
                 }
                 singleEliminations = piecesOnPath(newPosition1, newPosition2, ownPlayer,
-                        actualPosition1, actualPosition2, startingPosition, pieceID);
+                        actualPosition1, actualPosition2, startingPosition, pieceID, tempGameState,
+                        tempMainGame);
                 if (singleEliminations == null) {
                     return 3;
                 }
@@ -278,7 +280,8 @@ public class RulesCheck {
                     alliance = move.substring(0, 4);
                     alliance4 = rulesCheckHelper.convertAlliance(alliance);
                     pieceID = Integer.parseInt(move.substring(5, 6));
-                    piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID, alliance4);
+                    piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID, alliance4,
+                            tempMainGame);
                     newPosition1 = move.substring(7, 8);
                     newPosition2 = Integer.parseInt(move.substring(8));
                     ownPlayer = piecesActualInfo.getPlayer();
@@ -290,7 +293,7 @@ public class RulesCheck {
                     rulesCheckHelper.eliminatePiece(piece);
                 }
 
-                rulesCheckHelper.updateGame(nickname, mainGame, cardToEliminate);
+                rulesCheckHelper.updateGame(nickname, cardToEliminate);
 
             } else {
                 return 4;
@@ -366,18 +369,20 @@ public class RulesCheck {
      * and with elements if somebody is eliminated
      */
     private ArrayList<Piece> piecesOnPath(String newPosition1, int newPosition2, Player ownPlayer,
-            String actualPosition1, int actualPosition2, int startingPosition, int pieceID) {
+            String actualPosition1, int actualPosition2, int startingPosition, int pieceID,
+            GameState tempGameState, MainGame tempMainGame) {
         ArrayList<Piece> piecesToEliminate = new ArrayList<>();
         assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // track -> track
-            if (piecesOnPathHelper(actualPosition2, newPosition2, ownPlayer, piecesToEliminate)) {
+            if (piecesOnPathHelper(actualPosition2, newPosition2, ownPlayer, piecesToEliminate,
+                    tempGameState)) {
                 return null;
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // track -> heaven
             if (piecesOnPathHelper(actualPosition2, startingPosition, ownPlayer,
-                    piecesToEliminate)) {
+                    piecesToEliminate, tempGameState)) {
                 return null;
             }
             for (Piece piece : ownPlayer.pieces) {
@@ -395,6 +400,13 @@ public class RulesCheck {
                 }
             }
         }
+        // move the piece on the tempGameState
+        rulesCheckHelper.simpleMoveSEVE(ownPlayer, pieceID, newPosition1, newPosition2, tempMainGame);
+
+        // eliminate the pieces on the tempGameState
+        for (Piece piece : piecesToEliminate) {
+            rulesCheckHelper.eliminatePieceSEVE(piece, tempMainGame);
+        }
         return piecesToEliminate;
     }
 
@@ -404,16 +416,15 @@ public class RulesCheck {
      * @param destinationOnTrack last position on track
      * @param ownPlayer owner of this marble
      * @param piecesToEliminate array with possible pieces that are eliminated by the move
-     * @return true if invalid move, false if not
+     * @return true if invalid move, false if valid
      */
     private boolean piecesOnPathHelper(int actualPosition2, int destinationOnTrack, Player ownPlayer,
-            ArrayList<Piece> piecesToEliminate) {
-        // TODO compare with tempGameState obj
+            ArrayList<Piece> piecesToEliminate, GameState tempGameState) {
         int difference;
         Piece pieceOnPath;
         difference = Math.floorMod(destinationOnTrack - actualPosition2, 64);
         for (int i = 1; i <= difference; i++) {
-            pieceOnPath = gameState.trackPositionOccupied((actualPosition2 + i) % 64);
+            pieceOnPath = tempGameState.trackPositionOccupied((actualPosition2 + i) % 64);
             if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
                     != ownPlayer.getAlliance()) {
                 if (!pieceOnPath.getHasMoved()) {
@@ -426,6 +437,7 @@ public class RulesCheck {
                 return true;
             }
         }
+        // TODO execute move on tempGameState
         return false;
     }
 
