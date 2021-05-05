@@ -358,3 +358,19 @@ Ruben und ich trafen uns heute mit Tim, um über die Unit-Tests zu sprechen. Wir
 Wir haben uns nun für folgendes Vorgehen entschieden: Aus dem RulesCheck werden alle ServerConnections entfernt. Die Regelüberprüfungsmethoden geben einen Integer-Wert an ServerGameCommand zurück. Wir können das Spielbrett zum Testen herrichten, indem wir die einzelnen Figuren gezielt auf ein Feld setzen. So sollte es möglich sein, Unit-Tests zu schreiben. 
 
 **Nächstes Treffen:** Mittwoch, 05.05.21, 10:15 Uhr
+
+---
+
+05.05.2021, 10:15 Uhr, Johanna
+
+### Protokoll#20 - Protokoll
+
+Wir haben in der Übungsstunde folgende Punkte besprochen:
+- Die ServerConnections sind nun aus dem RulesCheck entfernt. Jedoch müssen sie auch noch aus dem RulesCheckHelper entfernt werden.
+- CSV: Gregor hat ein Grundgerüst erstellt, um die Spielstatistik in einem CSV zu speichern. Dieses Dokument soll jeweils aktualisiert werden, wenn ein Spiel beendet wurde, weil es einen Gewinner gab (und nicht, weil das Spiel abgebrochen wurde).
+- TeamMode: Wenn ein neues Game erstellt wird, sollte man per Button auswählen können, ob man den TeamMode aktivieren möchte oder nicht. 
+- "Wrong format": Wenn man ein Spiel mit TeamModus eröffnet wurde, können sich zwei Spieler problemlos anschliessen. Wenn der vierte Spieler "Join" klickt, erscheint die Meldung "wrong format", wenn er es noch einmal versucht, ist er dann beim Spiel dabei. 
+- SEVE: Ruben hat den Spezialfall SEVEN soweit abgeschlossen, er muss nun noch ausführlich getestet werden. 
+
+**Nächstes Treffen:** Donnerstag, 06.05.21, 10:00 Uhr: Test über Hamachi
+
