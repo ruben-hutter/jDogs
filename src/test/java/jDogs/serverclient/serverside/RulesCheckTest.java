@@ -11,47 +11,87 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RulesCheckTest {
 
+    private Player player1;
+    private Player player2;
+    private Player player3;
+    private Player player4;
+
+    private MainGame mainGame;
+    private GameState gameState;
+
+    private RulesCheck rulesCheck;
+
     @BeforeEach
     void setUp() {
-        Player player1 = new Player("1");
-        Player player2 = new Player("2");
-        Player player3 = new Player("3");
-        Player player4 = new Player("4");
+        player1 = new Player("1");
+        player2 = new Player("2");
+        player3 = new Player("3");
+        player4 = new Player("4");
         String nameID = "test";
         Player[] playerArray = {player1, player2, player3, player4};
 
-        MainGame mainGame = new MainGame(playerArray, nameID, false);
-        //mainGame.startTest();
-        RulesCheck rulesCheck = new RulesCheck(mainGame);
+        mainGame = new MainGame(playerArray, nameID, false);
+        mainGame.startTest();
+        rulesCheck = new RulesCheck(mainGame);
+        gameState = new GameState(mainGame);
 
     }
 
     @AfterEach
     void tearDown() {
-        //mainGame = null;
+        mainGame = null;
     }
 
     @Test
     void testIfHandContainsCard() {
+        String text = "MOVE KING YELO-1 B00";
+        String result = "KING YELO-1 B00";
+        assertEquals(result, rulesCheck.checkCard(text,"1"));
 
-    }
 
-    @Test
-    void testSpecialCardAcee() {
 
     }
 
     @Test
     void testSpecialCardJoker() {
+        String text = "MOVE JOKE KING YELO-1 B00";
+        String result = "KING YELO-1 B00";
+        assertEquals(result, rulesCheck.checkCard(text,"1"));
 
     }
 
     @Test
     void checkMoveNewPositionA() {
+        String completeMove = "TWOO YELO-1 A00";
+        int result = 1;
+        assertEquals(result, rulesCheck.checkMove(completeMove,"1"));
+    }
+
+    @Test
+    void checkMoveTooShort(){
+        String completeMove = "KING A00";
+        int result = 8;
+        assertEquals(result, rulesCheck.checkMove(completeMove, "1"));
+    }
+
+    @Test
+    void checkMoveTooLong(){
+        String completeMove = "KING A00 JOKE B00 B01";
+        int result = 8;
+        assertEquals(result, rulesCheck.checkMove(completeMove, "1"));
     }
 
     @Test
     void checkCardWithNewPositionABOk() {
+        /*player1.changePositionServer(1,"A", 00);
+        String completeMove = "KING YELO-1 B00";
+        int result = 0;
+        assertEquals(result, rulesCheck.checkMove(completeMove, "1"));
+
+         */
+
+
+
     }
 
     @Test

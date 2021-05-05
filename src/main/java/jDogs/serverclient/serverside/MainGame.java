@@ -43,6 +43,12 @@ public class MainGame {
         startGameRhythm();
     }
 
+    public void startTest(){
+        setUpTest();
+        startGameRhythmTest();
+    }
+
+
     /**
      * sets up the main game after calling the constructor
      */
@@ -54,6 +60,10 @@ public class MainGame {
                     + playersArray.length + " " + getParticipants());
             logger.debug("Player   ServerConnection " + player.getServerConnection());
         }
+    }
+
+    public void setUpTest(){
+        gameState.createPlayers();
     }
 
 
@@ -89,6 +99,18 @@ public class MainGame {
         nextTurn();
     }
 
+    private void startGameRhythmTest() {
+        setRandomBeginnerTest();
+        this.numberOfRounds = 0;
+        turnNumber = 0;
+        this.numbDealOut = 6;
+        //first deck
+        //deck = getDeck();
+        dealOutCardsTest(numbDealOut);
+        nextTurnTest();
+
+    }
+
 
     /**
      * this method sets a random beginner to play the game in a random order
@@ -115,6 +137,28 @@ public class MainGame {
         }
     }
 
+    private void setRandomBeginnerTest() {
+        int random = new Random().nextInt(playersArray.length);
+
+        String[] oldArray = getParticipantsArray();
+
+        this.gameArray = new String[oldArray.length];
+        int playersNumb = 0;
+
+        //sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
+        actualPlayer = oldArray[random];
+        getPlayer(actualPlayer).setAllowedToPlay(true);
+
+        for (int i = random; i < oldArray.length; i++) {
+            gameArray[playersNumb] = oldArray[i];
+            playersNumb++;
+        }
+        for (int i = 0; i < random; i++) {
+            gameArray[playersNumb] = oldArray[i];
+            playersNumb++;
+        }
+    }
+
     /**
      * this method sends a request to the next player to make a move
      */
@@ -124,6 +168,14 @@ public class MainGame {
         if (getPlayer(actualPlayer).isAllowedToPlay()) {
             Server.getInstance().getServerConnection(actualPlayer).sendToClient("TURN");
         } else {
+            turnComplete(actualPlayer);
+        }
+    }
+
+    private void nextTurnTest() {
+        int numb = turnNumber % playersArray.length;
+        actualPlayer = gameArray[numb];
+        if(!getPlayer(actualPlayer).isAllowedToPlay()){
             turnComplete(actualPlayer);
         }
     }
@@ -152,6 +204,36 @@ public class MainGame {
             logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
         sendMessageToParticipants("HAND");
+    }
+
+
+
+    private void dealOutCardsTest(int number) {
+        //deal out cards from here by using a certain procedure
+
+        StringBuilder newHand;
+        ArrayList<String> newHandArray;
+
+        for (Player player : playersArray) {
+            newHand = new StringBuilder("ROUN " + number);
+            for (int j = 0; j < number; j++) {
+                //int randomNumber = random.nextInt(deck.size());
+                //String card = deck.remove(randomNumber);
+                String card1 = "KING";
+                String card2 = "JOKE";
+                String card3 = "ACEE";
+                newHand.append(" ").append(card1);
+                newHand.append(" ").append(card2);
+                newHand.append(" ").append(card3);
+                gameState.getCards().get(player.getPlayerName()).add(card1);
+                gameState.getCards().get(player.getPlayerName()).add(card2);
+                gameState.getCards().get(player.getPlayerName()).add(card3);
+            }
+            // send newHand to player and to client here
+            //player.sendMessageToClient(newHand.toString());
+            player.setAllowedToPlay(true);
+            logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
+        }
     }
 
 
