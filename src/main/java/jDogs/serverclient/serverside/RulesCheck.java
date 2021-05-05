@@ -642,7 +642,8 @@ public class RulesCheck {
             for (int i = 1; i <= steps; i++) {
                 if ((actualPosition2 + i) % 64 == startingPosition) {
                     pieceOnStart = gameState.trackPositionOccupied(startingPosition);
-                    if (pieceOnStart.getPieceAlliance().getStartingPosition() == startingPosition) {
+                    if (pieceOnStart != null && pieceOnStart.getPieceAlliance().getStartingPosition()
+                            == startingPosition) {
                         return true;
                     }
                 }
