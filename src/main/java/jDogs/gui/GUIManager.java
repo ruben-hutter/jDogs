@@ -170,8 +170,6 @@ public class GUIManager extends Application {
         gameWindowController = gameLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
-
-        gameWindowController.declareVictory("GREGRO");
     }
 
     /**

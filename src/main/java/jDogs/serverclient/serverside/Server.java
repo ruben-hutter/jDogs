@@ -20,6 +20,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class Server {
 
+    private final CSVWriter csvWriter;
     private ServerSocket serverSocket;
     //this list contains all sender objects, but I want to replace by the list of all serverConnection objects
     //this list contains all nicknames used at the moment(to avoid duplicates)
@@ -61,8 +62,10 @@ public class Server {
     }
 
     public Server(String[] args) {
+        instance = this;
+        csvWriter = new CSVWriter();
+        csvWriter.readCSV();
         try {
-            instance = this;
             serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             // runs as long as the server is activated
             while(running) {
@@ -370,5 +373,14 @@ public class Server {
             }
         }
         runningGames.remove(getRunningGame(gameID));
+    }
+
+    public void storeGame(String gameID) {
+        MainGame mainGame = getRunningGame(gameID);
+
+
+        csvWriter.rankList();
+        csvWriter.writeCSV();
+
     }
 }
