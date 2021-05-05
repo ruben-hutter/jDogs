@@ -323,6 +323,8 @@ public class RulesCheckHelper {
         mainGame.turnComplete(nickname);
 
         // check if there is a winner
-        mainGame.getGameState().checkForVictory();
+        if (mainGame.getGameState().checkForVictory()) {
+            updateClient.setWinners(mainGame.getGameState().getWinners());
+        }
     }
 }

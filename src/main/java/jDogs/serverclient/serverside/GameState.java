@@ -17,6 +17,7 @@ public class GameState {
     private ArrayList<Piece> piecesOnTrack;
     private final boolean teamMode;
     private final MainGame mainGame;
+    private String winners;
 
     public GameState(MainGame mainGame) {
         this.mainGame = mainGame;
@@ -152,20 +153,37 @@ public class GameState {
 
     /**
      * Checks if there is a winner
+     * @return true if the game's finished
      */
-    public void checkForVictory () {
+    public boolean checkForVictory () {
+        StringBuilder winners = new StringBuilder();
         if (teamMode) {
             int winningTeam = VictoryCheck.checkTeamVictory(this);
             if (winningTeam > -1) {
-                // TODO send winners and terminate game, write stats
-                mainGame.sendMessageToParticipants("VICT " + winningTeam);
+                for (Player player : getPlayers()) {
+                    if (player.getTeamID() == winningTeam) {
+                        winners.append(player.getPlayerName()).append(" ");
+                    }
+                }
+                winners.deleteCharAt(winners.length() - 1);
+                //mainGame.sendMessageToParticipants("VICT " + winningTeam);
             }
         } else {
             Player winner = VictoryCheck.checkSingleVictory(this);
             if (winner != null) {
-                // TODO send winner and terminate game, write stats
-                mainGame.sendMessageToParticipants("VICT " + winner.getPlayerName());
+                winners.append(winner);
+                //mainGame.sendMessageToParticipants("VICT " + winner.getPlayerName());
             }
         }
+        this.winners = winners.toString();
+        return winners.length() != 0;
+    }
+
+    /**
+     * Gets the winners of the game
+     * @return 1 or 2 names of the winner/s
+     */
+    public String getWinners() {
+        return winners;
     }
 }

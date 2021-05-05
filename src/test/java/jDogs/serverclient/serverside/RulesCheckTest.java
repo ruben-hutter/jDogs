@@ -71,7 +71,7 @@ class RulesCheckTest {
     void checkMoveTooShort(){
         String completeMove = "KING A00";
         int result = 8;
-        assertEquals(result, rulesCheck.checkMove(completeMove, "1"));
+        assertEquals(result, rulesCheck.checkMove(completeMove, "1").getReturnValue());
     }
 
     @Test
