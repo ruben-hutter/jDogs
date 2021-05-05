@@ -170,7 +170,7 @@ public class ServerGameCommand {
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 9:
-                                    Server.getInstance().storeGame(mainGame.getGameId());
+                                    Server.getInstance().storeGame(mainGame.getGameId(), winner);
                                     break;
                             }
                             break;
