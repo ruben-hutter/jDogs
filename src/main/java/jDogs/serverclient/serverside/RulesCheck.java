@@ -358,6 +358,7 @@ public class RulesCheck {
      * Checks if pieces are on the way to destination and
      * if they are own pieces or pieces to eliminate.
      * Includes also the destination, so it checks also for blocks.
+     * This method executes also the hypothetical moves on a tempGameState.
      * @param newPosition1 B or C
      * @param newPosition2 int between 0-63
      * @param ownPlayer owner of this marble
@@ -437,7 +438,6 @@ public class RulesCheck {
                 return true;
             }
         }
-        // TODO execute move on tempGameState
         return false;
     }
 
