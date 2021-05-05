@@ -1,9 +1,10 @@
 package jDogs.serverclient.serverside;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -13,7 +14,7 @@ import java.util.Collections;
  */
 public class CSVWriter {
     private ArrayList<SavedUser> usersHighScore;
-    private final String FILENAME = "HighScoreList.csv";
+    private final String FILENAME = "src/main/resources/HighScoreList.csv";
 
     CSVWriter() {
         this.usersHighScore = new ArrayList<SavedUser>();
@@ -26,12 +27,6 @@ public class CSVWriter {
     public void rankList() {
         Collections.sort(usersHighScore);
         int rank = 1;
-        //update Rank
-        for (SavedUser savedUser : usersHighScore) {
-            savedUser.setRank(rank);
-            rank++;
-        }
-
     }
 
     /**
@@ -49,7 +44,7 @@ public class CSVWriter {
         FileWriter csvWriter = null;
 
         try {
-            csvWriter = new FileWriter("new.csv");
+            csvWriter = new FileWriter(FILENAME);
             csvWriter.append("Name");
             csvWriter.append(",");
             csvWriter.append("PlayedGames");
@@ -71,6 +66,82 @@ public class CSVWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * reads the CSV-File
+     */
+    public void readCSV() {
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(FILENAME));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            //ignore first line with info
+            String line = bufferedReader.readLine();
+
+            while ((line = bufferedReader.readLine()) != null) {
+               parseAndAddLine(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * parse a line from the csv document and
+     * adds it to the usersHighScoreList
+     * @param line
+     */
+    private void parseAndAddLine(String line) {
+        int count = 0;
+        String name = null;
+        while (count < line.length()) {
+            if (line.charAt(count) == ',') {
+               name = line.substring(0, count);
+               break;
+            }
+            count++;
+        }
+
+        count++;
+        int nameSeparator = count;
+        int playedGames = -1;
+        while (count < line.length()) {
+            if (line.charAt(count) == ',') {
+                playedGames = Integer.parseInt(line.substring(nameSeparator, count));
+                break;
+            }
+            count++;
+        }
+
+        count++;
+        int playedGameSeparator = count;
+        int victories = -1;
+        while (count < line.length()) {
+            if (line.charAt(count) == ',') {
+                victories = Integer.parseInt(line.substring(playedGameSeparator, count));
+                break;
+            }
+            count++;
+        }
+
+        count++;
+        int victorySeparator = count;
+        int points = Integer.parseInt(line.substring(victorySeparator, line.length()));
+
+        SavedUser savedUser = new SavedUser(name);
+        savedUser.setPlayedGames(playedGames);
+        savedUser.setVictories(victories);
+        savedUser.setPoints(points);
+        usersHighScore.add(savedUser);
+    }
+
+    public void addUser(SavedUser savedUser) {
+        usersHighScore.add(savedUser);
     }
 }
 
