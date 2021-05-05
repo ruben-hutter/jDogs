@@ -78,12 +78,15 @@ public class ServerGameCommand {
 
                     // special cases (move command syntax different from normal)
                     String card = toCheckMove.substring(0, 4);
-                    int returnValue;
+                    UpdateClient returnValue;
                     switch (card) {
                         case "SEVE":
                             returnValue = rulesCheck.checkMoveSeven(toCheckMove, serverConnection.
                                     getNickname());
-                            switch (returnValue) {
+                            switch (returnValue.getReturnValue()) {
+                                case 0:
+                                    sendMovesToParticipants(returnValue);
+                                    break;
                                 case 1:
                                     serverConnection.sendToClient("INFO At least one invalid"
                                             + "destination or piece!");
@@ -110,13 +113,16 @@ public class ServerGameCommand {
                         case "JACK":
                             returnValue = rulesCheck.checkMoveJack(toCheckMove, serverConnection.
                                     getNickname());
-                            switch (returnValue) {
+                            switch (returnValue.getReturnValue()) {
+                                case 0:
+                                    sendMovesToParticipants(returnValue);
+                                    break;
                                 case 1:
-                                    serverConnection.sendToClient("INFO You cannot move this color");
+                                    serverConnection.sendToClient("INFO You have not finished");
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 2:
-                                    serverConnection.sendToClient("INFO You have not finished");
+                                    serverConnection.sendToClient("INFO You cannot move this color");
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 3:
@@ -133,7 +139,10 @@ public class ServerGameCommand {
                         default:
                             returnValue = rulesCheck.checkMove(toCheckMove, serverConnection.
                                     getNickname());
-                            switch(returnValue) {
+                            switch(returnValue.getReturnValue()) {
+                                case 0:
+                                    sendMovesToParticipants(returnValue);
+                                    break;
                                 case 1:
                                     serverConnection.sendToClient("INFO You can't move a piece in"
                                             + "home");
@@ -191,9 +200,26 @@ public class ServerGameCommand {
         }
     }
 
+    /**
+     * Sets the parameters for a game
+     * @param mainGameID the chosen name for the game
+     */
     public void setMainGame(String mainGameID) {
         this.mainGameID = mainGameID;
         this.mainGame = Server.getInstance().getRunningGame(mainGameID);
         this.rulesCheck = new RulesCheck(mainGame);
+    }
+
+    /**
+     * Sends all the moves done on server side to the clients
+     * @param sendMovesToParticipants object that contains all the different moves
+     */
+    private void sendMovesToParticipants(UpdateClient sendMovesToParticipants) {
+        for (String move : sendMovesToParticipants.getSimpleMoves()) {
+            mainGame.sendMessageToParticipants(move);
+        }
+        for (String elimination : sendMovesToParticipants.getPiecesToEliminate()) {
+            mainGame.sendMessageToParticipants(elimination);
+        }
     }
 }

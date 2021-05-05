@@ -225,7 +225,7 @@ public class RulesCheckHelper {
      * Move a piece and eliminate enemy
      * @param player player moving pieces
      * @param pieceID 1-4
-     * @param newPosition1 A, B or C
+     * @param newPosition1 B or C
      * @param newPosition2 0-63
      * @param toEliminate the eliminated piece
      */
@@ -239,7 +239,7 @@ public class RulesCheckHelper {
      * Move a piece without eliminating any
      * @param player player moving pieces
      * @param pieceID 1-4
-     * @param newPosition1 A, B or C
+     * @param newPosition1 B or C
      * @param newPosition2 0-63
      */
     protected void simpleMove(Player player, int pieceID, String newPosition1, int newPosition2) {

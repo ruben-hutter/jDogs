@@ -9,6 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 public class RulesCheck {
 
+    // TODO add the moves to the returned object if value == 0
+    // TODO delete in RulesCheckHelper the serverConnections
+
     private static final Logger logger = LogManager.getLogger(RulesCheck.class);
     private String cardToEliminate;
     private final GameState gameState;
@@ -62,9 +65,11 @@ public class RulesCheck {
      * if somebody is eliminated by the action
      * @param completeMove card piece destination
      * @param nickname name of player
-     * @return 0 if move is done correctly, x for 0 < x if move not possible
+     * @return an object that contains a return value and, if the move is legal,
+     * the moves and elimination moves to communicate to the clients
      */
-    protected int checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
+    protected UpdateClient checkMove(String completeMove, String nickname) { // TWOO YELO-1 B04
+        UpdateClient updateClient = new UpdateClient();
         if (completeMove.length() == 15) {
             String card;
             int pieceID;
@@ -93,10 +98,12 @@ public class RulesCheck {
                 ownTeamID = piecesActualInfo.getTeamID();
 
                 if (newPosition1.equals("A")) {
-                    return 1;
+                    updateClient.setReturnValue(1);
+                    return updateClient;
                 }
             } catch (Exception e) {
-                return 2;
+                updateClient.setReturnValue(2);
+                return updateClient;
             }
 
             // prevent players from moving with others pieces
@@ -104,47 +111,56 @@ public class RulesCheck {
             if (teamMode) {
                 if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
                         && ownTeamID != nowPlaying.getTeamID())) {
-                    return 3;
+                    updateClient.setReturnValue(3);
+                    return updateClient;
                 }
             } else {
                 if (ownPlayer != nowPlaying) {
-                    return 4;
+                    updateClient.setReturnValue(4);
+                    return updateClient;
                 }
             }
 
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
                     newPosition2, startingPosition, hasMoved, ownPlayer, pieceID, rulesCheckHelper)) {
-                return 5;
+                updateClient.setReturnValue(5);
+                return updateClient;
             }
 
             // if move passes an occupied starting position, and that piece haven't moved
             assert actualPosition1 != null;
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
                     ownPlayer, rulesCheckHelper)) {
-                return 6;
+                updateClient.setReturnValue(6);
+                return updateClient;
             }
 
             // check if there is a piece on destination
             if (!rulesCheckHelper.checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
-                return 7;
+                updateClient.setReturnValue(7);
+                return updateClient;
             }
 
             rulesCheckHelper.updateGame(nickname, cardToEliminate);
 
         } else {
-            return 8;
+            updateClient.setReturnValue(8);
+            return updateClient;
         }
-        return 0;
+        updateClient.setReturnValue(0);
+        return updateClient;
     }
 
     /**
      * Checks move when card JACK is played
      * @param twoPieces pieces to switch position
      * @param nickname players name
-     * @return 0 if move is done correctly, x for 0 < x if move not possible
+     * @return an object that contains a return value and, if the move is legal,
+     * the moves and elimination moves to communicate to the clients
      */
-    protected int checkMoveJack(String twoPieces, String nickname) { // JACK YELO-1 BLUE-2
+    protected UpdateClient checkMoveJack(String twoPieces, String nickname) { // JACK YELO-1 BLUE-2
+        UpdateClient updateClient = new UpdateClient();
         try {
             if (twoPieces.length() == 18) {
                 String ownAlliance = twoPieces.substring(5, 9);
@@ -181,11 +197,13 @@ public class RulesCheck {
                 if (teamMode) {
                     if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer !=
                             nowPlaying && ownTeamID != nowPlaying.getTeamID())) {
-                        return 2;
+                        updateClient.setReturnValue(1);
+                        return updateClient;
                     }
                 } else {
                     if (ownPlayer != nowPlaying) {
-                        return 1;
+                        updateClient.setReturnValue(2);
+                        return updateClient;
                     }
                 }
                 assert ownActualPosition1 != null;
@@ -193,7 +211,8 @@ public class RulesCheck {
                 if (ownActualPosition1.equals("A") || otherActualPosition1.equals("A")
                         || ownActualPosition1.equals("C") || otherActualPosition1.equals("C")
                         || !otherHasMoved) {
-                    return 3;
+                    updateClient.setReturnValue(3);
+                    return updateClient;
                 } else {
                     rulesCheckHelper.simpleMove(ownPlayer, ownPieceID, otherActualPosition1,
                             otherActualPosition2);
@@ -204,18 +223,22 @@ public class RulesCheck {
                 }
             }
         } catch (Exception e) {
-            return 4;
+            updateClient.setReturnValue(4);
+            return updateClient;
         }
-        return 0;
+        updateClient.setReturnValue(0);
+        return updateClient;
     }
 
     /**
      * Checks move when card SEVE is played
      * @param completeMove given move
      * @param nickname player's name
-     * @return 0 if move is done correctly, x for 0 < x if move not possible
+     * @return an object that contains a return value and, if the move is legal,
+     * the moves and elimination moves to communicate to the clients
      */
-    protected int checkMoveSeven(String completeMove, String nickname) {
+    protected UpdateClient checkMoveSeven(String completeMove, String nickname) {
+        UpdateClient updateClient = new UpdateClient();
         try {
             int piecesToMove = Integer.parseInt(completeMove.substring(5, 6));
             int startIndex = 7;
@@ -256,17 +279,20 @@ public class RulesCheck {
                 moveValue = checkSingleSeven(nickname, newPosition1, newPosition2, ownPlayer,
                         actualPosition1, actualPosition2, hasMoved, startingPosition, ownTeamID);
                 if (moveValue < 0) {
-                    return 1;
+                    updateClient.setReturnValue(1);
+                    return updateClient;
                 }
                 countToSeven += moveValue;
                 if (countToSeven > 7) {
-                    return 2;
+                    updateClient.setReturnValue(2);
+                    return updateClient;
                 }
                 singleEliminations = piecesOnPath(newPosition1, newPosition2, ownPlayer,
                         actualPosition1, actualPosition2, startingPosition, pieceID, tempGameState,
                         tempMainGame);
                 if (singleEliminations == null) {
-                    return 3;
+                    updateClient.setReturnValue(3);
+                    return updateClient;
                 }
                 piecesToEliminate.addAll(singleEliminations);
                 startIndex += 11;
@@ -296,12 +322,15 @@ public class RulesCheck {
                 rulesCheckHelper.updateGame(nickname, cardToEliminate);
 
             } else {
-                return 4;
+                updateClient.setReturnValue(4);
+                return updateClient;
             }
         } catch (Exception e) {
-            return 5;
+            updateClient.setReturnValue(5);
+            return updateClient;
         }
-        return 0;
+        updateClient.setReturnValue(0);
+        return updateClient;
     }
 
     /**
