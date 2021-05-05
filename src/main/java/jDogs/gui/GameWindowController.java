@@ -499,6 +499,7 @@ public class GameWindowController implements Initializable {
                         //not SEVE or JACK
                             FieldOnBoard destiny = clickedGridFields[0];
                             int intID = Integer.parseInt(clickedCircleIds[0]);
+                            System.out.println("circleID " + intID);
                             int playerNumb = intID / 4;
                             String newPos = adaptToGui.getPosNumber(destiny, playerNumb);
 
@@ -514,7 +515,6 @@ public class GameWindowController implements Initializable {
 
                         Client.getInstance().sendMessageToServer(move + cardClicked + " "
                                 + colorPiece + "-" + pieceID + " " + newPos);
-
 
                             yourTurn = false;
                             deleteClickedData();
@@ -732,7 +732,6 @@ public class GameWindowController implements Initializable {
         FieldOnBoard[] homeArray = adaptToGui.getHomeFieldArray();
         for (ColorFXEnum colorFXEnum : ColorFXEnum.values()) {
             Color color = colorFXEnum.getColor();
-
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorFXEnum.getColor());
                 circle.setId("" + (count));

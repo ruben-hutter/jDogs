@@ -169,6 +169,9 @@ public class ServerGameCommand {
                                             + "the length(15) for checkMove()");
                                     serverConnection.sendToClient("TURN");
                                     break;
+                                case 9:
+                                    Server.getInstance().storeGame(mainGame.getGameId());
+                                    break;
                             }
                             break;
                     }

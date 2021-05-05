@@ -247,12 +247,6 @@ public class AdaptToGui {
         }
         return home;
     }
-    //TODO delete psvm
-    public static void main(String[] args) {
-        System.out.println(7%4);
-        System.out.println(3/4);
-
-    }
 
 
     public FieldOnBoard[] getHomeFieldArray() {
@@ -260,7 +254,6 @@ public class AdaptToGui {
         FieldOnBoard[] homeFieldArr = new FieldOnBoard[boardSize * Board.NUM_HOME_TILES];
         int count = 0;
         for (FieldOnBoard[] fieldOnBoardArray : fieldsOnHome) {
-
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 homeFieldArr[count] = fieldOnBoardArray[i];
                 count++;
@@ -285,15 +278,15 @@ public class AdaptToGui {
             }
             pos++;
         }
+
         pos = 0;
         FieldOnBoard[] heavenArr = fieldsOnHeaven[playerNr];
         for (FieldOnBoard field : heavenArr) {
-            if (field.equals(destiny)) {
-               return "B0" + pos;
+            if (field.getX() == destiny.getX() && field.getY() == destiny.getY()) {
+               return "C0" + pos;
             }
             pos++;
         }
         return "-1";
     }
-
 }
