@@ -57,11 +57,9 @@ public class ServerGameCommand {
                 break;
 
             case "MOVE":
-                if ((text.length() == 9 && text.substring(5, 9).equals("SURR")
-                        && mainGame.getActualPlayer().equals(serverConnection.getNickname()))
-                        || (text.length() > 20 && mainGame.getActualPlayer().equals(
-                                serverConnection.getNickname()))) {
-                    if (text.substring(5, 9).equals("SURR")) {
+                if ((text.startsWith("SURR", 5) || text.length() > 19)
+                        && mainGame.getActualPlayer().equals(serverConnection.getNickname())) {
+                    if (text.startsWith("SURR", 5)) {
                         mainGame.getPlayer(serverConnection.getNickname()).setAllowedToPlay(false);
                         mainGame.getGameState().getCards().get(serverConnection.getNickname()).clear();
                         serverConnection.sendToClient("INFO excluded for this round");
