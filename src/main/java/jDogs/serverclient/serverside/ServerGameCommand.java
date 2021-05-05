@@ -59,7 +59,7 @@ public class ServerGameCommand {
             case "MOVE":
                 if ((text.length() == 9 && text.substring(5, 9).equals("SURR")
                         && mainGame.getActualPlayer().equals(serverConnection.getNickname()))
-                        || (text.length() > 21 && mainGame.getActualPlayer().equals(
+                        || (text.length() > 20 && mainGame.getActualPlayer().equals(
                                 serverConnection.getNickname()))) {
                     if (text.substring(5, 9).equals("SURR")) {
                         mainGame.getPlayer(serverConnection.getNickname()).setAllowedToPlay(false);
