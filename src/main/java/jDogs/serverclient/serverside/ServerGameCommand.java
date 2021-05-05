@@ -219,11 +219,14 @@ public class ServerGameCommand {
      * @param sendMovesToParticipants object that contains all the different moves
      */
     private void sendMovesToParticipants(UpdateClient sendMovesToParticipants) {
-        for (String move : sendMovesToParticipants.getSimpleMoves()) {
+        for (String move : sendMovesToParticipants.getMoves()) {
             mainGame.sendMessageToParticipants(move);
         }
-        for (String elimination : sendMovesToParticipants.getPiecesToEliminate()) {
-            mainGame.sendMessageToParticipants(elimination);
-        }
+        // send new board state
+        mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[0]);
+        // eliminate card from hand
+        serverConnection.sendToClient(sendMovesToParticipants.getUpdateGame()[1]);
+        // send actual hand
+        mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[2]);
     }
 }

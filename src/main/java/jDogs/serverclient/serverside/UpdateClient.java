@@ -5,13 +5,12 @@ import java.util.ArrayList;
 public class UpdateClient {
 
     private int returnValue;
-    private ArrayList<String> simpleMoves;
-    private ArrayList<String> piecesToEliminate;
+    private final ArrayList<String> moves;
+    private final String[] updateGame;
 
     public UpdateClient() {
-        returnValue = -1;
-        simpleMoves = new ArrayList<>();
-        piecesToEliminate = new ArrayList<>();
+        moves = new ArrayList<>();
+        updateGame = new String[] {"BORD", "CARD ", "HAND"};
     }
 
     /**
@@ -34,31 +33,31 @@ public class UpdateClient {
      * Add a given move to the existing list
      * @param newMove MOVE + piece + newPosition
      */
-    public void addToSimpleMoves(String newMove) {
-        simpleMoves.add(newMove);
+    public void addToMoves(String newMove) {
+        moves.add(newMove);
     }
 
     /**
      * Gets the moves that are sent to clients
      * @return a list of moves or an empty list
      */
-    public ArrayList<String> getSimpleMoves() {
-        return simpleMoves;
+    public ArrayList<String> getMoves() {
+        return moves;
     }
 
     /**
-     * Add a given elimination move to the existing list
-     * @param newEliminationMove MOVE + piece + homePosition
+     * Appends a card to the existing CARD command
+     * @param card the played card
      */
-    public void addToPiecesToEliminate(String newEliminationMove) {
-        piecesToEliminate.add(newEliminationMove);
+    public void addCardToEliminate(String card) {
+        updateGame[1] += card;
     }
 
     /**
-     * Gets the moves to eliminate pieces that are sent to clients
-     * @return a list of moves or an empty list
+     * Gets the updateGame messages
+     * @return an array with the messages to finish a turn
      */
-    public ArrayList<String> getPiecesToEliminate() {
-        return piecesToEliminate;
+    public String[] getUpdateGame() {
+        return updateGame;
     }
 }

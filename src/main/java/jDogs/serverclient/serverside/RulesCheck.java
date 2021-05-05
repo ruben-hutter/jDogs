@@ -9,9 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 public class RulesCheck {
 
-    // TODO add the moves to the returned object if value == 0
-    // TODO delete in RulesCheckHelper the serverConnections
-
     private static final Logger logger = LogManager.getLogger(RulesCheck.class);
     private String cardToEliminate;
     private final GameState gameState;
@@ -137,12 +134,13 @@ public class RulesCheck {
             }
 
             // check if there is a piece on destination
-            if (!rulesCheckHelper.checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2)) {
+            if (!rulesCheckHelper.checkWhichMove(ownPlayer, pieceID, newPosition1, newPosition2,
+                    updateClient)) {
                 updateClient.setReturnValue(7);
                 return updateClient;
             }
 
-            rulesCheckHelper.updateGame(nickname, cardToEliminate);
+            rulesCheckHelper.updateGame(nickname, cardToEliminate, updateClient);
 
         } else {
             updateClient.setReturnValue(8);
@@ -215,11 +213,11 @@ public class RulesCheck {
                     return updateClient;
                 } else {
                     rulesCheckHelper.simpleMove(ownPlayer, ownPieceID, otherActualPosition1,
-                            otherActualPosition2);
+                            otherActualPosition2, updateClient);
                     rulesCheckHelper.simpleMove(otherPlayer, otherPieceID, ownActualPosition1,
-                            ownActualPosition2);
+                            ownActualPosition2, updateClient);
 
-                    rulesCheckHelper.updateGame(nickname, cardToEliminate);
+                    rulesCheckHelper.updateGame(nickname, cardToEliminate, updateClient);
                 }
             }
         } catch (Exception e) {
@@ -312,14 +310,15 @@ public class RulesCheck {
                     newPosition2 = Integer.parseInt(move.substring(8));
                     ownPlayer = piecesActualInfo.getPlayer();
 
-                    rulesCheckHelper.simpleMove(ownPlayer, pieceID, newPosition1, newPosition2);
+                    rulesCheckHelper.simpleMove(ownPlayer, pieceID, newPosition1, newPosition2,
+                            updateClient);
                     startIndex += 11;
                 }
                 for (Piece piece : piecesToEliminate) {
-                    rulesCheckHelper.eliminatePiece(piece);
+                    rulesCheckHelper.eliminatePiece(piece, updateClient);
                 }
 
-                rulesCheckHelper.updateGame(nickname, cardToEliminate);
+                rulesCheckHelper.updateGame(nickname, cardToEliminate, updateClient);
 
             } else {
                 updateClient.setReturnValue(4);
