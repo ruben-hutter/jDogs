@@ -35,6 +35,7 @@ public class GameState {
         piecesOnTrack = gameState.getSortedPiecesOnTrack();
         teamMode = gameState.getTeamMode();
         mainGame = gameState.getMainGame();
+        winners = gameState.getWinners();
     }
 
     /**
