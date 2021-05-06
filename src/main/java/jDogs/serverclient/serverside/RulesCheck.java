@@ -140,6 +140,7 @@ public class RulesCheck {
             }
 
             // if move passes an occupied starting position, and that piece haven't moved
+            assert actualPosition1 != null;
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
                     ownPlayer, rulesCheckHelper)) {
                 updateClient.setReturnValue(6);
@@ -454,6 +455,7 @@ public class RulesCheck {
             String actualPosition1, int actualPosition2, int startingPosition, int pieceID,
             GameState tempGameState, MainGame tempMainGame) {
         ArrayList<Piece> piecesToEliminate = new ArrayList<>();
+        assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // track -> track
             if (piecesOnPathHelper(actualPosition2, newPosition2, ownPlayer, piecesToEliminate,
@@ -543,7 +545,7 @@ public class RulesCheck {
      * @param rulesCheckHelper helper object for this class
      * @return false if card can't correspond with destination
      */
-    private boolean checkCardWithNewPosition(String card, String actualPosition1,
+    protected boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
             boolean hasMoved, Player ownPlayer, int pieceID, RulesCheckHelper rulesCheckHelper) {
         int[] cardValues = rulesCheckHelper.getCardValues(card);
