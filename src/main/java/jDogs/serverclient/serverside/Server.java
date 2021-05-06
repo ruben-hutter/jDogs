@@ -401,7 +401,7 @@ public class Server {
         if (mainGame.isTeamMode()) {
             int separator = -1;
             for (int i = 0; i < name.length(); i++) {
-                if (name.charAt(i) == ',') {
+                if (Character.isWhitespace(name.charAt(i))) {
                     separator = i;
                     break;
                 }
