@@ -70,7 +70,7 @@ public class RulesCheckHelper {
     /**
      * Gives you the int value of your String card
      * @param card String card
-     * @return int value of card
+     * @return int value/s of card
      */
     protected int[] getCardValues(String card) {
         int[] possibleValues;
@@ -109,7 +109,7 @@ public class RulesCheckHelper {
                 possibleValues = new int[]{13};
                 break;
             default:
-                return null;
+                throw new IllegalStateException("Unexpected value: " + card);
         }
         return possibleValues;
     }
@@ -318,12 +318,9 @@ public class RulesCheckHelper {
      * @param cardToEliminate the played card to eliminate from player's hand
      */
     protected void updateGame(String nickname, String cardToEliminate, UpdateClient updateClient) {
-        //mainGame.sendMessageToParticipants("BORD");
         //eliminate card
         mainGame.getGameState().getCards().get(nickname).remove(cardToEliminate);
-        //mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
         updateClient.addCardToEliminate(cardToEliminate);
-        //mainGame.sendMessageToParticipants("HAND");
 
         // check if there is a winner
         if (mainGame.getGameState().checkForVictory()) {

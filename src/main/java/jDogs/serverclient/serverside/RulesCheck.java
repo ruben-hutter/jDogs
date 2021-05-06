@@ -140,7 +140,6 @@ public class RulesCheck {
             }
 
             // if move passes an occupied starting position, and that piece haven't moved
-            assert actualPosition1 != null;
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
                     ownPlayer, rulesCheckHelper)) {
                 updateClient.setReturnValue(6);
@@ -567,13 +566,13 @@ public class RulesCheck {
                 for (int cardValue : cardValues) {
                     if (cardValue == -4) {
                         difference = Math.floorMod(newPosition2 - actualPosition2, -64);
-                        System.err.println("Difference: " + difference);
+                        System.err.println("Difference with -4: " + difference);
                         if (difference == cardValue) {
                             return true;
                         }
                     } else if (cardValue == 4) {
                         difference = Math.floorMod(newPosition2 - actualPosition2, 64);
-                        System.err.println("Difference: " + difference);
+                        System.err.println("Difference with 4: " + difference);
                         if (difference == cardValue) {
                             return true;
                         }
@@ -600,6 +599,7 @@ public class RulesCheck {
                     return false;
                 }
             }
+            // TODO save correct cardValue and execute only on that
             if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
                     if (cardValue == 4) {
@@ -663,8 +663,8 @@ public class RulesCheck {
         int difference;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
+            // TODO save correct cardValue and execute only on that
             if (card.equals("FOUR")) {
-                assert cardValues != null;
                 for (int cardValue : cardValues) {
                     if (cardValue == -4) {
                         for (int startingPosition : startingPositions) {

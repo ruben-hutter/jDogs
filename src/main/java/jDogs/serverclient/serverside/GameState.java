@@ -167,13 +167,11 @@ public class GameState {
                     }
                 }
                 winners.deleteCharAt(winners.length() - 1);
-                //mainGame.sendMessageToParticipants("VICT " + winningTeam);
             }
         } else {
             Player winner = VictoryCheck.checkSingleVictory(this);
             if (winner != null) {
                 winners.append(winner);
-                //mainGame.sendMessageToParticipants("VICT " + winner.getPlayerName());
             }
         }
         this.winners = winners.toString();
