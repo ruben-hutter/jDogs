@@ -15,6 +15,7 @@ public class RulesCheck {
     private final MainGame mainGame;
     private final boolean teamMode;
     RulesCheckHelper rulesCheckHelper;
+    private int actualCardValue;
 
     public RulesCheck(MainGame mainGame) {
         this.mainGame = mainGame;
@@ -552,6 +553,7 @@ public class RulesCheck {
         if (cardValues == null) {
             return false;
         }
+        // TODO set actualCardValue
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
             // you play an exit card and you exit on your starting position
             Piece pieceOnStart = gameState.trackPositionOccupied(newPosition2);
@@ -599,7 +601,6 @@ public class RulesCheck {
                     return false;
                 }
             }
-            // TODO save correct cardValue and execute only on that
             if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
                     if (cardValue == 4) {
@@ -609,6 +610,7 @@ public class RulesCheck {
                             return true;
                         }
                     } else if (cardValue == -4) {
+                        // TODO analyse if player go to an other heaven
                         difference = startingPosition - actualPosition2 - newPosition2 - 1;
                         if (cardValue == difference) {
                             System.err.println("Difference: " + difference);
