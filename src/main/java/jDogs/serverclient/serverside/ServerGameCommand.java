@@ -236,6 +236,7 @@ public class ServerGameCommand {
     private void sendMovesToParticipants(UpdateClient sendMovesToParticipants) {
         for (String move : sendMovesToParticipants.getMoves()) {
             mainGame.sendMessageToParticipants(move);
+            System.err.println("Move sent to participants: " + move);
         }
         // send new board state
         mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[0]);
@@ -243,5 +244,7 @@ public class ServerGameCommand {
         serverConnection.sendToClient(sendMovesToParticipants.getUpdateGame()[1]);
         // send actual hand
         mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[2]);
+
+        mainGame.turnComplete(serverConnection.getNickname());
     }
 }

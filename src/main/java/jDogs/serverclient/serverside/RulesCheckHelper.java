@@ -216,7 +216,12 @@ public class RulesCheckHelper {
             int newPosition2, UpdateClient updateClient) {
         Piece pieceToEliminate = mainGame.getGameState().trackPositionOccupied(newPosition2);
         if (pieceToEliminate != null) {
-            attackMove(player, pieceID, newPosition1, newPosition2, pieceToEliminate, updateClient);
+            if (pieceToEliminate.getPieceAlliance() == player.getAlliance()) {
+                return false;
+            } else {
+                attackMove(player, pieceID, newPosition1, newPosition2, pieceToEliminate,
+                        updateClient);
+            }
         } else {
             simpleMove(player, pieceID, newPosition1, newPosition2, updateClient);
         }
@@ -319,8 +324,6 @@ public class RulesCheckHelper {
         //mainGame.getPlayer(nickname).sendMessageToClient("CARD " + cardToEliminate);
         updateClient.addCardToEliminate(cardToEliminate);
         //mainGame.sendMessageToParticipants("HAND");
-
-        mainGame.turnComplete(nickname);
 
         // check if there is a winner
         if (mainGame.getGameState().checkForVictory()) {

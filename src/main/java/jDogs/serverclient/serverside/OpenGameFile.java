@@ -2,7 +2,6 @@ package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
 import java.util.ArrayList;
-import java.util.Collections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,7 +51,7 @@ public class OpenGameFile {
     }
 
     /**
-     * @param combination is a string with the teamsize, number of names transmitted and with the
+     * @param combination is a string with the team size, number of names transmitted and with the
      *                    names which should be together in a team
      */
     public void changeTeam(String combination) {
@@ -69,7 +68,7 @@ public class OpenGameFile {
 
             int teamID = 0;
             System.out.println("size names " + sizeNames);
-            System.out.println("team size" + teamSize);
+            System.out.println("team size " + teamSize);
             System.out.println(array.length);
             if (array[0] != null) {
                 System.out.println("array 0: " + array[0]);
@@ -97,7 +96,7 @@ public class OpenGameFile {
      * way to play the game
      */
     private void orderByTeamId() {
-        Collections.sort(players, Player.TeamIdComparator);
+        players.sort(Player.TeamIdComparator);
         System.out.println("NEW TEAM combination " + getParticipants());
     }
 
@@ -157,7 +156,7 @@ public class OpenGameFile {
 
             if (teamMode == 1 && readyToStart()) {
 
-                checkforTeams();
+                checkForTeams();
                 OrderArrayListToPlayGame();
                 // get players arraylist in definitive order
             }
@@ -166,6 +165,7 @@ public class OpenGameFile {
             serverConnection.sendToClient("INFO no more players allowed in game");
         }
     }
+
     public void removeFromParticipantServer(String nickname) {
         if (nickname.equals(host)) {
             host = null;
@@ -233,9 +233,9 @@ public class OpenGameFile {
 
     /**
      * checks that teams are complete when starting game and sets random teams if some players
-     * aren`t part of a team
+     * aren't part of a team
      */
-    private void checkforTeams() {
+    private void checkForTeams() {
         boolean teamsIncomplete = false;
         for (Player player : players) {
             if (player.getTeamID() == -1) {
