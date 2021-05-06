@@ -27,6 +27,7 @@ public class GUIManager extends Application {
     private Client client;
     public GameWindowController gameWindowController;
     private boolean isPlaying;
+    private boolean teamMode;
 
     public static void main(String[] args) {
         launch(args);
@@ -84,10 +85,6 @@ public class GUIManager extends Application {
         primaryStage.setOnCloseRequest(e-> System.exit(-1));
 
         primaryStage.show();
-
-
-
-
     }
 
     /**
@@ -131,7 +128,6 @@ public class GUIManager extends Application {
 
         //get all open games from server
         client.sendMessageToServer("SESS");
-
         setLobbyScene();
     }
 
@@ -139,9 +135,21 @@ public class GUIManager extends Application {
     /**
      * starts the game
      */
-    public void startGame() {
+    public void startGame(int intTeamMode) {
+        this.teamMode = false;
+        if (intTeamMode == 1) {
+            this.teamMode = true;
+        }
         isPlaying = true;
         setGameScene();
+    }
+
+    /**
+     * teamMode: play in teams or not
+     * @return true, if playing in teams
+     */
+    public boolean isTeamMode() {
+        return teamMode;
     }
 
     /**

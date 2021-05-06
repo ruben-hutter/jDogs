@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -32,12 +33,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -700,9 +707,57 @@ public class GameWindowController implements Initializable {
 
         labelPlayer0.setText(ClientGame.getInstance().getPlayerNames()[0]);
         labelPlayer1.setText(ClientGame.getInstance().getPlayerNames()[1]);
-        labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[2]);
-        labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[3]);
+        labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[2]);
+        labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[3]);
 
+        String color0 = "#4fdc41";
+        String color1 = "#6fdd3b";
+        String color2 = "#89de37";
+        String color3 = "#9fdf35";
+        String color4 = "#b3e035";
+        String color5 = "#add932";
+        String color6 = "#a7d32e";
+        String color7 = "#a1cc2b";
+        String color8 = "#82bc22";
+        String color9 = "#63ac1a";
+        String color10 = "#419c14";
+        String color11 = "#0f8c0f";
+
+
+        if (GUIManager.getInstance().isTeamMode()) {
+            Stop[] stops1 = new Stop[] { new Stop(0, Color.YELLOW), new Stop(1, Color.BLUE), new Stop(2, Color.MEDIUMVIOLETRED)};
+            LinearGradient lgTeamYellowBlue = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops1);
+
+            Stop[] stops2 = new Stop[] { new Stop(0, Color.RED), new Stop(1, Color.GREEN), new Stop(2, Color.GREENYELLOW)};
+            LinearGradient lgTeamGreenRed = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops2);
+
+
+            labelPlayer0.setBackground(new Background(
+            new BackgroundFill(lgTeamYellowBlue, new CornerRadii(5.0), new Insets(-5.0))));
+            labelPlayer2.setBackground(new Background(
+                    new BackgroundFill(lgTeamYellowBlue,
+                            new CornerRadii(5.0), new Insets(-5.0))));
+
+            labelPlayer1.setBackground(new Background(
+                    new BackgroundFill(lgTeamGreenRed,
+                            new CornerRadii(5.0), new Insets(-5.0))));
+            labelPlayer3.setBackground(new Background(
+                    new BackgroundFill(lgTeamGreenRed,
+                            new CornerRadii(5.0), new Insets(-5.0))));
+        } else {
+            labelPlayer0.setBackground(new Background(
+                    new BackgroundFill(Color.YELLOW,
+                            new CornerRadii(5.0), new Insets(-5.0))));
+            labelPlayer1.setBackground(new Background(
+                    new BackgroundFill(Color.LAWNGREEN,
+                            new CornerRadii(5.0), new Insets(-5.0))));
+            labelPlayer2.setBackground(new Background(
+                    new BackgroundFill(Color.CORNFLOWERBLUE,
+                            new CornerRadii(5.0), new Insets(-5.0))));
+            labelPlayer3.setBackground(new Background(
+                    new BackgroundFill(Color.INDIANRED,
+                            new CornerRadii(5.0), new Insets(-5.0))));
+        }
     }
 
     /**
@@ -744,6 +799,8 @@ public class GameWindowController implements Initializable {
      */
     public void setHand(String[] cards) {
         this.cardArray = cards;
+        //set cards invisible if they are not used this round
+        setAllCArdImageViewsInvisible();
         int count = 0;
         setAllCArdImageViewsInvisible();
 

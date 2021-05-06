@@ -494,12 +494,4 @@ public class PublicLobbyController implements Initializable {
 
         rotate.play();
     }
-
-    /**
-     * starts game in lobby controller
-     * @param gameInfo open game information
-     */
-    public void startGame(String gameInfo) {
-        GUIManager.getInstance().startGame();
-    }
 }

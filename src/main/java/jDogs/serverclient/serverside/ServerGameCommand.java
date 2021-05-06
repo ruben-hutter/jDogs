@@ -82,6 +82,7 @@ public class ServerGameCommand {
                     // special cases (move command syntax different from normal)
                     String card = toCheckMove.substring(0, 4);
                     UpdateClient returnValue;
+                    String winners;
                     switch (card) {
                         case "SEVE":
                             returnValue = rulesCheck.checkMoveSeven(toCheckMove, serverConnection.
@@ -89,6 +90,11 @@ public class ServerGameCommand {
                             switch (returnValue.getReturnValue()) {
                                 case 0:
                                     sendMovesToParticipants(returnValue);
+                                    winners = returnValue.getWinners();
+                                    if (winners != null) {
+                                        mainGame.sendMessageToParticipants("VICT " + winners);
+                                        Server.getInstance().storeGame(mainGame.getGameId(), winners);
+                                    }
                                     break;
                                 case 1:
                                     serverConnection.sendToClient("INFO At least one invalid"
@@ -119,6 +125,11 @@ public class ServerGameCommand {
                             switch (returnValue.getReturnValue()) {
                                 case 0:
                                     sendMovesToParticipants(returnValue);
+                                    winners = returnValue.getWinners();
+                                    if (winners != null) {
+                                        mainGame.sendMessageToParticipants("VICT " + winners);
+                                        Server.getInstance().storeGame(mainGame.getGameId(), winners);
+                                    }
                                     break;
                                 case 1:
                                     serverConnection.sendToClient("INFO You have not finished");
@@ -145,6 +156,11 @@ public class ServerGameCommand {
                             switch(returnValue.getReturnValue()) {
                                 case 0:
                                     sendMovesToParticipants(returnValue);
+                                    winners = returnValue.getWinners();
+                                    if (winners != null) {
+                                        mainGame.sendMessageToParticipants("VICT " + winners);
+                                        Server.getInstance().storeGame(mainGame.getGameId(), winners);
+                                    }
                                     break;
                                 case 1:
                                     serverConnection.sendToClient("INFO You can't move a piece in"
@@ -180,10 +196,6 @@ public class ServerGameCommand {
                                     serverConnection.sendToClient("INFO Entered command does`t fit"
                                             + " the length(15) for checkMove()");
                                     serverConnection.sendToClient("TURN");
-                                    break;
-                                case 9:
-                                    String winner = null;
-                                    Server.getInstance().storeGame(mainGame.getGameId(), winner);
                                     break;
                             }
                             break;
@@ -224,6 +236,7 @@ public class ServerGameCommand {
     private void sendMovesToParticipants(UpdateClient sendMovesToParticipants) {
         for (String move : sendMovesToParticipants.getMoves()) {
             mainGame.sendMessageToParticipants(move);
+            System.err.println("Move sent to participants: " + move);
         }
         // send new board state
         mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[0]);
@@ -231,5 +244,7 @@ public class ServerGameCommand {
         serverConnection.sendToClient(sendMovesToParticipants.getUpdateGame()[1]);
         // send actual hand
         mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[2]);
+
+        mainGame.turnComplete(serverConnection.getNickname());
     }
 }

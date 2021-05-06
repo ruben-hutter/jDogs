@@ -65,12 +65,12 @@ public class ClientGameCommand {
 
             case "GAME":
                 //TODO receive game details when game starts and display in Game GUI
-
-                clientGame = new ClientGame(GuiParser.getArray(text.substring(5)));
+                System.out.println(text);
+                clientGame = new ClientGame(GuiParser.getArray(text.substring(7)));
                 clientGame.printGameState();
 
-                //move to game-scene in gui manager
-                Platform.runLater(() -> GUIManager.getInstance().startGame());
+                //move to game-scene in gui manager and give 0 or 1 for teamMode or no
+                Platform.runLater(() -> GUIManager.getInstance().startGame(text.charAt(5) - 48));
                 break;
 
             case "MOVE": // MOVE YELO-1 B20

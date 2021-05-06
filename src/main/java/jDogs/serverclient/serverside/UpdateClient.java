@@ -7,6 +7,7 @@ public class UpdateClient {
     private int returnValue;
     private final ArrayList<String> moves;
     private final String[] updateGame;
+    private String winners;
 
     public UpdateClient() {
         moves = new ArrayList<>();
@@ -59,5 +60,21 @@ public class UpdateClient {
      */
     public String[] getUpdateGame() {
         return updateGame;
+    }
+
+    /**
+     * Sets the name of the winner/s
+     * @param winners 1 or 2 names of winner/s
+     */
+    public void setWinners(String winners) {
+        this.winners = winners;
+    }
+
+    /**
+     * Gets the winner/s
+     * @return 1 or 2 names of winner/s
+     */
+    public String getWinners() {
+        return winners;
     }
 }

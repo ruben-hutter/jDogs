@@ -394,9 +394,8 @@ public class Server {
      */
     public void storeGame(String gameID, String winner) {
         MainGame mainGame = getRunningGame(gameID);
-        //TODO get winner-names as String from GameState
-        String name = "mainGame.getGameState().getWinner()";
 
+        String name = mainGame.getGameState().getWinners();
         // if 2 winners
         if (mainGame.isTeamMode()) {
             int separator = -1;
