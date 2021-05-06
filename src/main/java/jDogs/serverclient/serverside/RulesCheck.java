@@ -181,12 +181,16 @@ public class RulesCheck {
                     if (player.getAlliance() == ownAlliance4) {
                         ownPlayer = player;
                         ownActualPosition1 = player.receivePosition1Server(ownPieceID);
+                        System.out.println("ownActualPosition1 " + ownActualPosition1);
                         ownActualPosition2 = player.receivePosition2Server(ownPieceID);
+                        System.out.println("ownActualPosition2 " + ownActualPosition2);
                         ownTeamID = player.getTeamID();
                     } else if (player.getAlliance() == otherAlliance4) {
                         otherPlayer = player;
                         otherActualPosition1 = player.receivePosition1Server(otherPieceID);
+                        System.out.println("otherActualPosition1 " + otherActualPosition1);
                         otherActualPosition2 = player.receivePosition2Server(otherPieceID);
+                        System.out.println("otherActualPosition2 " + otherActualPosition2);
                         otherHasMoved = player.receiveHasMoved(otherPieceID);
                     }
                 }
@@ -221,6 +225,7 @@ public class RulesCheck {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             updateClient.setReturnValue(4);
             return updateClient;
         }

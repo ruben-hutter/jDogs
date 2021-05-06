@@ -89,6 +89,7 @@ public class MainGame {
         }
         participants.append(playersArray[playersArray.length - 1].getPlayerName());
         logger.debug("Participants: " + participants);
+        logger.debug("Array länge playersArray: " + playersArray.length);
 
         return participants.toString();
     }
@@ -175,19 +176,25 @@ public class MainGame {
 
     /**
      * this method sends a request to the next player to make a move
+     * The exception is needed for tests without ServerConnection
      */
     private void nextTurn() {
         int numb = turnNumber % playersArray.length;
         actualPlayer = gameArray[numb];
         if (getPlayer(actualPlayer).isAllowedToPlay()) {
-            Server.getInstance().getServerConnection(actualPlayer).sendToClient("TURN");
+            try {
+                Server.getInstance().getServerConnection(actualPlayer).sendToClient("TURN");
+            } catch (Exception e){
+                System.err.println("No ServerConnection available (test)");
+            }
         } else {
             turnComplete(actualPlayer);
         }
     }
 
+
     /**
-     * this test method is equivalent to {@link #nextTurn()}
+     * this test method is equivalent to {@link #nextTurn()} ()}
      * but it doesn't send a message to the client
      */
     private void nextTurnTest() {

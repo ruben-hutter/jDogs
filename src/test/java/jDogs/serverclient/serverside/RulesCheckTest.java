@@ -15,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class RulesCheckTest {
 
-    private Player player1;
-    private Player player2;
-    private Player player3;
-    private Player player4;
+    private Player player1; //YELLOW
+    private Player player2; //GREEN
+    private Player player3; //BLUE
+    private Player player4; //RED
 
     private MainGame mainGame;
     private GameState gameState;
@@ -337,6 +337,67 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+
+    @Test
+    @DisplayName("change two pieces on track (BB)")
+    void checkMoveJackBB() {
+        String twoPieces = "JACK YELO-1 GREN-1";
+        //set players to positions on track
+        player1.changePositionServer(1, "B", 00);
+        player2.changePositionServer(1, "B", 05);
+        player1.setAllowedToPlay(true);
+        player2.setAllowedToPlay(false);
+
+        //pieces are initially not moved
+        //change hasMoved to moved = true
+        player1.getPiece(1).changeHasMoved();
+        player2.getPiece(1).changeHasMoved();
+
+        //0 = everything ok
+        int result = 0;
+        assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
+    }
+
+
+    @Test
+    @DisplayName("change two pieces from heaven to track (AB)")
+    void checkMoveJackAB() {
+        String twoPieces = "JACK YELO-1 GREN-1";
+        //set players to positions on track
+        player1.changePositionServer(1, "B", 05);
+        player2.changePositionServer(1, "A", 00);
+        player1.setAllowedToPlay(true);
+        player2.setAllowedToPlay(false);
+
+        //pieces are initially not moved
+        //change hasMoved to moved = true
+        player1.getPiece(1).changeHasMoved();
+
+        //3 = one piece is at home or in heaven
+        int result = 3;
+        assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
+    }
+
+    @Test
+    @DisplayName("pieces in command in wrong order")
+    void checkMoveJackWrongOrder() {
+        String twoPieces = "JACK GREN-1 YELO-1";
+        //set players to positions on track
+        player1.changePositionServer(1, "B", 05);
+        player2.changePositionServer(1, "B", 00);
+        player1.setAllowedToPlay(true);
+        player2.setAllowedToPlay(false);
+
+        //pieces are initially not moved
+        //change hasMoved to moved = true
+        player1.getPiece(1).changeHasMoved();
+
+        //2 = ownPlayer != nowPlaying
+        //ownPlayer is the player which alliance is first in the command
+        int result = 2;
+        assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
+    }
+
     @Test
     void checkCardWithNewPositionABNotOk() {
     }
@@ -346,9 +407,7 @@ class RulesCheckTest {
     void checkCardWithNewPositionN4() {
     }
 
-    @Test
-    void checkMoveJack() {
-    }
+
 
     @Test
     void checkMoveSeven() {
