@@ -139,7 +139,10 @@ public class GUIManager extends Application {
     /**
      * starts the game
      */
-    public void startGame() {
+    public void startGame(int teamMode) {
+        if (teamMode == 1) {
+            //TODO get a color to both teams
+        }
         isPlaying = true;
         setGameScene();
     }

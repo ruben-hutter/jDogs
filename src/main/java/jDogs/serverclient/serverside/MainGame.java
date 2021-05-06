@@ -51,12 +51,18 @@ public class MainGame {
 
     /**
      * sets up the main game after calling the constructor
+     * and sends a message to clients with
+     * "GAME " + teamMode + " " + playersArray.length + " "
+     * + getParticipants()"
+     *
      */
     public void setUp() {
         gameState.createPlayers();
         for (Player player : playersArray) {
             player.getServerConnection().getMessageHandlerServer().setPlaying(nameID);
-            player.getServerConnection().sendToClient("GAME "
+            int teamModeInt = 0;
+            if (teamMode) { teamModeInt = 1;}
+            player.getServerConnection().sendToClient("GAME " + teamModeInt + " "
                     + playersArray.length + " " + getParticipants());
             logger.debug("Player   ServerConnection " + player.getServerConnection());
         }
