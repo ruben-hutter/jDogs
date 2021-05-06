@@ -744,10 +744,11 @@ public class GameWindowController implements Initializable {
      */
     public void setHand(String[] cards) {
         this.cardArray = cards;
+        //set cards invisible if they are not used this round
+        setAllCArdImageViewsInvisible();
         int count = 0;
         for(String card : cardArray) {
             URL url = CardUrl.getURL(card);
-            setAllCArdImageViewsInvisible();
             Image image = new Image(url.toString());
             allCardImageViews[count].setImage(image);
             allCardImageViews[count].setVisible(true);
