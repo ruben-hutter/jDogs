@@ -2,7 +2,6 @@ package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
 import java.util.ArrayList;
-import java.util.Collections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,8 +51,8 @@ public class OpenGameFile {
     }
 
     /**
-     * @param combination is a string with the teamsize, number of names transmitted and with the
-     *names which should be together in a team
+     * @param combination is a string with the team size, number of names transmitted and with the
+     *                    names which should be together in a team
      */
     public void changeTeam(String combination) {
         //e.g. format of combination: "2 4 Gregor Ruben Johanna Joe"
@@ -89,7 +88,7 @@ public class OpenGameFile {
      * way to play the game
      */
     private void orderByTeamId() {
-        Collections.sort(players, Player.TeamIdComparator);
+        players.sort(Player.TeamIdComparator);
         System.out.println("NEW TEAM combination " + getParticipants());
     }
 
@@ -205,9 +204,9 @@ public class OpenGameFile {
     }
     /**
      * checks that teams are complete when starting game and sets random teams if some players
-     * aren`t part of a team
+     * aren't part of a team
      */
-    private void checkforTeams() {
+    private void checkForTeams() {
         boolean teamsIncomplete = false;
         for (Player player : players) {
             if (player.getTeamID() == -1) {

@@ -6,6 +6,7 @@ import jDogs.player.Player;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.util.JsonUtils;
 
 public class RulesCheck {
 
@@ -53,6 +54,7 @@ public class RulesCheck {
                 logger.debug("This string is send to checkMove: " + toCheckMove);
             }
         }
+        System.err.println("ToCheckMove: " + toCheckMove);
         return toCheckMove;
     }
 
@@ -98,6 +100,15 @@ public class RulesCheck {
                     updateClient.setReturnValue(1);
                     return updateClient;
                 }
+
+                System.err.println("Piece's actualInfos:");
+                System.err.println("- alliance4: " + alliance4);
+                System.err.println("- pieceID: " + pieceID);
+                System.err.println("- actualPosition1: " + actualPosition1);
+                System.err.println("- actualPosition2: " + actualPosition2);
+                System.err.println("- hasMoved: " + hasMoved);
+                System.err.println("- teamID: " + ownTeamID);
+
             } catch (Exception e) {
                 updateClient.setReturnValue(2);
                 return updateClient;
@@ -108,11 +119,15 @@ public class RulesCheck {
             if (teamMode) {
                 if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
                         && ownTeamID != nowPlaying.getTeamID())) {
+                    System.err.println("Marble owner: " + ownPlayer);
+                    System.err.println("Playing: " + nowPlaying);
                     updateClient.setReturnValue(3);
                     return updateClient;
                 }
             } else {
                 if (ownPlayer != nowPlaying) {
+                    System.err.println("Marble owner: " + ownPlayer);
+                    System.err.println("Playing: " + nowPlaying);
                     updateClient.setReturnValue(4);
                     return updateClient;
                 }
@@ -126,7 +141,6 @@ public class RulesCheck {
             }
 
             // if move passes an occupied starting position, and that piece haven't moved
-            assert actualPosition1 != null;
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
                     ownPlayer, rulesCheckHelper)) {
                 updateClient.setReturnValue(6);
@@ -143,6 +157,7 @@ public class RulesCheck {
             rulesCheckHelper.updateGame(nickname, cardToEliminate, updateClient);
 
         } else {
+            System.err.println("Given MOVE: " + completeMove);
             updateClient.setReturnValue(8);
             return updateClient;
         }
@@ -152,25 +167,25 @@ public class RulesCheck {
 
     /**
      * Checks move when card JACK is played
-     * @param twoPieces pieces to switch position
+     * @param completeMove pieces to switch position
      * @param nickname players name
      * @return an object that contains a return value and, if the move is legal,
      * the moves and elimination moves to communicate to the clients
      */
-    protected UpdateClient checkMoveJack(String twoPieces, String nickname) { // JACK YELO-1 BLUE-2
+    protected UpdateClient checkMoveJack(String completeMove, String nickname) { // JACK YELO-1 BLUE-2
         UpdateClient updateClient = new UpdateClient();
         try {
-            if (twoPieces.length() == 18) {
-                String ownAlliance = twoPieces.substring(5, 9);
-                int ownPieceID = Integer.parseInt(twoPieces.substring(10, 11));
+            if (completeMove.length() == 18) {
+                String ownAlliance = completeMove.substring(5, 9);
+                int ownPieceID = Integer.parseInt(completeMove.substring(10, 11));
                 String ownActualPosition1 = null;
                 int ownActualPosition2 = -1;
                 Player ownPlayer = null;
                 Alliance_4 ownAlliance4 = rulesCheckHelper.convertAlliance(ownAlliance);
                 int ownTeamID = -1;
 
-                String otherAlliance = twoPieces.substring(12, 16);
-                int otherPieceID = Integer.parseInt(twoPieces.substring(17));
+                String otherAlliance = completeMove.substring(12, 16);
+                int otherPieceID = Integer.parseInt(completeMove.substring(17));
                 String otherActualPosition1 = null;
                 int otherActualPosition2 = -1;
                 boolean otherHasMoved = false;
@@ -183,23 +198,43 @@ public class RulesCheck {
                         ownActualPosition1 = player.receivePosition1Server(ownPieceID);
                         ownActualPosition2 = player.receivePosition2Server(ownPieceID);
                         ownTeamID = player.getTeamID();
-                    } else if (player.getAlliance() == otherAlliance4) {
+                    }
+                    if (player.getAlliance() == otherAlliance4) {
                         otherPlayer = player;
                         otherActualPosition1 = player.receivePosition1Server(otherPieceID);
                         otherActualPosition2 = player.receivePosition2Server(otherPieceID);
                         otherHasMoved = player.receiveHasMoved(otherPieceID);
                     }
                 }
+
+                System.err.println("First piece's actualInfos:");
+                System.err.println("- alliance4: " + ownAlliance4);
+                System.err.println("- pieceID: " + ownPieceID);
+                System.err.println("- actualPosition1: " + ownActualPosition1);
+                System.err.println("- actualPosition2: " + ownActualPosition2);
+                System.err.println("- teamID: " + ownTeamID);
+                System.err.println();
+                System.err.println("Second piece's actualInfos:");
+                System.err.println("- alliance4: " + otherAlliance4);
+                System.err.println("- pieceID: " + otherPieceID);
+                System.err.println("- actualPosition1: " + otherActualPosition1);
+                System.err.println("- actualPosition2: " + otherActualPosition2);
+                System.err.println("- hasMoved: " + otherHasMoved);
+
                 // prevent players from moving with others pieces
                 Player nowPlaying = gameState.getPlayer(nickname);
                 if (teamMode) {
                     if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer !=
                             nowPlaying && ownTeamID != nowPlaying.getTeamID())) {
+                        System.err.println("Marble owner: " + ownPlayer);
+                        System.err.println("Playing: " + nowPlaying);
                         updateClient.setReturnValue(1);
                         return updateClient;
                     }
                 } else {
                     if (ownPlayer != nowPlaying) {
+                        System.err.println("Marble owner: " + ownPlayer);
+                        System.err.println("Playing: " + nowPlaying);
                         updateClient.setReturnValue(2);
                         return updateClient;
                     }
@@ -221,6 +256,7 @@ public class RulesCheck {
                 }
             }
         } catch (Exception e) {
+            System.err.println("Given MOVE: " + completeMove);
             updateClient.setReturnValue(4);
             return updateClient;
         }
@@ -274,6 +310,15 @@ public class RulesCheck {
                 startingPosition = piecesActualInfo.getStartingPosition();
                 ownTeamID = piecesActualInfo.getTeamID();
 
+                System.err.println("Piece's actualInfos:");
+                System.err.println("- alliance4: " + alliance4);
+                System.err.println("- pieceID: " + pieceID);
+                System.err.println("- actualPosition1: " + actualPosition1);
+                System.err.println("- actualPosition2: " + actualPosition2);
+                System.err.println("- hasMoved: " + hasMoved);
+                System.err.println("- teamID: " + ownTeamID);
+                System.err.println();
+
                 moveValue = checkSingleSeven(nickname, newPosition1, newPosition2, ownPlayer,
                         actualPosition1, actualPosition2, hasMoved, startingPosition, ownTeamID);
                 if (moveValue < 0) {
@@ -282,6 +327,7 @@ public class RulesCheck {
                 }
                 countToSeven += moveValue;
                 if (countToSeven > 7) {
+                    System.err.println("CountToSeven: " + countToSeven);
                     updateClient.setReturnValue(2);
                     return updateClient;
                 }
@@ -321,11 +367,13 @@ public class RulesCheck {
                 rulesCheckHelper.updateGame(nickname, cardToEliminate, updateClient);
 
             } else {
+                System.err.println("CountToSeven: " + countToSeven);
                 updateClient.setReturnValue(4);
                 System.err.println("count to seven from rulescheck " + countToSeven);
                 return updateClient;
             }
         } catch (Exception e) {
+            System.err.println("Given MOVE: " + completeMove);
             updateClient.setReturnValue(5);
             return updateClient;
         }
@@ -354,20 +402,24 @@ public class RulesCheck {
             Player nowPlaying = gameState.getPlayer(nickname);
             if (teamMode) {
                 if (ownPlayer != nowPlaying && ownTeamID != nowPlaying.getTeamID()) {
+                    System.err.println("Marble owner: " + ownPlayer);
+                    System.err.println("Playing: " + nowPlaying);
                     return -1;
                 }
             } else {
                 if (ownPlayer != nowPlaying) {
+                    System.err.println("Marble owner: " + ownPlayer);
+                    System.err.println("Playing: " + nowPlaying);
                     return -1;
                 }
             }
 
             int difference;
-            assert actualPosition1 != null;
             if (actualPosition1.equals("B") && newPosition1.equals("B")
                     || (actualPosition1.equals("C") && newPosition1.equals("C"))) {
                 // track -> track or heaven -> heaven
                 difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+                System.err.println("Difference: " + difference);
                 return difference;
             } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
                 // track -> heaven
@@ -375,6 +427,7 @@ public class RulesCheck {
                     return -1;
                 }
                 difference = Math.floorMod(startingPosition - actualPosition2, 64);
+                System.err.println("Difference: " + (difference + newPosition2 + 1));
                 return difference + newPosition2 + 1;
             }
             return -1;
@@ -402,7 +455,6 @@ public class RulesCheck {
             String actualPosition1, int actualPosition2, int startingPosition, int pieceID,
             GameState tempGameState, MainGame tempMainGame) {
         ArrayList<Piece> piecesToEliminate = new ArrayList<>();
-        assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // track -> track
             if (piecesOnPathHelper(actualPosition2, newPosition2, ownPlayer, piecesToEliminate,
@@ -411,13 +463,16 @@ public class RulesCheck {
             }
         } else if (actualPosition1.equals("B") && newPosition1.equals("C")) {
             // track -> heaven
+            // checks track part
             if (piecesOnPathHelper(actualPosition2, startingPosition, ownPlayer,
                     piecesToEliminate, tempGameState)) {
                 return null;
             }
+            // checks heaven part
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
+                    System.err.println("Piece on path: " + piece);
                     return null;
                 }
             }
@@ -426,6 +481,7 @@ public class RulesCheck {
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
+                    System.err.println("Piece on path: " + piece);
                     return null;
                 }
             }
@@ -437,6 +493,8 @@ public class RulesCheck {
         for (Piece piece : piecesToEliminate) {
             rulesCheckHelper.eliminatePieceSEVE(piece, tempMainGame);
         }
+        System.err.println(ownPlayer + " eliminated the following pieces with " + pieceID + ": "
+                + piecesToEliminate);
         return piecesToEliminate;
     }
 
@@ -458,12 +516,14 @@ public class RulesCheck {
             if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
                     != ownPlayer.getAlliance()) {
                 if (!pieceOnPath.getHasMoved()) {
+                    System.err.println("You are blocked by: " + pieceOnPath);
                     return true;
                 } else {
                     piecesToEliminate.add(pieceOnPath);
                 }
             } else if (pieceOnPath != null && pieceOnPath.getPieceAlliance()
                     == ownPlayer.getAlliance()) {
+                System.err.println("You can't jump over: " + pieceOnPath);
                 return true;
             }
         }
@@ -471,7 +531,7 @@ public class RulesCheck {
     }
 
     /**
-     * Checks if newPosition is ok with played cardmainGame
+     * Checks if newPosition is ok with played card
      * @param card played card
      * @param actualPosition1 A, B or C
      * @param actualPosition2 int between 0-3 or on track 0-63
@@ -495,6 +555,7 @@ public class RulesCheck {
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
             // you play an exit card and you exit on your starting position
             Piece pieceOnStart = gameState.trackPositionOccupied(newPosition2);
+            System.err.println("You are blocked by: " + pieceOnStart);
             return (card.equals("ACEE") || card.equals("KING"))
                     && newPosition2 == startingPosition
                     && (pieceOnStart == null || pieceOnStart.getPieceAlliance()
@@ -505,11 +566,13 @@ public class RulesCheck {
                 for (int cardValue : cardValues) {
                     if (cardValue == -4) {
                         difference = Math.floorMod(newPosition2 - actualPosition2, -64);
+                        System.err.println("Difference: " + difference);
                         if (difference == cardValue) {
                             return true;
                         }
                     } else if (cardValue == 4) {
                         difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+                        System.err.println("Difference: " + difference);
                         if (difference == cardValue) {
                             return true;
                         }
@@ -517,6 +580,7 @@ public class RulesCheck {
                 }
             } else {
                 difference = Math.floorMod(newPosition2 - actualPosition2, 64);
+                System.err.println("Difference: " + difference);
                 for (int cardValue : cardValues) {
                     if (cardValue == difference) {
                         return true;
@@ -531,6 +595,7 @@ public class RulesCheck {
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
+                    System.err.println("Piece on path: " + piece);
                     return false;
                 }
             }
@@ -539,11 +604,13 @@ public class RulesCheck {
                     if (cardValue == 4) {
                         difference = Math.floorMod(startingPosition - actualPosition2, 64);
                         if (cardValue == difference + newPosition2 + 1) {
+                            System.err.println("Difference: " + (difference + newPosition2 + 1));
                             return true;
                         }
                     } else if (cardValue == -4) {
                         difference = startingPosition - actualPosition2 - newPosition2 - 1;
                         if (cardValue == difference) {
+                            System.err.println("Difference: " + difference);
                             return true;
                         }
                     }
@@ -552,6 +619,7 @@ public class RulesCheck {
                 difference = Math.floorMod(startingPosition - actualPosition2, 64) + newPosition2 + 1;
                 for (int cardValue : cardValues) {
                     if (cardValue == difference) {
+                        System.err.println("Difference: " + difference);
                         return true;
                     }
                 }
@@ -560,12 +628,14 @@ public class RulesCheck {
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
+                    System.err.println("Piece on path: " + piece);
                     return false;
                 }
             }
             difference = newPosition2 - actualPosition2;
             for (int cardValue : cardValues) {
                 if (cardValue == difference) {
+                    System.err.println("Difference: " + difference);
                     return true;
                 }
             }
@@ -602,6 +672,7 @@ public class RulesCheck {
                                     pieceOnStart = gameState.trackPositionOccupied(startingPosition);
                                     if (pieceOnStart != null && pieceOnStart.getPieceAlliance().
                                             getStartingPosition() == startingPosition) {
+                                        System.err.println("You are blocked by: " + pieceOnStart);
                                         return true;
                                     }
                                 }
@@ -621,6 +692,7 @@ public class RulesCheck {
             // go heaven
             for (Piece piece : player.pieces) {
                 if (piece.getPositionServer1().equals("B") && !piece.getHasMoved()) {
+                    System.err.println("You are blocked by: " + piece);
                     return true;
                 }
             }
@@ -645,6 +717,7 @@ public class RulesCheck {
                     pieceOnStart = gameState.trackPositionOccupied(startingPosition);
                     if (pieceOnStart != null && pieceOnStart.getPieceAlliance().getStartingPosition()
                             == startingPosition) {
+                        System.err.println("You are blocked by: " + pieceOnStart);
                         return true;
                     }
                 }

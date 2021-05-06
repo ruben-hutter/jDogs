@@ -799,6 +799,8 @@ public class GameWindowController implements Initializable {
      */
     public void setHand(String[] cards) {
         this.cardArray = cards;
+        //set cards invisible if they are not used this round
+        setAllCArdImageViewsInvisible();
         int count = 0;
         setAllCArdImageViewsInvisible();
 
