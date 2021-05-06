@@ -483,7 +483,7 @@ public class RulesCheck {
      * @param rulesCheckHelper helper object for this class
      * @return false if card can't correspond with destination
      */
-    private boolean checkCardWithNewPosition(String card, String actualPosition1,
+    public boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
             boolean hasMoved, Player ownPlayer, int pieceID, RulesCheckHelper rulesCheckHelper) {
         int[] cardValues = rulesCheckHelper.getCardValues(card);

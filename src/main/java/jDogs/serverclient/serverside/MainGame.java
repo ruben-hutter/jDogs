@@ -43,6 +43,11 @@ public class MainGame {
         startGameRhythm();
     }
 
+    /**
+     * This start method is only for test purposes
+     * it does the same as {@link #startTest()}
+     */
+
     public void startTest(){
         setUpTest();
         startGameRhythmTest();
@@ -62,6 +67,10 @@ public class MainGame {
         }
     }
 
+    /**
+     * this setUp method is only for test purposes.
+     * it does the same as {@link #setUp()}
+     */
     public void setUpTest(){
         gameState.createPlayers();
     }
@@ -99,13 +108,15 @@ public class MainGame {
         nextTurn();
     }
 
+    /**
+     * this method is only for test purposes
+     * it does the same as {@link #startGameRhythm()}
+     */
     private void startGameRhythmTest() {
         setRandomBeginnerTest();
         this.numberOfRounds = 0;
         turnNumber = 0;
         this.numbDealOut = 6;
-        //first deck
-        //deck = getDeck();
         dealOutCardsTest(numbDealOut);
         nextTurnTest();
 
@@ -137,6 +148,10 @@ public class MainGame {
         }
     }
 
+    /**
+     * this test method is equivalent to {@link #setRandomBeginner()}
+     * but it doesn't send a message to the clients
+     */
     private void setRandomBeginnerTest() {
         int random = new Random().nextInt(playersArray.length);
 
@@ -145,7 +160,6 @@ public class MainGame {
         this.gameArray = new String[oldArray.length];
         int playersNumb = 0;
 
-        //sendMessageToParticipants("INFO Beginner is " + oldArray[random]);
         actualPlayer = oldArray[random];
         getPlayer(actualPlayer).setAllowedToPlay(true);
 
@@ -172,6 +186,10 @@ public class MainGame {
         }
     }
 
+    /**
+     * this test method is equivalent to {@link #nextTurn()}
+     * but it doesn't send a message to the client
+     */
     private void nextTurnTest() {
         int numb = turnNumber % playersArray.length;
         actualPlayer = gameArray[numb];
@@ -182,7 +200,7 @@ public class MainGame {
 
     /**
      * this method deals out cards after all cards are played or when the game starts
-     * @param number
+     * @param number number of cards
      */
     private void dealOutCards(int number) {
         //deal out cards from here by using a certain procedure
@@ -206,33 +224,24 @@ public class MainGame {
         sendMessageToParticipants("HAND");
     }
 
-
-
+    /**
+     * this method is similar to {@link #dealOutCards(int)}
+     * but it doesn't send messages to clients
+     * and you can add the desired cards to the client's hand manually
+     * @param number number of cards
+     */
     private void dealOutCardsTest(int number) {
         //deal out cards from here by using a certain procedure
-
-        StringBuilder newHand;
-        ArrayList<String> newHandArray;
-
         for (Player player : playersArray) {
-            newHand = new StringBuilder("ROUN " + number);
             for (int j = 0; j < number; j++) {
-                //int randomNumber = random.nextInt(deck.size());
-                //String card = deck.remove(randomNumber);
                 String card1 = "KING";
                 String card2 = "JOKE";
                 String card3 = "ACEE";
-                newHand.append(" ").append(card1);
-                newHand.append(" ").append(card2);
-                newHand.append(" ").append(card3);
                 gameState.getCards().get(player.getPlayerName()).add(card1);
                 gameState.getCards().get(player.getPlayerName()).add(card2);
                 gameState.getCards().get(player.getPlayerName()).add(card3);
             }
-            // send newHand to player and to client here
-            //player.sendMessageToClient(newHand.toString());
             player.setAllowedToPlay(true);
-            logger.debug("Player " + player.getPlayerName() + " has cards " + newHand);
         }
     }
 
