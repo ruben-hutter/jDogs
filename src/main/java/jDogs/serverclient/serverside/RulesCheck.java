@@ -322,6 +322,7 @@ public class RulesCheck {
 
             } else {
                 updateClient.setReturnValue(4);
+                System.err.println("count to seven from rulescheck " + countToSeven);
                 return updateClient;
             }
         } catch (Exception e) {
