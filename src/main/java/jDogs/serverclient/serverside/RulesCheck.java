@@ -6,7 +6,6 @@ import jDogs.player.Player;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.util.JsonUtils;
 
 public class RulesCheck {
 

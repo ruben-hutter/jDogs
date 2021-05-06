@@ -145,7 +145,7 @@ public class OpenGameFile {
                 players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
             }
             if (teamMode == 1 && readyToStart()) {
-                checkforTeams();
+                checkForTeams();
                 OrderArrayListToPlayGame();
                 // get players arraylist in definitive order
             }
