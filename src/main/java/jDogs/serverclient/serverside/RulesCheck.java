@@ -3,6 +3,8 @@ package jDogs.serverclient.serverside;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.player.Player;
+
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -293,6 +295,7 @@ public class RulesCheck {
                 singleEliminations = piecesOnPath(newPosition1, newPosition2, ownPlayer,
                         actualPosition1, actualPosition2, startingPosition, pieceID, tempGameState,
                         tempMainGame);
+                System.out.println("singleElimination " + singleEliminations);
                 if (singleEliminations == null) {
                     updateClient.setReturnValue(3);
                     return updateClient;
@@ -336,6 +339,7 @@ public class RulesCheck {
         updateClient.setReturnValue(0);
         return updateClient;
     }
+
 
     /**
      * Checks one of the moves given with card SEVE
@@ -405,6 +409,8 @@ public class RulesCheck {
     private ArrayList<Piece> piecesOnPath(String newPosition1, int newPosition2, Player ownPlayer,
             String actualPosition1, int actualPosition2, int startingPosition, int pieceID,
             GameState tempGameState, MainGame tempMainGame) {
+        System.out.println("tempGameState " + tempGameState);
+        System.out.println("tempMainGame " + tempMainGame );
         ArrayList<Piece> piecesToEliminate = new ArrayList<>();
         assert actualPosition1 != null;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {

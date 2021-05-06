@@ -2,6 +2,7 @@ package jDogs.serverclient.serverside;
 
 import java.util.ArrayList;
 
+import jDogs.player.Piece;
 import jDogs.player.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -399,6 +400,43 @@ class RulesCheckTest {
     }
 
     @Test
+    @DisplayName("incorrect input throws exception")
+    void checkMoveSevenIncorrectInput() {
+        String completeMove = "SEVE BLUE-1 B05 GREN-3";
+        //5 = exception
+        int result = 5;
+        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
+    }
+
+    @Test
+    @DisplayName("player YELO moves two own pieces with SEVE and a total of 7 steps")
+    void checkMoveSevenCorrectInput() {
+        String completeMove = "SEVE 2 YELO-1 B05 YELO-2 B18";
+        player1.changePositionServer(1,"B",00);
+        player1.changePositionServer(2, "B", 16);
+        player1.setAllowedToPlay(true);
+
+        System.out.println("teamID " + player1.getTeamID() );
+        //0 = everything ok
+        int result = 0;
+        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
+    }
+
+    @Test
+    @DisplayName("try to move more than seven steps")
+    void checkMoveSevenMoreThanSeven() {
+        String completeMove = "SEVE 2 YELO-1 B05 YELO-2 B19";
+        player1.changePositionServer(1,"B",00);
+        player1.changePositionServer(2, "B", 16);
+        player1.setAllowedToPlay(true);
+
+        System.out.println("teamID " + player1.getTeamID() );
+        //2 = more than seven steps
+        int result = 2;
+        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
+    }
+
+    @Test
     void checkCardWithNewPositionABNotOk() {
     }
 
@@ -409,9 +447,6 @@ class RulesCheckTest {
 
 
 
-    @Test
-    void checkMoveSeven() {
-    }
 
     @Test
     void testPiecesOnPathBB(){
