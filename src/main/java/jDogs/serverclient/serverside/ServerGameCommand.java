@@ -44,19 +44,22 @@ public class ServerGameCommand {
 
         switch (command) {
             case "QUIT":
-                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname() + " left game session");
+                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
+                        + " left game session");
                 this.mainGame.delete();
                 break;
             case "EXIT":
                 //stop serverConnection
-                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname() + " left game session");
+                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
+                        + " left game session");
                 this.mainGame.delete();
                 this.serverConnection.kill();
                 break;
 
             case "MOVE":
-                if (text.length() >= 9 && mainGame.getActualPlayer().equals(serverConnection.getNickname())) {
-                    if (text.substring(5, 9).equals("SURR")) {
+                if ((text.startsWith("SURR", 5) || text.length() > 19)
+                        && mainGame.getActualPlayer().equals(serverConnection.getNickname())) {
+                    if (text.startsWith("SURR", 5)) {
                         mainGame.getPlayer(serverConnection.getNickname()).setAllowedToPlay(false);
                         mainGame.getGameState().getCards().get(serverConnection.getNickname()).clear();
                         serverConnection.sendToClient("INFO excluded for this round");
@@ -89,7 +92,7 @@ public class ServerGameCommand {
                                     break;
                                 case 1:
                                     serverConnection.sendToClient("INFO At least one invalid"
-                                            + "destination or piece!");
+                                            + " destination or piece!");
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 2:
@@ -127,7 +130,7 @@ public class ServerGameCommand {
                                     break;
                                 case 3:
                                     serverConnection.sendToClient("INFO You can't switch this"
-                                            + "pieces!");
+                                            + " pieces!");
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 4:
@@ -145,12 +148,12 @@ public class ServerGameCommand {
                                     break;
                                 case 1:
                                     serverConnection.sendToClient("INFO You can't move a piece in"
-                                            + "home");
+                                            + " home");
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 2:
                                     serverConnection.sendToClient("INFO Format exception in"
-                                            + "checkMove");
+                                            + " checkMove");
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 3:
@@ -175,7 +178,7 @@ public class ServerGameCommand {
                                     break;
                                 case 8:
                                     serverConnection.sendToClient("INFO Entered command does`t fit"
-                                            + "the length(15) for checkMove()");
+                                            + " the length(15) for checkMove()");
                                     serverConnection.sendToClient("TURN");
                                     break;
                                 case 9:
