@@ -224,14 +224,14 @@ public class OpenGameFile {
      * @return String of participants
      */
     public String getParticipants() {
-        String particpants = "";
+        StringBuilder particpants = new StringBuilder();
         for (Player player : players) {
-            particpants += player.getPlayerName();
-            particpants += " ";
+            particpants.append(player.getPlayerName());
+            particpants.append(" ");
         }
-        particpants = particpants.substring(0, particpants.length() - 1);
+        particpants = new StringBuilder(particpants.substring(0, particpants.length() - 1));
 
-        return particpants;
+        return particpants.toString();
     }
 
     /**

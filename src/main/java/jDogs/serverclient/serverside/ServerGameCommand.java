@@ -244,7 +244,7 @@ public class ServerGameCommand {
         serverConnection.sendToClient(sendMovesToParticipants.getUpdateGame()[1]);
         // send actual hand
         mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[2]);
-
+        // send turn completed
         mainGame.turnComplete(serverConnection.getNickname());
     }
 }

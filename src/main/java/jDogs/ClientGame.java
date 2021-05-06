@@ -74,6 +74,7 @@ public class ClientGame {
         for (String card : cards) {
             System.out.print(card + " ");
         }
+        System.out.println();
     }
 
     /**
