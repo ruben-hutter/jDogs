@@ -24,7 +24,7 @@ public class SendToAll implements Runnable {
             }
         }
         System.out.println(this.toString() + " stopps now");
-        }
+    }
 
     public void kill() {
         running = false;

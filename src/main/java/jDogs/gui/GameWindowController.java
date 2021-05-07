@@ -1,6 +1,5 @@
 package jDogs.gui;
 
-import jDogs.Alliance_4;
 import jDogs.ClientGame;
 import jDogs.board.Board;
 import jDogs.serverclient.clientside.Client;
@@ -27,7 +26,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -435,6 +434,8 @@ public class GameWindowController implements Initializable {
     }
 
     private void addToCirclesID(Node clickedNode) {
+        System.out.println("CircleID count " + circleCount);
+        System.out.println("TotalCircle " + totalSum);
         addToFadingCircles(clickedNode);
 
         Circle circle = (Circle) clickedNode;
@@ -474,7 +475,7 @@ public class GameWindowController implements Initializable {
                         System.out.println(move + pieceColor1 + "-"
                                 + pieceID1 + " " + pieceColor2 + "-" + pieceID2);
 
-                        //yourTurn = false;
+                        yourTurn = false;
                         deleteClickedData();
                     } else {
                         System.err.println("INFO not clicked a second circle for JACK");
@@ -572,6 +573,21 @@ public class GameWindowController implements Initializable {
         if (yourTurn) {
             Client.getInstance().sendMessageToServer("MOVE SURR");
             deleteClickedData();
+            yourTurn = false;
+            setAllCardsDarkened();
+        }
+    }
+    /**
+     * sets all cards darkened, if
+     * user takes round off
+     */
+    private void setAllCardsDarkened() {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+        for(ImageView imageView : allCardImageViews) {
+            if (imageView != null) {
+                imageView.setEffect(colorAdjust);
+            }
         }
     }
 
@@ -710,20 +726,6 @@ public class GameWindowController implements Initializable {
         labelPlayer2.setText(ClientGame.getInstance().getPlayerNames()[2]);
         labelPlayer3.setText(ClientGame.getInstance().getPlayerNames()[3]);
 
-        String color0 = "#4fdc41";
-        String color1 = "#6fdd3b";
-        String color2 = "#89de37";
-        String color3 = "#9fdf35";
-        String color4 = "#b3e035";
-        String color5 = "#add932";
-        String color6 = "#a7d32e";
-        String color7 = "#a1cc2b";
-        String color8 = "#82bc22";
-        String color9 = "#63ac1a";
-        String color10 = "#419c14";
-        String color11 = "#0f8c0f";
-
-
         if (GUIManager.getInstance().isTeamMode()) {
             Stop[] stops1 = new Stop[] { new Stop(0, Color.YELLOW), new Stop(1, Color.BLUE), new Stop(2, Color.MEDIUMVIOLETRED)};
             LinearGradient lgTeamYellowBlue = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops1);
@@ -798,17 +800,22 @@ public class GameWindowController implements Initializable {
      * @param cards these cards are the hand for this round
      */
     public void setHand(String[] cards) {
+        displayInfoFromClient("INFO new cards displaying");
         this.cardArray = cards;
         //set cards invisible if they are not used this round
         setAllCArdImageViewsInvisible();
-        int count = 0;
-        setAllCArdImageViewsInvisible();
 
+        // take off darkened mode
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(0.0);
+
+        int count = 0;
         for(String card : cardArray) {
             URL url = CardUrl.getURL(card);
             Image image = new Image(url.toString());
             allCardImageViews[count].setImage(image);
             allCardImageViews[count].setVisible(true);
+            allCardImageViews[count].setEffect(colorAdjust);
             count++;
         }
     }
@@ -831,18 +838,20 @@ public class GameWindowController implements Initializable {
         for (int i = 0; i < cardArray.length; i++) {
             if (cardArray[i] != null && cardArray[i].equals(card)) {
                 cardArray[i] = null;
-                setCardBlended(i);
+                setCardDarkened(i);
                 System.out.println("card " + card + " was removed from deck");
                 break;
             }
         }
     }
     /**
-     * after using card set card blended
+     * after using card set card darkened
      * @param i == number of card in array
      */
-    private void setCardBlended(int i) {
-        allCardImageViews[i].setBlendMode(BlendMode.DARKEN);
+    private void setCardDarkened(int i) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+        allCardImageViews[i].setEffect(colorAdjust);
     }
 
     /**

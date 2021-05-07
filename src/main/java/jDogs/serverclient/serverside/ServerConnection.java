@@ -76,6 +76,7 @@ public class ServerConnection {
         listeningToClient = new ReceiveFromClient(socket, receivedFromClient,
                 this);
         Thread listener = new Thread(listeningToClient);
+        listener.setName("listener thread " + socket.getLocalAddress().getHostName());
         listener.start();
 
         // messageHandlerServer Thread

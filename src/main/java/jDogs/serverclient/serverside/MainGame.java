@@ -189,7 +189,7 @@ public class MainGame {
         actualPlayer = gameArray[numb];
         if (getPlayer(actualPlayer).isAllowedToPlay()) {
             try {
-                Server.getInstance().getServerConnection(actualPlayer).sendToClient("TURN");
+                sendMessageToParticipants("TURN " + actualPlayer);
             } catch (Exception e){
                 System.err.println("No ServerConnection available (test)");
             }
