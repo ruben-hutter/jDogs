@@ -374,3 +374,32 @@ Wir haben in der Übungsstunde folgende Punkte besprochen:
 
 **Nächstes Treffen:** Donnerstag, 06.05.21, 10:00 Uhr: Test über Hamachi
 
+
+---
+
+06.05.2021, 10:00 Uhr, Johanna
+
+### Protokoll#21 - Protokoll
+
+Beim Test über Hamachi traten einige seltsame Dinge auf, die wir zuvor nicht bemerkt haben und auch nicht reproduzieren konnten. Z.B. wurde eine gefressene Kugel nicht nach Hause sondern auf ein anderes Feld auf dem Track geschickt. Bis zum Treffen am Freitag wollen wir weitere Fehler finden und beheben. 
+
+**Nächstes Treffen:** Freitag, 07.05.21, 10:00 Uhr
+
+---
+
+07.05.2021, 10:00 Uhr, Johanna
+
+### Protokoll#22 - Protokoll
+
+Heute testeten wir das Spiel wieder zu dritt und behoben verschiedene kleine Fehler. Z.B. bestand dass Problem, dass ein Spieler, der in einen falschen Himmel gehen wollte, danach komplett blockiert war. Bis morgen sollen die folgenden Aufgabe erledigt sein:
+- Problem mit SEVE: Es gibt ein Problem, wenn man die Karte 7 spielen möchte, aber zuerst einen falschen MOVE angibt. Das hängt damit zusammen, dass der tempGameState auf den GameState übertragen wird. 
+- Javadoc: Wir bearbeiten und vervollständigen die Javadoc-Kommentare auf einem eigenen Branch.
+- Organisation: Jeder sollte seine nicht mehr benötigten Branches löschen.
+- SURR: Wenn man SURR gespielt hat, sollte man keine Karten mehr auswählen können. 
+- Darstellung der Karten: Momentan ist es so, dass ab der zweiten Runde alle Karten verblasst dargestellt werden und dadurch nicht mehr erkennbar ist, welche Karten noch spielbar sind.
+- Spielfelder einfärben: Um das Spielfedl übersichtlicher zu gestalten, wollen wir die Startfelder jeweils farblich hervorheben. 
+- Logfile: Bei jedem Serverstart sollte ein neues Logfile erstellt werden. 
+- Spielanleitung: Die Spielanleitung muss auf das Spielen in der GUI angepasst werden. 
+
+**Nächstes Treffen:** Samstag, 08.05.21, 14:00 Uhr
+
