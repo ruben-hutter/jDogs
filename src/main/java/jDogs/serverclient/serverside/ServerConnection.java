@@ -76,12 +76,14 @@ public class ServerConnection {
         listeningToClient = new ReceiveFromClient(socket, receivedFromClient,
                 this);
         Thread listener = new Thread(listeningToClient);
+        listener.setName("listen-thrd " + socket.getLocalAddress().getHostName());
         listener.start();
 
         // messageHandlerServer Thread
         messageHandlerServer = new MessageHandlerServer(server,
                 this, sendThisClient, sendAll, receivedFromClient, sendPub);
         Thread messenger = new Thread(messageHandlerServer);
+        messenger.setName("messHandler-thrd " + socket.getLocalAddress().getHostName());
         messenger.start();
     }
 

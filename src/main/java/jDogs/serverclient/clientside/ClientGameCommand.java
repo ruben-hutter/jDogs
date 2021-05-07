@@ -42,12 +42,16 @@ public class ClientGameCommand {
 
             case "TURN":
                 if (text.length() == command.length()) {
-                    System.out.println("TURN: your turn");
                     Platform.runLater(() -> GUIManager.getInstance().
                             gameWindowController.setYourTurn(true));
                 } else {
-                    Platform.runLater(() -> GUIManager.getInstance().
-                            gameWindowController.displayInfoFromClient(text));
+                    if (text.substring(5).equals(Client.getInstance().getNickname())) {
+                        Platform.runLater(() -> GUIManager.getInstance().
+                                gameWindowController.setYourTurn(true));
+                    } else {
+                        Platform.runLater(() -> GUIManager.getInstance().
+                                gameWindowController.displayInfoFromServer(text));
+                    }
                 }
                 break;
 

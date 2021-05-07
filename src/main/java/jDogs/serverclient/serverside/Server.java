@@ -376,15 +376,21 @@ public class Server {
      * @param nickname
      */
     public synchronized void errorRemoveMainGame(String gameID, String nickname) {
-        for (Player player : getRunningGame(gameID).getPlayersArray()) {
-            if (!player.getPlayerName().equals(nickname)) {
-                player.getServerConnection().getMessageHandlerServer().returnToLobby();
-                player.sendMessageToClient("INFO shutdown game.Client "
-                        + nickname + " just left session.");
-                player.sendMessageToClient("STOP");
+        try {
+            for (Player player : getRunningGame(gameID).getPlayersArray()) {
+                if (!player.getPlayerName().equals(nickname)) {
+                    player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                    player.sendMessageToClient("INFO shutdown game.Client "
+                            + nickname + " just left session.");
+                    player.sendMessageToClient("STOP");
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            System.out.println("removed game with name " +
+                    gameID + runningGames.remove(getRunningGame(gameID)));
         }
-        runningGames.remove(getRunningGame(gameID));
     }
 
     /**
