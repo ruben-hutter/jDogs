@@ -13,6 +13,9 @@ public class SenderContainer {
     private SendToClient sendClient;
     private DataOutputStream dout;
     private Socket socket;
+    private Thread sendClientThread;
+    private Thread sendAllThread;
+    private Thread sendPubThread;
 
     public SenderContainer(ServerConnection serverConnection, Socket socket, BlockingQueue<String> sendToAllQueue,
              BlockingQueue<String> sendToPubQueue, BlockingQueue<String> sendToClientQueue) {
@@ -35,13 +38,13 @@ public class SenderContainer {
 
         sendClient = new SendToClient(this, sendToClientQueue);
 
-        Thread sendClientThread = new Thread(sendClient);
+        sendClientThread = new Thread(sendClient);
         sendClientThread.start();
 
-        Thread sendAllThread = new Thread(sendAll);
+        sendAllThread = new Thread(sendAll);
         sendAllThread.start();
 
-        Thread sendPubThread = new Thread(sendPub);
+        sendPubThread = new Thread(sendPub);
         sendPubThread.start();
     }
 
@@ -50,8 +53,12 @@ public class SenderContainer {
             dout.writeUTF(message);
             dout.flush();
         } catch (IOException e) {
-            // e.printStackTrace();
+            // error handling due to strange behaving threads
+            e.printStackTrace();
             System.out.println("SenderContainer error: send String to Client error...." + serverConnection.getNickname());
+            System.out.println("sendClientThreadState: " + sendClientThread.getState());
+            System.out.println("sendAllThreadState: " + sendAllThread.getState());
+            System.out.println("sendPubThreadState: " + sendPubThread.getState());
 
             // delete this serverConnection:
             sendClient.kill();

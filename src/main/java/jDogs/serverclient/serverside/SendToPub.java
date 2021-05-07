@@ -14,15 +14,19 @@ public class SendToPub implements Runnable {
 
     @Override
     public void run() {
-
-        while (running) {
-            try {
-                Server.getInstance().sendMessageToAll(sendPub.take());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.out.println("set running false");
-                kill();
+        try {
+            while (running) {
+                try {
+                    Server.getInstance().sendMessageToAll(sendPub.take());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.out.println("set running false");
+                    kill();
+                }
             }
+        } catch (Throwable t) {
+        System.out.println(this.toString() + " throwed throwable");
+        t.printStackTrace();
         }
         System.out.println(this.toString() + " stopps now");
     }
