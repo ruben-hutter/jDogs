@@ -142,7 +142,7 @@ public class RulesCheck {
 
             // if move passes an occupied starting position, and that piece haven't moved
             if (checkForBlock(card, actualPosition1, actualPosition2, newPosition1, newPosition2,
-                    ownPlayer, rulesCheckHelper)) {
+                    ownPlayer)) {
                 updateClient.setReturnValue(6);
                 return updateClient;
             }
@@ -317,7 +317,6 @@ public class RulesCheck {
                 System.err.println("- actualPosition2: " + actualPosition2);
                 System.err.println("- hasMoved: " + hasMoved);
                 System.err.println("- teamID: " + ownTeamID);
-                System.err.println();
 
                 moveValue = checkSingleSeven(nickname, newPosition1, newPosition2, ownPlayer,
                         actualPosition1, actualPosition2, hasMoved, startingPosition, ownTeamID);
@@ -550,10 +549,6 @@ public class RulesCheck {
             boolean hasMoved, Player ownPlayer, int pieceID, RulesCheckHelper rulesCheckHelper) {
         int[] cardValues = rulesCheckHelper.getCardValues(card);
         int difference;
-        if (cardValues == null) {
-            return false;
-        }
-        // TODO set actualCardValue
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
             // you play an exit card and you exit on your starting position
             Piece pieceOnStart = gameState.trackPositionOccupied(newPosition2);
@@ -570,12 +565,14 @@ public class RulesCheck {
                         difference = Math.floorMod(newPosition2 - actualPosition2, -64);
                         System.err.println("Difference with -4: " + difference);
                         if (difference == cardValue) {
+                            actualCardValue = cardValue;
                             return true;
                         }
                     } else if (cardValue == 4) {
                         difference = Math.floorMod(newPosition2 - actualPosition2, 64);
                         System.err.println("Difference with 4: " + difference);
                         if (difference == cardValue) {
+                            actualCardValue = cardValue;
                             return true;
                         }
                     }
@@ -585,6 +582,7 @@ public class RulesCheck {
                 System.err.println("Difference: " + difference);
                 for (int cardValue : cardValues) {
                     if (cardValue == difference) {
+                        actualCardValue = cardValue;
                         return true;
                     }
                 }
@@ -607,13 +605,14 @@ public class RulesCheck {
                         difference = Math.floorMod(startingPosition - actualPosition2, 64);
                         if (cardValue == difference + newPosition2 + 1) {
                             System.err.println("Difference: " + (difference + newPosition2 + 1));
+                            actualCardValue = cardValue;
                             return true;
                         }
                     } else if (cardValue == -4) {
-                        // TODO analyse if player go to an other heaven
                         difference = startingPosition - actualPosition2 - newPosition2 - 1;
                         if (cardValue == difference) {
                             System.err.println("Difference: " + difference);
+                            actualCardValue = cardValue;
                             return true;
                         }
                     }
@@ -623,6 +622,7 @@ public class RulesCheck {
                 for (int cardValue : cardValues) {
                     if (cardValue == difference) {
                         System.err.println("Difference: " + difference);
+                        actualCardValue = cardValue;
                         return true;
                     }
                 }
@@ -639,6 +639,7 @@ public class RulesCheck {
             for (int cardValue : cardValues) {
                 if (cardValue == difference) {
                     System.err.println("Difference: " + difference);
+                    actualCardValue = cardValue;
                     return true;
                 }
             }
@@ -654,38 +655,31 @@ public class RulesCheck {
      * @param newPosition1 A, B or C
      * @param newPosition2 int between 0-3 or 0-63 on track
      * @param player this player
-     * @param rulesCheckHelper helper object for this class
      * @return true if you are blocked, false if not
      */
     private boolean checkForBlock(String card, String actualPosition1, int actualPosition2,
-            String newPosition1, int newPosition2, Player player, RulesCheckHelper rulesCheckHelper) {
+            String newPosition1, int newPosition2, Player player) {
         int[] startingPositions = new int[] {0, 16, 32, 48};
-        int[] cardValues = rulesCheckHelper.getCardValues(card);
         Piece pieceOnStart;
         int difference;
         if (actualPosition1.equals("B") && newPosition1.equals("B")) {
             // continue on track
-            // TODO save correct cardValue and execute only on that
             if (card.equals("FOUR")) {
-                for (int cardValue : cardValues) {
-                    if (cardValue == -4) {
-                        for (int startingPosition : startingPositions) {
-                            for (int i = -1; i >= cardValue; i--) {
-                                if ((actualPosition2 + i) % 64 == startingPosition) {
-                                    pieceOnStart = gameState.trackPositionOccupied(startingPosition);
-                                    if (pieceOnStart != null && pieceOnStart.getPieceAlliance().
-                                            getStartingPosition() == startingPosition) {
-                                        System.err.println("You are blocked by: " + pieceOnStart);
-                                        return true;
-                                    }
+                if (actualCardValue == -4) {
+                    for (int startingPosition : startingPositions) {
+                        for (int i = -1; i >= actualCardValue; i--) {
+                            if ((actualPosition2 + i) % 64 == startingPosition) {
+                                pieceOnStart = gameState.trackPositionOccupied(startingPosition);
+                                if (pieceOnStart != null && pieceOnStart.getPieceAlliance().
+                                        getStartingPosition() == startingPosition) {
+                                    System.err.println("You are blocked by: " + pieceOnStart);
+                                    return true;
                                 }
                             }
                         }
-                    } else if (cardValue == 4) {
-                        if (checkForBlockHelper(actualPosition2, startingPositions, cardValue)) {
-                            return true;
-                        }
                     }
+                } else if (actualCardValue == 4) {
+                    return checkForBlockHelper(actualPosition2, startingPositions, actualCardValue);
                 }
             } else {
                 difference = Math.floorMod(newPosition2 - actualPosition2, 64);
