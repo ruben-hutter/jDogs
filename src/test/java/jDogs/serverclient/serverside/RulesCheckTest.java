@@ -31,7 +31,7 @@ class RulesCheckTest {
     private boolean teamMode;
 
     /**
-     * set up a test game
+     * set up a test game with 4 players
      */
     @BeforeEach
     void setUp() {
@@ -56,6 +56,10 @@ class RulesCheckTest {
         mainGame = null;
     }
 
+    /**
+     * the player has KING on his hand
+     * the tests checks the result if the player plays KING
+     */
     @Test
     @DisplayName("Checks if the hand contains a given card")
     void testIfHandContainsCardTrue() {
@@ -64,6 +68,10 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkCard(text,"1"));
     }
 
+    /**
+     * the player hasn't the card TWOO on his hand
+     * but he plays the card TWOO
+     */
     @Test
     @DisplayName("Should return null, because card isn't in hand")
     void testIfHandContainsCardFalse() {
@@ -72,6 +80,9 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkCard(text,"1"));
     }
 
+    /**
+     * test sending garbage, e.g. no cardname
+     */
     @Test
     @DisplayName("Should return null, because command MOVE isn't correct")
     void testIfHandContainsCardNoCard() {
@@ -80,6 +91,10 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkCard(text,"1"));
     }
 
+    /**
+     * the player has the card JOKE on his hand
+     * checks the correct handling of card JOKE
+     */
     @Test
     @DisplayName("Should return the desired card without JOKE")
     void testSpecialCardJoker() {
@@ -89,14 +104,10 @@ class RulesCheckTest {
 
     }
 
-    @Test
-    @DisplayName("Move from home tile to track tile")
-    void checkMoveNewPositionA() {
-        String completeMove = "TWOO YELO-1 A00";
-        int result = 1;
-        assertEquals(result, rulesCheck.checkMove(completeMove,"1").getReturnValue());
-    }
-
+    /**
+     * send a too short command to checkMove()
+     * should return 8
+     */
     @Test
     @DisplayName("send a too short command to checkMove()")
     void checkMoveTooShort(){
@@ -105,6 +116,10 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkMove(completeMove, "1").getReturnValue());
     }
 
+    /**
+     * send a too long command to checkMove()
+     * should return 8
+     */
     @Test
     @DisplayName("send a too long command to checkMove()")
     void checkMoveTooLong(){
@@ -113,15 +128,22 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkMove(completeMove, "1").getReturnValue());
     }
 
+    /**
+     * send garbage to checkMove()
+     * should return 2, 2 = exception
+     */
     @Test
     @DisplayName("send garbage to checkMove() with appropriate length")
     void checkMoveGarbage(){
         String completeMove = "QWEE MNVS-1 A00";
-        //2 = command throws exception
         int result = 2;
         assertEquals(result, rulesCheck.checkMove(completeMove, "1").getReturnValue());
     }
 
+    /**
+     * Player is on A00
+     * Moves with card KING to startingPosition B00
+     */
     @Test
     @DisplayName("Go to startingPosition with valid starting card KING")
     void checkCardWithNewPositionABKING() {
@@ -140,6 +162,9 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * player tries to go to startingPosition with invalid starting card
+     */
     @Test
     @DisplayName("Go to startingPosition with invalid starting card TWOO")
     void checkCardWithNewPositionABNotKING() {
@@ -158,6 +183,9 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on position B00 and moves twoo steps to B02
+     */
     @Test
     @DisplayName("Go two steps further on the track with card TWOO")
     void checkCardWithNewPositionBB() {
@@ -176,6 +204,9 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B00 and wants to move 3 steps with card TWOO
+     */
     @Test
     @DisplayName("Go three steps further on the track with card TWOO")
     void checkCardWithNewPositionBBInvalid() {
@@ -194,6 +225,10 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B03 and wants to move 3 steps backwards
+     * should return false
+     */
     @Test
     @DisplayName("Go three steps backwards on the track with card THRE")
     void checkCardWithNewPositionBBBackwards() {
@@ -212,6 +247,9 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B04 and wants to go 4 steps backwards with card FOUR to B00
+     */
     @Test
     @DisplayName("Go four steps backwards on the track with card FOUR")
     void checkCardWithNewPositionBBFour() {
@@ -230,6 +268,9 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B04 and wants to move 4 steps forward with FOUR to B08
+     */
     @Test
     @DisplayName("Go four steps forwards on the track with card FOUR")
     void checkCardWithNewPositionBBFourPos() {
@@ -248,6 +289,9 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B62 and wants to move 2 steps forward to B00
+     */
     @Test
     @DisplayName("Go twoo steps forwards on the track over the end")
     void checkCardWithNewPositionBBEnd() {
@@ -266,6 +310,9 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B02 and wants to move 4 steps backwards to B62
+     */
     @Test
     @DisplayName("Go four steps backwards on the track over the end")
     void checkCardWithNewPositionBBFourEnd() {
@@ -284,6 +331,10 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B63, has startingPosition B00
+     * and wants to go into heaven C01 with card THRE
+     */
     @Test
     @DisplayName("Go into heaven with THRE (heaven starts at C00)")
     void checkCardWithNewPositionBC() {
@@ -302,14 +353,19 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on his startingPosition B00 and hasn't moved yet
+     * he wants to go into heave with THRE to C02
+     * should return false
+     */
     @Test
     @DisplayName("Go into heaven directly from start (hasMoved = false)")
     void checkCardWithNewPositionBCNotMoved() {
         String card = "THRE";
         String actualPosition1 = "B";
-        int actualPosition2 = 63;
+        int actualPosition2 = 00;
         String newPosition1 = "C";
-        int newPosition2 =  01;
+        int newPosition2 =  02;
         int startingPosition = 00;
         boolean hasMoved = false;
         Player ownplayer = player1;
@@ -320,6 +376,10 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
+    /**
+     * Player is on B17 and wants to go into heaven C02 with FOUR backwards
+     * startingPosition is B16
+     */
     @Test
     @DisplayName("Go into heaven with FOUR negative")
     void checkCardWithNewPositionBCFour() {
@@ -338,7 +398,10 @@ class RulesCheckTest {
                 newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
     }
 
-
+    /**
+     * Player1  wants to change pieces from player1 and player2
+     * The pieces are on track and hasMovec = true
+     */
     @Test
     @DisplayName("change two pieces on track (BB)")
     void checkMoveJackBB() {
@@ -359,7 +422,10 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
     }
 
-
+    /**
+     *player1 wants to change a piece which is in heaven
+     * should return 3, 3 = one piece is at home or in heaven
+     */
     @Test
     @DisplayName("change two pieces from heaven to track (AB)")
     void checkMoveJackAB() {
@@ -374,11 +440,16 @@ class RulesCheckTest {
         //change hasMoved to moved = true
         player1.getPiece(1).changeHasMoved();
 
-        //3 = one piece is at home or in heaven
         int result = 3;
         assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
     }
 
+    /**
+     * player1 is YELLOW, player2 is GREN
+     * player1 sends command in wrong order, green piece first
+     * ownPlayer is the player which alliance is first in the command
+     * should return 2, 2 = ownPlayer != nowPlaying
+     */
     @Test
     @DisplayName("pieces in command in wrong order")
     void checkMoveJackWrongOrder() {
@@ -393,21 +464,25 @@ class RulesCheckTest {
         //change hasMoved to moved = true
         player1.getPiece(1).changeHasMoved();
 
-        //2 = ownPlayer != nowPlaying
-        //ownPlayer is the player which alliance is first in the command
         int result = 2;
         assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
     }
 
+    /**
+     * send wrong JACK-command
+     * should result in an exception (5)
+     */
     @Test
     @DisplayName("incorrect input throws exception")
     void checkMoveSevenIncorrectInput() {
         String completeMove = "SEVE BLUE-1 B05 GREN-3";
-        //5 = exception
         int result = 5;
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
 
+    /**
+     * player1 is YELLOW and wants to move two of his own pieces with card SEVE
+     */
     @Test
     @DisplayName("player YELO moves two own pieces with SEVE and a total of 7 steps")
     void checkMoveSevenCorrectInput() {
@@ -422,6 +497,9 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
 
+    /**
+     * player1 wants to move more than seven steps with card SEVE and two pieces
+     */
     @Test
     @DisplayName("try to move more than seven steps")
     void checkMoveSevenMoreThanSeven() {
