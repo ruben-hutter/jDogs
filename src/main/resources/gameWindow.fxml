@@ -245,6 +245,7 @@
                         <TextArea fx:id="textLogClient" prefHeight="142.0" prefWidth="104.0" text="ClientNews/GUI&#10;Problems&#10;" />
                      </content>
                   </ScrollPane>
+                  <Button fx:id="refreshButton" layoutX="25.0" layoutY="14.0" mnemonicParsing="false" onAction="#refreshButtonOnAction" text="Refresh" />
                </children></Pane>
             <Pane prefHeight="276.0" prefWidth="830.0">
                <children>

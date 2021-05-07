@@ -39,12 +39,15 @@ public class SenderContainer {
         sendClient = new SendToClient(this, sendToClientQueue);
 
         sendClientThread = new Thread(sendClient);
+        sendClientThread.setName("sendClient-thrd" + socket.getLocalAddress().getHostName());
         sendClientThread.start();
 
         sendAllThread = new Thread(sendAll);
+        sendAllThread.setName("sendAll-thrd" + socket.getLocalAddress().getHostName());
         sendAllThread.start();
 
         sendPubThread = new Thread(sendPub);
+        sendPubThread.setName("sendPub-thrd" + socket.getLocalAddress().getHostName());
         sendPubThread.start();
     }
 

@@ -50,7 +50,7 @@ public class ClientGameCommand {
                                 gameWindowController.setYourTurn(true));
                     } else {
                         Platform.runLater(() -> GUIManager.getInstance().
-                                gameWindowController.displayInfoFromClient(text));
+                                gameWindowController.displayInfoFromServer(text));
                     }
                 }
                 break;

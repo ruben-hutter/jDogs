@@ -21,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -72,6 +73,8 @@ public class GameWindowController implements Initializable {
 
     private Stage allCardsDialog;
 
+    @FXML
+    private Button refreshButton;
 
     @FXML
     private Label labelPlayer0;
@@ -386,15 +389,15 @@ public class GameWindowController implements Initializable {
             fadingGrids[gridCount].play();
 
         } else {
-            fadingGrids[gridCount].jumpTo(Duration.ZERO);
-            fadingGrids[gridCount].stop();
+            fadingGrids[gridCount - 1].jumpTo(Duration.ZERO);
+            fadingGrids[gridCount - 1].stop();
 
-            fadingGrids[gridCount] = new FadeTransition(Duration.seconds(0.9),
+            fadingGrids[gridCount - 1] = new FadeTransition(Duration.seconds(0.9),
                     clickedNode);
-            fadingGrids[gridCount].setFromValue(1.0);
-            fadingGrids[gridCount].setToValue(0.0);
-            fadingGrids[gridCount].setCycleCount(Animation.INDEFINITE);
-            fadingGrids[gridCount].play();
+            fadingGrids[gridCount - 1].setFromValue(1.0);
+            fadingGrids[gridCount - 1].setToValue(0.0);
+            fadingGrids[gridCount - 1].setCycleCount(Animation.INDEFINITE);
+            fadingGrids[gridCount - 1].play();
         }
     }
 
@@ -408,15 +411,15 @@ public class GameWindowController implements Initializable {
             fadingCircles[circleCount].play();
 
         } else {
-            fadingCircles[circleCount].jumpTo(Duration.ZERO);
-            fadingCircles[circleCount].stop();
+            fadingCircles[circleCount - 1].jumpTo(Duration.ZERO);
+            fadingCircles[circleCount - 1].stop();
 
-            fadingCircles[circleCount] = new FadeTransition(Duration.seconds(0.9),
+            fadingCircles[circleCount - 1] = new FadeTransition(Duration.seconds(0.9),
                     clickedNode);
-            fadingCircles[circleCount].setFromValue(1.0);
-            fadingCircles[circleCount].setToValue(0.0);
-            fadingCircles[circleCount].setCycleCount(Animation.INDEFINITE);
-            fadingCircles[circleCount].play();
+            fadingCircles[circleCount - 1].setFromValue(1.0);
+            fadingCircles[circleCount - 1].setToValue(0.0);
+            fadingCircles[circleCount - 1].setCycleCount(Animation.INDEFINITE);
+            fadingCircles[circleCount - 1].play();
         }
     }
 
@@ -1045,6 +1048,16 @@ public class GameWindowController implements Initializable {
             Client.getInstance().sendMessageToServer("LCHT " + sendMessageTextField.getText());
             sendMessageTextField.clear();
         }
+    }
+
+    /**
+     * click refresh button to delete all
+     * clicked circles and grid
+     * @param event click
+     */
+    @FXML
+    void refreshButtonOnAction(ActionEvent event) {
+        deleteClickedData();
     }
 
     /**
