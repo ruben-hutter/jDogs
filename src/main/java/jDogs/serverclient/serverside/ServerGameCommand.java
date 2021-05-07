@@ -57,148 +57,172 @@ public class ServerGameCommand {
                 break;
 
             case "MOVE":
-                if ((text.startsWith("SURR", 5) || text.length() > 19)
-                        && mainGame.getActualPlayer().equals(serverConnection.getNickname())) {
-                    if (text.startsWith("SURR", 5)) {
+                if (mainGame.getActualPlayer().equals(serverConnection.getNickname())
+                        && mainGame.getPlayer(serverConnection.getNickname()).isAllowedToPlay()) {
+                    // SURR
+                    if (text.startsWith("SURR", 5) && text.length() == 9) {
                         mainGame.getPlayer(serverConnection.getNickname()).setAllowedToPlay(false);
-                        mainGame.getGameState().getCards().get(serverConnection.getNickname()).clear();
+                        mainGame.getGameState().getCards().get(serverConnection.getNickname())
+                                .clear();
                         serverConnection.sendToClient("INFO excluded for this round");
                         mainGame.turnComplete(serverConnection.getNickname());
                         break;
                     }
 
-                    String playerName = serverConnection.getNickname();
-                    logger.debug("Player nickname: " + playerName);
-                    Player player = mainGame.getPlayer(playerName);
-                    logger.debug("Player: " + player);
-                    String toCheckMove = rulesCheck.checkCard(text, serverConnection.getNickname());
-                    if (toCheckMove == null) {
-                        serverConnection.sendToClient("INFO Invalid card or no hand");
-                        serverConnection.sendToClient("TURN");
-                        logger.debug("You don't have this card on your hand");
-                        return;
-                    }
+                    if (text.length() > 18) {
 
-                    // special cases (move command syntax different from normal)
-                    String card = toCheckMove.substring(0, 4);
-                    UpdateClient returnValue;
-                    String winners;
-                    switch (card) {
-                        case "SEVE":
-                            returnValue = rulesCheck.checkMoveSeven(toCheckMove, serverConnection.
-                                    getNickname());
-                            switch (returnValue.getReturnValue()) {
-                                case 0:
-                                    sendMovesToParticipants(returnValue);
-                                    winners = returnValue.getWinners();
-                                    if (winners != null) {
-                                        mainGame.sendMessageToParticipants("VICT " + winners);
-                                        Server.getInstance().storeGame(mainGame.getGameId(), winners);
-                                    }
-                                    break;
-                                case 1:
-                                    serverConnection.sendToClient("INFO At least one invalid"
-                                            + " destination or piece!");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 2:
-                                    serverConnection.sendToClient("INFO You moved more than 7!");
-                                    serverConnection.sendToClient("TURN");
-                                case 3:
-                                    serverConnection.sendToClient("INFO You can't jump over your own"
-                                            + "pieces!");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 4:
-                                    serverConnection.sendToClient("INFO You don't move a total of 7!");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 5:
-                                    serverConnection.sendToClient("INFO wrong format for seven");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                            }
-                            break;
-                        case "JACK":
-                            returnValue = rulesCheck.checkMoveJack(toCheckMove, serverConnection.
-                                    getNickname());
-                            switch (returnValue.getReturnValue()) {
-                                case 0:
-                                    sendMovesToParticipants(returnValue);
-                                    winners = returnValue.getWinners();
-                                    if (winners != null) {
-                                        mainGame.sendMessageToParticipants("VICT " + winners);
-                                        Server.getInstance().storeGame(mainGame.getGameId(), winners);
-                                    }
-                                    break;
-                                case 1:
-                                    serverConnection.sendToClient("INFO You have not finished");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 2:
-                                    serverConnection.sendToClient("INFO You cannot move this color");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 3:
-                                    serverConnection.sendToClient("INFO You can't switch this"
-                                            + " pieces!");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 4:
-                                    serverConnection.sendToClient("INFO wrong format for jack");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                            }
-                            break;
-                        default:
-                            returnValue = rulesCheck.checkMove(toCheckMove, serverConnection.
-                                    getNickname());
-                            switch(returnValue.getReturnValue()) {
-                                case 0:
-                                    sendMovesToParticipants(returnValue);
-                                    winners = returnValue.getWinners();
-                                    if (winners != null) {
-                                        mainGame.sendMessageToParticipants("VICT " + winners);
-                                        Server.getInstance().storeGame(mainGame.getGameId(), winners);
-                                    }
-                                    break;
-                                case 1:
-                                    serverConnection.sendToClient("INFO You can't move a piece in"
-                                            + " home");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 2:
-                                    serverConnection.sendToClient("INFO Format exception in"
-                                            + " checkMove");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 3:
-                                    serverConnection.sendToClient("INFO You have not finished");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 4:
-                                    serverConnection.sendToClient("INFO You cannot move this color");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 5:
-                                    serverConnection.sendToClient("INFO Check your move's validity");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 6:
-                                    serverConnection.sendToClient("INFO Someone blocks you");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 7:
-                                    serverConnection.sendToClient("INFO You eliminate yourself!");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                                case 8:
-                                    serverConnection.sendToClient("INFO Entered command does`t fit"
-                                            + " the length(15) for checkMove()");
-                                    serverConnection.sendToClient("TURN");
-                                    break;
-                            }
-                            break;
+                        String playerName = serverConnection.getNickname();
+                        logger.debug("Player nickname: " + playerName);
+                        Player player = mainGame.getPlayer(playerName);
+                        logger.debug("Player: " + player);
+                        String toCheckMove = rulesCheck
+                                .checkCard(text, serverConnection.getNickname());
+                        if (toCheckMove == null) {
+                            serverConnection.sendToClient("INFO Invalid card or no hand");
+                            serverConnection.sendToClient("TURN");
+                            logger.debug("You don't have this card on your hand");
+                            return;
+                        }
+
+                        // special cases (move command syntax different from normal)
+                        String card = toCheckMove.substring(0, 4);
+                        UpdateClient returnValue;
+                        String winners;
+                        switch (card) {
+                            case "SEVE":
+                                returnValue = rulesCheck
+                                        .checkMoveSeven(toCheckMove, serverConnection.
+                                                getNickname());
+                                switch (returnValue.getReturnValue()) {
+                                    case 0:
+                                        sendMovesToParticipants(returnValue);
+                                        winners = returnValue.getWinners();
+                                        if (winners != null) {
+                                            mainGame.sendMessageToParticipants("VICT " + winners);
+                                            Server.getInstance()
+                                                    .storeGame(mainGame.getGameId(), winners);
+                                        }
+                                        break;
+                                    case 1:
+                                        serverConnection.sendToClient("INFO At least one invalid"
+                                                + " destination or piece!");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 2:
+                                        serverConnection
+                                                .sendToClient("INFO You moved more than 7!");
+                                        serverConnection.sendToClient("TURN");
+                                    case 3:
+                                        serverConnection
+                                                .sendToClient("INFO You can't jump over your own"
+                                                        + "pieces!");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 4:
+                                        serverConnection
+                                                .sendToClient("INFO You don't move a total of 7!");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 5:
+                                        serverConnection
+                                                .sendToClient("INFO wrong format for seven");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                }
+                                break;
+                            case "JACK":
+                                returnValue = rulesCheck
+                                        .checkMoveJack(toCheckMove, serverConnection.
+                                                getNickname());
+                                switch (returnValue.getReturnValue()) {
+                                    case 0:
+                                        sendMovesToParticipants(returnValue);
+                                        winners = returnValue.getWinners();
+                                        if (winners != null) {
+                                            mainGame.sendMessageToParticipants("VICT " + winners);
+                                            Server.getInstance()
+                                                    .storeGame(mainGame.getGameId(), winners);
+                                        }
+                                        break;
+                                    case 1:
+                                        serverConnection.sendToClient("INFO You have not finished");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 2:
+                                        serverConnection
+                                                .sendToClient("INFO You cannot move this color");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 3:
+                                        serverConnection.sendToClient("INFO You can't switch this"
+                                                + " pieces!");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 4:
+                                        serverConnection.sendToClient("INFO wrong format for jack");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                }
+                                break;
+                            default:
+                                returnValue = rulesCheck.checkMove(toCheckMove, serverConnection.
+                                        getNickname());
+                                switch (returnValue.getReturnValue()) {
+                                    case 0:
+                                        sendMovesToParticipants(returnValue);
+                                        winners = returnValue.getWinners();
+                                        if (winners != null) {
+                                            mainGame.sendMessageToParticipants("VICT " + winners);
+                                            Server.getInstance()
+                                                    .storeGame(mainGame.getGameId(), winners);
+                                        }
+                                        break;
+                                    case 1:
+                                        serverConnection
+                                                .sendToClient("INFO You can't move a piece in"
+                                                        + " home");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 2:
+                                        serverConnection.sendToClient("INFO Format exception in"
+                                                + " checkMove");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 3:
+                                        serverConnection.sendToClient("INFO You have not finished");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 4:
+                                        serverConnection
+                                                .sendToClient("INFO You cannot move this color");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 5:
+                                        serverConnection
+                                                .sendToClient("INFO Check your move's validity");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 6:
+                                        serverConnection.sendToClient("INFO Someone blocks you");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 7:
+                                        serverConnection
+                                                .sendToClient("INFO You eliminate yourself!");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                    case 8:
+                                        serverConnection
+                                                .sendToClient("INFO Entered command does`t fit"
+                                                        + " the length(15) for checkMove()");
+                                        serverConnection.sendToClient("TURN");
+                                        break;
+                                }
+                                break;
+                        }
+                    } else {
+                        serverConnection.sendToClient("INFO MOVE command too short");
+                        serverConnection.sendToClient("TURN");
                     }
                 }
                 break;
