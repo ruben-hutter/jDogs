@@ -26,7 +26,12 @@ public class MainGame {
     private String actualPlayer;
     private final String nameID;
 
-
+    /**
+     * constructor of a new game
+     * @param playersArray array with participants
+     * @param nameID name of game
+     * @param teamMode true or false
+     */
     MainGame (Player[] playersArray,String nameID, boolean teamMode) {
         this.teamMode = teamMode;
         this.playersArray = playersArray;

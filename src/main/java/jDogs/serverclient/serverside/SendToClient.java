@@ -14,8 +14,8 @@ public class SendToClient implements Runnable {
 
     /**
      * construct SendToClient
-     * @param senderContainer
-     * @param sendClient
+     * @param senderContainer senderContainer with sendToClient method
+     * @param sendClient blockingQueue to send to client
      */
     public SendToClient(SenderContainer senderContainer, BlockingQueue<String> sendClient) {
         this.sendClient = sendClient;

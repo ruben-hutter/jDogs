@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
  * this class represents a user with his records
  */
 public class SavedUser implements Comparable {
-    private String name;
+    private final String name;
     private int points;
     private int playedGames;
     private int victories;

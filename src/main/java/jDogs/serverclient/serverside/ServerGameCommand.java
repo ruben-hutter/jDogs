@@ -16,7 +16,6 @@ public class ServerGameCommand {
 
     private final ServerConnection serverConnection;
     private final MessageHandlerServer messageHandlerServer;
-    private boolean loggedIn;
     private final ServerParser serverParser;
     private static final Logger logger = LogManager.getLogger(ServerGameCommand.class);
     private ArrayList<Player> players;
@@ -24,19 +23,23 @@ public class ServerGameCommand {
     private RulesCheck rulesCheck;
     private String mainGameID;
 
+    /**
+     * set up a serverGameCommand object
+     * @param serverConnection sC object
+     * @param messageHandlerServer mHS object
+     */
     public ServerGameCommand(ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer) {
         this.serverConnection = serverConnection;
         this.messageHandlerServer = messageHandlerServer;
-        this.loggedIn = false;
         this.serverParser = new ServerParser(serverConnection);
         this.players = null;
     }
 
     /**
-     * this method executes all commands
-     * import for playing a game on serverside
-     * @param text command which should be processed
+     * executes the commands that are received in ReceivedFromClient if they
+     * corresponded to the formal criteria in ReceivedFromClient
+     * @param text command and information
      */
     public void execute(String text) {
         logger.debug("Entered ServerGameCommand with: " + text);
@@ -66,7 +69,6 @@ public class ServerGameCommand {
                         mainGame.turnComplete(serverConnection.getNickname());
                         break;
                     }
-
                     String playerName = serverConnection.getNickname();
                     logger.debug("Player nickname: " + playerName);
                     Player player = mainGame.getPlayer(playerName);
@@ -78,7 +80,6 @@ public class ServerGameCommand {
                         logger.debug("You don't have this card on your hand");
                         return;
                     }
-
                     // special cases (move command syntax different from normal)
                     String card = toCheckMove.substring(0, 4);
                     UpdateClient returnValue;

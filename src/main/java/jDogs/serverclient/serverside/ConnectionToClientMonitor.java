@@ -15,8 +15,8 @@ public class ConnectionToClientMonitor implements Runnable {
      * constructs an object,
      * serverConnection to make calls,
      * in MonitorCS information is saved
-     * @param serverConnection
-     * @param monitorCS
+     * @param serverConnection sc Object
+     * @param monitorCS monitor object
      */
     ConnectionToClientMonitor(ServerConnection serverConnection, Monitorcs monitorCS) {
         this.monitorCS = monitorCS;

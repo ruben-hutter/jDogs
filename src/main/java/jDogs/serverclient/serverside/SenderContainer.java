@@ -66,7 +66,7 @@ public class SenderContainer {
 
     /**
      * sends messages to client
-     * @param message
+     * @param message String
      */
     public void sendToClient(String message) {
         try {

@@ -21,7 +21,7 @@ public class GameState {
 
     /**
      * constructs an object of game state
-     * @param mainGame
+     * @param mainGame gameObject
      */
     public GameState(MainGame mainGame) {
         this.mainGame = mainGame;

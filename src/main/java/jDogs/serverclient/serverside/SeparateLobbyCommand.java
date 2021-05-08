@@ -12,14 +12,14 @@ import org.apache.logging.log4j.Logger;
  */
 public class SeparateLobbyCommand {
 
-    private ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
     private String openGameFileID;
     private String nickname;
     private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
 
     /**
      * Constructor of an object of SeparateLobbyCommand
-     * @param serverConnection
+     * @param serverConnection sc object
      */
     SeparateLobbyCommand (ServerConnection serverConnection) {
         this.serverConnection = serverConnection;
@@ -112,8 +112,8 @@ public class SeparateLobbyCommand {
 
                 case "STAT":
                     serverConnection.sendToClient(
-                            "STAT " + "runningGames " + Server.getInstance().runningGames.size() +
-                                    " finishedGames " + Server.getInstance().finishedGames.size());
+                            "STAT " + "runningGames " + Server.getInstance().getRunningGames().size() +
+                                    " finishedGames " + Server.getInstance().getFinishGames().size());
                     break;
 
                 case "ACTI":

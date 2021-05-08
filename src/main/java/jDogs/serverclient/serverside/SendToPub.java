@@ -12,7 +12,7 @@ public class SendToPub implements Runnable {
 
     /**
      * construct SendToPub
-     * @param sendPub
+     * @param sendPub blocking queue to send to public lobby
      */
     public SendToPub(BlockingQueue<String> sendPub) {
         this.sendPub = sendPub;

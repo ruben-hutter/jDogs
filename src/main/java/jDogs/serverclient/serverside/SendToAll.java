@@ -12,7 +12,7 @@ public class SendToAll implements Runnable {
 
     /**
      * Contstruct SendToAll Thread
-     * @param sendAll
+     * @param sendAll blockingQueue to send to all
      */
     public SendToAll(BlockingQueue<String> sendAll) {
         this.sendAll = sendAll;
