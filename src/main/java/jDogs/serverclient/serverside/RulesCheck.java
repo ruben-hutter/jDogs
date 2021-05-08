@@ -658,7 +658,7 @@ public class RulesCheck {
      * @param player this player
      * @return true if you are blocked, false if not
      */
-    private boolean checkForBlock(String card, String actualPosition1, int actualPosition2,
+    protected boolean checkForBlock(String card, String actualPosition1, int actualPosition2,
             String newPosition1, int newPosition2, Player player) {
         int[] startingPositions = new int[] {0, 16, 32, 48};
         Piece pieceOnStart;
