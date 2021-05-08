@@ -203,6 +203,29 @@ public class RulesCheckHelper {
     }
 
     /**
+     * Checks if a piece is on the way in heaven
+     * @param player owner of the piece
+     * @param actualHeavenPosition -1 if the piece isn't already in heaven or the actualPosition2
+     * @param newPosition2 the destination in heaven
+     * @return true if you would jump over your pieces, false if not
+     */
+    protected boolean piecesInHeaven(Player player, int actualHeavenPosition, int newPosition2) {
+        Piece[] heaven = new Piece[4];
+        for (Piece piece : player.pieces) {
+            if (piece.getPositionServer1().equals("C")) {
+                heaven[piece.getPositionServer2()] = piece;
+            }
+        }
+        int difference = newPosition2 - actualHeavenPosition;
+        for (int i = 1; i <= difference; i++) {
+            if (heaven[actualHeavenPosition + i] != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Checks if on the destination is already a piece
      * @param player owner of marble
      * @param pieceID int 1-4

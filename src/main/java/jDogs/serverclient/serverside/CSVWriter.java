@@ -9,15 +9,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * thsi class is used to store as CSV-File
+ * This class is used to store as CSV-File
  * and update the highscore list
  */
 public class CSVWriter {
-    private ArrayList<SavedUser> usersHighScore;
+
+    private final ArrayList<SavedUser> usersHighScore;
     private final String FILENAME = "src/main/resources/HighScoreList.csv";
 
     CSVWriter() {
-        this.usersHighScore = new ArrayList<SavedUser>();
+        usersHighScore = new ArrayList<>();
     }
 
     /**
