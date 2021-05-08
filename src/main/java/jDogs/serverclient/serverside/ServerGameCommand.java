@@ -112,6 +112,7 @@ public class ServerGameCommand {
                                         serverConnection
                                                 .sendToClient("INFO You moved more than 7!");
                                         serverConnection.sendToClient("TURN");
+                                        break;
                                     case 3:
                                         serverConnection
                                                 .sendToClient("INFO You can't jump over your own"
