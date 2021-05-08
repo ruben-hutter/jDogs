@@ -2,12 +2,21 @@ package jDogs.serverclient.serverside;
 
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * the object of this class is
+ * a thread that sends to this client
+ */
 public class SendToClient implements Runnable {
 
     private final BlockingQueue<String> sendClient;
     private final SenderContainer senderContainer;
     private boolean running;
 
+    /**
+     * construct SendToClient
+     * @param senderContainer
+     * @param sendClient
+     */
     public SendToClient(SenderContainer senderContainer, BlockingQueue<String> sendClient) {
         this.sendClient = sendClient;
         this.senderContainer = senderContainer;
@@ -30,6 +39,10 @@ public class SendToClient implements Runnable {
     System.out.println(this.toString() + " stopps now");
 
     }
+
+    /**
+     * kills this thread
+     */
     public void kill() {
         running = false;
     }

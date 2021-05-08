@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * from the object of this class all three sender threads
+ * will be started and from send messages to
+ * this client will be sent
+ */
 public class SenderContainer {
 
     private final ServerConnection serverConnection;
@@ -14,6 +19,14 @@ public class SenderContainer {
     private DataOutputStream dout;
     private Socket socket;
 
+    /**
+     * construct container
+     * @param serverConnection
+     * @param socket
+     * @param sendToAllQueue
+     * @param sendToPubQueue
+     * @param sendToClientQueue
+     */
     public SenderContainer(ServerConnection serverConnection, Socket socket, BlockingQueue<String> sendToAllQueue,
              BlockingQueue<String> sendToPubQueue, BlockingQueue<String> sendToClientQueue) {
     this.socket = socket;
@@ -22,6 +35,12 @@ public class SenderContainer {
     setUp(sendToAllQueue,sendToPubQueue,sendToClientQueue);
     }
 
+    /**
+     * sets up all three threads with their respective blocking queue
+     * @param sendToAllQueue
+     * @param sendToPubQueue
+     * @param sendToClientQueue
+     */
     private void setUp(BlockingQueue<String> sendToAllQueue, BlockingQueue<String> sendToPubQueue, BlockingQueue<String> sendToClientQueue) {
         try {
             dout = new DataOutputStream(socket.getOutputStream());
@@ -45,6 +64,10 @@ public class SenderContainer {
         sendPubThread.start();
     }
 
+    /**
+     * sends messages to client
+     * @param message
+     */
     public void sendToClient(String message) {
         try {
             dout.writeUTF(message);

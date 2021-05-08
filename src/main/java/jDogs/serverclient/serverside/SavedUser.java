@@ -11,6 +11,10 @@ public class SavedUser implements Comparable {
     private int playedGames;
     private int victories;
 
+    /**
+     * Constructor of an object of a savedUser
+     * @param name userName
+     */
     SavedUser(String name) {
         this.name = name;
         this.playedGames = 0;

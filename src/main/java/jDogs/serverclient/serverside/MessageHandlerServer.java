@@ -32,6 +32,15 @@ public class MessageHandlerServer implements Runnable {
     private String nickname;
     private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
 
+    /**
+     * constructs a message-handler-server object
+     * @param server
+     * @param serverConnection
+     * @param sendToThisClient
+     * @param sendToAll
+     * @param receivedFromClient
+     * @param sendToPub
+     */
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             BlockingQueue<String> sendToThisClient, BlockingQueue<String> sendToAll, BlockingQueue<String> receivedFromClient, BlockingQueue<String> sendToPub) {
 
@@ -155,18 +164,4 @@ public class MessageHandlerServer implements Runnable {
     public String getState() {
         return state;
     }
-
-    public ServerMenuCommand getServerMenuCommand() {
-        return serverMenuCommand;
-    }
-
-    public SeparateLobbyCommand getSeparateLobbyCommand() {
-        return separateLobbyCommand;
-    }
-
-    public ServerGameCommand getServerGameCommand() {
-        return serverGameCommand;
-    }
-
-
 }

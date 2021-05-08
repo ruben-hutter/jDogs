@@ -47,7 +47,6 @@ public class MainGame {
      * This start method is only for test purposes
      * it does the same as {@link #startTest()}
      */
-
     public void startTest(){
         setUpTest();
         startGameRhythmTest();

@@ -1,12 +1,19 @@
 package jDogs.serverclient.serverside;
 
 import java.util.concurrent.BlockingQueue;
-
+/**
+ * the object of this class is
+ * a thread that sends to all users
+ */
 public class SendToAll implements Runnable {
 
     private final BlockingQueue<String> sendAll;
     boolean running;
 
+    /**
+     * Contstruct SendToAll Thread
+     * @param sendAll
+     */
     public SendToAll(BlockingQueue<String> sendAll) {
         this.sendAll = sendAll;
         this.running = true;
@@ -26,6 +33,9 @@ public class SendToAll implements Runnable {
         System.out.println(this.toString() + " stopps now");
         }
 
+    /**
+     * kills this thread
+     */
     public void kill() {
         running = false;
     }

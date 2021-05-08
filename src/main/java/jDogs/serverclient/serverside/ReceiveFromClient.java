@@ -19,6 +19,12 @@ public class ReceiveFromClient implements Runnable {
     private final BlockingQueue<String> receivedFromThisClient;
     private ServerConnection serverConnection;
 
+    /**
+     * construct an object of receiveFromClient(a listener)
+     * @param socket
+     * @param receivedFromThisClient
+     * @param serverConnection
+     */
     public ReceiveFromClient(Socket socket, BlockingQueue<String> receivedFromThisClient,
             ServerConnection serverConnection) {
         this.socket = socket;
