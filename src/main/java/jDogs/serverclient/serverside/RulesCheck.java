@@ -361,7 +361,9 @@ public class RulesCheck {
                     startIndex += 11;
                 }
                 for (Piece piece : piecesToEliminate) {
-                    rulesCheckHelper.eliminatePiece(piece, updateClient);
+                    Piece pieceToEliminate = gameState.getPlayer(piece.getPieceAlliance()).
+                            getPiece(piece.getPieceID());
+                    rulesCheckHelper.eliminatePiece(pieceToEliminate, updateClient);
                 }
 
                 rulesCheckHelper.updateGame(nickname, cardToEliminate, updateClient);
@@ -593,6 +595,7 @@ public class RulesCheck {
             if (!hasMoved) {
                 return false;
             }
+            // TODO check with checkForBlock()
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {

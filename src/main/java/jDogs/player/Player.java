@@ -168,7 +168,6 @@ public class Player {
      */
     public void changePositionClient(int pieceID, Tile newPosition) {
         Piece pieceToMove = getPiece(pieceID);
-        assert pieceToMove != null;
         Tile oldPosition = pieceToMove.getPositionClient();
         pieceToMove.setPositionClient(newPosition);
         // checks if the oldTile is pointing to this piece
@@ -186,7 +185,6 @@ public class Player {
      */
     public void changePositionServer(int pieceID, String newPosition1, int newPosition2) {
         Piece pieceToMove = getPiece(pieceID);
-        assert pieceToMove != null;
         pieceToMove.setPositionServer(newPosition1, newPosition2);
     }
 

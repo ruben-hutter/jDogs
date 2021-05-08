@@ -214,8 +214,12 @@ public class RulesCheckHelper {
      */
     protected boolean checkWhichMove(Player player, int pieceID, String newPosition1,
             int newPosition2, UpdateClient updateClient) {
-        Piece pieceToEliminate = mainGame.getGameState().trackPositionOccupied(newPosition2);
+        Piece pieceToEliminate = null;
+        if (newPosition1.equals("B")) {
+            pieceToEliminate = mainGame.getGameState().trackPositionOccupied(newPosition2);
+        }
         if (pieceToEliminate != null) {
+            System.err.println("Piece to eliminate: " + pieceToEliminate);
             if (pieceToEliminate.getPieceAlliance() == player.getAlliance()) {
                 return false;
             } else {

@@ -167,6 +167,20 @@ public class GameState {
     }
 
     /**
+     * Gives a player for a given alliance4
+     * @param alliance4 his alliance
+     * @return a player or null
+     */
+    public Player getPlayer(Alliance_4 alliance4) {
+        for (Player player : getPlayers()) {
+            if (player.getAlliance() == alliance4) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets all the players of the game
      * @return an array with the players
      */
