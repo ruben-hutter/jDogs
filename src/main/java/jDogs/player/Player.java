@@ -36,6 +36,11 @@ public class Player {
         finished = false;
     }
 
+    /**
+     * Player instance for server, only  for test purposes
+     * same as {@link #Player(String, ServerConnection)} but without ServerConnection
+     * @param playerName name of player
+     */
     public Player(String playerName) {
         this.playerName = playerName;
         allowedToPlay = false;

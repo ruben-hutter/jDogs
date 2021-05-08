@@ -204,7 +204,7 @@ public class MainGame {
 
 
     /**
-     * this test method is equivalent to {@link #nextTurn()} ()}
+     * this test method is equivalent to {@link #nextTurn()}
      * but it doesn't send a message to the client
      */
     private void nextTurnTest() {
@@ -320,7 +320,6 @@ public class MainGame {
      * this method gets called if a player completed his turn
      * (i.e.: he has sent a valid card to server)
      * @param nickname maybe not necessary to send the nickname
-     *                 t
      */
     public void turnComplete(String nickname) {
         System.out.println(nickname + " finished his turn");
