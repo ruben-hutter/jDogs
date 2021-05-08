@@ -33,10 +33,8 @@ public class GameState {
      */
     public GameState(GameState gameState) {
         cards = gameState.getCards();
-        //piecesOnTrack = gameState.getSortedPiecesOnTrack();
-        piecesOnTrack = copyPiecesOnTrack(gameState.getSortedPiecesOnTrack());
+        piecesOnTrack = new ArrayList<>();
         teamMode = gameState.getTeamMode();
-        //mainGame = gameState.getMainGame();
         mainGame = new MainGame(gameState.getMainGame(), this);
         winners = gameState.getWinners();
         copyPiecesActualInformation(gameState.getMainGame());
@@ -56,22 +54,10 @@ public class GameState {
                 if (player.pieces[i].getHasMoved()) {
                     playerToSetUp.pieces[i].changeHasMoved();
                 }
+                updatePiecesOnTrack(playerToSetUp.pieces[i],
+                        playerToSetUp.pieces[i].getPositionServer1());
             }
         }
-    }
-
-    /**
-     * Makes a hard copy of the piecesOnTrack
-     * @param sortedPiecesOnTrack the actual state on track
-     * @return a copy of the given piecesOnTrack
-     */
-    private ArrayList<Piece> copyPiecesOnTrack(ArrayList<Piece> sortedPiecesOnTrack) {
-        ArrayList<Piece> piecesOnTrackCopy = new ArrayList<>();
-        for (Piece piece : sortedPiecesOnTrack) {
-            piecesOnTrackCopy.add(new Piece(piece.getPieceAlliance(), piece.getStartingPosition(),
-                    piece.getPieceID()));
-        }
-        return piecesOnTrackCopy;
     }
 
     /**
