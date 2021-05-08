@@ -1,6 +1,5 @@
 package jDogs.serverclient.serverside;
 
-import com.sun.tools.javac.Main;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.player.Player;

@@ -481,6 +481,7 @@ public class RulesCheck {
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             // heaven -> heaven
+            // TODO check in other way
             for (Piece piece : ownPlayer.pieces) {
                 if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
                         && piece.getPositionServer2() <= newPosition2) {
