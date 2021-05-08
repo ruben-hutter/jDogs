@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 public class Piece implements Comparable<Piece> {
 
     protected final Alliance_4 pieceAlliance4;
-    protected final int pieceID;
     protected final int startingPosition;
+    protected final int pieceID;
     private boolean hasMoved;
     private Tile position;
     private String positionServer1;
@@ -103,6 +103,14 @@ public class Piece implements Comparable<Piece> {
      */
     public Tile getPositionClient() {
         return position;
+    }
+
+    /**
+     * Gets the starting position of this piece
+     * @return this starting position (0, 16, 32 or 48)
+     */
+    public int getStartingPosition() {
+        return startingPosition;
     }
 
     @Override

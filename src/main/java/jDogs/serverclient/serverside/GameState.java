@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import com.sun.tools.javac.Main;
 import jDogs.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.player.Player;
@@ -32,10 +33,45 @@ public class GameState {
      */
     public GameState(GameState gameState) {
         cards = gameState.getCards();
-        piecesOnTrack = gameState.getSortedPiecesOnTrack();
+        //piecesOnTrack = gameState.getSortedPiecesOnTrack();
+        piecesOnTrack = copyPiecesOnTrack(gameState.getSortedPiecesOnTrack());
         teamMode = gameState.getTeamMode();
-        mainGame = gameState.getMainGame();
+        //mainGame = gameState.getMainGame();
+        mainGame = new MainGame(gameState.getMainGame(), this);
         winners = gameState.getWinners();
+        copyPiecesActualInformation(gameState.getMainGame());
+    }
+
+    /**
+     * Makes a copy of the pieces info of every player
+     * @param actualMainGame the mainGame for the, in the constructor, given gameState
+     */
+    private void copyPiecesActualInformation(MainGame actualMainGame) {
+        for (Player player : actualMainGame.getPlayersArray()) {
+            Player playerToSetUp = mainGame.getPlayer(player.getPlayerName());
+            playerToSetUp.setUpPlayerOnServerCopy(player.getAlliance());
+            for (int i = 0; i < playerToSetUp.pieces.length; i++) {
+                playerToSetUp.pieces[i].setPositionServer(player.pieces[i].getPositionServer1(),
+                        player.pieces[i].getPositionServer2());
+                if (player.pieces[i].getHasMoved()) {
+                    playerToSetUp.pieces[i].changeHasMoved();
+                }
+            }
+        }
+    }
+
+    /**
+     * Makes a hard copy of the piecesOnTrack
+     * @param sortedPiecesOnTrack the actual state on track
+     * @return a copy of the given piecesOnTrack
+     */
+    private ArrayList<Piece> copyPiecesOnTrack(ArrayList<Piece> sortedPiecesOnTrack) {
+        ArrayList<Piece> piecesOnTrackCopy = new ArrayList<>();
+        for (Piece piece : sortedPiecesOnTrack) {
+            piecesOnTrackCopy.add(new Piece(piece.getPieceAlliance(), piece.getStartingPosition(),
+                    piece.getPieceID()));
+        }
+        return piecesOnTrackCopy;
     }
 
     /**
@@ -43,8 +79,8 @@ public class GameState {
      */
     public void createPlayers() {
         int counter = 0;
-        for (Alliance_4 alliance_4 : Alliance_4.values()) {
-            mainGame.getPlayersArray()[counter].setUpPlayerOnServer(alliance_4);
+        for (Alliance_4 alliance4 : Alliance_4.values()) {
+            mainGame.getPlayersArray()[counter].setUpPlayerOnServer(alliance4);
             cards.put(mainGame.getPlayersArray()[counter].getPlayerName(), new ArrayList<>());
             counter++;
         }

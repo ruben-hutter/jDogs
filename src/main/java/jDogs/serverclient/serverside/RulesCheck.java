@@ -319,7 +319,8 @@ public class RulesCheck {
                 System.err.println("- teamID: " + ownTeamID);
 
                 moveValue = checkSingleSeven(nickname, newPosition1, newPosition2, ownPlayer,
-                        actualPosition1, actualPosition2, hasMoved, startingPosition, ownTeamID);
+                        actualPosition1, actualPosition2, hasMoved, startingPosition, ownTeamID,
+                        tempGameState);
                 if (moveValue < 0) {
                     updateClient.setReturnValue(1);
                     return updateClient;
@@ -395,10 +396,10 @@ public class RulesCheck {
      */
     private int checkSingleSeven(String nickname, String newPosition1, int newPosition2,
             Player ownPlayer, String actualPosition1, int actualPosition2, boolean hasMoved,
-            int startingPosition, int ownTeamID) {
+            int startingPosition, int ownTeamID, GameState tempGameState) {
         try {
             // checks if pieces are own or from team
-            Player nowPlaying = gameState.getPlayer(nickname);
+            Player nowPlaying = tempGameState.getPlayer(nickname);
             if (teamMode) {
                 if (ownPlayer != nowPlaying && ownTeamID != nowPlaying.getTeamID()) {
                     System.err.println("Marble owner: " + ownPlayer);

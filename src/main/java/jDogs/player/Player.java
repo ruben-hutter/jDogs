@@ -72,6 +72,16 @@ public class Player {
     }
 
     /**
+     * Completes the, in MainGame, created players setup
+     * @param alliance4 the alliance of the player
+     */
+    public void setUpPlayerOnServerCopy(Alliance_4 alliance4) {
+        this.alliance4 = alliance4;
+        startingPosition = alliance4.getStartingPosition();
+        pieces = createPieces(startingPosition);
+    }
+
+    /**
      * Checks if two players are in the same team
      * if playing in teamMode.
      */
@@ -231,13 +241,6 @@ public class Player {
      */
     public ServerConnection getServerConnection() {
         return serverConnection;
-    }
-
-    /**
-     * Excludes player from game till this round finished
-     */
-    public void excludeForRound() {
-        this.allowedToPlay = false;
     }
 
     /**

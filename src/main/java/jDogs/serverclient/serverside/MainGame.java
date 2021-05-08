@@ -27,11 +27,22 @@ public class MainGame {
     private final String nameID;
 
 
-    MainGame (Player[] playersArray,String nameID, boolean teamMode) {
+    MainGame(Player[] playersArray, String nameID, boolean teamMode) {
         this.teamMode = teamMode;
         this.playersArray = playersArray;
         this.gameState = new GameState(this);
         this.nameID = nameID;
+    }
+
+    /**
+     * Copy constructor used to check move SEVE
+     * @param mainGame the actual mainGame
+     */
+    MainGame(MainGame mainGame, GameState tempGameState) {
+        teamMode = mainGame.getGameState().getTeamMode();
+        playersArray = mainGame.copyPlayersArray();
+        gameState = tempGameState;
+        nameID = mainGame.getGameId();
     }
 
     /**
@@ -48,7 +59,7 @@ public class MainGame {
      * it does the same as {@link #startTest()}
      */
 
-    public void startTest(){
+    public void startTest() {
         setUpTest();
         startGameRhythmTest();
     }
@@ -428,5 +439,18 @@ public class MainGame {
      */
     public boolean isTeamMode() {
         return teamMode;
+    }
+
+    /**
+     * Makes a copy of the in game players
+     * @return a hard copy of the array
+     */
+    public Player[] copyPlayersArray() {
+        Player[] playersArrayCopy = new Player[playersArray.length];
+        int i = 0;
+        for (Player player : playersArray) {
+            playersArrayCopy[i++] = new Player(player.getPlayerName());
+        }
+        return playersArrayCopy;
     }
 }
