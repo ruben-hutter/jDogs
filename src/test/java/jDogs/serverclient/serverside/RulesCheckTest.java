@@ -54,6 +54,7 @@ class RulesCheckTest {
     @AfterEach
     void tearDown() {
         mainGame = null;
+        gameState = null;
     }
 
     @Test
@@ -389,12 +390,8 @@ class RulesCheckTest {
         player1.setAllowedToPlay(true);
         player2.setAllowedToPlay(false);
 
-        //pieces are initially not moved
-        //change hasMoved to moved = true
         player1.getPiece(1).changeHasMoved();
-
-        //2 = ownPlayer != nowPlaying
-        //ownPlayer is the player which alliance is first in the command
+        player2.getPiece(1).changeHasMoved();
         int result = 2;
         assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
     }
@@ -430,58 +427,100 @@ class RulesCheckTest {
         player1.changePositionServer(2, "B", 16);
         player1.setAllowedToPlay(true);
 
-        System.out.println("teamID " + player1.getTeamID() );
         //2 = more than seven steps
         int result = 2;
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
 
-    @Test
-    void checkCardWithNewPositionABNotOk() {
+    /*@Test
+    //This test is only valid if teamMode is true
+    @DisplayName("move seven with own piece and piece from teampartner")
+    void checkMoveSevenTeam(){
+        String completeMove = "SEVE 2 YELO-1 B13 BLUE-1 B34";
+        player1.changePositionServer(1,"B",10);
+        player3.changePositionServer(1, "B", 30);
+        player1.setAllowedToPlay(true);
+
+       player1.getPiece(1).changeHasMoved();
+       player3.getPiece(1).changeHasMoved();
+
+       int result = 0;
+        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
 
-
-    @Test
-    void checkCardWithNewPositionN4() {
-    }
-
-
+     */
 
 
     @Test
-    void testPiecesOnPathBB(){
+    @DisplayName("eliminate piece by overtaking with SEVE")
+    void checkMoveSevenEliminate(){
+        String completeMove = "SEVE 1 YELO-1 B07";
+        player1.changePositionServer(1,"B",00);
+        player2.changePositionServer(2, "B", 03);
+        player1.setAllowedToPlay(true);
+        player2.getPiece(1).changeHasMoved();
 
-    }
-
-    @Test
-    void testPiecesOnPathBC(){
-
-    }
-
-    @Test
-    void testPiecesOnPathCC(){
-
-    }
-    @Test
-    void testPiecesOnPathOwnPiece(){
-
-    }
-
-    @Test
-    void testPiecesOnPathPieceToEliminate(){
+        int result = 0;
+        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
 
     }
 
+    /**
+     *player1 wants to move over a blocked field
+     */
     @Test
-    void testPiecesOnPathSeveralPiecesToEliminate(){
+    @DisplayName("try to move over blocked field")
+    void checkBlock() {
+        String completeMove = "THRE YELO-1 B17";
+        String nickname = "1";
 
+        player1.changePositionServer(1,"B", 14);
+        player2.changePositionServer(1,"B", 16);
+        gameState.updatePiecesOnTrack(player2.getPiece(1), "B");
+        gameState.updatePiecesOnTrack(player1.getPiece(1), "B");
+
+        int result = 0;
+
+        assertEquals(result, rulesCheck.checkMove(completeMove, nickname).getReturnValue());
     }
 
+    /**
+     *player1 wants to move on a blocked field
+     */
     @Test
-    void testPiecesOnPathBlocked(){
+    @DisplayName("try to move on a blocked field")
+    void checkBlockDestination() {
+        String completeMove = "TWOO YELO-1 B16";
+        String nickname = "1";
 
+        player1.changePositionServer(1,"B", 14);
+        player2.changePositionServer(1,"B", 16);
+        gameState.updatePiecesOnTrack(player2.getPiece(1), "B");
+        gameState.updatePiecesOnTrack(player1.getPiece(1), "B");
+
+        int result = 0;
+
+        assertEquals(result, rulesCheck.checkMove(completeMove, nickname).getReturnValue());
     }
 
+
+    /**
+     *player1 wants to move on an occupied (not blocked) field
+     */
+    @Test
+    @DisplayName("try to move on an occupied (not blocked) field")
+    void checkDestinationOccupied(){
+        String completeMove = "THRE YELO-1 B17";
+        String nickname = "1";
+
+        player1.changePositionServer(1,"B", 14);
+        player2.changePositionServer(1,"B", 17);
+        player1.getPiece(1).changeHasMoved();
+        player2.getPiece(1).changeHasMoved();
+
+        int result = 0;
+        assertEquals(result, rulesCheck.checkMove(completeMove, nickname).getReturnValue());
+    }
 
 
 }
