@@ -16,11 +16,19 @@ public class SenderContainer {
     private Thread sendClientThread;
     private Thread sendAllThread;
     private Thread sendPubThread;
+    private BlockingQueue<String> sendToAllQueue;
+    private BlockingQueue<String> sendToPubQueue;
+    private BlockingQueue<String> sendToClientQueue;
+
 
     public SenderContainer(ServerConnection serverConnection, Socket socket, BlockingQueue<String> sendToAllQueue,
              BlockingQueue<String> sendToPubQueue, BlockingQueue<String> sendToClientQueue) {
     this.socket = socket;
     this.serverConnection = serverConnection;
+
+    this.sendToAllQueue = sendToAllQueue;
+    this.sendToPubQueue = sendToPubQueue;
+    this.sendToClientQueue = sendToClientQueue;
 
     setUp(sendToAllQueue,sendToPubQueue,sendToClientQueue);
     }
@@ -62,6 +70,9 @@ public class SenderContainer {
             System.out.println("sendClientThreadState: " + sendClientThread.getState());
             System.out.println("sendAllThreadState: " + sendAllThread.getState());
             System.out.println("sendPubThreadState: " + sendPubThread.getState());
+            System.out.println("sendToAllBQ size " + sendToAllQueue.size());
+            System.out.println("sendToPubBQ size " + sendToPubQueue.size());
+            System.out.println("sendToClientBQ size " + sendToClientQueue.size());
 
             // delete this serverConnection:
             sendClient.kill();
