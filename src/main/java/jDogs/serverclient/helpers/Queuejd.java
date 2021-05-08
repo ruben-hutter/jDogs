@@ -7,9 +7,12 @@ import java.util.NoSuchElementException;
  */
 public class Queuejd {
 
-    Nodejd head;
-    Nodejd tail;
+    private Nodejd head;
+    private Nodejd tail;
 
+    /**
+     * constructs a new QueueJd
+     */
     public Queuejd() {
         this.head = null;
         this.tail = null;

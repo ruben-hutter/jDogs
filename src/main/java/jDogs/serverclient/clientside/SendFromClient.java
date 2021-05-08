@@ -19,6 +19,13 @@ public class SendFromClient implements Runnable {
     public boolean keyBoardInBlocked;
     private final Client client;
 
+    /**
+     * constructor of sendFromClient
+     * @param socket connection to server
+     * @param client client instance
+     * @param sendQueue Queuejd to send messages to server
+     * @param keyBoardInQueue Queuejd to send messages from user to server
+     */
     public SendFromClient(Socket socket,Client client, Queuejd sendQueue, Queuejd keyBoardInQueue) {
         this.socket = socket;
         this.sendQueue = sendQueue;

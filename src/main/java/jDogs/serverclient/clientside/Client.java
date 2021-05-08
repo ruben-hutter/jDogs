@@ -32,6 +32,9 @@ public class Client {
     private String username;
     private int portnumber;
 
+    /**
+     * Constructor of a client
+     */
     public Client() {
         instance = this;
         setUp();
@@ -54,9 +57,6 @@ public class Client {
     public void setUp() {
         this.serveraddress = Main.getInstance().getHostAddress();
         this.portnumber = Main.getInstance().getPort();
-
-
-
         this.receiveQueue = new Queuejd();
         this.sendQueue = new Queuejd();
         this.keyBoardInQueue = new Queuejd();
@@ -140,7 +140,6 @@ public class Client {
         messageHandlerClient.kill();
         System.out.println("trying to reset connection to server is not activated. Shutdown Client..");
         System.exit(-1);
-        //setUp();
     }
 
     /**
