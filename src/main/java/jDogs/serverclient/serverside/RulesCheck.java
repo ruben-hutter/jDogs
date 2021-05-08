@@ -351,7 +351,7 @@ public class RulesCheck {
                     alliance4 = rulesCheckHelper.convertAlliance(alliance);
                     pieceID = Integer.parseInt(move.substring(5, 6));
                     piecesActualInfo = rulesCheckHelper.getPieceInfo(pieceID, alliance4,
-                            tempMainGame);
+                            mainGame);
                     newPosition1 = move.substring(7, 8);
                     newPosition2 = Integer.parseInt(move.substring(8));
                     ownPlayer = piecesActualInfo.getPlayer();
