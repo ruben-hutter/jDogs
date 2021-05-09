@@ -25,7 +25,13 @@ public class ClientGameCommand {
     private Queuejd keyBoardInQueue;
     private static final Logger logger = LogManager.getLogger(ClientGameCommand.class);
 
-
+    /**
+     * constructor of a ClientGameCommand
+     * @param client client instance
+     * @param sendFromClient sendFromClient thread: sends messages to server
+     * @param sendQueue QueueJD to send messages to client
+     * @param keyBoardInQueue QueueJD to send messages to client from keyboard or user
+     */
     ClientGameCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
         this.client = client;
         this.sendQueue = sendQueue;
@@ -34,12 +40,13 @@ public class ClientGameCommand {
         this.keyBoardInQueue = keyBoardInQueue;
     }
 
+    /**
+     * executes commands that fitted the formal criteria of ReceivedFromServer
+     * @param text command and information
+     */
     public void execute(String text) {
-
         String command = text.substring(0,4);
-
         switch(command) {
-
             case "TURN":
                 if (text.length() == command.length()) {
                     Platform.runLater(() -> GUIManager.getInstance().

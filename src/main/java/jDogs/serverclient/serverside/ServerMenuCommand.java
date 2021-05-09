@@ -21,6 +21,11 @@ public class ServerMenuCommand {
     private final ServerParser serverParser;
     private static final Logger logger = LogManager.getLogger(ServerMenuCommand.class);
 
+    /**
+     * constructor of an object of ServerMenuCommand
+     * @param serverConnection sC object
+     * @param messageHandlerServer mHS object
+     */
     public ServerMenuCommand(ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer) {
         this.serverConnection = serverConnection;
@@ -29,7 +34,11 @@ public class ServerMenuCommand {
         this.nickName = null;
         this.serverParser = new ServerParser(serverConnection);
     }
-
+    /**
+     * executes the commands that are received in ReceivedFromClient if they
+     * corresponded to the formal criteria in ReceivedFromClient
+     * @param text command and information
+     */
     public void execute(String text) {
         //execute commands
         logger.debug("Entered ServerMenuCommand with: " + text);
@@ -101,21 +110,9 @@ public class ServerMenuCommand {
                     break;
 
                 case "STAT":
-                    String running = "";
-                    for (MainGame mainGame : Server.getInstance().runningGames) {
-                        running += mainGame.getGameId() + " ";
-                    }
-                    String finished = "";
-                    for (OpenGameFile openGameFile1 : Server.getInstance().finishedGames) {
-                        finished += openGameFile1.getNameId() + " ";
-                    }
-                    serverConnection.sendToClient
-                            ("STAT " + "runningGames " + Server.getInstance().runningGames.size()
-                                    + running
-                                    + " finishedGames " + Server.getInstance().finishedGames.size()
-                                    + finished);
-                    logger.debug("runningGames " + Server.getInstance().runningGames.size()
-                            + " finishedGames " + Server.getInstance().finishedGames.size());
+                  for (SavedUser savedUser : Server.getInstance().getFinishGames()) {
+                      serverConnection.sendToClient("STAT " + savedUser.getCSVString());
+                  }
                     break;
 
                 case "WCHT":
@@ -207,7 +204,7 @@ public class ServerMenuCommand {
 
     /**
      *sets up a game if someone sends the command "OGAM" with the fitting parameters
-     * @param game
+     * @param game "OGAM name 0" or "OGAM name 1"
      */
     private void setUpGame (String game) {
         OpenGameFile openGameFile = serverParser.setUpGame(game);
@@ -246,8 +243,8 @@ public class ServerMenuCommand {
      * sends all public lobby guests to this client
      */
     public void sendListOfPublicGuests() {
-        for (int i = 0; i < Server.getInstance().publicLobbyGuests.size(); i++) {
-            serverConnection.sendToClient("LPUB " + Server.getInstance().publicLobbyGuests.get(i));
+        for (int i = 0; i < Server.getInstance().getPublicLobbyGuests().size(); i++) {
+            serverConnection.sendToClient("LPUB " + Server.getInstance().getPublicLobbyGuests().get(i));
         }
     }
 }

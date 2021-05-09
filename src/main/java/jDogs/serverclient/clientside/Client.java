@@ -32,12 +32,18 @@ public class Client {
     private String username;
     private int portnumber;
 
+    /**
+     * Constructor of a client
+     */
     public Client() {
         instance = this;
         setUp();
     }
 
-    // return singleton
+    /**
+     * returns the singleton of this class
+     * @return singleton
+     */
     public static Client getInstance() {
         return instance;
     }
@@ -51,9 +57,6 @@ public class Client {
     public void setUp() {
         this.serveraddress = Main.getInstance().getHostAddress();
         this.portnumber = Main.getInstance().getPort();
-
-
-
         this.receiveQueue = new Queuejd();
         this.sendQueue = new Queuejd();
         this.keyBoardInQueue = new Queuejd();
@@ -95,6 +98,11 @@ public class Client {
         Thread messageHandleThread = new Thread(messageHandlerClient);
         messageHandleThread.start();
     }
+
+    /**
+     * sends a message to server by enqueuing
+     * @param message
+     */
     public void sendMessageToServer(String message) {
         keyBoardInQueue.enqueue(message);
     }
@@ -112,6 +120,11 @@ public class Client {
         }
     }
     //transmit received ping message to monitor object
+
+    /**
+     * sends the time of received ping message to monitor object
+     * @param time
+     */
     public void monitorMsg(long time) {
         this.monitorCS.receivedMsg(time);
     }
@@ -127,21 +140,22 @@ public class Client {
         messageHandlerClient.kill();
         System.out.println("trying to reset connection to server is not activated. Shutdown Client..");
         System.exit(-1);
-        //setUp();
     }
-    
 
+    /**
+     * sets the nickname of this client
+     * (from gui)
+     * @param nickname
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * get actual nickname
+     * @return nickname
+     */
     public String getNickname() {
         return nickname;
     }
-
-    public MessageHandlerClient getMessageHandlerClient() {
-        return messageHandlerClient;
-    }
-
-
 }

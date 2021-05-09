@@ -24,6 +24,11 @@ public class ServerGameCommand {
     private RulesCheck rulesCheck;
     private String mainGameID;
 
+    /**
+     * set up a serverGameCommand object
+     * @param serverConnection sC object
+     * @param messageHandlerServer mHS object
+     */
     public ServerGameCommand(ServerConnection serverConnection,
             MessageHandlerServer messageHandlerServer) {
         this.serverConnection = serverConnection;
@@ -34,9 +39,9 @@ public class ServerGameCommand {
     }
 
     /**
-     * this method executes all commands
-     * import for playing a game on serverside
-     * @param text command which should be processed
+     * executes the commands that are received in ReceivedFromClient if they
+     * corresponded to the formal criteria in ReceivedFromClient
+     * @param text command and information
      */
     public void execute(String text) {
         logger.debug("Entered ServerGameCommand with: " + text);
