@@ -78,7 +78,7 @@ public class Server {
 
     /**
      * start Server here
-     * @param args
+     * @param args the port number
      */
     public static void main(String[] args) {
         new Server(args);
@@ -134,7 +134,7 @@ public class Server {
 
     /**
      * removes a nickname from all lists
-     * @param nickname
+     * @param nickname the player's name
      */
     public void removeNickname(String nickname) {
 
@@ -168,7 +168,7 @@ public class Server {
 
     /**
      * returns the serverConnection which fits the nickname
-     * @param nickname
+     * @param nickname player's name
      * @return serverConnection object
      */
     public ServerConnection getServerConnection(String nickname) {
@@ -183,7 +183,7 @@ public class Server {
 
     /**
      * removes the openGame from the list
-     * @param openGameFile
+     * @param openGameFile object that represents a game lobby
      */
     public void removeGame(OpenGameFile openGameFile) {
         System.out.println("remove game method on server entered");
@@ -206,7 +206,7 @@ public class Server {
 
     /**
      * sends message to clients wherever they are
-     * @param message
+     * @param message message to send
      */
     public void sendMessageToAll(String message) {
         for (ServerConnection activeServerConnection1 : basicConnectionList) {
@@ -216,7 +216,7 @@ public class Server {
 
     /**
      * add a serverConnection object to lobby list
-     * @param serverConnection
+     * @param serverConnection handles connection to server
      */
     public void addToLobby(ServerConnection serverConnection) {
         publicLobbyConnections.add(serverConnection);
@@ -224,7 +224,7 @@ public class Server {
 
     /**
      * remove a serverConnection object from lobby list
-     * @param serverConnection
+     * @param serverConnection handles connection to server
      */
     public void removeFromLobby(ServerConnection serverConnection) {
         publicLobbyConnections.remove(serverConnection);
@@ -232,7 +232,7 @@ public class Server {
 
     /**
      * remove a serverConnection and its name from all lists
-     * @param serverConnection
+     * @param serverConnection handles connection to server
      */
     public synchronized void removeServerConnection(ServerConnection serverConnection) {
         allNickNames.remove(serverConnection.getNickname());
@@ -243,7 +243,7 @@ public class Server {
 
     /**
      * returns the list of all serverConnection objects connected to server right now
-     * @return
+     * @return a list with all the existing serverConnection objects
      */
     public ArrayList<ServerConnection> getBasicConnections() {
         return basicConnectionList;
@@ -252,8 +252,7 @@ public class Server {
     /**
      * add an "openGameFile" to openGames and add name to list of games that did not finish(prevent
      * name duplicates)
-     *
-     * @param openGameFile
+     * @param openGameFile object that represents a game lobby
      */
     public void addOpenGame(OpenGameFile openGameFile) {
         allGamesNotFinishedNames.add(openGameFile.getNameId());
@@ -264,8 +263,7 @@ public class Server {
     /**
      * remove an "openGame" from openGameList and from names (keep in mind: messagehandlerstate is
      * not changed here)
-     *
-     * @param openGameFileID
+     * @param openGameFileID name of the game lobby given by host
      */
     public synchronized void removeOpenGame(String openGameFileID) {
         // send INFO message
@@ -289,7 +287,6 @@ public class Server {
 
     /**
      * returns the openGameFile with the same name
-     *
      * @param openGameID name of game
      * @return openGameFile
      */
@@ -304,7 +301,6 @@ public class Server {
 
     /**
      * returns the list of all open games
-     *
      * @return not started games
      */
     public ArrayList<OpenGameFile> getOpenGameList() {
@@ -313,7 +309,6 @@ public class Server {
 
     /**
      * get all names of not finished games
-     *
      * @return list with all names
      */
     public ArrayList<String> getAllGamesNotFinishedNames() {
@@ -330,7 +325,6 @@ public class Server {
 
     /**
      * get the main game running by name
-     *
      * @param mainGameID a string
      * @return mainGame container
      */
@@ -345,8 +339,8 @@ public class Server {
 
     /**
      * delete this mainGame
-     *
-     * @param mainGame
+     * @param mainGame contains the information of a game,
+     *                 like participants, cards, turn number
      */
     public void deleteMainGame(MainGame mainGame) {
         //TODO collect data from mainGame in XML sheet
@@ -374,9 +368,8 @@ public class Server {
 
     /**
      * remove main game after a client disconnected abruptly and inform clients
-     *
-     * @param gameID
-     * @param nickname
+     * @param gameID name of the game given by host
+     * @param nickname player's name that left a game session
      */
     public synchronized void errorRemoveMainGame(String gameID, String nickname) {
         try {

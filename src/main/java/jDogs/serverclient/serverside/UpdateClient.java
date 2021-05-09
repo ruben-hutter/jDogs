@@ -24,7 +24,7 @@ public class UpdateClient {
 
     /**
      * Gets the return value
-     * @return 0 if move is done correctly, x for x > 0 if move not possible
+     * @return 0 if move is done correctly, greater than if move not possible
      */
     public int getReturnValue() {
         return returnValue;

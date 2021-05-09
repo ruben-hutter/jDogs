@@ -28,22 +28,22 @@ public class SenderContainer {
 
     /**
      * construct container
-     * @param serverConnection
-     * @param socket
-     * @param sendToAllQueue
-     * @param sendToPubQueue
-     * @param sendToClientQueue
+     * @param serverConnection the object that handles the connection to the server
+     * @param socket the socket
+     * @param sendToAllQueue a queue that contains messages for every user
+     * @param sendToPubQueue a queue that contains messages for every user in gameLobby
+     * @param sendToClientQueue a queue that contains messages for this client
      */
-    public SenderContainer(ServerConnection serverConnection, Socket socket, BlockingQueue<String> sendToAllQueue,
-             BlockingQueue<String> sendToPubQueue, BlockingQueue<String> sendToClientQueue) {
-    this.socket = socket;
-    this.serverConnection = serverConnection;
+    public SenderContainer(ServerConnection serverConnection, Socket socket,
+            BlockingQueue<String> sendToAllQueue, BlockingQueue<String> sendToPubQueue,
+            BlockingQueue<String> sendToClientQueue) {
+        this.socket = socket;
+        this.serverConnection = serverConnection;
+        this.sendToAllQueue = sendToAllQueue;
+        this.sendToPubQueue = sendToPubQueue;
+        this.sendToClientQueue = sendToClientQueue;
 
-    this.sendToAllQueue = sendToAllQueue;
-    this.sendToPubQueue = sendToPubQueue;
-    this.sendToClientQueue = sendToClientQueue;
-
-    setUp(sendToAllQueue,sendToPubQueue,sendToClientQueue);
+        setUp(sendToAllQueue, sendToPubQueue, sendToClientQueue);
     }
 
     /**

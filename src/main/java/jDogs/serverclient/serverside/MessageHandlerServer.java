@@ -123,7 +123,7 @@ public class MessageHandlerServer implements Runnable {
     /**
      * sets state to "openGame" and
      * sends gameFileID to separateLobbyCommand
-     * @param openGameFileID
+     * @param openGameFileID the name of the game lobby
      */
     public void setJoinedOpenGame(String openGameFileID) {
         serverConnection.setState(0);

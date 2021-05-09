@@ -26,10 +26,10 @@ public class OpenGameFile {
 
     /**
      * construct an object of OpenGameFile
-     * @param nameId
-     * @param host
-     * @param teamMode
-     * @param serverConnection
+     * @param nameId name given to the game lobby
+     * @param host the player that created the game lobby
+     * @param teamMode 1 if teamMode, 0 if not
+     * @param serverConnection the object that handles connection to server
      */
     public OpenGameFile(String nameId, String host, int teamMode,
             ServerConnection serverConnection) {
@@ -96,8 +96,8 @@ public class OpenGameFile {
     /**
      * returns a player if his name is
      * in array of players
-     * @param name
-     * @return
+     * @param name the name of a player
+     * @return a player or null
      */
     public Player getPlayer(String name) {
         for (Player player : players) {
@@ -144,7 +144,7 @@ public class OpenGameFile {
 
     /**
      * add a participant to the open game
-     * @param serverConnection
+     * @param serverConnection the object that handles the connection to the server
      */
     public synchronized void addParticipant(ServerConnection serverConnection) {
         if (numberParticipants < total) {

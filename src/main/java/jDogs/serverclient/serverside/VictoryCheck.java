@@ -6,6 +6,7 @@ public class VictoryCheck {
 
     /**
      * Checks if a player won.
+     * @param gameState contains the actual state of the game
      * @return the winning player or null
      */
     protected static Player checkSingleVictory(GameState gameState) {
@@ -20,6 +21,7 @@ public class VictoryCheck {
 
     /**
      * Checks if a team won.
+     * @param gameState contains the actual state of the game
      * @return teamID of winners or -1
      */
     protected static int checkTeamVictory(GameState gameState) {

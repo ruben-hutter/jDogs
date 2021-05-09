@@ -343,6 +343,7 @@ public class RulesCheckHelper {
      * gives to the clients the new board state.
      * @param nickname player's name
      * @param cardToEliminate the played card to eliminate from player's hand
+     * @param updateClient contains all the infos for the client to update the game
      */
     protected void updateGame(String nickname, String cardToEliminate, UpdateClient updateClient) {
         //eliminate card
