@@ -84,7 +84,7 @@ public class ServerConnection {
 
     /**
      * send message to this client
-     * @param message
+     * @param message for this client
      */
     public void sendToClient(String message) {
         try {
@@ -97,7 +97,7 @@ public class ServerConnection {
     /**
      * send message to all clients that are connected to server
      * whether they are playing, in separate or public lobby
-     * @param message
+     * @param message for all
      */
     public void sendToAll(String message) {
         try {
@@ -109,7 +109,7 @@ public class ServerConnection {
 
     /**
      * send message to public lobby guests
-     * @param message
+     * @param message for the members of the lobby
      */
     public void sendToPub(String message) {
         try {
@@ -121,7 +121,7 @@ public class ServerConnection {
 
     /**
      * send time of last received ping to monitorCS
-     * @param time
+     * @param time the received time (ping message)
      */
     public void monitorMsg(long time) {
         this.monitorCS.receivedMsg(time);
@@ -151,7 +151,7 @@ public class ServerConnection {
 
     /**
      * update(change) the nickname
-     * @param nickName
+     * @param nickName player's name
      */
     public void updateNickname(String nickName) {
         this.nickname = nickName;
@@ -184,7 +184,7 @@ public class ServerConnection {
 
     /**
      * save the name of the game the user joined
-     * @param gameID
+     * @param gameID game's name
      */
     public void setGameID(String gameID) {
         this.gameID = gameID;

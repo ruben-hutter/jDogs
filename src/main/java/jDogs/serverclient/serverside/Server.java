@@ -350,8 +350,8 @@ public class Server {
     /**
      * remove open game when a client disconnected abruptly and is host else just remove this
      * participant
-     *
      * @param gameID openGameId
+     * @param nickname player's name
      */
     public synchronized void errorRemoveOpenGame(String gameID, String nickname) {
         if (getOpenGameFile(gameID).getHost().equals(nickname)) {
@@ -391,8 +391,8 @@ public class Server {
 
     /**
      * stores user data after victory
-     *
-     * @param gameID
+     * @param gameID game's name
+     * @param winner the winner's name or the 2 names separated by a whitespace
      */
     public void storeGame(String gameID, String winner) {
         MainGame mainGame = getRunningGame(gameID);
