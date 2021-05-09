@@ -64,9 +64,7 @@ public class PublicLobbyController implements Initializable {
         this.startGamePossible = false;
         this.gameId = null;
 
-        /**
-         * TableViewActiveGames displays all active games
-         */
+
         TableColumn name = new TableColumn("id");
         TableColumn responsible = new TableColumn("responsible");
         TableColumn enlist = new TableColumn("enlist");
@@ -100,7 +98,6 @@ public class PublicLobbyController implements Initializable {
         /**
          * tableViewPlayersInLobby: displays all players in Lobby
          */
-
         TableColumn player = new TableColumn("player");
         tableViewActPlayers.getColumns().addAll(player);
 
@@ -283,15 +280,12 @@ public class PublicLobbyController implements Initializable {
         }
     }
 
-    /**
-     * all display methods enable Input via GUI-Manager from Server or local
-     */
+
 
     /**
-     *
+     * message displayed a public chat message
      * @param message from server for public chat
      */
-
     public void displayPCHTmsg(String message) {
         //System.out.println(message);
         publicChatMessagesLobby.appendText("@PUB " + message + "\n");
@@ -394,6 +388,10 @@ public class PublicLobbyController implements Initializable {
 
     }
 
+    /**
+     * display a player's name
+     * @param player name
+     */
     public void displayPlayer(String player) {
         for (int i = 0; i < playersInLobby.size(); i++) {
             if (playersInLobby.get(i).getPlayer().equals(player)) {

@@ -8,15 +8,28 @@ public class FieldOnBoard {
     private int x;
     private int y;
 
+    /**
+     * constructor of FieldOnBoard
+     * @param x x-Position
+     * @param y y-Position
+     */
    public FieldOnBoard(int x,int y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * return x-value
+     * @return x-value
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * return y-value
+     * @return y-value
+     */
     public int getY() {
         return y;
     }

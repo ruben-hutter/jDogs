@@ -367,6 +367,10 @@ public class GameWindowController implements Initializable {
         }
     }
 
+    /**
+     * save a clicked grid
+     * @param clickedNode grid in grid pane
+     */
     private void addToFadingGrids(Node clickedNode) {
         if (gridCount < totalSum) {
             fadingGrids[gridCount] = new FadeTransition(Duration.seconds(0.9),
@@ -836,7 +840,7 @@ public class GameWindowController implements Initializable {
 
     /**
      * remove a card from deck by making card blended
-     * @param card
+     * @param card name
      */
     public void removeCard(String card) {
         for (int i = 0; i < cardArray.length; i++) {
@@ -978,8 +982,8 @@ public class GameWindowController implements Initializable {
 
     /**
      * sends a piece to home field(usually this is used if a piece is sent home)
-     * @param playerNumber
-     * @param pieceID
+     * @param playerNumber 0-3
+     * @param pieceID 0-3
      */
     public void makeHomeMove(int playerNumber, int pieceID) {
         String circleID = getCircleID(playerNumber, pieceID);

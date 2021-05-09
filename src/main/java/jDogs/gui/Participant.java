@@ -10,15 +10,26 @@ public class Participant {
 
     SimpleStringProperty player;
 
-
+    /**
+     * constructor of participant
+     * @param player name
+     */
     Participant(String player) {
         this.player = new SimpleStringProperty(player);
     }
 
+    /**
+     * set player
+     * @param player name
+     */
     public void setPlayer(String player) {
         this.player.set(player);
     }
 
+    /**
+     * return player name
+     * @return name
+     */
     public String getPlayer() {
         return player.get();
     }

@@ -23,13 +23,20 @@ public class AllCardsDialogController implements Initializable {
     @FXML
     private ImageView cardImage;
 
+    /**
+     * choose a card
+     * @param event click ACE to King(no Joker)
+     */
     @FXML
     void chooseButtonOnAction(ActionEvent event) {
         String card = CardUrl.getCardNameByNumber(count % 13);
         GUIManager.getInstance().gameWindowController.setCardFromJoker(card);
     }
 
-
+    /**
+     * set a new card image by clicking on image
+     * @param event click on image
+     */
     @FXML
     void setCardImage(MouseEvent event) {
         count++;
