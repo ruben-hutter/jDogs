@@ -75,8 +75,9 @@ public class Player {
      * Completes the, in MainGame, created players setup
      * @param alliance4 the alliance of the player
      */
-    public void setUpPlayerOnServerCopy(Alliance_4 alliance4) {
+    public void setUpPlayerOnServerCopy(Alliance_4 alliance4, int teamID) {
         this.alliance4 = alliance4;
+        this.teamID = teamID;
         startingPosition = alliance4.getStartingPosition();
         pieces = createPieces(startingPosition);
     }

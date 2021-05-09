@@ -135,7 +135,7 @@ public class RulesCheck {
 
             // if card not ok with destination, return to client
             if (!checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                    newPosition2, startingPosition, hasMoved, ownPlayer, pieceID, rulesCheckHelper)) {
+                    newPosition2, startingPosition, hasMoved, ownPlayer)) {
                 updateClient.setReturnValue(5);
                 return updateClient;
             }
@@ -472,22 +472,15 @@ public class RulesCheck {
                 return null;
             }
             // checks heaven part
-            for (Piece piece : ownPlayer.pieces) {
-                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
-                        && piece.getPositionServer2() <= newPosition2) {
-                    System.err.println("Piece on path: " + piece);
-                    return null;
-                }
+            if (rulesCheckHelper.piecesInHeaven(ownPlayer, -1, newPosition2)) {
+                System.err.println("Piece on path in heaven");
+                return null;
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
             // heaven -> heaven
-            // TODO check in other way
-            for (Piece piece : ownPlayer.pieces) {
-                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
-                        && piece.getPositionServer2() <= newPosition2) {
-                    System.err.println("Piece on path: " + piece);
-                    return null;
-                }
+            if (rulesCheckHelper.piecesInHeaven(ownPlayer, actualPosition2, newPosition2)) {
+                System.err.println("Piece on path in heaven");
+                return null;
             }
         }
         // move the piece on the tempGameState
@@ -544,13 +537,11 @@ public class RulesCheck {
      * @param startingPosition player's startingPosition (0, 16, ...)
      * @param hasMoved false if player is or has just left home
      * @param ownPlayer owner of this marble
-     * @param pieceID int between 1-4
-     * @param rulesCheckHelper helper object for this class
      * @return false if card can't correspond with destination
      */
     protected boolean checkCardWithNewPosition(String card, String actualPosition1,
             int actualPosition2, String newPosition1, int newPosition2, int startingPosition,
-            boolean hasMoved, Player ownPlayer, int pieceID, RulesCheckHelper rulesCheckHelper) {
+            boolean hasMoved, Player ownPlayer) {
         int[] cardValues = rulesCheckHelper.getCardValues(card);
         int difference;
         if (actualPosition1.equals("A") && newPosition1.equals("B")) {
@@ -596,13 +587,9 @@ public class RulesCheck {
             if (!hasMoved) {
                 return false;
             }
-            // TODO check with checkForBlock()
-            for (Piece piece : ownPlayer.pieces) {
-                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
-                        && piece.getPositionServer2() <= newPosition2) {
-                    System.err.println("Piece on path: " + piece);
-                    return false;
-                }
+            if (rulesCheckHelper.piecesInHeaven(ownPlayer, -1, newPosition2)) {
+                System.err.println("Piece on path in heaven");
+                return false;
             }
             if (card.equals("FOUR")) {
                 for (int cardValue : cardValues) {
@@ -633,12 +620,9 @@ public class RulesCheck {
                 }
             }
         } else if (actualPosition1.equals("C") && newPosition1.equals("C")) {
-            for (Piece piece : ownPlayer.pieces) {
-                if (piece.getPieceID() != pieceID && piece.getPositionServer1().equals("C")
-                        && piece.getPositionServer2() <= newPosition2) {
-                    System.err.println("Piece on path: " + piece);
-                    return false;
-                }
+            if (rulesCheckHelper.piecesInHeaven(ownPlayer, actualPosition2, newPosition2)) {
+                System.err.println("Piece on path in heaven");
+                return false;
             }
             difference = newPosition2 - actualPosition2;
             for (int cardValue : cardValues) {

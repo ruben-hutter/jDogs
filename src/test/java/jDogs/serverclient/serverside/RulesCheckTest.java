@@ -1,8 +1,5 @@
 package jDogs.serverclient.serverside;
 
-import java.util.ArrayList;
-
-import jDogs.player.Piece;
 import jDogs.player.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -138,7 +135,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -156,7 +153,7 @@ class RulesCheckTest {
 
         boolean result = false;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -174,7 +171,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -192,7 +189,7 @@ class RulesCheckTest {
 
         boolean result = false;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -210,7 +207,7 @@ class RulesCheckTest {
 
         boolean result = false;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -228,7 +225,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -246,7 +243,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -264,7 +261,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -282,7 +279,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -300,7 +297,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -318,7 +315,7 @@ class RulesCheckTest {
 
         boolean result = false;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
     @Test
@@ -336,7 +333,7 @@ class RulesCheckTest {
 
         boolean result = true;
         assertEquals(result, rulesCheck.checkCardWithNewPosition(card, actualPosition1, actualPosition2, newPosition1,
-                newPosition2, startingPosition, hasMoved, ownplayer, pieceID, rulesCheckHelper));
+                newPosition2, startingPosition, hasMoved, ownplayer));
     }
 
 
