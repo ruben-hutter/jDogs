@@ -101,7 +101,7 @@ public class Client {
 
     /**
      * sends a message to server by enqueuing
-     * @param message
+     * @param message the sent message
      */
     public void sendMessageToServer(String message) {
         keyBoardInQueue.enqueue(message);
@@ -123,7 +123,7 @@ public class Client {
 
     /**
      * sends the time of received ping message to monitor object
-     * @param time
+     * @param time the last time received from server
      */
     public void monitorMsg(long time) {
         this.monitorCS.receivedMsg(time);
@@ -145,7 +145,7 @@ public class Client {
     /**
      * sets the nickname of this client
      * (from gui)
-     * @param nickname
+     * @param nickname the name of the user
      */
     public void setNickname(String nickname) {
         this.nickname = nickname;

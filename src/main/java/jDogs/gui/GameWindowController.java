@@ -846,7 +846,7 @@ public class GameWindowController implements Initializable {
 
     /**
      * remove a card from deck by making card blended
-     * @param card
+     * @param card the played card
      */
     public void removeCard(String card) {
         for (int i = 0; i < cardArray.length; i++) {
@@ -990,8 +990,8 @@ public class GameWindowController implements Initializable {
 
     /**
      * sends a piece to home field(usually this is used if a piece is sent home)
-     * @param playerNumber
-     * @param pieceID
+     * @param playerNumber int between 0-3
+     * @param pieceID int between 1-4
      */
     public void makeHomeMove(int playerNumber, int pieceID) {
         String circleID = getCircleID(playerNumber, pieceID);
@@ -1019,7 +1019,7 @@ public class GameWindowController implements Initializable {
 
     /**
      * displays infos from Server
-     * @param message
+     * @param message the given message
      */
     public void displayInfoFromServer(String message) {
         textLogServer.appendText(message + "\n");

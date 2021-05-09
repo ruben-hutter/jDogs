@@ -134,12 +134,10 @@ public class GUIManager extends Application {
 
     /**
      * starts the game
+     * @param intTeamMode 1 for teamMode, else single player
      */
     public void startGame(int intTeamMode) {
-        this.teamMode = false;
-        if (intTeamMode == 1) {
-            this.teamMode = true;
-        }
+        this.teamMode = intTeamMode == 1;
         isPlaying = true;
         setGameScene();
     }
