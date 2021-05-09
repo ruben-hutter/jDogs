@@ -169,14 +169,8 @@ public class PublicLobbyController implements Initializable {
      */
     @FXML
     void newGameButtonOnAction(ActionEvent event) {
-        String dialogPath = "src/main/resources/createGameWindow.fxml";
-        URL url = null;
-        try {
-            url = Paths.get(dialogPath).toUri().toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        FXMLLoader dialogPaneGameLoader = new FXMLLoader(url);
+
+        FXMLLoader dialogPaneGameLoader = new FXMLLoader(getClass().getResource("/createGameWindow.fxml"));
 
         CreateGameWindowController createGameWindowController = dialogPaneGameLoader.getController();
         AnchorPane anchorPane = null;

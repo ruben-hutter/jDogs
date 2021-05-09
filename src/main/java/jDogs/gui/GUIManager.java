@@ -139,15 +139,7 @@ public class GUIManager extends Application {
      */
     private void setGameScene() {
 
-        String lobbyPath = "src/main/resources/gameWindow.fxml";
-        // activate Window
-        URL url = null;
-        try {
-            url = Paths.get(lobbyPath).toUri().toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        gameLoader = new FXMLLoader(url);
+        gameLoader = new FXMLLoader(getClass().getResource("/gameWindow.fxml"));
         // get path
         Parent root = null;
         try {

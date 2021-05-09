@@ -145,15 +145,12 @@ public class CSVWriter {
             }
             count++;
         }
-
         count++;
         int victorySeparator = count;
-        int points = Integer.parseInt(line.substring(victorySeparator, line.length()));
 
         SavedUser savedUser = new SavedUser(name);
         savedUser.setPlayedGames(playedGames);
         savedUser.setVictories(victories);
-        savedUser.setPoints(points);
         usersHighScore.add(savedUser);
     }
 

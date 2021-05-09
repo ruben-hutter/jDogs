@@ -1,5 +1,7 @@
 package jDogs.gui;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -34,8 +36,13 @@ public class AllCardsDialogController implements Initializable {
     void setCardImage(MouseEvent event) {
         count++;
         String card = CardUrl.getCardNameByNumber(count % 13);
-        URL url = CardUrl.getURL(card);
-        Image image = new Image(url.toString());
+        String url = CardUrl.getURL(card);
+        Image image = null;
+        try {
+            image = new Image(getClass().getResource(url).toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         cardImage.setImage(image);
     }
 
@@ -43,8 +50,13 @@ public class AllCardsDialogController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         count = 0;
         String card = CardUrl.getCardNameByNumber(count);
-        URL url = CardUrl.getURL(card);
-        Image image = new Image(url.toString());
+        String url = CardUrl.getURL(card);
+        Image image = null;
+        try {
+            image = new Image(getClass().getResource(url).toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         cardImage.setImage(image);
     }
 }

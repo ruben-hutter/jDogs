@@ -5,6 +5,7 @@ import jDogs.board.Board;
 import jDogs.serverclient.clientside.Client;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
@@ -812,8 +813,13 @@ public class GameWindowController implements Initializable {
 
         int count = 0;
         for(String card : cardArray) {
-            URL url = CardUrl.getURL(card);
-            Image image = new Image(url.toString());
+            String url = CardUrl.getURL(card);
+            Image image = null;
+            try {
+                image = new Image(getClass().getResource(url).toURI().toString());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
             allCardImageViews[count].setImage(image);
             allCardImageViews[count].setVisible(true);
             allCardImageViews[count].setEffect(colorAdjust);

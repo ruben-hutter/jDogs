@@ -5,103 +5,90 @@ import java.net.URL;
 import java.nio.file.Paths;
 
 public class CardUrl {
-    //TODO here cardURLArray to getback all urls for all dialog controller to go through all cards
-
-
-
-
-    public static URL getURL(String card) {
+    public static String getURL(String card) {
         String url = null;
 
         switch (card) {
 
             case "ACEE":
-                url = "src/main/resources/cards/AC.png";
+                url = "/cards/AC.png";
                 break;
 
             case "TWOO":
-                url = "src/main/resources/cards/2C.png";
+                url = "/cards/2C.png";
                 break;
 
             case "THRE":
-                url = "src/main/resources/cards/3C.png";
+                url = "/cards/3C.png";
                 break;
 
             case "FOUR":
-                url = "src/main/resources/cards/4C.png";
+                url = "/cards/4C.png";
                 break;
 
             case "FIVE":
-                url = "src/main/resources/cards/5C.png";
+                url = "/cards/5C.png";
                 break;
 
             case "SIXX":
-                url = "src/main/resources/cards/6C.png";
+                url = "/cards/6C.png";
                 break;
 
             case "SEVE":
-                url = "src/main/resources/cards/7C.png";
+                url = "/cards/7C.png";
                 break;
 
             case "EIGT":
-                url = "src/main/resources/cards/8C.png";
+                url = "/cards/8C.png";
                 break;
 
             case "NINE":
-                url = "src/main/resources/cards/9C.png";
+                url = "/cards/9C.png";
                 break;
 
             case "TENN":
-                url = "src/main/resources/cards/10C.png";
+                url = "/cards/10C.png";
                 break;
 
             case "QUEN":
-                url = "src/main/resources/cards/QC.png";
+                url = "/cards/QC.png";
                 break;
 
             case "JACK":
-                url = "src/main/resources/cards/JC.png";
+                url = "/cards/JC.png";
                 break;
 
             case "JOKE":
-                url = "src/main/resources/cards/red_back.png";
+                url = "/cards/red_back.png";
                 break;
 
             case "KING":
-                url = "src/main/resources/cards/KC.png";
+                url = "/cards/KC.png";
                 break;
 
             default:
                 System.err.println("UNKNOWN CARD " + card);
         }
-
-        try {
-            return Paths.get(url).toUri().toURL();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
+        return url;
     }
 
     public static String[] getURLArray() {
         String[] cardURL = new String[14];
 
-        cardURL[0] = "src/main/resources/cards/AC.png";
-        cardURL[1] = "src/main/resources/cards/2C.png";
-        cardURL[2] = "src/main/resources/cards/3C.png";
-        cardURL[3] = "src/main/resources/cards/4C.png";
-        cardURL[4] = "src/main/resources/cards/5C.png";
-        cardURL[5] = "src/main/resources/cards/6C.png";
-        cardURL[6] = "src/main/resources/cards/7C.png";
-        cardURL[7] = "src/main/resources/cards/8C.png";
-        cardURL[8] = "src/main/resources/cards/9C.png";
-        cardURL[9] = "src/main/resources/cards/10C.png";
-        cardURL[10] = "src/main/resources/cards/QC.png";
-        cardURL[11] = "src/main/resources/cards/JC.png";
-        cardURL[12] = "src/main/resources/cards/KC.png";
-        cardURL[13] = "src/main/resources/cards/red_back.png";
+        cardURL[0] = "/cards/AC.png";
+        cardURL[1] = "/cards/2C.png";
+        cardURL[2] = "/cards/3C.png";
+        cardURL[3] = "/cards/4C.png";
+        cardURL[4] = "/cards/5C.png";
+        cardURL[5] = "/cards/6C.png";
+        cardURL[6] = "/cards/7C.png";
+        cardURL[7] = "/cards/8C.png";
+        cardURL[8] = "/cards/9C.png";
+        cardURL[9] = "/cards/10C.png";
+        cardURL[10] = "/cards/QC.png";
+        cardURL[11] = "/cards/JC.png";
+        cardURL[12] = "/cards/KC.png";
+        cardURL[13] = "/cards/red_back.png";
 
         return cardURL;
     }
@@ -119,8 +106,8 @@ public class CardUrl {
         card[7] = "EIGT";
         card[8] = "NINE";
         card[9] = "TENN";
-        card[10] = "QUEN";
-        card[11] = "JACK";
+        card[10] = "JACK";
+        card[11] = "QUEN";
         card[12] = "KING";
 
         return card[number];
