@@ -140,7 +140,7 @@
                   <Pane layoutX="666.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ff6347;" GridPane.columnIndex="23" GridPane.rowIndex="2" />
                   <Pane layoutX="666.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ff6347;" GridPane.columnIndex="23" GridPane.rowIndex="3" />
                   <Pane layoutX="666.0" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ff6347;" GridPane.columnIndex="22" GridPane.rowIndex="2" />
-                  <Pane layoutX="72.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F2FB1A;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                  <Pane layoutX="72.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffd700;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                   <Pane layoutX="103.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="5" GridPane.rowIndex="2" />
                   <Pane layoutX="134.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="6" GridPane.rowIndex="2" />
                   <Pane layoutX="196.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="8" GridPane.rowIndex="2" />
@@ -169,7 +169,7 @@
                   <Pane layoutX="103.0" layoutY="291.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="4" GridPane.rowIndex="15" />
                   <Pane layoutX="103.0" layoutY="291.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="4" GridPane.rowIndex="16" />
                   <Pane layoutX="103.0" layoutY="337.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="4" GridPane.rowIndex="17" />
-                  <Pane layoutX="103.0" layoutY="360.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to right top, #97d16b, #88c95b, #79c14c, #69b93b, #58b129, #4bb63a, #3aba4a, #22be59, #01cf84, #07deac, #34edd1, #5ffbf1);;" GridPane.columnIndex="4" GridPane.rowIndex="18" />
+                  <Pane layoutX="103.0" layoutY="360.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3cb371;" GridPane.columnIndex="4" GridPane.rowIndex="18" />
                   <Pane layoutX="103.0" layoutY="384.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="5" GridPane.rowIndex="18" />
                   <Pane layoutX="130.0" layoutY="431.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="6" GridPane.rowIndex="18" />
                   <Pane layoutX="190.0" layoutY="408.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="7" GridPane.rowIndex="18" />
@@ -179,7 +179,7 @@
                   <Pane layoutX="340.0" layoutY="408.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="10" GridPane.rowIndex="18" />
                   <Pane layoutX="340.0" layoutY="408.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="12" GridPane.rowIndex="18" />
                   <Pane layoutX="370.0" layoutY="408.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="13" GridPane.rowIndex="18" />
-                  <Pane layoutX="580.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to right top, #e3b8ba, #dca7ac, #d4969f, #cb8594, #c27489, #c2697f, #c25d75, #c2506a, #c94758, #cd3f44, #cd3b2c, #c93c0a);;" GridPane.columnIndex="20" GridPane.rowIndex="2" />
+                  <Pane layoutX="580.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ff6347;" GridPane.columnIndex="20" GridPane.rowIndex="2" />
                   <Pane layoutX="580.0" layoutY="33.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="20" GridPane.rowIndex="3" />
                   <Pane layoutX="580.0" layoutY="80.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="20" GridPane.rowIndex="4" />
                   <Pane layoutX="580.0" layoutY="104.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="20" GridPane.rowIndex="5" />
@@ -201,7 +201,7 @@
                   <Pane layoutX="520.0" layoutY="413.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="20" GridPane.rowIndex="16" />
                   <Pane layoutX="580.0" layoutY="368.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="20" GridPane.rowIndex="17" />
                   <Pane layoutX="580.0" layoutY="391.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #eee8aa;" GridPane.columnIndex="18" GridPane.rowIndex="18" />
-                  <Pane layoutX="550.0" layoutY="413.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #491AFB;" GridPane.columnIndex="20" GridPane.rowIndex="18" />
+                  <Pane layoutX="550.0" layoutY="413.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #6495ed;" GridPane.columnIndex="20" GridPane.rowIndex="18" />
                   <Pane layoutX="40.0" layoutY="55.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3cb371;" GridPane.columnIndex="2" GridPane.rowIndex="17" />
                   <Pane layoutX="40.0" layoutY="55.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3cb371;" GridPane.columnIndex="1" GridPane.rowIndex="17" />
                   <Pane layoutX="40.0" layoutY="55.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3cb371;" GridPane.columnIndex="1" GridPane.rowIndex="18" />
