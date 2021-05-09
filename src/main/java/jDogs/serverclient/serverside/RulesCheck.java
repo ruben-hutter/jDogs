@@ -119,15 +119,15 @@ public class RulesCheck {
             if (teamMode) {
                 if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer != nowPlaying
                         && ownTeamID != nowPlaying.getTeamID())) {
-                    System.err.println("Marble owner: " + ownPlayer);
-                    System.err.println("Playing: " + nowPlaying);
+                    System.err.println("Marble owner's teamID: " + ownPlayer.getTeamID());
+                    System.err.println("Playing: " + nowPlaying.getTeamID());
                     updateClient.setReturnValue(3);
                     return updateClient;
                 }
             } else {
                 if (ownPlayer != nowPlaying) {
-                    System.err.println("Marble owner: " + ownPlayer);
-                    System.err.println("Playing: " + nowPlaying);
+                    System.err.println("Marble owner's teamID: " + ownPlayer.getTeamID());
+                    System.err.println("Playing: " + nowPlaying.getTeamID());
                     updateClient.setReturnValue(4);
                     return updateClient;
                 }
@@ -226,15 +226,15 @@ public class RulesCheck {
                 if (teamMode) {
                     if ((ownPlayer != nowPlaying && !nowPlaying.getFinished()) || (ownPlayer !=
                             nowPlaying && ownTeamID != nowPlaying.getTeamID())) {
-                        System.err.println("Marble owner: " + ownPlayer);
-                        System.err.println("Playing: " + nowPlaying);
+                        System.err.println("Marble owner's teamID: " + ownPlayer.getTeamID());
+                        System.err.println("Playing: " + nowPlaying.getTeamID());
                         updateClient.setReturnValue(1);
                         return updateClient;
                     }
                 } else {
                     if (ownPlayer != nowPlaying) {
-                        System.err.println("Marble owner: " + ownPlayer);
-                        System.err.println("Playing: " + nowPlaying);
+                        System.err.println("Marble owner's teamID: " + ownPlayer.getTeamID());
+                        System.err.println("Playing: " + nowPlaying.getTeamID());
                         updateClient.setReturnValue(2);
                         return updateClient;
                     }
@@ -404,14 +404,14 @@ public class RulesCheck {
             Player nowPlaying = tempGameState.getPlayer(nickname);
             if (teamMode) {
                 if (ownPlayer != nowPlaying && ownTeamID != nowPlaying.getTeamID()) {
-                    System.err.println("Marble owner: " + ownPlayer);
-                    System.err.println("Playing: " + nowPlaying);
+                    System.err.println("Marble owner's teamID: " + ownPlayer.getTeamID());
+                    System.err.println("Playing: " + nowPlaying.getTeamID());
                     return -1;
                 }
             } else {
                 if (ownPlayer != nowPlaying) {
-                    System.err.println("Marble owner: " + ownPlayer);
-                    System.err.println("Playing: " + nowPlaying);
+                    System.err.println("Marble owner's teamID: " + ownPlayer.getTeamID());
+                    System.err.println("Playing: " + nowPlaying.getTeamID());
                     return -1;
                 }
             }
