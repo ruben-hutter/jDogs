@@ -403,3 +403,23 @@ Heute testeten wir das Spiel wieder zu dritt und behoben verschiedene kleine Feh
 
 **Nächstes Treffen:** Samstag, 08.05.21, 14:00 Uhr
 
+---
+
+08.05.2021, 14:00 Uhr, Johanna
+
+### Protokoll#23 - Protokoll
+
+Beim Testen des Spiels stellten wir fest, dass es noch einige Probleme mit der Spezialkarte 7 gab. Denn bei der Karte 7 wird ein temporäres Spielbrett erstellt, um die Bewegungen zu überprüfen. Die neuen Positionen müssen dann wieder korrekt an das richtige Spielfeld übergeben werden. Ein technisches Problem entstand bei Hamachi. Wenn Gregor einen Server startete, konnten sich die anderen Teammitglieder nicht mit diesem Server verbinden. Wenn eine andere Person den Server startete, konnten sich alle damit verbinden. Dieses Problem konnten wir nicht lösen. Wir entdeckten und behoben weitere kleine Fehler. 
+
+**Nächstes Treffen:** Samstag, 09.05.21, 16:00 Uhr
+
+--- 
+
+09.05.2021, 16:00 Uhr, Johanna
+
+### Protokoll#24 - Protokoll
+
+Als wir heute versuchten, ein jar zu erstellen, funktionierte es nicht. Es gab ein Problem mit der CSV-Datei, in der wir die Gewinnerstatistiken speichern wollten. Wir versuchten lange, dieses Problem zu lösen. Schliesslich konnten wir eine jar Datei erstellen, die wir sogleich über Hamachi testeten. 
+
+**Nächstes Treffen:** Dienstag, 11.05.21, 15:30 Uhr
+
