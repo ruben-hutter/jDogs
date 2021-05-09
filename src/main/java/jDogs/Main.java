@@ -40,6 +40,7 @@ public class Main {
 
             } else if (args[0].equals("server")) {
                 //mainInstance.parseServerPort(args[1]);
+
                 Server.main(args);
 
             } else {

@@ -1,12 +1,26 @@
 package jDogs.serverclient.serverside;
 
+import static org.apache.logging.log4j.core.util.Loader.getClassLoader;
+import static org.apache.logging.log4j.core.util.Loader.getResourceAsStream;
+
+import jDogs.Main;
+import jDogs.player.Player;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
+import org.apache.logging.log4j.core.util.Loader;
+import org.checkerframework.checker.units.qual.C;
+import org.xml.sax.InputSource;
 
 /**
  * This class is used to store as CSV-File
@@ -15,12 +29,15 @@ import java.util.Collections;
 public class CSVWriter {
 
     private final ArrayList<SavedUser> usersHighScore;
-    private final String FILENAME = "src/main/resources/HighScoreList.csv";
+
+    private String FILENAME = "/highScoreList.csv";
+
+    //private final String FILENAME = this.getClass().getClassLoader().getResource("src/main/resources/highScoreList.csv").toExternalForm();
+    //private final String FILENAME = "src/main/resources/highScoreList.csv";
 
     CSVWriter() {
         usersHighScore = new ArrayList<>();
     }
-
     /**
      * rank the list, so that
      * the highest core is in the first place.
@@ -45,6 +62,7 @@ public class CSVWriter {
         FileWriter csvWriter = null;
 
         try {
+
             csvWriter = new FileWriter(FILENAME);
             csvWriter.append("Name");
             csvWriter.append(",");
@@ -73,13 +91,11 @@ public class CSVWriter {
      * reads the CSV-File
      */
     public void readCSV() {
+        InputStream inputStream = getClass().getResourceAsStream(FILENAME);
         BufferedReader bufferedReader = null;
+
         try {
-            bufferedReader = new BufferedReader(new FileReader(FILENAME));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             //ignore first line with info
             String line = bufferedReader.readLine();
 
@@ -95,7 +111,7 @@ public class CSVWriter {
     /**
      * parse a line from the csv document and
      * adds it to the usersHighScoreList
-     * @param line
+     * @param line line
      */
     private void parseAndAddLine(String line) {
         int count = 0;

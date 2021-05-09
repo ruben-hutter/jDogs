@@ -3,6 +3,7 @@ package jDogs.gui;
 
 import java.io.IOException;
 
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -59,17 +60,7 @@ public class GUIManager extends Application {
 
         // activate loginWindow
 
-        // TODO why does it not work:
-        //FXMLLoader loginLoader = new FXMLLoader(getClass().getResource(("/resources/loginWindow.fxml")));
-
-        URL url = null;
-
-        try {
-            url = Paths.get("src/main/resources/loginWindow.fxml").toUri().toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        FXMLLoader loginLoader = new FXMLLoader(url);
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/loginWindow.fxml"));
         Parent root = null;
         try {
             root = loginLoader.load();
@@ -93,17 +84,9 @@ public class GUIManager extends Application {
     public void setLobbyScene() {
         isPlaying = false;
 
-        String lobbyPath = "src/main/resources/lobbyWindow.fxml";
         // activate Window
-        //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
-        URL url = null;
-        try {
-            url = Paths.get(lobbyPath).toUri().toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        lobbyLoader = new FXMLLoader(url);
-        // get path
+        lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
+
         Parent root = null;
         try {
             root = lobbyLoader.load();
@@ -113,7 +96,6 @@ public class GUIManager extends Application {
         lobbyController = lobbyLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
-
     }
 
     /**
@@ -157,10 +139,8 @@ public class GUIManager extends Application {
      */
     private void setGameScene() {
 
-        //String lobbyPath = "src/main/resources/gameWindow_orig.fxml";
         String lobbyPath = "src/main/resources/gameWindow.fxml";
         // activate Window
-        //FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
         URL url = null;
         try {
             url = Paths.get(lobbyPath).toUri().toURL();

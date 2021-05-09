@@ -159,7 +159,6 @@ public class PublicLobbyController implements Initializable {
             startButton.setText("started");
             startGamePossible = false;
         }
-
     }
 
     /**
@@ -208,7 +207,6 @@ public class PublicLobbyController implements Initializable {
         } else {
             new Alert(AlertType.INFORMATION, "Error.you were already public" ).showAndWait();
         }
-
     }
 
     /**

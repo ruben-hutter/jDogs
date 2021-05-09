@@ -125,6 +125,8 @@ public class GameWindowController implements Initializable {
     private GridPane gridPane;
 
     @FXML
+    HBox hboxCardHolder;
+    @FXML
     private HBox playerDisplay;
 
     @FXML
@@ -133,24 +135,21 @@ public class GameWindowController implements Initializable {
     @FXML
     private Button roundOffButton;
 
-    @FXML
-    private ImageView imageViewCard1;
 
-    @FXML
-    private ImageView imageViewCard3;
+
 
     @FXML
     private ImageView imageViewCard0;
-
     @FXML
-    private ImageView imageViewCard4;
-
-    @FXML
-    private ImageView imageViewCard5;
-
+    private ImageView imageViewCard1;
     @FXML
     private ImageView imageViewCard2;
-
+    @FXML
+    private ImageView imageViewCard3;
+    @FXML
+    private ImageView imageViewCard4;
+    @FXML
+    private ImageView imageViewCard5;
     @FXML
     private ImageView imageViewCard7;
 
@@ -160,14 +159,15 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private Label nameLabel2;
+
     private int gridCount;
     private int totalSum;
+
     private FadeTransition[] fadingGrids;
     private int circleCount;
     private String[] clickedCircleIds;
     private FieldOnBoard[] clickedGridFields;
     private FadeTransition[] fadingCircles;
-
 
     /**
      * end application(stop game)
@@ -330,7 +330,7 @@ public class GameWindowController implements Initializable {
                     MalformedURLException e) {
                 e.printStackTrace();
             }
-            FXMLLoader allCardsDialog = new FXMLLoader(url);
+            FXMLLoader allCardsDialog = new FXMLLoader(getClass().getResource("/allCardsDialog.fxml"));
 
             allCardsDialogController = allCardsDialog.getController();
             borderPaneDialog = null;
@@ -689,12 +689,10 @@ public class GameWindowController implements Initializable {
         jokerClicked = false;
         yourTurn = false;
 
-
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
             displayInfoFromClient("SEVERE ERROR couldn t find nickname in list of game names");
-            System.err.println("SEVERE ERROR couldn t find nickname in list of game names");
         }
         // set color - string
         color = ColorAbbreviations.values()[playerNr].toString();

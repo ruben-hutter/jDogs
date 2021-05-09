@@ -63,8 +63,9 @@ public class Server {
 
     public Server(String[] args) {
         instance = this;
-        csvWriter = new CSVWriter();
-        csvWriter.readCSV();
+       csvWriter = new CSVWriter();
+       //TODO find error
+       // csvWriter.readCSV();
         try {
             serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             // runs as long as the server is activated
@@ -343,10 +344,12 @@ public class Server {
     /**
      * delete this mainGame
      *
-     * @param mainGame
+     * @param mainGame mainGame
      */
     public void deleteMainGame(MainGame mainGame) {
-        //TODO collect data from mainGame in XML sheet
+        for (Player player : mainGame.getPlayersArray()) {
+            player.getServerConnection().getMessageHandlerServer().returnToLobby();
+        }
         runningGames.remove(mainGame);
     }
 
@@ -395,25 +398,23 @@ public class Server {
 
     /**
      * stores user data after victory
-     *
-     * @param gameID
+     * @param gameID name
      */
     public void storeGame(String gameID, String winner) {
         MainGame mainGame = getRunningGame(gameID);
 
-        String name = mainGame.getGameState().getWinners();
         // if 2 winners
         if (mainGame.isTeamMode()) {
             int separator = -1;
-            for (int i = 0; i < name.length(); i++) {
-                if (Character.isWhitespace(name.charAt(i))) {
+            for (int i = 0; i < winner.length(); i++) {
+                if (Character.isWhitespace(winner.charAt(i))) {
                     separator = i;
                     break;
                 }
             }
 
-            String winner1 = name.substring(0, separator);
-            String winner2 = name.substring(separator + 1);
+            String winner1 = winner.substring(0, separator);
+            String winner2 = winner.substring(separator + 1);
             int count = -1;
 
             for (Player player : mainGame.getPlayersArray()) {
@@ -448,32 +449,37 @@ public class Server {
         } else {
             // check highScoreList
             int count = -1;
-            Player player = mainGame.getPlayer(winner);
-            for (SavedUser savedUser : csvWriter.getUsersHighScore()) {
-                if (savedUser.getName().equals(player.getPlayerName())) {
+            for (Player player : mainGame.getPlayersArray()) {
+                for (SavedUser savedUser : csvWriter.getUsersHighScore()) {
+                    if (savedUser.getName().equals(player.getPlayerName())) {
+                        if (player.getPlayerName().equals(winner)) {
+                            savedUser.addVictory();
+                        } else {
+                            savedUser.addDefeat();
+                        }
+                        count = 0;
+                        break;
+                    }
+                }
+                // if username is not in highScoreList: add it here
+                if (count == -1) {
+                    SavedUser savedUser = new SavedUser(player.getPlayerName());
                     if (player.getPlayerName().equals(winner)) {
                         savedUser.addVictory();
                     } else {
                         savedUser.addDefeat();
                     }
-                    count = 0;
-                    break;
-                }
-            }
-            // if username is not in highScoreList: add it here
-            if (count == -1) {
-                SavedUser savedUser = new SavedUser(player.getPlayerName());
-                if (player.getPlayerName().equals(winner)) {
-                    savedUser.addVictory();
+                    csvWriter.addUser(savedUser);
                 } else {
-                    savedUser.addDefeat();
+                    count = -1;
                 }
-                csvWriter.addUser(savedUser);
             }
-
-            csvWriter.rankList();
-            csvWriter.writeCSV();
         }
+        csvWriter.rankList();
+        csvWriter.writeCSV();
+
+        // delete main game
+        deleteMainGame(mainGame);
     }
 }
 
