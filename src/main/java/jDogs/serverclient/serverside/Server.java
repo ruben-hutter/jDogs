@@ -12,7 +12,7 @@ import javax.imageio.stream.ImageInputStreamImpl;
 
 /**
  * Server waits for new clients trying to connect to server,
- * and if one connects the server creates a ServerConnection-thread
+ * and if one connects the server creates a ServerConnection-object
  * for this client.
  *
  * ArrayList with all Sender-objects lies here
@@ -27,44 +27,32 @@ public class Server {
     //this list contains all nicknames used at the moment(to avoid duplicates)
     ArrayList<String> allNickNames = new ArrayList<>();
     //this map contains the names and the corresponding serverConnections objects
-
     private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
-
     //this list contains all ongoing games
-    ArrayList<MainGame> runningGames = new ArrayList<>();
+    private final ArrayList<MainGame> runningGames = new ArrayList<>();
     //this list contains all public lobby guest names
-    ArrayList<String> publicLobbyGuests = new ArrayList<>();
+    private final ArrayList<String> publicLobbyGuests = new ArrayList<>();
     //this list contains all finished games
-    ArrayList<OpenGameFile> finishedGames = new ArrayList<>();
     //this list contains all server connections active in the public lobby
-    ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
+    private final ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
     //this list exists only to store all serverConnections to enable more ServerConnections
-    ArrayList<ServerConnection> basicConnectionList = new ArrayList<>();
-
+    private final ArrayList<ServerConnection> basicConnectionList = new ArrayList<>();
     private static Server instance;
-
-    boolean running = true;
-
+    private boolean running = true;
     // contains all names of openGameFiles and running games
-    private ArrayList<String> allGamesNotFinishedNames = new ArrayList<>();
-
+    private final ArrayList<String> allGamesNotFinishedNames = new ArrayList<>();
     // contains all openGameFiles
-    private ArrayList<OpenGameFile> allOpenGames = new ArrayList<>();
+    private final ArrayList<OpenGameFile> allOpenGames = new ArrayList<>();
 
-
-    public static void main(String[] args) {
-        new Server(args);
-    }
-
-    // return Singleton
-    public static Server getInstance() {
-        return instance;
-    }
-
+    /**
+     * constructor of the server and place where
+     * the while loop is called
+     * @param args "Server port number"
+     */
     public Server(String[] args) {
         instance = this;
-       csvWriter = new CSVWriter();
-       csvWriter.readCSV();
+        csvWriter = new CSVWriter();
+        csvWriter.readCSV();
         try {
             serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             // runs as long as the server is activated
@@ -85,6 +73,22 @@ public class Server {
             e.printStackTrace();
             System.out.println("server error");
         }
+    }
+
+    /**
+     * start Server here
+     * @param args the port number
+     */
+    public static void main(String[] args) {
+        new Server(args);
+    }
+
+    /**
+     * get the singleton, single object of this class
+     * @return static single object
+     */
+    public static Server getInstance() {
+        return instance;
     }
 
     /**
@@ -127,6 +131,10 @@ public class Server {
         allNickNames.add(nickname);
     }
 
+    /**
+     * removes a nickname from all lists
+     * @param nickname the player's name
+     */
     public void removeNickname(String nickname) {
 
         //remove nickname from sConnectionNicknameMap
@@ -157,6 +165,11 @@ public class Server {
         mainGame.start();
     }
 
+    /**
+     * returns the serverConnection which fits the nickname
+     * @param nickname player's name
+     * @return serverConnection object
+     */
     public ServerConnection getServerConnection(String nickname) {
 
         for (ServerConnection serverConnection : basicConnectionList) {
@@ -168,24 +181,9 @@ public class Server {
     }
 
     /**
-     * @param openGameFile
-     * @return list of server connection objects of clients who participate in this opened game or
-     * started game
+     * removes the openGame from the list
+     * @param openGameFile object that represents a game lobby
      */
-    public ArrayList<ServerConnection> getServerConnectionsArray(OpenGameFile openGameFile) {
-
-        ArrayList<ServerConnection> aList = new ArrayList<>();
-        System.out.println(openGameFile.getParticipants());
-        String[] participantArray = openGameFile.getParticipantsArray();
-        for (int i = 0; i < openGameFile.getNumberOfParticipants(); i++) {
-            System.out.println(i);
-            ServerConnection sc = serverConnectionMap.get(participantArray[i]);
-            aList.add(sc);
-            System.out.println(i);
-        }
-        return aList;
-    }
-
     public void removeGame(OpenGameFile openGameFile) {
         System.out.println("remove game method on server entered");
         if (openGameFile.isPendent()) {
@@ -197,7 +195,6 @@ public class Server {
             }
             System.out.println("INFO game finished");
         }
-
         System.out.println("got removed");
         MainGame mainGame;
         if ((mainGame = getRunningGame(openGameFile.getNameId())) != null) {
@@ -208,8 +205,7 @@ public class Server {
 
     /**
      * sends message to clients wherever they are
-     *
-     * @param message
+     * @param message message to send
      */
     public void sendMessageToAll(String message) {
         for (ServerConnection activeServerConnection1 : basicConnectionList) {
@@ -218,23 +214,25 @@ public class Server {
     }
 
     /**
-     * @param message to clients in public lobby explicitly
+     * add a serverConnection object to lobby list
+     * @param serverConnection handles connection to server
      */
-    public void sendMessageToPublicLobby(String message) {
-        for (ServerConnection publicLobbyConnection1 : publicLobbyConnections) {
-            publicLobbyConnection1.sendToClient(message);
-        }
-
-    }
-
     public void addToLobby(ServerConnection serverConnection) {
         publicLobbyConnections.add(serverConnection);
     }
 
+    /**
+     * remove a serverConnection object from lobby list
+     * @param serverConnection handles connection to server
+     */
     public void removeFromLobby(ServerConnection serverConnection) {
         publicLobbyConnections.remove(serverConnection);
     }
 
+    /**
+     * remove a serverConnection and its name from all lists
+     * @param serverConnection handles connection to server
+     */
     public synchronized void removeServerConnection(ServerConnection serverConnection) {
         allNickNames.remove(serverConnection.getNickname());
         serverConnectionMap.remove(serverConnection.getNickname());
@@ -242,23 +240,18 @@ public class Server {
         basicConnectionList.remove(serverConnection);
     }
 
+    /**
+     * returns the list of all serverConnection objects connected to server right now
+     * @return a list with all the existing serverConnection objects
+     */
     public ArrayList<ServerConnection> getBasicConnections() {
         return basicConnectionList;
-    }
-
-    public ArrayList<ServerConnection> getPublicLobbyConnections() {
-        return publicLobbyConnections;
-    }
-
-    public Map<String, ServerConnection> getServerConnectionMap() {
-        return serverConnectionMap;
     }
 
     /**
      * add an "openGameFile" to openGames and add name to list of games that did not finish(prevent
      * name duplicates)
-     *
-     * @param openGameFile
+     * @param openGameFile object that represents a game lobby
      */
     public void addOpenGame(OpenGameFile openGameFile) {
         allGamesNotFinishedNames.add(openGameFile.getNameId());
@@ -269,8 +262,7 @@ public class Server {
     /**
      * remove an "openGame" from openGameList and from names (keep in mind: messagehandlerstate is
      * not changed here)
-     *
-     * @param openGameFileID
+     * @param openGameFileID name of the game lobby given by host
      */
     public synchronized void removeOpenGame(String openGameFileID) {
         // send INFO message
@@ -294,7 +286,6 @@ public class Server {
 
     /**
      * returns the openGameFile with the same name
-     *
      * @param openGameID name of game
      * @return openGameFile
      */
@@ -309,7 +300,6 @@ public class Server {
 
     /**
      * returns the list of all open games
-     *
      * @return not started games
      */
     public ArrayList<OpenGameFile> getOpenGameList() {
@@ -318,7 +308,6 @@ public class Server {
 
     /**
      * get all names of not finished games
-     *
      * @return list with all names
      */
     public ArrayList<String> getAllGamesNotFinishedNames() {
@@ -326,8 +315,15 @@ public class Server {
     }
 
     /**
+     * get all running games
+     * @return arrayList of mainGame objects
+     */
+    public ArrayList<MainGame> getRunningGames() {
+        return runningGames;
+    }
+
+    /**
      * get the main game running by name
-     *
      * @param mainGameID a string
      * @return mainGame container
      */
@@ -342,8 +338,8 @@ public class Server {
 
     /**
      * delete this mainGame
-     *
-     * @param mainGame mainGame
+     * @param mainGame contains the information of a game,
+     *                 like participants, cards, turn number
      */
     public void deleteMainGame(MainGame mainGame) {
         for (Player player : mainGame.getPlayersArray()) {
@@ -355,8 +351,8 @@ public class Server {
     /**
      * remove open game when a client disconnected abruptly and is host else just remove this
      * participant
-     *
      * @param gameID openGameId
+     * @param nickname player's name
      */
     public synchronized void errorRemoveOpenGame(String gameID, String nickname) {
         if (getOpenGameFile(gameID).getHost().equals(nickname)) {
@@ -373,9 +369,8 @@ public class Server {
 
     /**
      * remove main game after a client disconnected abruptly and inform clients
-     *
-     * @param gameID
-     * @param nickname
+     * @param gameID name of the game given by host
+     * @param nickname player's name that left a game session
      */
     public synchronized void errorRemoveMainGame(String gameID, String nickname) {
         try {
@@ -397,7 +392,8 @@ public class Server {
 
     /**
      * stores user data after victory
-     * @param gameID name
+     * @param gameID game's name
+     * @param winner the winner's name or the 2 names separated by a whitespace
      */
     public void storeGame(String gameID, String winner) {
         MainGame mainGame = getRunningGame(gameID);
@@ -479,6 +475,21 @@ public class Server {
 
         // delete main game
         deleteMainGame(mainGame);
+    }
+    /**
+     * get highScoreList with all savedUsers
+     * @return arrayList
+     */
+    public ArrayList<SavedUser> getFinishGames() {
+        return csvWriter.getUsersHighScore();
+    }
+
+    /**
+     * get ArrayList of publicLobbyGuests
+     * @return arrayList with names
+     */
+    public ArrayList<String> getPublicLobbyGuests() {
+        return publicLobbyGuests;
     }
 }
 

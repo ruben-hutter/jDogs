@@ -26,8 +26,13 @@ public class MainGame {
     private String actualPlayer;
     private final String nameID;
 
-
-    MainGame(Player[] playersArray, String nameID, boolean teamMode) {
+    /**
+     * Constructor of a new game
+     * @param playersArray array with participants
+     * @param nameID name of game
+     * @param teamMode true or false
+     */
+    MainGame (Player[] playersArray, String nameID, boolean teamMode) {
         this.teamMode = teamMode;
         this.playersArray = playersArray;
         this.gameState = new GameState(this);
@@ -37,6 +42,7 @@ public class MainGame {
     /**
      * Copy constructor used to check move SEVE
      * @param mainGame the actual mainGame
+     * @param tempGameState the copy of the actualGameState
      */
     MainGame(MainGame mainGame, GameState tempGameState) {
         teamMode = mainGame.getGameState().getTeamMode();
@@ -58,19 +64,16 @@ public class MainGame {
      * This start method is only for test purposes
      * it does the same as {@link #startTest()}
      */
-
     public void startTest() {
         setUpTest();
         startGameRhythmTest();
     }
-
 
     /**
      * sets up the main game after calling the constructor
      * and sends a message to clients with
      * "GAME " + teamMode + " " + playersArray.length + " "
      * + getParticipants()"
-     *
      */
     public void setUp() {
         gameState.createPlayers();
@@ -92,7 +95,6 @@ public class MainGame {
         gameState.createPlayers();
     }
 
-
     /**
      * String of participants to send to clients
      * @return "name1 name2 name3 name4"
@@ -110,7 +112,6 @@ public class MainGame {
 
         return participants.toString();
     }
-
 
     /**
      * this method initializes the game
@@ -137,9 +138,7 @@ public class MainGame {
         this.numbDealOut = 6;
         dealOutCardsTest(numbDealOut);
         nextTurnTest();
-
     }
-
 
     /**
      * this method sets a random beginner to play the game in a random order
@@ -209,9 +208,8 @@ public class MainGame {
         }
     }
 
-
     /**
-     * this test method is equivalent to {@link #nextTurn()} ()}
+     * this test method is equivalent to {@link #nextTurn()}
      * but it doesn't send a message to the client
      */
     private void nextTurnTest() {
@@ -269,8 +267,6 @@ public class MainGame {
         }
     }
 
-
-
     /**
      *get deck for this round (6 hands distributed)
      * @return a deck of 110 cards to send messages to clients
@@ -327,7 +323,6 @@ public class MainGame {
      * this method gets called if a player completed his turn
      * (i.e.: he has sent a valid card to server)
      * @param nickname maybe not necessary to send the nickname
-     *                 t
      */
     public void turnComplete(String nickname) {
         System.out.println(nickname + " finished his turn");
@@ -392,7 +387,7 @@ public class MainGame {
 
     /**
      * send message to participants of game
-     * @param message
+     * @param message a given message
      */
     public void sendMessageToParticipants(String message) {
         for (Player player : playersArray) {

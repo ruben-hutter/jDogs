@@ -5,13 +5,10 @@ package jDogs.gui;
  * for a four player game to send to server.
  */
 public enum ColorAbbreviations {
-
     YELO,
     GREN,
     BLUE,
     REDD;
-
-
 }
 
 

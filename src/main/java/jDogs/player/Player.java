@@ -36,6 +36,11 @@ public class Player {
         finished = false;
     }
 
+    /**
+     * Player instance for server, only  for test purposes
+     * same as {@link #Player(String, ServerConnection)} but without ServerConnection
+     * @param playerName name of player
+     */
     public Player(String playerName) {
         this.playerName = playerName;
         allowedToPlay = false;
@@ -74,6 +79,7 @@ public class Player {
     /**
      * Completes the, in MainGame, created players setup
      * @param alliance4 the alliance of the player
+     * @param teamID -1 if single player, 0 or 1 if teamMode
      */
     public void setUpPlayerOnServerCopy(Alliance_4 alliance4, int teamID) {
         this.alliance4 = alliance4;

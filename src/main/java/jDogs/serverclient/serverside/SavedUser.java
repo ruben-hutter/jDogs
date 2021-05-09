@@ -6,11 +6,15 @@ import org.jetbrains.annotations.NotNull;
  * this class represents a user with his records
  */
 public class SavedUser implements Comparable {
-    private String name;
+    private final String name;
     private int points;
     private int playedGames;
     private int victories;
 
+    /**
+     * Constructor of an object of a savedUser
+     * @param name userName
+     */
     SavedUser(String name) {
         this.name = name;
         this.playedGames = 0;
@@ -27,8 +31,8 @@ public class SavedUser implements Comparable {
 
     /**
      * compare points
-     * @param object
-     * @return
+     * @param object an other user given as an object
+     * @return the points difference
      */
     @Override
     public int compareTo(@NotNull Object object) {
@@ -47,7 +51,7 @@ public class SavedUser implements Comparable {
 
     /**
      * get String for CSV row
-     * @return
+     * @return converted csv file row to a string
      */
     public String getCSVString() {
         return name + "," + playedGames + "," + victories + "," + getPoints();
@@ -78,7 +82,7 @@ public class SavedUser implements Comparable {
 
     /**
      * set the played games when read SavedUser-Objects from csv
-     * @param playedGames
+     * @param playedGames the number of played games of this user
      */
     public void setPlayedGames(int playedGames) {
         this.playedGames = playedGames;
@@ -86,7 +90,7 @@ public class SavedUser implements Comparable {
 
     /**
      * set the victories when read SavedUser-Objects from csv
-     * @param victories
+     * @param victories the number of victories of this user
      */
     public void setVictories(int victories) {
         this.victories = victories;
@@ -94,7 +98,7 @@ public class SavedUser implements Comparable {
 
     /**
      * set the points when read SavedUser-Objects from csv
-     * @param points
+     * @param points the number of points of this user
      */
     public void setPoints(int points) {
         this.points = points;

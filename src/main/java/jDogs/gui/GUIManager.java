@@ -18,7 +18,6 @@ import javafx.stage.Stage;
  * this class handles all the relation between gui and client
  * every window is called from here
  */
-
 public class GUIManager extends Application {
     private Stage primaryStage;
     private static GUIManager instance;
@@ -30,6 +29,10 @@ public class GUIManager extends Application {
     private boolean isPlaying;
     private boolean teamMode;
 
+    /**
+     * start method
+     * @param args not used
+     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -116,12 +119,10 @@ public class GUIManager extends Application {
 
     /**
      * starts the game
+     * @param intTeamMode 1 for teamMode, else single player
      */
     public void startGame(int intTeamMode) {
-        this.teamMode = false;
-        if (intTeamMode == 1) {
-            this.teamMode = true;
-        }
+        this.teamMode = intTeamMode == 1;
         isPlaying = true;
         setGameScene();
     }
@@ -187,6 +188,4 @@ public class GUIManager extends Application {
             lobbyController.displayInfomsg(info);
         }
     }
-
-
 }

@@ -1,13 +1,17 @@
 package jDogs.serverclient.serverside;
 
 /**
- * this class helps to parse informations sent from
- * client to server and which needs to be parsed
+ * this class helps to parse information sent from
+ * client to server
  */
 public class ServerParser {
 
-    private ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
 
+    /**
+     * constructor of an object of serverParser
+     * @param serverConnection scObject
+     */
     ServerParser(ServerConnection serverConnection) {
         this.serverConnection = serverConnection;
     }
@@ -28,17 +32,14 @@ public class ServerParser {
                     break;
                 }
             }
-
             if (nameSeparator == 0) {
                 return null;
             }
-
             String name = gameSetup.substring(0,nameSeparator);
 
             // team mode 0 == false
             // team mode 1 == true
             int teamMode = gameSetup.charAt(nameSeparator + 1) - 48;
-
 
                 String host = serverConnection.getNickname();
                 name = checkName(name);

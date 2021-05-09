@@ -11,12 +11,19 @@ import javafx.scene.control.Button;
 public class OpenGame {
     //name must be unique!
     private final SimpleStringProperty name;
-
     private final SimpleStringProperty responsible;
     private SimpleStringProperty enlist;
     private final SimpleStringProperty total;
     private SimpleStringProperty teamMode;
 
+    /**
+     * constructor of open game
+     * @param name of game
+     * @param responsible host
+     * @param enlist how many are enlisted 0 - 4
+     * @param total 4
+     * @param teamMode 0, 1
+     */
     OpenGame(String name, String responsible, String enlist, String total, String teamMode) {
         this.name = new SimpleStringProperty(name);
         this.responsible = new SimpleStringProperty(responsible);

@@ -1,15 +1,12 @@
 package jDogs.gui;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import jDogs.board.Board;
-import org.checkerframework.checker.units.qual.A;
 
 /**
  * this class adapts the fields how they are kept to the gui and
  * translates their value to a position on the board
  */
 public class AdaptToGui {
-    private int boardSize;
     private FieldOnBoard[] fieldsOnTrack;
     private FieldOnBoard[][] fieldsOnHeaven;
     private FieldOnBoard[][] fieldsOnHome;
@@ -17,12 +14,14 @@ public class AdaptToGui {
     private final int BOARD_SIZE = 4;
     private static AdaptToGui instance;
 
+    /**
+     * constructor of AdaptToGui
+     */
     public AdaptToGui() {
 
-        this.boardSize = BOARD_SIZE;
-       createFieldsOnTrack(boardSize);
-       createFieldsOnHeaven(boardSize);
-       createFieldsOnHome(boardSize);
+       createFieldsOnTrack();
+       createFieldsOnHeaven();
+       createFieldsOnHome();
        instance = this;
     }
 
@@ -35,12 +34,11 @@ public class AdaptToGui {
     }
 
     /**
-     * creates a translation table to translate them from gamestate to gui
-     * @param boardSize is the size of the board(4 or 6)
+     * creates a translation table to translate from game state tracks to gui
      */
-    private void createFieldsOnTrack(int boardSize) {
+    private void createFieldsOnTrack() {
         // board size is 4 or 6
-        fieldsOnTrack = new FieldOnBoard[this.boardSize * 16];
+        fieldsOnTrack = new FieldOnBoard[BOARD_SIZE * 16];
 
         // first position is a new starting position
 
@@ -84,18 +82,14 @@ public class AdaptToGui {
     }
 
     /**
-     * creates all the fields on heaven
-     * @param boardSize size of the board(4/6)
+     * creates a translation table to translate from game state heaven to gui
      */
-    //TODO update with new values
-    public void createFieldsOnHeaven (int boardSize) {
-
-       switch(boardSize) {
-
+    public void createFieldsOnHeaven () {
+       switch(BOARD_SIZE) {
            case 4:
-               fieldsOnHeaven = new FieldOnBoard[boardSize][NUM_PIECES];
+               fieldsOnHeaven = new FieldOnBoard[BOARD_SIZE][NUM_PIECES];
                int count = 0;
-               while (count < boardSize) {
+               while (count < BOARD_SIZE) {
                    /**
                     * order: 4/2 is startingPos 0
                     *       4/18 is startingPos 16
@@ -146,13 +140,16 @@ public class AdaptToGui {
        }
     }
 
-    public void createFieldsOnHome(int boardSize) {
-        switch (boardSize) {
+    /**
+     * creates a translation table to translate from game state home to gui
+     */
+    public void createFieldsOnHome() {
+        switch (BOARD_SIZE) {
             case 4:
 
-                fieldsOnHome = new FieldOnBoard[boardSize][NUM_PIECES];
+                fieldsOnHome = new FieldOnBoard[BOARD_SIZE][NUM_PIECES];
                 int count = 0;
-                while ( count < boardSize) {
+                while ( count < BOARD_SIZE) {
 
                     int x = 1;
                     int y = 2;
@@ -248,10 +245,13 @@ public class AdaptToGui {
         return home;
     }
 
-
+    /**
+     * get the array with all home fields in an array from 0 to 15
+     * Yelo: 0-3,Gren: 4-7,Blue: 8-11,Redd: 12-15
+     * @return positions 0 - 15
+     */
     public FieldOnBoard[] getHomeFieldArray() {
-
-        FieldOnBoard[] homeFieldArr = new FieldOnBoard[boardSize * Board.NUM_HOME_TILES];
+        FieldOnBoard[] homeFieldArr = new FieldOnBoard[BOARD_SIZE * Board.NUM_HOME_TILES];
         int count = 0;
         for (FieldOnBoard[] fieldOnBoardArray : fieldsOnHome) {
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
@@ -264,7 +264,8 @@ public class AdaptToGui {
 
     /**
      * transform track or heaven field back to position number on server
-     * @param destiny fieldOnBoard, x-Pos & y-Pos
+     * @param destiny fieldOnBoard, x-Pos and y-Pos
+     * @param playerNr int between 0-3
      * @return position number on server(heaven tracks numbers are from 64 upwards)
      */
     public String getPosNumber(FieldOnBoard destiny, int playerNr) {
@@ -278,7 +279,6 @@ public class AdaptToGui {
             }
             pos++;
         }
-
         pos = 0;
         FieldOnBoard[] heavenArr = fieldsOnHeaven[playerNr];
         for (FieldOnBoard field : heavenArr) {

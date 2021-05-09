@@ -154,7 +154,6 @@ public class GameWindowController implements Initializable {
     @FXML
     private ImageView imageViewCard7;
 
-
     @FXML
     private Label nameLabel1;
 
@@ -350,36 +349,30 @@ public class GameWindowController implements Initializable {
         }
     }
 
-
+    /**
+     * clicking somewhere in the gridpane
+     * and if the clicked node is a pane or a circle
+     * it will be processed
+     * @param event click
+     */
     @FXML
     void onMouseClickGrid(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
         if (clickedNode != gridPane && cardClicked != null && yourTurn) {
-
             if (clickedNode instanceof Circle) {
-                if (cardClicked.equals("JACK")) {
-                    addToCirclesID(clickedNode);
-                } else {
-                    if (cardClicked.equals("SEVE")) {
-
-                        addToCirclesID(clickedNode);
-
-                    }
-                     else {
-                         addToCirclesID(clickedNode);
-                    }
-                }
+                addToCirclesID(clickedNode);
             } else {
                 if (clickedNode instanceof Pane) {
-                    if (cardClicked.equals("SEVE")) {
-                        addToGridFields(clickedNode);
-                    } else {
-                        addToGridFields(clickedNode);
-                    }
+                    addToGridFields(clickedNode);
                 }
             }
         }
     }
+
+    /**
+     * save a clicked grid
+     * @param clickedNode grid in grid pane
+     */
     private void addToFadingGrids(Node clickedNode) {
         if (gridCount < totalSum) {
             fadingGrids[gridCount] = new FadeTransition(Duration.seconds(0.9),
@@ -402,6 +395,14 @@ public class GameWindowController implements Initializable {
         }
     }
 
+    /**
+     * make this clicked circle fading;
+     * if total of clickable circles
+     * for this card is already clicked
+     * then one clicked circle will stop
+     * fading and is deleted
+     * @param clickedNode circle
+     */
     private void addToFadingCircles(Node clickedNode) {
         if (circleCount < totalSum) {
             fadingCircles[circleCount] = new FadeTransition(Duration.seconds(0.9),
@@ -424,9 +425,14 @@ public class GameWindowController implements Initializable {
         }
     }
 
+    /**
+     * adds a grid to the clicked grids,
+     * which will be remembered
+     * if user wants to make a move
+     * @param clickedNode circle
+     */
     private void addToGridFields(Node clickedNode) {
         addToFadingGrids(clickedNode);
-
         if (gridCount < totalSum) {
             clickedGridFields[gridCount] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
                     GridPane.getRowIndex(clickedNode));
@@ -437,6 +443,12 @@ public class GameWindowController implements Initializable {
         }
     }
 
+    /**
+     * adds this circle to the clicked circles
+     * so that if one wants to make a move the id
+     * is already known
+     * @param clickedNode circle
+     */
     private void addToCirclesID(Node clickedNode) {
         System.out.println("CircleID count " + circleCount);
         System.out.println("TotalCircle " + totalSum);
@@ -451,6 +463,12 @@ public class GameWindowController implements Initializable {
         }
     }
 
+    /**
+     * click to send a move to server
+     * clicked card and clicked circles and grids will be selected,
+     * processed to a string and sent as MOVE to server
+     * @param event
+     */
     @FXML
     void makeMoveButtonOnAction(ActionEvent event) {
         if (cardClicked != null && yourTurn) {
@@ -599,16 +617,12 @@ public class GameWindowController implements Initializable {
      * this method ends any blinking items in the gui when the move is sent
      */
     private void deleteClickedData() {
-
         //stop blinking of fading grids
-
         for (int i = 0; i < gridCount; i++) {
             fadingGrids[i].jumpTo(Duration.ZERO);
             fadingGrids[i].stop();
         }
-
         //stop blinking of fading circles
-
         for (int i = 0; i < circleCount; i++) {
             fadingCircles[i].jumpTo(Duration.ZERO);
             fadingCircles[i].stop();
@@ -839,7 +853,7 @@ public class GameWindowController implements Initializable {
 
     /**
      * remove a card from deck by making card blended
-     * @param card
+     * @param card the played card
      */
     public void removeCard(String card) {
         for (int i = 0; i < cardArray.length; i++) {
@@ -983,8 +997,8 @@ public class GameWindowController implements Initializable {
 
     /**
      * sends a piece to home field(usually this is used if a piece is sent home)
-     * @param playerNumber
-     * @param pieceID
+     * @param playerNumber int between 0-3
+     * @param pieceID int between 1-4
      */
     public void makeHomeMove(int playerNumber, int pieceID) {
         String circleID = getCircleID(playerNumber, pieceID);
@@ -1012,7 +1026,7 @@ public class GameWindowController implements Initializable {
 
     /**
      * displays infos from Server
-     * @param message
+     * @param message the given message
      */
     public void displayInfoFromServer(String message) {
         textLogServer.appendText(message + "\n");

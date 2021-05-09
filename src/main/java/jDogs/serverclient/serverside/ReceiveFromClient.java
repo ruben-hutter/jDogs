@@ -17,8 +17,14 @@ public class ReceiveFromClient implements Runnable {
     private boolean running;
     private DataInputStream din;
     private final BlockingQueue<String> receivedFromThisClient;
-    private ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
 
+    /**
+     * construct an object of receiveFromClient(a listener)
+     * @param socket socket to client
+     * @param receivedFromThisClient received from this client-thread-object
+     * @param serverConnection sC object
+     */
     public ReceiveFromClient(Socket socket, BlockingQueue<String> receivedFromThisClient,
             ServerConnection serverConnection) {
         this.socket = socket;

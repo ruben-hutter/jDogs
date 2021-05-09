@@ -115,8 +115,8 @@ public class GuiParser {
 
     /**
      * returns the number in the abbreviation enum
-     * @param colorAbb
-     * @return
+     * @param colorAbb YELO, GREN, BLUE, REDD
+     * @return 0-3
      */
     public static int getNumber(String colorAbb) {
         int count = 0;

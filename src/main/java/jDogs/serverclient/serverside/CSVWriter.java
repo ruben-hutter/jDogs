@@ -35,6 +35,9 @@ public class CSVWriter {
     //private final String FILENAME = this.getClass().getClassLoader().getResource("src/main/resources/highScoreList.csv").toExternalForm();
     //private final String FILENAME = "src/main/resources/highScoreList.csv";
 
+    /**
+     * construct a CSV-Writer object by instantiating a new ArrayList
+     */
     CSVWriter() {
         usersHighScore = new ArrayList<>();
     }

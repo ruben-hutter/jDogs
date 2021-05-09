@@ -17,6 +17,12 @@ public class ReceiveFromServer implements Runnable {
     private boolean running;
     private DataInputStream din;
 
+    /**
+     * constructor of ReceiveFromServer
+     * @param socket socket for connection to server
+     * @param client client instance
+     * @param receiveQueue QueueJd to store messages received from server
+     */
     public ReceiveFromServer(Socket socket, Client client, Queuejd receiveQueue) {
         this.receiveQueue = receiveQueue;
         this.client = client;

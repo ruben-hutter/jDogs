@@ -6,8 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
+/**
+ * a popupWindow to create an open game
+ */
 public class CreateGameWindowController {
-
 
     @FXML
     private TextField gameNameField;

@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * from the object of this class all three sender threads
+ * will be started and from send messages to
+ * this client will be sent
+ */
 public class SenderContainer {
 
     private final ServerConnection serverConnection;
@@ -21,18 +26,32 @@ public class SenderContainer {
     private BlockingQueue<String> sendToClientQueue;
 
 
-    public SenderContainer(ServerConnection serverConnection, Socket socket, BlockingQueue<String> sendToAllQueue,
-             BlockingQueue<String> sendToPubQueue, BlockingQueue<String> sendToClientQueue) {
-    this.socket = socket;
-    this.serverConnection = serverConnection;
+    /**
+     * construct container
+     * @param serverConnection the object that handles the connection to the server
+     * @param socket the socket
+     * @param sendToAllQueue a queue that contains messages for every user
+     * @param sendToPubQueue a queue that contains messages for every user in gameLobby
+     * @param sendToClientQueue a queue that contains messages for this client
+     */
+    public SenderContainer(ServerConnection serverConnection, Socket socket,
+            BlockingQueue<String> sendToAllQueue, BlockingQueue<String> sendToPubQueue,
+            BlockingQueue<String> sendToClientQueue) {
+        this.socket = socket;
+        this.serverConnection = serverConnection;
+        this.sendToAllQueue = sendToAllQueue;
+        this.sendToPubQueue = sendToPubQueue;
+        this.sendToClientQueue = sendToClientQueue;
 
-    this.sendToAllQueue = sendToAllQueue;
-    this.sendToPubQueue = sendToPubQueue;
-    this.sendToClientQueue = sendToClientQueue;
-
-    setUp(sendToAllQueue,sendToPubQueue,sendToClientQueue);
+        setUp(sendToAllQueue, sendToPubQueue, sendToClientQueue);
     }
 
+    /**
+     * sets up all three threads with their respective blocking queue
+     * @param sendToAllQueue
+     * @param sendToPubQueue
+     * @param sendToClientQueue
+     */
     private void setUp(BlockingQueue<String> sendToAllQueue, BlockingQueue<String> sendToPubQueue, BlockingQueue<String> sendToClientQueue) {
         try {
             dout = new DataOutputStream(socket.getOutputStream());
@@ -59,6 +78,10 @@ public class SenderContainer {
         sendPubThread.start();
     }
 
+    /**
+     * sends messages to client
+     * @param message String
+     */
     public void sendToClient(String message) {
         try {
             dout.writeUTF(message);
