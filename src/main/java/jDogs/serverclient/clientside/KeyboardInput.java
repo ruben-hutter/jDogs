@@ -17,6 +17,11 @@ public class KeyboardInput implements Runnable {
     private boolean running;
     private final Client client;
 
+    /**
+     * constructor of KeyboardInput
+     * @param client client instance
+     * @param keyBoardInput Queuejd to send messages from user to server
+     */
     public KeyboardInput(Client client, Queuejd keyBoardInput) {
         this.keyBoardInput = keyBoardInput;
         this.console = new Scanner(System.in);

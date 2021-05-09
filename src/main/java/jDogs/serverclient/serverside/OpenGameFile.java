@@ -19,12 +19,18 @@ public class OpenGameFile {
     private int numberParticipants;
     private final int total = 4;
     private boolean pendent;
-    private MainGame mainGame;
     private final int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
-    private int teamIDs;
     private static final Logger logger = LogManager.getLogger(OpenGameFile.class);
+    private int teamIDs;
 
+    /**
+     * construct an object of OpenGameFile
+     * @param nameId
+     * @param host
+     * @param teamMode
+     * @param serverConnection
+     */
     public OpenGameFile(String nameId, String host, int teamMode,
             ServerConnection serverConnection) {
         this.nameId = nameId;
@@ -33,21 +39,16 @@ public class OpenGameFile {
         this.pendent = true;
         this.teamMode = teamMode;
         setUpTeamMode();
-
         players.add(new Player(host, serverConnection));
-
         sendMessageToParticipants("OGAM " + getSendReady());
     }
 
     /**
-     * if team mode is activated it is bigger than one, and to get the team Ids divide total by
-     * teamMode
+     * sets up team mode by instantiating
+     * the variable "teamIDs"
      */
     private void setUpTeamMode() {
-
-        if (teamMode > 0) {
-            this.teamIDs = total / teamMode + 1;
-        }
+        this.teamIDs = 2;
     }
 
     /**
@@ -92,7 +93,12 @@ public class OpenGameFile {
         System.out.println("NEW TEAM combination " + getParticipants());
     }
 
-
+    /**
+     * returns a player if his name is
+     * in array of players
+     * @param name
+     * @return
+     */
     public Player getPlayer(String name) {
         for (Player player : players) {
             if (player.getPlayerName().equals(name)) {
@@ -136,6 +142,10 @@ public class OpenGameFile {
         }
     }
 
+    /**
+     * add a participant to the open game
+     * @param serverConnection
+     */
     public synchronized void addParticipant(ServerConnection serverConnection) {
         if (numberParticipants < total) {
             players.add(new Player(serverConnection.getNickname(), serverConnection));
@@ -149,7 +159,6 @@ public class OpenGameFile {
                 OrderArrayListToPlayGame();
                 // get players arraylist in definitive order
             }
-
         } else {
             serverConnection.sendToClient("INFO no more players allowed in game");
         }
@@ -160,13 +169,10 @@ public class OpenGameFile {
      *                         for the host the host should be removed by deleting the whole file
      */
     public void removeParticipant(String nickname) {
-
         Player player = getPlayer(nickname);
-
         if (!players.remove(player)) {
             System.out.println("couldn t remove player");
         } else {
-
             if (pendent) {
                 numberParticipants--;
                 sendMessageToParticipants("DPER " + nickname);
@@ -185,7 +191,6 @@ public class OpenGameFile {
      */
     private void OrderArrayListToPlayGame() {
         ArrayList<Player> newList = new ArrayList<>();
-
         int counter = players.get(0).getTeamID();
         int teamSize = 2;
         int sizeAllEntries = players.size();
@@ -202,6 +207,7 @@ public class OpenGameFile {
         newList.add(players.get(0));
         players = newList;
     }
+
     /**
      * checks that teams are complete when starting game and sets random teams if some players
      * aren't part of a team
@@ -243,14 +249,26 @@ public class OpenGameFile {
         return nameId + " " + host + " " + numberParticipants + " " + total + " " + teamMode;
     }
 
+    /**
+     * get name
+     * @return name
+     */
     public String getNameId() {
         return nameId;
     }
 
+    /**
+     * get host of the open game
+     * @return host
+     */
     public String getHost() {
         return host;
     }
 
+    /**
+     * get an array with participants
+     * @return all added participants in array
+     */
     public String[] getParticipantsArray() {
         String[] array = new String[numberParticipants];
         int count = 0;
@@ -261,14 +279,26 @@ public class OpenGameFile {
         return array;
     }
 
+    /**
+     * checks if 4 person are added to open game
+     * @return true if 4 person are added
+     */
     public boolean readyToStart() {
         return total == numberParticipants;
     }
 
+    /**
+     * sends a confirmation message to the host
+     * that the game can be started now
+     */
     public void sendConfirmationMessage() {
         getPlayer(host).sendMessageToClient("STAR");
     }
 
+    /**
+     * get number of added participants
+     * @return int of number of participants
+     */
     public int getNumberOfParticipants() {
         return numberParticipants;
     }
@@ -279,13 +309,6 @@ public class OpenGameFile {
     public void start() {
         pendent = false;
         Server.getInstance().startGame(this);
-    }
-
-    /**
-     * @return MainGame file, which only exists if game started
-     */
-    public MainGame getMainGame() {
-        return mainGame;
     }
 
 
@@ -334,6 +357,10 @@ public class OpenGameFile {
         return array;
     }
 
+    /**
+     * get the array list of players
+     * @return array list of players
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }

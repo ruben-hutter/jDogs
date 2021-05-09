@@ -19,6 +19,10 @@ public class GameState {
     private final MainGame mainGame;
     private String winners;
 
+    /**
+     * constructs an object of game state
+     * @param mainGame gameObject
+     */
     public GameState(MainGame mainGame) {
         this.mainGame = mainGame;
         piecesOnTrack = new ArrayList<>();

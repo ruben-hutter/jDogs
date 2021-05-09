@@ -22,16 +22,25 @@ public class ClientMenuCommand {
     private Queuejd keyBoardInQueue;
     private static final Logger logger = LogManager.getLogger(ClientMenuCommand.class);
 
+    /**
+     * Constructor of ClientMenuCommand
+     * @param client instance of client
+     * @param sendFromClient thread to send to server
+     * @param sendQueue QueueJd object to store messages to send
+     * @param keyBoardInQueue Queuejd object to store messages from user to send
+     */
     ClientMenuCommand(Client client,SendFromClient sendFromClient, Queuejd sendQueue, Queuejd keyBoardInQueue) {
-
         this.client = client;
         this.sendQueue = sendQueue;
         this.sendFromClient = sendFromClient;
         this.sendQueue = sendQueue;
         this.keyBoardInQueue = keyBoardInQueue;
-
     }
 
+    /**
+     * executes commands that fitted the formal criteria of ReceivedFromServer
+     * @param text command and information
+     */
     public void execute (String text) {
         logger.debug("Entered ClientMenuCommand with: " + text);
         String command = text.substring(0,4);
@@ -133,7 +142,5 @@ public class ClientMenuCommand {
                 System.out.println("received from server " + text + ". This command " + command
                         + " is not implemented");
         }
-
     }
-
 }

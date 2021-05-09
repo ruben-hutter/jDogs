@@ -8,16 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * This thread processes messages received meaningfully.
- * it distinguishes between messages for server and all clients
- * it handles the login of the client:
- *
- * switch defines which commands are accepted and what they cause
- *
- * playing
- *
- * openGame(separateLobby)
- *
- * public Lobby
+ * it processes messages on the basis of the String "state" in
+ * ServerMenuCommand("publicLobby"), SeparateLobbyCommand("openGame") and
+ * ServerGameCommand("playing").
  */
 public class MessageHandlerServer implements Runnable {
 
@@ -25,13 +18,22 @@ public class MessageHandlerServer implements Runnable {
     private boolean running;
     private boolean loggedIn;
     private final ServerConnection serverConnection;
-    private ServerGameCommand serverGameCommand;
-    private ServerMenuCommand serverMenuCommand;
-    private SeparateLobbyCommand separateLobbyCommand;
+    private final ServerGameCommand serverGameCommand;
+    private final ServerMenuCommand serverMenuCommand;
+    private final SeparateLobbyCommand separateLobbyCommand;
     private String state;
     private String nickname;
     private final Logger LOGGER = LogManager.getLogger(MessageHandlerServer.class);
 
+    /**
+     * constructs a message-handler-server object
+     * @param server ServerInstance
+     * @param serverConnection sC - object
+     * @param sendToThisClient blockingQueue
+     * @param sendToAll blockingQueue
+     * @param receivedFromClient blockingQueue
+     * @param sendToPub blockingQueue
+     */
     public MessageHandlerServer(Server server,ServerConnection serverConnection,
             BlockingQueue<String> sendToThisClient, BlockingQueue<String> sendToAll, BlockingQueue<String> receivedFromClient, BlockingQueue<String> sendToPub) {
 
@@ -89,7 +91,6 @@ public class MessageHandlerServer implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         System.out.println(this.toString() + "  stops now");
     }
     /**
@@ -155,18 +156,4 @@ public class MessageHandlerServer implements Runnable {
     public String getState() {
         return state;
     }
-
-    public ServerMenuCommand getServerMenuCommand() {
-        return serverMenuCommand;
-    }
-
-    public SeparateLobbyCommand getSeparateLobbyCommand() {
-        return separateLobbyCommand;
-    }
-
-    public ServerGameCommand getServerGameCommand() {
-        return serverGameCommand;
-    }
-
-
 }

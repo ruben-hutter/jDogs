@@ -22,6 +22,14 @@ public class MessageHandlerClient implements Runnable{
     private ClientMenuCommand clientMenuCommand;
     private ClientGameCommand clientGameCommand;
 
+    /**
+     * constructor of an object of MessageHandlerClient
+     * @param client client instance
+     * @param sendFromClient send messages to server-thread
+     * @param receiveQueue receive messages from server-thread
+     * @param sendQueue Queuejd store messages to send to server
+     * @param keyBoardInQueue Queuejd store messages from user to send to server
+     */
     public MessageHandlerClient(Client client, SendFromClient sendFromClient, Queuejd receiveQueue,
             Queuejd sendQueue, Queuejd keyBoardInQueue) {
         this.running = true;
@@ -59,7 +67,6 @@ public class MessageHandlerClient implements Runnable{
                 }
             }
         }
-
         System.out.println(this.toString() + " stops now");
     }
 

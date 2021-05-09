@@ -5,19 +5,32 @@ import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * the instance of this class handles all messages that should be processed
+ * if the user joined a game but it didn't start already, the users are waiting
+ * for more participants and wait in the "separate Lobby"
+ */
 public class SeparateLobbyCommand {
 
-    private ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
     private String openGameFileID;
     private String nickname;
     private static final Logger logger = LogManager.getLogger(SeparateLobbyCommand.class);
 
-
+    /**
+     * Constructor of an object of SeparateLobbyCommand
+     * @param serverConnection sc object
+     */
     SeparateLobbyCommand (ServerConnection serverConnection) {
         this.serverConnection = serverConnection;
         this.openGameFileID = null;
     }
 
+    /**
+     * executes the commands that are received in ReceivedFromClient if they
+     * corresponded to the formal criteria in ReceivedFromClient
+     * @param text command and information
+     */
     public void execute(String text) {
         logger.debug("Entered SeparateLobbyCommand with: " + text);
 
@@ -99,8 +112,8 @@ public class SeparateLobbyCommand {
 
                 case "STAT":
                     serverConnection.sendToClient(
-                            "STAT " + "runningGames " + Server.getInstance().runningGames.size() +
-                                    " finishedGames " + Server.getInstance().finishedGames.size());
+                            "STAT " + "runningGames " + Server.getInstance().getRunningGames().size() +
+                                    " finishedGames " + Server.getInstance().getFinishGames().size());
                     break;
 
                 case "ACTI":
