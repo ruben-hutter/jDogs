@@ -27,7 +27,7 @@ public class MainGame {
     private final String nameID;
 
     /**
-     * constructor of a new game
+     * Constructor of a new game
      * @param playersArray array with participants
      * @param nameID name of game
      * @param teamMode true or false
@@ -42,6 +42,7 @@ public class MainGame {
     /**
      * Copy constructor used to check move SEVE
      * @param mainGame the actual mainGame
+     * @param tempGameState the copy of the actualGameState
      */
     MainGame(MainGame mainGame, GameState tempGameState) {
         teamMode = mainGame.getGameState().getTeamMode();
@@ -73,7 +74,6 @@ public class MainGame {
      * and sends a message to clients with
      * "GAME " + teamMode + " " + playersArray.length + " "
      * + getParticipants()"
-     *
      */
     public void setUp() {
         gameState.createPlayers();
@@ -138,7 +138,6 @@ public class MainGame {
         this.numbDealOut = 6;
         dealOutCardsTest(numbDealOut);
         nextTurnTest();
-
     }
 
     /**

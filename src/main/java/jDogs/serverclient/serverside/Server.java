@@ -48,7 +48,7 @@ public class Server {
     /**
      * constructor of the server and place where
      * the while loop is called
-     * @param args "Server <PortNumber>number</PortNumber>"
+     * @param args "Server port number"
      */
     public Server(String[] args) {
         instance = this;

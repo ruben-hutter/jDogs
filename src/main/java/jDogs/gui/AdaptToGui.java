@@ -264,7 +264,8 @@ public class AdaptToGui {
 
     /**
      * transform track or heaven field back to position number on server
-     * @param destiny fieldOnBoard, x-Pos & y-Pos
+     * @param destiny fieldOnBoard, x-Pos and y-Pos
+     * @param playerNr int between 0-3
      * @return position number on server(heaven tracks numbers are from 64 upwards)
      */
     public String getPosNumber(FieldOnBoard destiny, int playerNr) {
