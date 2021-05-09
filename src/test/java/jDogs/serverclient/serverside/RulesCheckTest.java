@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * this class tests the class {@link RulesCheck}
  */
-class RulesCheckTest {
+public class RulesCheckTest {
 
     private Player player1; //YELLOW
     private Player player2; //GREEN
@@ -102,9 +102,11 @@ class RulesCheckTest {
 
     }
 
-    // TODO javadoc
+    /**
+     * Move a piece to a home tile (A)
+     */
     @Test
-    @DisplayName("Move from home tile to track tile")
+    @DisplayName("Move a piece to home")
     void checkMoveNewPositionA() {
         String completeMove = "TWOO YELO-1 A00";
         int result = 1;
@@ -407,7 +409,7 @@ class RulesCheckTest {
 
     /**
      * Player1  wants to change pieces from player1 and player2
-     * The pieces are on track and hasMovec = true
+     * The pieces are on track and hasMoved = true
      */
     @Test
     @DisplayName("change two pieces on track (BB)")
@@ -419,22 +421,23 @@ class RulesCheckTest {
         player1.setAllowedToPlay(true);
         player2.setAllowedToPlay(false);
 
-        //pieces are initially not moved
-        //change hasMoved to moved = true
-        player1.getPiece(1).changeHasMoved();
-        player2.getPiece(1).changeHasMoved();
-
+       if(!player1.getPiece(1).getHasMoved()){
+           player1.getPiece(1).changeHasMoved();
+       }
+        if(!player2.getPiece(1).getHasMoved()){
+            player2.getPiece(1).changeHasMoved();
+        }
         //0 = everything ok
         int result = 0;
         assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
     }
 
     /**
-     *player1 wants to change a piece which is in heaven
-     * should return 3, 3 = one piece is at home or in heaven
+     *player1 wants to change a piece which is at home
+     * should return 3, 3 = one piece is at home or in heaven or not  moved
      */
     @Test
-    @DisplayName("change two pieces from heaven to track (AB)")
+    @DisplayName("change two pieces from home to track (AB)")
     void checkMoveJackAB() {
         String twoPieces = "JACK YELO-1 GREN-1";
         //set players to positions on track
@@ -443,9 +446,51 @@ class RulesCheckTest {
         player1.setAllowedToPlay(true);
         player2.setAllowedToPlay(false);
 
-        //pieces are initially not moved
-        //change hasMoved to moved = true
-        player1.getPiece(1).changeHasMoved();
+        if(!player1.getPiece(1).getHasMoved()){
+            player1.getPiece(1).changeHasMoved();
+        }
+
+
+        int result = 3;
+        assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
+    }
+
+    /**
+     *player1 wants to change a piece which is in heaven
+     * should return 3, 3 = one piece is at home or in heaven or not moved
+     */
+    @Test
+    @DisplayName("change two pieces from heaven to track (BC)")
+    void checkMoveJackBC() {
+        String twoPieces = "JACK YELO-1 GREN-1";
+        //set players to positions on track
+        player1.changePositionServer(1, "B", 05);
+        player2.changePositionServer(1, "C", 00);
+        player1.setAllowedToPlay(true);
+        player2.setAllowedToPlay(false);
+
+        if(!player1.getPiece(1).getHasMoved()){
+            player1.getPiece(1).changeHasMoved();
+        }
+
+
+        int result = 3;
+        assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
+    }
+
+    /**
+     *player1 wants to change a piece which has not moved
+     * should return 3, 3 = one piece is at home or in heaven or not moved
+     */
+    @Test
+    @DisplayName("change a piece which has not moved")
+    void checkMoveJackNotMoved() {
+        String twoPieces = "JACK YELO-1 GREN-1";
+        //set players to positions on track
+        player1.changePositionServer(1, "B", 05);
+        player2.changePositionServer(1, "B", 00);
+        player1.setAllowedToPlay(true);
+        player2.setAllowedToPlay(false);
 
         int result = 3;
         assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
@@ -467,18 +512,22 @@ class RulesCheckTest {
         player1.setAllowedToPlay(true);
         player2.setAllowedToPlay(false);
 
-        player1.getPiece(1).changeHasMoved();
-        player2.getPiece(1).changeHasMoved();
+        if(!player1.getPiece(1).getHasMoved()){
+            player1.getPiece(1).changeHasMoved();
+        }
+        if(!player2.getPiece(1).getHasMoved()){
+            player2.getPiece(1).changeHasMoved();
+        }
         int result = 2;
         assertEquals(result, rulesCheck.checkMoveJack(twoPieces, "1").getReturnValue());
     }
 
     /**
-     * send wrong JACK-command
+     * send wrong SEVE-command
      * should result in an exception (5)
      */
     @Test
-    @DisplayName("incorrect input throws exception")
+    @DisplayName("incorrect SEVE input throws exception")
     void checkMoveSevenIncorrectInput() {
         String completeMove = "SEVE BLUE-1 B05 GREN-3";
         int result = 5;
@@ -489,7 +538,7 @@ class RulesCheckTest {
      * player1 is YELLOW and wants to move two of his own pieces with card SEVE
      */
     @Test
-    @DisplayName("player YELO moves two own pieces with SEVE and a total of 7 steps")
+    @DisplayName("player1 moves two own pieces with SEVE and a total of 7 steps")
     void checkMoveSevenCorrectInput() {
         String completeMove = "SEVE 2 YELO-1 B05 YELO-2 B18";
         player1.changePositionServer(1,"B",00);
@@ -511,8 +560,12 @@ class RulesCheckTest {
         player3.changePositionServer(1, "B", 30);
         player1.setAllowedToPlay(true);
 
-        player1.getPiece(1).changeHasMoved();
-        player3.getPiece(1).changeHasMoved();
+        if(!player1.getPiece(1).getHasMoved()){
+            player1.getPiece(1).changeHasMoved();
+        }
+        if(!player3.getPiece(1).getHasMoved()){
+            player3.getPiece(1).changeHasMoved();
+        }
 
         int result = 1;
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
@@ -534,16 +587,45 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
 
+    /**
+     * player1 overtakes a piece from player2
+     * piece from player2 should be eliminated
+     */
     @Test
     @DisplayName("eliminate piece by overtaking with SEVE")
     void checkMoveSevenEliminate(){
         String completeMove = "SEVE 1 YELO-1 B07";
         player1.changePositionServer(1,"B",00);
-        player2.changePositionServer(2, "B", 03);
+        player2.changePositionServer(1, "B", 03);
         player1.setAllowedToPlay(true);
-        player2.getPiece(1).changeHasMoved();
 
-        int result = 3;
+        if(!player2.getPiece(1).getHasMoved()){
+            player2.getPiece(1).changeHasMoved();
+        }
+
+        int result = 0;
+        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
+
+    }
+
+    /**
+     * player1 overtakes a piece from player2 with split SEVE
+     * piece from player2 should be eliminated
+     */
+    @Test
+    @DisplayName("eliminate piece by overtaking with split SEVE")
+    void checkMoveSevenEliminateSplitSeven(){
+        String completeMove = "SEVE 2 YELO-1 B05 YELO-2 B32";
+        player1.changePositionServer(1,"B",00);
+        player1.changePositionServer(2,"B", 30);
+        player2.changePositionServer(1, "B", 03);
+        player1.setAllowedToPlay(true);
+
+        if(!player2.getPiece(1).getHasMoved()){
+            player2.getPiece(1).changeHasMoved();
+        }
+
+        int result = 0;
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
 
     }
@@ -561,6 +643,10 @@ class RulesCheckTest {
         player2.changePositionServer(1,"B", 16);
         gameState.updatePiecesOnTrack(player2.getPiece(1), "B");
         gameState.updatePiecesOnTrack(player1.getPiece(1), "B");
+
+        if(player2.getPiece(1).getHasMoved()){
+            player2.getPiece(1).changeHasMoved();
+        }
 
         int result = 0;
 
@@ -581,6 +667,10 @@ class RulesCheckTest {
         gameState.updatePiecesOnTrack(player2.getPiece(1), "B");
         gameState.updatePiecesOnTrack(player1.getPiece(1), "B");
 
+        if(player2.getPiece(1).getHasMoved()){
+            player2.getPiece(1).changeHasMoved();
+        }
+
         int result = 0;
 
         assertEquals(result, rulesCheck.checkMove(completeMove, nickname).getReturnValue());
@@ -597,8 +687,12 @@ class RulesCheckTest {
 
         player1.changePositionServer(1,"B", 14);
         player2.changePositionServer(1,"B", 17);
-        player1.getPiece(1).changeHasMoved();
-        player2.getPiece(1).changeHasMoved();
+        if(!player1.getPiece(1).getHasMoved()){
+            player1.getPiece(1).changeHasMoved();
+        }
+        if(!player2.getPiece(1).getHasMoved()){
+            player2.getPiece(1).changeHasMoved();
+        }
 
         int result = 0;
         assertEquals(result, rulesCheck.checkMove(completeMove, nickname).getReturnValue());
