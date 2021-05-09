@@ -46,13 +46,16 @@ public class GameState {
     private void copyPiecesActualInformation(MainGame actualMainGame) {
         for (Player player : actualMainGame.getPlayersArray()) {
             Player playerToSetUp = mainGame.getPlayer(player.getPlayerName());
-            playerToSetUp.setUpPlayerOnServerCopy(player.getAlliance());
+            playerToSetUp.setUpPlayerOnServerCopy(player.getAlliance(), player.getTeamID());
             for (int i = 0; i < playerToSetUp.pieces.length; i++) {
+                // sets the correct position
                 playerToSetUp.pieces[i].setPositionServer(player.pieces[i].getPositionServer1(),
                         player.pieces[i].getPositionServer2());
+                // sets the correct hasMoved value
                 if (player.pieces[i].getHasMoved()) {
                     playerToSetUp.pieces[i].changeHasMoved();
                 }
+                // adds the piece to track if actualPosition1 is B
                 updatePiecesOnTrack(playerToSetUp.pieces[i],
                         playerToSetUp.pieces[i].getPositionServer1());
             }
