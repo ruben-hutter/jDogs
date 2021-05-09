@@ -400,7 +400,6 @@ class RulesCheckTest {
     @DisplayName("incorrect input throws exception")
     void checkMoveSevenIncorrectInput() {
         String completeMove = "SEVE BLUE-1 B05 GREN-3";
-        //5 = exception
         int result = 5;
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
@@ -413,9 +412,25 @@ class RulesCheckTest {
         player1.changePositionServer(2, "B", 16);
         player1.setAllowedToPlay(true);
 
-        System.out.println("teamID " + player1.getTeamID() );
-        //0 = everything ok
         int result = 0;
+        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
+    }
+
+    /**
+     * There is no TeamMode, so player1 cannot move pieces from player3
+     */
+    @Test
+    @DisplayName("Move with  pieces from other players without TeamMode")
+    void checkMoveSevenNoTeamMode(){
+        String completeMove = "SEVE 2 YELO-1 B13 BLUE-1 B34";
+        player1.changePositionServer(1,"B",10);
+        player3.changePositionServer(1, "B", 30);
+        player1.setAllowedToPlay(true);
+
+        player1.getPiece(1).changeHasMoved();
+        player3.getPiece(1).changeHasMoved();
+
+        int result = 1;
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
 
@@ -432,25 +447,6 @@ class RulesCheckTest {
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
     }
 
-    /*@Test
-    //This test is only valid if teamMode is true
-    @DisplayName("move seven with own piece and piece from teampartner")
-    void checkMoveSevenTeam(){
-        String completeMove = "SEVE 2 YELO-1 B13 BLUE-1 B34";
-        player1.changePositionServer(1,"B",10);
-        player3.changePositionServer(1, "B", 30);
-        player1.setAllowedToPlay(true);
-
-       player1.getPiece(1).changeHasMoved();
-       player3.getPiece(1).changeHasMoved();
-
-       int result = 0;
-        assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
-    }
-
-     */
-
-
     @Test
     @DisplayName("eliminate piece by overtaking with SEVE")
     void checkMoveSevenEliminate(){
@@ -460,7 +456,7 @@ class RulesCheckTest {
         player1.setAllowedToPlay(true);
         player2.getPiece(1).changeHasMoved();
 
-        int result = 0;
+        int result = 3;
         assertEquals(result, rulesCheck.checkMoveSeven(completeMove,"1").getReturnValue());
 
     }
