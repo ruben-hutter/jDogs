@@ -31,4 +31,20 @@ Wert und Funktionen der jDogs-Karten:
 - **Murmeln tauschen**: Mit der Karte Jack kann man eine eigene Murmel mit einer Murmel vom Gegner oder Partner tauschen. 
 - **Ziel**: Um ins Ziel zu gelangen, muss der eigene Start mindestens zwei Mal berührt werden.  Es ist also nicht erlaubt, mit einer Murmel, die erst gerade aus dem Zwinger geholt wurde, ins Ziel zu gehen. 
 
+## Spiel starten
+- **Spiel eröffnen**: Mit dem Button "New Game" kann man ein neues Spiel eröffnen.
+- **Spiel beitreten**: Um einem Spiel beizutreten, musst du das gewünschte Spiel auswählen und anschliessend auf den Button "Join Game" klicken.
+- **Spiel starten**: Die Person, die das Spiel eröffnet hat, kann das Spiel mittels des Buttons "Start" starten. 
+
+## Spielen
+- **TeamMode**: Die Teams werden automatisch erstellt. Du siehst anhand der Farben, mit wem du ein Team bildest.
+- **Karte auswählen**: Du musst zuerst eine Karte auswählen. Die Karte, die du ausgewählt hast, blinkt. Die Karten, bei denen du nur die rote Rückseite siehst, sind Joker. Wenn du auf einen Joker klickst, erscheint ein Auswahlmenü und du kannst die Karte auswählen, die du spielen möchtest, indem du auf «Choose» klickst.
+- **Spielfigur auswählen**: Klicke auf die Spielfigur, die du bewegen möchtest. Die ausgewählte Murmel blinkt nun.
+- **Spielfeld auswählen**: Klicke auf das Spielfeld, auf das du deine Spielfigur setzen möchtest. Das Feld blinkt nun. Wenn du auf ein besetztes Feld gehen möchtest, achte darauf, dass du das Feld und nicht die Murmel auswählst.
+- **Verklickt?** Wenn du eine falsche Karte, eine falsche Spielfigur oder ein falsches Feld angeklickt hast, klicke du auf den Button «Refresh» klicken. Dann kannst du eine neue Karte, eine neue Spielfigur und ein neues Feld auswählen.
+- **Spielzug ausführen**: Mit dem Button «MakeMove» kannst du deinen Spielzug nun übermitteln. Wenn alles regelkonform ist, wird die Murmel wie gewünscht bewegt. Falls du gegen eine Regel verstossen hast, z.B. zu viele Schritte, falsche Murmel, etc., erhältst du noch einmal die Aufforderung «Your turn» und kannst einen neuen Versuch wagen.
+- **Aussetzen**: Wenn du keine Karte spielen kannst, klicke auf den Button «Round off».
+- **Chat**: Du kannst Nachrichten an deine Spielpartner senden, indem du in das pinke Feld
+schreibst und dann die Nachricht mit der Enter-Taste absendest.
+
 
