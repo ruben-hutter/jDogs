@@ -22,7 +22,7 @@ Wert und Funktionen der jDogs-Karten:
 
 
 ## Regeln  
-- **Spielstart**: Jeder Spieler wird einer der vier Farben (rot, blau, grün, gelb) zugeteilt. Zu Beginn des Spiels sind alle Murmeln im Zwinger. Der Beginner wird automatisch ausgewählt und erhält die Meldung "Your turn". Die Teams werden automatisch gebildet. 
+- **Spielstart**: Jedem Spieler wird eine der vier Farben (rot, blau, grün, gelb) zugeteilt. Zu Beginn des Spiels sind alle Murmeln im Zwinger. Der Beginner wird automatisch ausgewählt und erhält die Meldung "Your turn". Die Teams werden automatisch gebildet. Die Teambildung ist farblich markiert. 
 - **Karten**: Um sich auf dem Spielbrett zu bewegen, dienen die Karten. In der ersten Runde erhalten alle Spieler 6 Karten, in der zweiten Runde 5 Karten, in der dritten Runde 4 Karten, in der vierten Runde 3 Karten, in der fünften Runde 2 Karten. Dann beginnt es wieder mit 6 Karten. 
 - **Aussetzen**: Wenn man keine Karte spielen kann, kann man mit dem Button "Round off" für eine Runde aussetzen.
 - **Aufs Startfeld gelangen**: Mit den Karten König, Ass und Joker kann man eine Murmel aus dem Zwinger auf das Startfeld setzen. Diese Murmel blockiert dann den Durchgang für die anderen Murmeln und ist geschützt, d.h., sie kann nicht direkt wieder in den Zwinger geschickt werden.
