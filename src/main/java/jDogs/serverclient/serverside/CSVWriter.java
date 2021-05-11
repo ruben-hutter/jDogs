@@ -1,28 +1,20 @@
 package jDogs.serverclient.serverside;
 
 import static org.apache.logging.log4j.core.util.Loader.getClassLoader;
-import static org.apache.logging.log4j.core.util.Loader.getResourceAsStream;
 
-import jDogs.Main;
-import jDogs.player.Player;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Properties;
-import org.apache.logging.log4j.core.util.Loader;
-import org.checkerframework.checker.units.qual.C;
-import org.xml.sax.InputSource;
 
 /**
  * This class is used to store as CSV-File
@@ -31,29 +23,27 @@ import org.xml.sax.InputSource;
 public class CSVWriter {
 
     private final ArrayList<SavedUser> usersHighScore;
-    private final String csvFilePath;
-    private String FILENAME;
+    private final String csvFileDirectory;
+    private String FILEPATH;
+    private boolean directoryExists;
 
     /**
      * construct a CSV-Writer object by instantiating a new ArrayList
      */
     CSVWriter() {
         this.usersHighScore = new ArrayList<>();
-        this.csvFilePath = setFilePath();
-        this.FILENAME = csvFilePath + "/jDogsData/highScoreList.csv";
-        setDirectory();
-        System.out.println("CSVPath " + FILENAME);
-        addUser(new SavedUser("JOHN"));
-        writeCSV();
+        this.csvFileDirectory = setFileDirectory() + "/jDogsData";
+        this.FILEPATH = csvFileDirectory + "/highScoreList.csv";
+        this.directoryExists = !setDirectory();
     }
 
     /**
      * create folder for data,
      * if not already created
      */
-    private void setDirectory() {
-        File directory = new File(csvFilePath);
-        directory.mkdir();
+    private boolean setDirectory() {
+        File directory = new File(csvFileDirectory);
+        return directory.mkdir();
     }
 
     /**
@@ -62,19 +52,17 @@ public class CSVWriter {
      */
     public void rankList() {
         Collections.sort(usersHighScore);
-        int rank = 1;
     }
 
     /**
      * gets the filePath of the jar
      * @return root directory of jar
      */
-    private String setFilePath() {
-            File jarPath=new File(CSVWriter.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    private String setFileDirectory() {
+        File jarPath=new File(CSVWriter.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         System.out.println(jarPath.getParentFile().getAbsolutePath());
 
         return jarPath.getParentFile().getAbsolutePath();
-
     }
 
     /**
@@ -92,7 +80,7 @@ public class CSVWriter {
         FileWriter csvWriter = null;
 
         try {
-            csvWriter = new FileWriter(FILENAME);
+            csvWriter = new FileWriter(FILEPATH);
             csvWriter.append("Name");
             csvWriter.append(",");
             csvWriter.append("PlayedGames");
@@ -120,23 +108,28 @@ public class CSVWriter {
      * reads the CSV-File
      */
     public void readCSV() {
-        InputStream inputStream = getClass().
-                getResourceAsStream(FILENAME);
-        BufferedReader bufferedReader = null;
-
+        FileInputStream fileInputStream = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            fileInputStream = new FileInputStream(FILEPATH);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
             //ignore first line with info
             String line = bufferedReader.readLine();
-
             while ((line = bufferedReader.readLine()) != null) {
                parseAndAddLine(line);
             }
+            fileInputStream.close();
         } catch (IOException e) {
-            System.out.println("could not load csv-File");
+            System.out.println("could not load highScoreList.csv");
             e.printStackTrace();
         } catch (NullPointerException e) {
-            System.out.println(FILENAME + "/highScoreList.csv");
+            System.err.println("could not find highScoreList.csv");
+            System.out.println("path " + FILEPATH);
+            e.printStackTrace();
         }
     }
 
@@ -187,8 +180,20 @@ public class CSVWriter {
         usersHighScore.add(savedUser);
     }
 
+    /**
+     * adds a user who played
+     * @param savedUser file with name, victories, defeats
+     */
     public void addUser(SavedUser savedUser) {
         usersHighScore.add(savedUser);
+    }
+
+    /**
+     * check if directory exists
+     * @return true, if directory exists, false if not
+     */
+    public boolean isDirectoryExisting() {
+        return directoryExists;
     }
 }
 

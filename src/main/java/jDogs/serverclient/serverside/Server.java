@@ -52,7 +52,7 @@ public class Server {
     public Server(String[] args) {
         instance = this;
         csvWriter = new CSVWriter();
-        csvWriter.readCSV();
+        if (csvWriter.isDirectoryExisting()) {csvWriter.readCSV();}
         try {
             serverSocket = new ServerSocket(Integer.parseInt(args[1]));
             // runs as long as the server is activated
