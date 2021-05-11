@@ -1,17 +1,17 @@
 package jDogs.gui;
 
 
+import java.io.File;
 import java.io.IOException;
-
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Paths;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 /**
@@ -61,12 +61,28 @@ public class GUIManager extends Application {
      */
     private void setLoginScene() {
 
+            String sound = "/whoLetTheDogsOut.wav";
+            URL path = getClass().getClassLoader().getResource(sound);
+
+            Media media = null;
+            try {
+                File file = new File(path.toURI().toString());
+                System.out.println(file.exists());
+                media = new Media(file.toURI().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(media.getSource());
+            MediaPlayer player = new MediaPlayer(media);
+            MediaView mediaView = new MediaView(player);
+
         // activate loginWindow
 
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/loginWindow.fxml"));
         Parent root = null;
         try {
             root = loginLoader.load();
+            root.getChildrenUnmodifiable().add(mediaView);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,6 +90,7 @@ public class GUIManager extends Application {
         // loginScene
         Scene loginScene = new Scene(root);
         primaryStage.setScene(loginScene);
+        player.play();
 
         //shut down application by closing the window(works for all scenes)
         primaryStage.setOnCloseRequest(e-> System.exit(-1));

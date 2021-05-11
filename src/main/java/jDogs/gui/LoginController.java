@@ -1,14 +1,23 @@
 package jDogs.gui;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 /**
  * this class represents the login window
  */
-public class LoginController {
+public class LoginController implements Initializable {
 
     @FXML
     private Button loginButton;
@@ -45,4 +54,9 @@ public class LoginController {
             GUIManager.getInstance().goToLobby(nickname);
         }
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    }
+
 }
