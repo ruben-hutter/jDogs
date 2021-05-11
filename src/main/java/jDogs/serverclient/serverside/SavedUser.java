@@ -54,7 +54,7 @@ public class SavedUser implements Comparable {
      * @return converted csv file row to a string
      */
     public String getCSVString() {
-        return name + "," + playedGames + "," + victories + "," + getPoints();
+        return name + "," + playedGames + "," + victories;
     }
 
     /**

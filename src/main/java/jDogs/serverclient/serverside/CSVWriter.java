@@ -6,6 +6,8 @@ import static org.apache.logging.log4j.core.util.Loader.getResourceAsStream;
 import jDogs.Main;
 import jDogs.player.Player;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -29,18 +31,31 @@ import org.xml.sax.InputSource;
 public class CSVWriter {
 
     private final ArrayList<SavedUser> usersHighScore;
-
-    private String FILENAME = "/highScoreList.csv";
-
-    //private final String FILENAME = this.getClass().getClassLoader().getResource("src/main/resources/highScoreList.csv").toExternalForm();
-    //private final String FILENAME = "src/main/resources/highScoreList.csv";
+    private final String csvFilePath;
+    private String FILENAME;
 
     /**
      * construct a CSV-Writer object by instantiating a new ArrayList
      */
     CSVWriter() {
-        usersHighScore = new ArrayList<>();
+        this.usersHighScore = new ArrayList<>();
+        this.csvFilePath = setFilePath();
+        this.FILENAME = csvFilePath + "/jDogsData/highScoreList.csv";
+        setDirectory();
+        System.out.println("CSVPath " + FILENAME);
+        addUser(new SavedUser("JOHN"));
+        writeCSV();
     }
+
+    /**
+     * create folder for data,
+     * if not already created
+     */
+    private void setDirectory() {
+        File directory = new File(csvFilePath);
+        directory.mkdir();
+    }
+
     /**
      * rank the list, so that
      * the highest core is in the first place.
@@ -48,6 +63,18 @@ public class CSVWriter {
     public void rankList() {
         Collections.sort(usersHighScore);
         int rank = 1;
+    }
+
+    /**
+     * gets the filePath of the jar
+     * @return root directory of jar
+     */
+    private String setFilePath() {
+            File jarPath=new File(CSVWriter.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        System.out.println(jarPath.getParentFile().getAbsolutePath());
+
+        return jarPath.getParentFile().getAbsolutePath();
+
     }
 
     /**
@@ -65,7 +92,6 @@ public class CSVWriter {
         FileWriter csvWriter = null;
 
         try {
-
             csvWriter = new FileWriter(FILENAME);
             csvWriter.append("Name");
             csvWriter.append(",");
@@ -94,7 +120,8 @@ public class CSVWriter {
      * reads the CSV-File
      */
     public void readCSV() {
-        InputStream inputStream = getClass().getResourceAsStream(FILENAME);
+        InputStream inputStream = getClass().
+                getResourceAsStream(FILENAME);
         BufferedReader bufferedReader = null;
 
         try {
@@ -106,7 +133,10 @@ public class CSVWriter {
                parseAndAddLine(line);
             }
         } catch (IOException e) {
+            System.out.println("could not load csv-File");
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println(FILENAME + "/highScoreList.csv");
         }
     }
 
