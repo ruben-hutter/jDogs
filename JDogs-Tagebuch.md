@@ -423,3 +423,35 @@ Als wir heute versuchten, ein jar zu erstellen, funktionierte es nicht. Es gab e
 
 **Nächstes Treffen:** Dienstag, 11.05.21, 15:30 Uhr
 
+--- 
+
+11.05.2021, 15:30 Uhr, Johanna
+
+### Protokoll#25 - Protokoll
+
+Wir testeten gemeinsam die Spiele der Gruppen 12 und 14, Ruben verfasste das Feedback. Danach gingen wir die Achievements für Meilenstein 5 durch und besprachen folgende Punkte:
+- Software Architektur: Ruben erstellt bis am Freitag ein Modell. 
+- Design: Wir wollen das Spiel in braun und beige gestalten, sodass es zum Hund passt, den Gregor gezeichnet hat. 
+- HighScore: Die HighScore-Liste muss in einem CSV-File gespeichert werden und aufgerufen werden können. 
+- Protokolldokument: Das Dokument muss aktualisiert werden, sobald die letzten zusätzlichen Befehle implementiert sind. 
+- Karten austauschen zu Beginn: Diese Funktion wollten wir eigentlich einbauen, hat aber keine hohe Priorität.
+- Nur eine Karte ablegen: Auch diesen Punkt werden wir nur bearbeiten, falls die Zeit reicht. 
+- Audio: Es kam die Idee auf, Hundegebell oder einen anderen passenden Sound zu hinterlegen. Dies hat jedoch keine hohe Priorität. 
+- Sir Nicholas: Uns ist nicht ganz klar, was mit diesem Malus gemeint ist. 
+- Zweite Library: Wir müssen eine zweite Library finden, die wir sinnvoll in unserem Projekt einbauen können. 
+- HighScore-Liste: Die HighScore-Liste soll in der Lobby in einem Nebenfenster angezeigt werden.
+- Help: Der Help-Button soll auf die Spielanleitung verweisen. 
+
+
+Bis Freitag sind die folgenden Aufgaben zu erledigen:
+- Modell der Software-Architektur erstellen
+- Protokoll: Statt Strings die Enums verwenden
+- Infomeldungen mit dem Befehl "FAIL" versenden 
+- CSV für HighScore
+- Lobby neu gestalten
+- Hundebild und Schrift integrieren
+- QA-Messungen durchführen und Verbesserungsvorschläge einbringen
+
+**Nächstes Treffen:** Mittwoch, 12.05.21, 10:15 Uhr
+
+**Übernächstes Treffen:** Freitag, 14.05.21, 10:00 Uhr
