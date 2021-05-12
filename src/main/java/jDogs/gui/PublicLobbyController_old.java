@@ -180,7 +180,6 @@ public class PublicLobbyController_old implements Initializable {
         Scene gameScene = new Scene(anchorPane);
         gameDialog.setScene(gameScene);
         gameDialog.show();
-
     }
 
     /**
