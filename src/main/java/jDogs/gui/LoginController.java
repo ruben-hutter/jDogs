@@ -42,7 +42,6 @@ public class LoginController implements Initializable {
     private ImageView jDogsLogo;
 
     private MediaPlayer player;
-    private ParallelAnimationFX parallelAnimationFX;
 
     /**
      * cancel the game
@@ -72,7 +71,6 @@ public class LoginController implements Initializable {
     }
 
     public void letLogoBounce() {
-
         BounceIn bounceIn = new BounceIn(jDogsLogo);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), e -> bounceIn.play()),
@@ -83,7 +81,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        URL path = getClass().getClassLoader().getResource("music/whoLetTheDogsOut.wav");
+       URL path = getClass().getClassLoader().getResource("music/whoLetTheDogsOut.wav");
         Media media = null;
         try {
             media = new Media(path.toExternalForm());

@@ -7,16 +7,16 @@
 
 .label{
     -fx-font: 15px "Broadway";
-    -fx-text-fill: black;
+    -fx-text-fill: #302820;
     -fx-text-alignment: center;
 }
 
 #textField{
-    fx-font-: 15px, "Broadway";
+    -fx-font-: 15px, "Broadway";
+    -fx-text-alignment: center;
     -fx-text-fill: #694824;
     -fx-background-color: #DCB181;
     -fx-background-radius: 8;
-    -fx-effect: blurr;
 }
 
 
@@ -24,8 +24,8 @@
     -fx-font: 15px "Broadway";
     -fx-text-fill: #D68C54;
     -fx-padding: 5;
-    -fx-background-color: black;
-    -fx-effect:  dropshadow(one-pass-box, black, 7, 0.3, 4, 0);
+    -fx-background-color: #302820;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 7, 0.0, 4, 0);
     -fx-background-radius: 8;
 }
 

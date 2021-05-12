@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="700.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.LoginController">
+<AnchorPane accessibleRole="TEXT_FIELD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.LoginController">
    <children>
       <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" layoutX="329.0" layoutY="222.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="26.0" prefWidth="242.0" text="Log In">
          <font>
@@ -20,7 +20,7 @@
             <Font name="Broadway" size="15.0" />
          </font>
       </Button>
-      <ImageView fx:id="jDogsLogo" fitHeight="256.0" fitWidth="794.0" layoutX="67.0" layoutY="435.0" style="-fx-effect: dd;">
+      <ImageView fx:id="jDogsLogo" fitHeight="256.0" fitWidth="794.0" layoutX="67.0" layoutY="435.0">
          <image>
             <Image url="@Zeichnung_JDOGS3DLogo.png" />
          </image>
