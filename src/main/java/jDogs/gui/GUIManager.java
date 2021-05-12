@@ -66,6 +66,7 @@ public class GUIManager extends Application {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("./music/whoLetTheDogsOut.wav");
             Media media = null;
             try {
+                Media mp3MusicFile = new Media(getClass().getResource("DollyParton.mp3").toExternalForm());
                 //System.out.println("path " + path.toString());
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
                 File file = new File(bufferedInputStream.toString());
