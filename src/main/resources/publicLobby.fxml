@@ -74,10 +74,8 @@
                      <children>
                         <ButtonBar prefHeight="40.0" prefWidth="330.0">
                           <buttons>
-                            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quitButtonOnAction" text="Quit" />
                               <Button fx:id="joinButton" mnemonicParsing="false" onAction="#joinButtonOnAction" text="Join" />
                               <Button fx:id="createButton" mnemonicParsing="false" onAction="#createButtonOnAction" text="Create" />
-                              <Button fx:id="startButton" mnemonicParsing="false" onAction="#startButtonOnAction" text="START" />
                           </buttons>
                         </ButtonBar>
                      </children>
