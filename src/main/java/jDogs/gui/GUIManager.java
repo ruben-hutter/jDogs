@@ -1,8 +1,10 @@
 package jDogs.gui;
 
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
@@ -11,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 /**
@@ -61,20 +62,19 @@ public class GUIManager extends Application {
      */
     private void setLoginScene() {
 
-            String sound = "/whoLetTheDogsOut.wav";
-            URL path = getClass().getClassLoader().getResource(sound);
-
+            //String sound = "C:\\Users\\bachm\\Documents\\unibas_studium\\Informatik\\Programmierprojekt\\Gruppe-13\\src\\main\\resources\\music\\whoLetTheDogsOut.wav";
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("./music/whoLetTheDogsOut.wav");
             Media media = null;
             try {
-                File file = new File(path.toURI().toString());
-                System.out.println(file.exists());
+                //System.out.println("path " + path.toString());
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+                File file = new File(bufferedInputStream.toString());
+                //System.out.println("file.exists " + file.exists());
                 media = new Media(file.toURI().toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println(media.getSource());
             MediaPlayer player = new MediaPlayer(media);
-            MediaView mediaView = new MediaView(player);
 
         // activate loginWindow
 
@@ -82,7 +82,6 @@ public class GUIManager extends Application {
         Parent root = null;
         try {
             root = loginLoader.load();
-            root.getChildrenUnmodifiable().add(mediaView);
         } catch (IOException e) {
             e.printStackTrace();
         }
