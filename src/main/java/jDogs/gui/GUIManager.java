@@ -29,6 +29,7 @@ public class GUIManager extends Application {
     public GameWindowController gameWindowController;
     private boolean isPlaying;
     private boolean teamMode;
+    private LoginController loginController;
 
     /**
      * start method
@@ -62,15 +63,6 @@ public class GUIManager extends Application {
      */
     private void setLoginScene() {
 
-        // play sound
-        URL path = getClass().getClassLoader().getResource("music/whoLetTheDogsOut.wav");
-        Media media = null;
-        try {
-            media = new Media(path.toExternalForm());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        MediaPlayer player = new MediaPlayer(media);
 
         // activate loginWindow
 
@@ -81,16 +73,26 @@ public class GUIManager extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         // loginScene
         Scene loginScene = new Scene(root);
+
+        loginController = loginLoader.getController();
+
         primaryStage.setScene(loginScene);
-        player.play();
+
 
         //shut down application by closing the window(works for all scenes)
         primaryStage.setOnCloseRequest(e-> System.exit(-1));
-
         primaryStage.show();
+
+        loginController.letLogoBounce();
+
+
+
+
+
+
+
     }
 
     /**
