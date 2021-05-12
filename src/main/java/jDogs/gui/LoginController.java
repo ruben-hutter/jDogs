@@ -72,21 +72,13 @@ public class LoginController implements Initializable {
     }
 
     public void letLogoBounce() {
-        // play sound
-/*
-        player.play();
 
-        new BounceIn(jDogsLogo).play();
-        new BounceIn(jDogsLogo).play();
-
- */
         BounceIn bounceIn = new BounceIn(jDogsLogo);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), e -> bounceIn.play()),
                 new KeyFrame(Duration.ZERO, e -> player.play())
                 );
         timeline.play();
-
     }
 
     @Override

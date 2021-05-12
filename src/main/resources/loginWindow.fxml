@@ -20,7 +20,7 @@
             <Font name="Broadway" size="15.0" />
          </font>
       </Button>
-      <ImageView fx:id="jDogsLogo" fitHeight="256.0" fitWidth="794.0" layoutX="67.0" layoutY="435.0">
+      <ImageView fx:id="jDogsLogo" fitHeight="256.0" fitWidth="794.0" layoutX="67.0" layoutY="435.0" style="-fx-effect: dd;">
          <image>
             <Image url="@Zeichnung_JDOGS3DLogo.png" />
          </image>
