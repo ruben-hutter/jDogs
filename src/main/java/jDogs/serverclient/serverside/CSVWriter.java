@@ -53,7 +53,7 @@ public class CSVWriter {
      * @return root directory of jar
      */
     private String setFileDirectory() {
-        File jarPath=new File(CSVWriter.class.getProtectionDomain().getCodeSource().getLocation().
+        File jarPath = new File(CSVWriter.class.getProtectionDomain().getCodeSource().getLocation().
                 getPath());
         System.out.println(jarPath.getParentFile().getAbsolutePath());
 
