@@ -70,7 +70,10 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void letLogoBounce() {
+    /**
+     * plays "Who let the dogs out" and let the logo bounce
+     */
+    public void startIntro() {
         BounceIn bounceIn = new BounceIn(jDogsLogo);
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(2), e -> bounceIn.play()),

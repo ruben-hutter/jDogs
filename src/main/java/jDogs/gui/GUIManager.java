@@ -1,18 +1,12 @@
 package jDogs.gui;
 
 
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 /**
@@ -23,7 +17,7 @@ public class GUIManager extends Application {
     private Stage primaryStage;
     private static GUIManager instance;
     FXMLLoader lobbyLoader;
-    public PublicLobbyController lobbyController;
+    public PublicLobbyController_old lobbyController;
     FXMLLoader gameLoader;
     private Client client;
     public GameWindowController gameWindowController;
@@ -85,7 +79,7 @@ public class GUIManager extends Application {
         primaryStage.setOnCloseRequest(e-> System.exit(-1));
         primaryStage.show();
 
-        loginController.letLogoBounce();
+        loginController.startIntro();
 
 
 
@@ -102,7 +96,7 @@ public class GUIManager extends Application {
         isPlaying = false;
 
         // activate Window
-        lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow.fxml"));
+        lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow_old.fxml"));
 
         Parent root = null;
         try {
