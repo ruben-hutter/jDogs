@@ -1,18 +1,12 @@
 package jDogs.serverclient.serverside;
 
-import static org.apache.logging.log4j.core.util.Loader.getClassLoader;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -24,8 +18,8 @@ public class CSVWriter {
 
     private final ArrayList<SavedUser> usersHighScore;
     private final String csvFileDirectory;
-    private String FILEPATH;
-    private boolean directoryExists;
+    private final String FILEPATH;
+    private final boolean directoryExists;
 
     /**
      * construct a CSV-Writer object by instantiating a new ArrayList
@@ -59,7 +53,8 @@ public class CSVWriter {
      * @return root directory of jar
      */
     private String setFileDirectory() {
-        File jarPath=new File(CSVWriter.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        File jarPath=new File(CSVWriter.class.getProtectionDomain().getCodeSource().getLocation().
+                getPath());
         System.out.println(jarPath.getParentFile().getAbsolutePath());
 
         return jarPath.getParentFile().getAbsolutePath();
@@ -97,6 +92,7 @@ public class CSVWriter {
         }
 
         try {
+            assert csvWriter != null;
             csvWriter.flush();
             csvWriter.close();
         } catch (IOException e) {
@@ -116,6 +112,7 @@ public class CSVWriter {
         }
         BufferedReader bufferedReader = null;
         try {
+            assert fileInputStream != null;
             bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
             //ignore first line with info
             String line = bufferedReader.readLine();
@@ -196,5 +193,3 @@ public class CSVWriter {
         return directoryExists;
     }
 }
-
-
