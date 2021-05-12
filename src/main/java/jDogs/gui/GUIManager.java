@@ -62,20 +62,15 @@ public class GUIManager extends Application {
      */
     private void setLoginScene() {
 
-            //String sound = "C:\\Users\\bachm\\Documents\\unibas_studium\\Informatik\\Programmierprojekt\\Gruppe-13\\src\\main\\resources\\music\\whoLetTheDogsOut.wav";
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("./music/whoLetTheDogsOut.wav");
-            Media media = null;
-            try {
-                Media mp3MusicFile = new Media(getClass().getResource("DollyParton.mp3").toExternalForm());
-                //System.out.println("path " + path.toString());
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-                File file = new File(bufferedInputStream.toString());
-                //System.out.println("file.exists " + file.exists());
-                media = new Media(file.toURI().toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            MediaPlayer player = new MediaPlayer(media);
+        // play sound
+        URL path = getClass().getClassLoader().getResource("music/whoLetTheDogsOut.wav");
+        Media media = null;
+        try {
+            media = new Media(path.toExternalForm());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        MediaPlayer player = new MediaPlayer(media);
 
         // activate loginWindow
 
