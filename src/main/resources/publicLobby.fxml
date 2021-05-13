@@ -11,28 +11,34 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <Pane prefHeight="618.0" prefWidth="244.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="648.0" prefWidth="242.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="545.0" prefWidth="317.0">
+            <VBox layoutY="-2.0" prefHeight="643.0" prefWidth="244.0">
                <children>
-                  <AnchorPane prefHeight="546.0" prefWidth="242.0">
+                  <AnchorPane prefHeight="387.0" prefWidth="183.0">
                      <children>
-                        <TableView fx:id="tableViewPlayers" layoutY="14.0" prefHeight="279.0" prefWidth="238.0" AnchorPane.bottomAnchor="126.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="14.0">
+                        <TableView fx:id="tableViewPlayers" layoutY="15.0" prefHeight="334.0" prefWidth="168.0" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="15.0">
                           <columns>
                             <TableColumn prefWidth="236.80000457763674" text="C1" />
                           </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
+                  <ImageView fitHeight="244.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Zeichnung_Mops6.png" />
+                     </image>
+                  </ImageView>
                </children>
             </VBox>
          </children>
@@ -144,7 +150,7 @@
       </Pane>
    </top>
    <bottom>
-      <HBox prefHeight="56.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="30.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="166.0" prefWidth="198.0" />
             <Pane prefHeight="166.0" prefWidth="21.0" />
