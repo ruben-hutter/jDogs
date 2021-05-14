@@ -147,7 +147,6 @@ public class GUIManager extends Application {
         primaryStage.show();
     }
 
-
     /**
      * starts the game
      * @param intTeamMode 1 for teamMode, else single player

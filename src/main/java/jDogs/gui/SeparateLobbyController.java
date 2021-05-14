@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PathTransition;
+import javafx.animation.PathTransition.OrientationType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,50 +20,38 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
-import jfxtras.labs.util.event.MouseControlUtil;
 
 public class SeparateLobbyController implements Initializable{
 
     private static final int RADIUS_CIRCLE = 10;
     @FXML
     private ImageView imageView1;
+    @FXML
+    private ImageView imageView2;
+    @FXML
+    private ImageView imageView3;
+    @FXML
+    private ImageView imageView4;
 
-    @FXML
-    private Circle circle1;
-    @FXML
-    private Circle circle2;
-    @FXML
-    private Circle circle3;
-    @FXML
-    private Circle circle4;
 
     @FXML
     private TableView<?> tableViewPlayers;
 
     @FXML
-    private Pane paneID;
+    private Button quitButton;
 
     @FXML
-    private Button joinButton;
+    private Button changeButton;
 
     @FXML
-    private Button createButton;
-
-    @FXML
-    private Button joinButton1;
+    private Button startButton;
 
     @FXML
     private TextArea displayTextArea;
@@ -77,28 +66,41 @@ public class SeparateLobbyController implements Initializable{
     private MenuBar menuBarTop;
 
     @FXML
-    void createButtonOnAction(ActionEvent event) {
+    void startButtonOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void joinButtonOnAction(ActionEvent event) {
+    void changeButtonOnAction(ActionEvent event) {
 
-        //MouseControlUtil.makeDraggable(circle);
-        Path path = new Path();
-        path.getElements().add(new MoveTo(10,110));
-        path.getElements().add(new CubicCurveTo(0,20,20,20,20,20));
-        //path.getElements().add(new CubicCurveTo(20,20,20,20,20,20));
         //TODO set labels with names and imageViews of 4 different colored dogs
         //TODO and then let them move if team mode is chosen and 4 players are present
+        Polyline polyline = new Polyline();
+        polyline.getPoints().addAll(new Double[] {
+                 20.0, 20.0,
+                30.0, 30.0,
+                80.0, 80.0,
+                100.0, 100.0,
+                140.0, 200.0
+                });
 
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setCycleCount(PathTransition.INDEFINITE);
-        pathTransition.setDuration(Duration.INDEFINITE);
-        pathTransition.setAutoReverse(false);
-        pathTransition.setPath(path);
+        pathTransition.setCycleCount(3);
+        pathTransition.setDuration(Duration.seconds(1));
+        pathTransition.setAutoReverse(true);
+        pathTransition.setPath(polyline);
+        pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setNode(imageView1);
         pathTransition.play();
+
+
+
+    }
+
+    @FXML
+    void quitButtonOnAction(ActionEvent event) {
+
+
     }
 
     @FXML
@@ -108,7 +110,29 @@ public class SeparateLobbyController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Polyline polyline = new Polyline();
+        polyline.getPoints().addAll(new Double[] {
+        //yellow to green
+                65.0, 80.0,
+                65.0, 213.0,
+                60.0, 213.0,
+                70.0, 213.0,
+                65.0, 213.0,
 
+        });
+
+
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setCycleCount(1);
+        pathTransition.setDuration(Duration.seconds(5));
+        pathTransition.setAutoReverse(true);
+        pathTransition.setPath(polyline);
+        pathTransition.setNode(imageView1);
+        pathTransition.play();
+
+        //TODO green to blue
+        //TODO blue to red
+        //TODO red to yellow
     }
 
 
