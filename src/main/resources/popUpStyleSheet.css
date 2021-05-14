@@ -1,24 +1,7 @@
 .root {
-    -fx-pref-height: 700;
-    -fx-pref-width: 900;
-    -fx-font-family: "Broadway";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(to right top, #d1a06b, #d4a66b, #d5ad6b, #d7b46b, #d7bb6c, #d9c071, #dbc476, #ddc97b, #e2cd85, #e7d18f, #ecd59a, #f0d9a4)
 
-}
-
-.label{
-    -fx-font: 15px "Broadway";
-    -fx-text-fill: #302820;
-    -fx-text-alignment: center;
-}
-
-#textField{
-    -fx-font-: 15px, "Broadway";
-    -fx-text-alignment: center;
-    -fx-text-fill: #694824;
-    -fx-background-color: #DCB181;
-    -fx-background-radius: 8;
 }
 
 
@@ -40,10 +23,4 @@
     -fx-text-fill: #DEB595;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
-}
-
-#gridPane {
-    -fx-background-image: url(/spielbrett4.png);
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: stretch;
 }

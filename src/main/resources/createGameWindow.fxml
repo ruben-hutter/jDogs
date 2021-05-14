@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.CreateGameWindowController">
+<AnchorPane stylesheets="@popUpStyleSheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.CreateGameWindowController">
    <children>
       <DialogPane prefHeight="316.0" prefWidth="570.0">
          <graphic>
@@ -28,8 +28,8 @@
                     </rowConstraints>
                      <children>
                         <TextField fx:id="gameNameField" prefHeight="95.0" prefWidth="286.0" promptText="needed" GridPane.columnIndex="1" />
-                        <Label alignment="CENTER" prefHeight="94.0" prefWidth="285.0" text="Name of Game" />
-                        <Label alignment="CENTER" prefHeight="66.0" prefWidth="286.0" text="Team Mode" GridPane.rowIndex="1" />
+                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="286.0" text="Name of Game" />
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="286.0" text="Team Mode" GridPane.rowIndex="1" />
                         <CheckBox fx:id="checkBox" mnemonicParsing="false" text="CheckBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
