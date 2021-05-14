@@ -448,4 +448,19 @@ public class MainGame {
         }
         return playersArrayCopy;
     }
+
+    /**
+     * Gets a player for a given alliance
+     * @param alliance player's alliance as string
+     * @return the player or null
+     */
+    public Player getPlayerForAlliance(String alliance, MainGame mainGame) {
+        RulesCheckHelper helper = new RulesCheckHelper(mainGame);
+        for (Player player : playersArray) {
+            if (player.getAlliance() == helper.convertAlliance(alliance)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

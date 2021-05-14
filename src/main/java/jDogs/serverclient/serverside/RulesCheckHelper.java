@@ -183,6 +183,8 @@ public class RulesCheckHelper {
         int newPosition2 = pieceID - 1;
         piece.setPositionServer(newPosition1, newPosition2);
         mainGame.getGameState().updatePiecesOnTrack(piece, "A");
+        // TODO eliminate
+        /*
         String pieceAlliance = "";
         switch(piece.getPieceAlliance()) {
             case YELLOW:
@@ -198,6 +200,7 @@ public class RulesCheckHelper {
                 pieceAlliance = "REDD";
                 break;
         }
+         */
         // change hasMoved state to false
         piece.changeHasMoved();
     }

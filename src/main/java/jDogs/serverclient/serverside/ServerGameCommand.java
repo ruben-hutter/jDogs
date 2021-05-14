@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import jDogs.player.Piece;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -236,7 +237,7 @@ public class ServerGameCommand {
                     break;
 
                 case MOPS:
-                    // TODO implement message to send to clients and update server state with cheat move
+                    cheatSet(text);
                     break;
 
                 case CTTP:
@@ -288,5 +289,27 @@ public class ServerGameCommand {
         mainGame.sendMessageToParticipants(sendMovesToParticipants.getUpdateGame()[2]);
         // send turn completed
         mainGame.turnComplete(serverConnection.getNickname());
+    }
+
+    /**
+     * Makes a move cheating, bypassing the rules checks.
+     * @param text given command / move
+     */
+    private void cheatSet(String text) {
+        Player player = mainGame.getPlayerForAlliance(text.substring(5, 9), mainGame);
+        int pieceID = Integer.parseInt(text.substring(10, 11));
+        String newPosition1 = text.substring(12, 13);
+        int newPosition2 = Integer.parseInt(text.substring(13));
+        Piece piece = player.getPiece(pieceID);
+        // update gameState
+        player.changePositionServer(pieceID, newPosition1, newPosition2);
+        // updates piecesOnTrack in gameState
+        mainGame.getGameState().updatePiecesOnTrack(piece, newPosition1);
+        // send move
+        mainGame.sendMessageToParticipants("MOVE " + text.substring(5));
+        // send new board state
+        mainGame.sendMessageToParticipants("BORD");
+        // check for winner
+        // TODO check for winners
     }
 }
