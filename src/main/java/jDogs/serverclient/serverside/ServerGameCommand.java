@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
  * commands which are sent from the
  * clients to communicate with the
  * server.
- *
  */
 public class ServerGameCommand {
 
@@ -72,7 +71,7 @@ public class ServerGameCommand {
                             mainGame.getPlayer(serverConnection.getNickname()).setAllowedToPlay(false);
                             mainGame.getGameState().getCards().get(serverConnection.getNickname())
                                     .clear();
-                            serverConnection.sendToClient("INFO excluded for this round");
+                            serverConnection.sendToClient("FAIL excluded for this round");
                             mainGame.turnComplete(serverConnection.getNickname());
                             break;
                         }
@@ -86,7 +85,7 @@ public class ServerGameCommand {
                             String toCheckMove = rulesCheck
                                     .checkCard(text, serverConnection.getNickname());
                             if (toCheckMove == null) {
-                                serverConnection.sendToClient("INFO Invalid card or no hand");
+                                serverConnection.sendToClient("FAIL Invalid card or no hand");
                                 serverConnection.sendToClient("TURN");
                                 logger.debug("You don't have this card on your hand");
                                 return;
@@ -112,29 +111,29 @@ public class ServerGameCommand {
                                             }
                                             break;
                                         case 1:
-                                            serverConnection.sendToClient("INFO At least one invalid"
+                                            serverConnection.sendToClient("FAIL At least one invalid"
                                                     + " destination or piece!");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 2:
                                             serverConnection
-                                                    .sendToClient("INFO You moved more than 7!");
+                                                    .sendToClient("FAIL You moved more than 7!");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 3:
                                             serverConnection
-                                                    .sendToClient("INFO You can't jump over your own"
+                                                    .sendToClient("FAIL You can't jump over your own"
                                                             + "pieces!");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 4:
                                             serverConnection
-                                                    .sendToClient("INFO You don't move a total of 7!");
+                                                    .sendToClient("FAIL You don't move a total of 7!");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 5:
                                             serverConnection
-                                                    .sendToClient("INFO wrong format for seven");
+                                                    .sendToClient("FAIL wrong format for seven");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                     }
@@ -154,21 +153,21 @@ public class ServerGameCommand {
                                             }
                                             break;
                                         case 1:
-                                            serverConnection.sendToClient("INFO You have not finished");
+                                            serverConnection.sendToClient("FAIL You have not finished");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 2:
                                             serverConnection
-                                                    .sendToClient("INFO You cannot move this color");
+                                                    .sendToClient("FAIL You cannot move this color");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 3:
-                                            serverConnection.sendToClient("INFO You can't switch this"
+                                            serverConnection.sendToClient("FAIL You can't switch this"
                                                     + " pieces!");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 4:
-                                            serverConnection.sendToClient("INFO wrong format for jack");
+                                            serverConnection.sendToClient("FAIL wrong format for jack");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                     }
@@ -188,41 +187,41 @@ public class ServerGameCommand {
                                             break;
                                         case 1:
                                             serverConnection
-                                                    .sendToClient("INFO You can't move a piece in"
+                                                    .sendToClient("FAIL You can't move a piece in"
                                                             + " home");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 2:
-                                            serverConnection.sendToClient("INFO Format exception in"
+                                            serverConnection.sendToClient("FAIL Format exception in"
                                                     + " checkMove");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 3:
-                                            serverConnection.sendToClient("INFO You have not finished");
+                                            serverConnection.sendToClient("FAIL You have not finished");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 4:
                                             serverConnection
-                                                    .sendToClient("INFO You cannot move this color");
+                                                    .sendToClient("FAIL You cannot move this color");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 5:
                                             serverConnection
-                                                    .sendToClient("INFO Check your move's validity");
+                                                    .sendToClient("FAIL Check your move's validity");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 6:
-                                            serverConnection.sendToClient("INFO Someone blocks you");
+                                            serverConnection.sendToClient("FAIL Someone blocks you");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 7:
                                             serverConnection
-                                                    .sendToClient("INFO You eliminate yourself!");
+                                                    .sendToClient("FAIL You eliminate yourself!");
                                             serverConnection.sendToClient("TURN");
                                             break;
                                         case 8:
                                             serverConnection
-                                                    .sendToClient("INFO Entered command does`t fit"
+                                                    .sendToClient("FAIL Entered command does`t fit"
                                                             + " the length(15) for checkMove()");
                                             serverConnection.sendToClient("TURN");
                                             break;
@@ -230,7 +229,7 @@ public class ServerGameCommand {
                                     break;
                             }
                         } else {
-                            serverConnection.sendToClient("INFO MOVE command too short");
+                            serverConnection.sendToClient("FAIL MOVE command too short");
                             serverConnection.sendToClient("TURN");
                         }
                     }

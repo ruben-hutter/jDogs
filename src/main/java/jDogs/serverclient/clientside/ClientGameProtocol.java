@@ -1,12 +1,9 @@
 package jDogs.serverclient.clientside;
 
-import jDogs.serverclient.serverside.ServerGameProtocol;
-
 /**
- * this enum contains all words used as commands
+ * This enum contains all words used as commands
  * received by the client and which deal with
  * the game session.
- *
  */
 public enum ClientGameProtocol {
 
@@ -62,6 +59,10 @@ public enum ClientGameProtocol {
      * Information about a winner or winning team
      */
     VICT,
+    /**
+     * Information about the error in the executed move
+     */
+    FAIL,
 
     // TODO delete this
     STOP;

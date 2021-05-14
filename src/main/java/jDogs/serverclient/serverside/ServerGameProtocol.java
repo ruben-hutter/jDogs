@@ -1,7 +1,7 @@
 package jDogs.serverclient.serverside;
 
 /**
- * this enum contains all words used as commands
+ * This enum contains all words used as commands
  * received by the server and which deal with
  * the game session.
  */
@@ -9,7 +9,7 @@ public enum ServerGameProtocol {
 
     /**
      * Command to leave game and shutdown ServerConnection
-    */
+     */
     EXIT,
     /**
      * Command to leave the current game and return to the lobby.
@@ -52,6 +52,10 @@ public enum ServerGameProtocol {
      * Command to provide information to actualize the whole board.
      */
     ANEW,
+    /**
+     * Command to announce a the error in a move
+     */
+    FAIL,
 
     // TODO check if necessary
     LCHT,

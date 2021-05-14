@@ -38,6 +38,7 @@ public class ClientGameCommand {
         this.client = client;
         this.sendQueue = sendQueue;
         this.sendFromClient = sendFromClient;
+        this.sendQueue = sendQueue;
         this.keyBoardInQueue = keyBoardInQueue;
     }
 
@@ -125,6 +126,11 @@ public class ClientGameCommand {
 
                 case STOP:
                     Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
+                    break;
+
+                case FAIL:
+                    // TODO change with something usefull in GUI
+                    // TODO change with protocol command
                     break;
             }
         } catch (NullPointerException e) {
