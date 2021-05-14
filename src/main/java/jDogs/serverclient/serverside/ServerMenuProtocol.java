@@ -54,7 +54,7 @@ public enum ServerMenuProtocol {
      */
     public static ServerMenuProtocol toCommand(String stringCommand) {
         for (ServerMenuProtocol command : ServerMenuProtocol.values()) {
-            if (command.equals(stringCommand)) {
+            if (command.toString().equals(stringCommand)) {
                 return command;
             }
         }

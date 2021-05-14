@@ -45,7 +45,7 @@ public class ClientMenuCommand {
     public void execute (String text) {
         logger.debug("Entered ClientMenuCommand with: " + text);
         ClientMenuProtocol command = ClientMenuProtocol.toCommand(text.substring(0, 4));
-        switch (Objects.requireNonNull(command)) {
+        switch (command) {
             case USER:
                 String name;
                 //case 1: Server wants a nickname, it sends "USER" only

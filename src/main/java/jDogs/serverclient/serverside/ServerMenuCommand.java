@@ -46,7 +46,7 @@ public class ServerMenuCommand {
         logger.debug("Entered ServerMenuCommand with: " + text);
         ServerMenuProtocol command = ServerMenuProtocol.toCommand(text.substring(0, 4));
         // do not receive any commands but USER before logged in
-        if (!loggedIn) {
+        if (!loggedIn && !(command == ServerMenuProtocol.USER)) {
             serverConnection.sendToClient("INFO please log in first");
         } else {
             switch (Objects.requireNonNull(command)) {

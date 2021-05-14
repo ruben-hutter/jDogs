@@ -72,15 +72,12 @@ public enum ClientMenuProtocol {
      */
     INFO;
 
-    // TODO maybe? HELP;
-
     /**
      *
      * @param text check if a string matches the list
      * @return true if matches, else does not match
      */
     public static boolean isACommand(String text) {
-        int i = 8;
         for (ClientMenuProtocol command : ClientMenuProtocol.values()) {
             if (command.toString().equals(text.substring(0, 4))) {
                 return true;
@@ -96,7 +93,7 @@ public enum ClientMenuProtocol {
      */
     public static ClientMenuProtocol toCommand(String stringCommand) {
         for (ClientMenuProtocol command : ClientMenuProtocol.values()) {
-            if (command.equals(stringCommand)) {
+            if (command.toString().equals(stringCommand)) {
                 return command;
             }
         }

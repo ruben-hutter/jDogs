@@ -53,7 +53,7 @@ public enum ServerGameProtocol {
      */
     ANEW,
 
-    // TODO delete this
+    // TODO check if necessary
     LCHT,
     PCHT;
 

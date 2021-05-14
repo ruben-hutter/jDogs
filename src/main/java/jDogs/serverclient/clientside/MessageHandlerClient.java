@@ -50,6 +50,7 @@ public class MessageHandlerClient implements Runnable{
                 reply = receiveQueue.dequeue();
                 if (reply.length() >= 4 && ClientMenuProtocol.isACommand(reply.substring(0, 4))) {
                         clientMenuCommand.execute(reply);
+                        System.err.println("Reply: " + reply);
                 } else {
                     if (reply.length() >= 4 && ClientGameProtocol
                             .isACommand(reply.substring(0, 4))) {
