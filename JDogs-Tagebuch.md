@@ -455,3 +455,23 @@ Bis Freitag sind die folgenden Aufgaben zu erledigen:
 **Nächstes Treffen:** Mittwoch, 12.05.21, 10:15 Uhr
 
 **Übernächstes Treffen:** Freitag, 14.05.21, 10:00 Uhr
+
+--- 
+
+14.05.2021, 10:00 Uhr, Johanna
+
+### Protokoll#26 - Protokoll
+
+Ruben zeigte uns ein Problem, das auftrat, weil er nun beim Protokoll nicht mehr Strings verwenden wollte. Nun konnte sich ein neuer User jedoch nicht mehr einloggen. Das Problem konnte dank Gregor gelöst werden.
+Wir besprachen, was es noch zu tun gibt:
+- Hilfeseite mit Spielregeln
+- Button, um den Nickname zu ändern in der Lobby
+- Login mit Enter-Taste
+- Wenn die Grösse des Fensters verändert wird, sollten die Bilder in der Mitte bleiben
+- Protokolldokument aktualisieren
+- Javadoc vervollständigen
+- Gregor fragt auf Piazza, ob wir die Library AnimateFX verwenden dürfen
+
+
+**Nächstes Treffen:** Dienstag, 18.05.21, 15:30 Uhr
+
