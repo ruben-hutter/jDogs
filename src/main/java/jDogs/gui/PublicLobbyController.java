@@ -97,6 +97,11 @@ public class PublicLobbyController implements Initializable {
         gameDialog.close();
     }
 
+    /**
+     * the join button allows to send a JOIN message with the selected game to server
+     * @param event fires if the join
+     *              button is activated
+     */
     @FXML
     void joinButtonOnAction(ActionEvent event) {
         if (selectedGameID != null) {
@@ -107,7 +112,10 @@ public class PublicLobbyController implements Initializable {
         }
     }
 
-
+    /**
+     * send message by clicking button
+     * @param event fires if button gets pressed
+     */
     @FXML
     void sendButtonOnAction(ActionEvent event) {
         String message = sendTextField.getText();
@@ -136,6 +144,7 @@ public class PublicLobbyController implements Initializable {
     public void displayWCHTmsg(String message) {
         displayTextArea.appendText(message + "\n");
     }
+
     /**
      * message displayed a public chat message
      * @param message from server for public chat
@@ -144,20 +153,78 @@ public class PublicLobbyController implements Initializable {
         displayTextArea.appendText(message + "\n");
     }
 
-    public void addOpenGame() {
+    /**
+     * display open pendent game
+     * @param text game from server
+     */
+    public void addOpenGame(String text) {
+        OpenGame newGame = GuiParser.getOpenGame(text);
 
+        //look for game by name
+        int index = -1;
+        for (int i = 0; i < openGamesList.size(); i++) {
+            if (openGamesList.get(i).getName().equals(newGame.getName())) {
+                index = i;
+                break;
+            }
+        }
+        // suppose: if name exists, game exists;
+        // delete old version of openGame and add new version
+        if (index > -1) {
+            openGamesList.remove(index);
+        }
+        // add game
+        openGamesList.add(newGame);
     }
 
-    public void removeOpenGame() {
-
+    /**
+     * remove pendent game in lobby
+     * @param text the open game which should be replaced
+     */
+    public void removeOpenGame(String text) {
+        OpenGame openGame = GuiParser.getOpenGame(text);
+        int row = -1;
+        for (int i = 0; i < openGamesList.size(); i++) {
+            if (openGamesList.get(i).getName().equals(openGame.getName())) {
+                //System.out.println("remove me");
+                row = i;
+                break;
+            }
+        }
+        openGamesList.remove(row);
     }
 
-    public void addPlayer() {
-
+    /**
+     * display a player's name
+     * @param name name of player
+     */
+    public void addPlayer(String name) {
+        for (int i = 0; i < playersInPubList.size(); i++) {
+            if (playersInPubList.get(i).getPlayer().equals(name)) {
+                return;
+            }
+        }
+        playersInPubList.add(new Participant(name));
     }
+    /**
+     * removes a player from the playersInLobby list
+     * @param name displayed name
+     */
+    public void removePlayer(String name) {
+        try {
+            Participant participant = new Participant(name);
 
-    public void removePlayer() {
+            int row = -1;
+            for (int i = 0; i < playersInPubList.size(); i++) {
+                if (playersInPubList.get(i).getPlayer().equals(participant.getPlayer())) {
+                    row = i;
+                }
+            }
+            playersInPubList.remove(row);
 
+        } catch (Exception e) {
+            System.err.println(e.getCause().toString() + "tried to remove non existing player " + name);
+        }
     }
 
 
