@@ -349,7 +349,7 @@ public class RulesCheckHelper {
      * @param updateClient contains all the infos for the client to update the game
      */
     protected void updateGame(String nickname, String cardToEliminate, UpdateClient updateClient) {
-        //eliminate card
+        // eliminate card
         mainGame.getGameState().getCards().get(nickname).remove(cardToEliminate);
         updateClient.addCardToEliminate(cardToEliminate);
 

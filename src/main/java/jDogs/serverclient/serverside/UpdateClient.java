@@ -72,7 +72,7 @@ public class UpdateClient {
 
     /**
      * Gets the winner/s
-     * @return 1 or 2 names of winner/s
+     * @return 1 or 2 names of winner/s or null
      */
     public String getWinners() {
         return winners;

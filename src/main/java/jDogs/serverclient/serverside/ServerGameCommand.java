@@ -310,6 +310,12 @@ public class ServerGameCommand {
         // send new board state
         mainGame.sendMessageToParticipants("BORD");
         // check for winner
-        // TODO check for winners
+        if (mainGame.getGameState().checkForVictory()) {
+            String winners = mainGame.getGameState().getWinners();
+            if (winners != null) {
+                mainGame.sendMessageToParticipants("VICT " + winners);
+                Server.getInstance().storeGame(mainGame.getGameId(), winners);
+            }
+        }
     }
 }
