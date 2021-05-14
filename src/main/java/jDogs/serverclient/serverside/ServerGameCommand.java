@@ -49,13 +49,13 @@ public class ServerGameCommand {
 
         switch (command) {
             case "QUIT":
-                this.mainGame.sendMessageToParticipants("FAIL " + serverConnection.getNickname()
+                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                         + " left game session");
                 this.mainGame.delete();
                 break;
             case "EXIT":
                 //stop serverConnection
-                this.mainGame.sendMessageToParticipants("FAIL " + serverConnection.getNickname()
+                this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                         + " left game session");
                 this.mainGame.delete();
                 this.serverConnection.kill();

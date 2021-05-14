@@ -124,9 +124,13 @@ public class ClientGameCommand {
                 Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
                 break;
 
+            case "FAIL":
+                // TODO change with something usefull in GUI
+                // TODO change with protocol command
+                break;
+
             default:
                 System.err.println("Received unknow message from server: " + text);
         }
-
     }
 }
