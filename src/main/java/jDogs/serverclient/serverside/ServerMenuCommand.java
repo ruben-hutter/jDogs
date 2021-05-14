@@ -4,6 +4,8 @@ package jDogs.serverclient.serverside;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import java.util.Objects;
+
 
 /**
  * ServerMenuCommand contains the menu/lobby
@@ -42,14 +44,13 @@ public class ServerMenuCommand {
     public void execute(String text) {
         //execute commands
         logger.debug("Entered ServerMenuCommand with: " + text);
-        String command = text.substring(0, 4);
+        ServerMenuProtocol command = ServerMenuProtocol.toCommand(text.substring(0, 4));
         // do not receive any commands but USER before logged in
-        if (!loggedIn && !command.equals("USER")) {
+        if (!loggedIn) {
             serverConnection.sendToClient("INFO please log in first");
-
         } else {
-            switch (command) {
-                case "USER":
+            switch (Objects.requireNonNull(command)) {
+                case USER:
                     if (text.length() < 6) {
                         serverConnection.sendToClient("INFO No username entered");
                     } else {
@@ -93,7 +94,7 @@ public class ServerMenuCommand {
                     }
                     break;
 
-                case "ACTI":
+                case ACTI:
                     String list = "INFO all active Players ";
                     for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
@@ -103,19 +104,19 @@ public class ServerMenuCommand {
                     serverConnection.sendToClient(list);
                     break;
 
-                case "EXIT":
+                case EXIT:
                     serverConnection.sendToClient("INFO logout now");
                     logger.debug(serverConnection.getNickname() + " logged out");
                     serverConnection.kill();
                     break;
 
-                case "STAT":
+                case STAT:
                   for (SavedUser savedUser : Server.getInstance().getFinishGames()) {
                       serverConnection.sendToClient("STAT " + savedUser.getCSVString());
                   }
                     break;
 
-                case "WCHT":
+                case WCHT:
                     //send private message
                     int separator = -1;
                     for (int i = 0; i < text.substring(5).length(); i++) {
@@ -142,12 +143,12 @@ public class ServerMenuCommand {
                     }
                     break;
 
-                case "PCHT":
+                case PCHT:
                     // send to all in public lobby
                     serverConnection.sendToAll("PCHT " + "<" + nickName + ">" + text.substring(4));
                     break;
 
-                case "OGAM":
+                case OGAM:
                     //set new game up with this command
                     try {
                         setUpGame(text.substring(5));
@@ -158,18 +159,18 @@ public class ServerMenuCommand {
                     }
                     break;
 
-                case "SESS":
+                case SESS:
                     for (OpenGameFile openGameFile : Server.getInstance().getOpenGameList()) {
                             serverConnection.sendToClient(
                                     "OGAM " + openGameFile.getSendReady());
                     }
                     break;
 
-                case "LPUB":
+                case LPUB:
                     sendListOfPublicGuests();
                     break;
 
-                case "JOIN":
+                case JOIN:
                     //join a game with this command
                     try {
                         System.out.println("JOIN " + serverConnection.getNickname());

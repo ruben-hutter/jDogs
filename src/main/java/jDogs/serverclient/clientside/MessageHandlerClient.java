@@ -48,7 +48,7 @@ public class MessageHandlerClient implements Runnable{
         while (running) {
             if (!receiveQueue.isEmpty()) {
                 reply = receiveQueue.dequeue();
-                if (reply.length() >= 4 && ClientMenuProtocol.isACommand(reply.substring(0,4))) {
+                if (reply.length() >= 4 && ClientMenuProtocol.isACommand(reply.substring(0, 4))) {
                         clientMenuCommand.execute(reply);
                 } else {
                     if (reply.length() >= 4 && ClientGameProtocol
@@ -58,7 +58,6 @@ public class MessageHandlerClient implements Runnable{
                         System.out.println("message doesn't match Menu or GameProtocol: " + reply);
                     }
                 }
-
             } else {
                 try {
                     Thread.sleep(100);
@@ -67,7 +66,7 @@ public class MessageHandlerClient implements Runnable{
                 }
             }
         }
-        System.out.println(this.toString() + " stops now");
+        System.out.println(this + " stops now");
     }
 
     /**

@@ -1,5 +1,7 @@
 package jDogs.serverclient.clientside;
 
+import jDogs.serverclient.serverside.ServerGameProtocol;
+
 /**
  * this enum contains all words used as commands
  * received by the client and which deal with
@@ -59,7 +61,10 @@ public enum ClientGameProtocol {
     /**
      * Information about a winner or winning team
      */
-    VICT;
+    VICT,
+
+    // TODO delete this
+    STOP;
 
 
     /**
@@ -74,5 +79,19 @@ public enum ClientGameProtocol {
             }
         }
         return false;
+    }
+
+    /**
+     * Gives the protocol command for a given string command
+     * @param stringCommand the substring(0, 4) of a sent message
+     * @return an existing command or null
+     */
+    public static ClientGameProtocol toCommand(String stringCommand) {
+        for (ClientGameProtocol command : ClientGameProtocol.values()) {
+            if (command.equals(stringCommand)) {
+                return command;
+            }
+        }
+        return null;
     }
 }

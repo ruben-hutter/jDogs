@@ -9,6 +9,8 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 /**
  * ClientGameCommand contains the game
  * commands which are sent from the
@@ -36,7 +38,6 @@ public class ClientGameCommand {
         this.client = client;
         this.sendQueue = sendQueue;
         this.sendFromClient = sendFromClient;
-        this.sendQueue = sendQueue;
         this.keyBoardInQueue = keyBoardInQueue;
     }
 
@@ -45,10 +46,10 @@ public class ClientGameCommand {
      * @param text command and information
      */
     public void execute(String text) {
-        String command = text.substring(0,4);
-        switch(command) {
-            case "TURN":
-                if (text.length() == command.length()) {
+        ClientGameProtocol command = ClientGameProtocol.toCommand(text.substring(0, 4));
+        switch(Objects.requireNonNull(command)) {
+            case TURN:
+                if (text.length() == 4) {
                     Platform.runLater(() -> GUIManager.getInstance().
                             gameWindowController.setYourTurn(true));
                 } else {
@@ -62,19 +63,20 @@ public class ClientGameCommand {
                 }
                 break;
 
-            case "ROUN":
+            case ROUN:
                 clientGame.setCards(text.substring(5));
                 break;
 
-            case "CARD":
+            case CARD:
                 clientGame.remove(text.substring(5));
                 break;
+
             //TODO delete this
-            case "HAND":
+            case HAND:
                 clientGame.printCards();
                 break;
 
-            case "GAME":
+            case GAME:
                 //TODO receive game details when game starts and display in Game GUI
                 System.out.println(text);
                 clientGame = new ClientGame(GuiParser.getArray(text.substring(7)));
@@ -84,7 +86,7 @@ public class ClientGameCommand {
                 Platform.runLater(() -> GUIManager.getInstance().startGame(text.charAt(5) - 48));
                 break;
 
-            case "MOVE": // MOVE YELO-1 B20
+            case MOVE: // MOVE YELO-1 B20
                 System.out.println("cg command " + text);
                 String piece = text.substring(5, 9);
                 switch(piece) {
@@ -107,26 +109,25 @@ public class ClientGameCommand {
                 }
                 break;
 
-            case "JACK":
+            case JACK:
                 Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
                 break;
 
             // TODO delete this
-            case "BORD":
+            case BORD:
                 clientGame.printGameState();
                 break;
 
-            case "VICT":
+            case VICT:
                 Platform.runLater(() -> GUIManager.getInstance().gameWindowController.declareVictory(text.substring(5)));
                 break;
 
-            case "STOP":
+            case STOP:
                 Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
                 break;
 
             default:
                 System.err.println("Received unknow message from server: " + text);
         }
-
     }
 }

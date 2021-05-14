@@ -2,6 +2,8 @@ package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,15 +47,15 @@ public class ServerGameCommand {
      */
     public void execute(String text) {
         logger.debug("Entered ServerGameCommand with: " + text);
-        String command = text.substring(0, 4);
-
-        switch (command) {
-            case "QUIT":
+        ServerGameProtocol command = ServerGameProtocol.toCommand(text.substring(0, 4));
+        switch (Objects.requireNonNull(command)) {
+            case QUIT:
                 this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                         + " left game session");
                 this.mainGame.delete();
                 break;
-            case "EXIT":
+
+            case EXIT:
                 //stop serverConnection
                 this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                         + " left game session");
@@ -61,7 +63,7 @@ public class ServerGameCommand {
                 this.serverConnection.kill();
                 break;
 
-            case "MOVE":
+            case MOVE:
                 if (mainGame.getActualPlayer().equals(serverConnection.getNickname())
                         && mainGame.getPlayer(serverConnection.getNickname()).isAllowedToPlay()) {
                     // SURR
@@ -232,18 +234,21 @@ public class ServerGameCommand {
                     }
                 }
                 break;
-            case "CTTP":
+
+            case CTTP:
                 // TODO start CTTP
                 //change cards
                 break;
-            case "LCHT":
+
+            case LCHT:
                 //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
                 System.out.println("LCHT: " + text.substring(5));
                 mainGame.sendMessageToParticipants(
                         "LCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
                 break;
+
             //send message to everyone logged in, in lobby, separated or playing
-            case "PCHT":
+            case PCHT:
                 serverConnection.sendToAll("PCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
                 break;
         }

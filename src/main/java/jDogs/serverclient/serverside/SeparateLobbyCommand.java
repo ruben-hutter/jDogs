@@ -5,6 +5,8 @@ import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 /**
  * the instance of this class handles all messages that should be processed
  * if the user joined a game but it didn't start already, the users are waiting
@@ -33,12 +35,10 @@ public class SeparateLobbyCommand {
      */
     public void execute(String text) {
         logger.debug("Entered SeparateLobbyCommand with: " + text);
+        SeparateLobbyProtocol command = SeparateLobbyProtocol.toCommand(text.substring(0, 4));
+            switch (Objects.requireNonNull(command)) {
 
-        String command = text.substring(0, 4);
-
-            switch (command) {
-
-                case "WCHT":
+                case WCHT:
                     //send private message
                     String mess = text.substring(5);
                     int separator = -1;
@@ -73,27 +73,27 @@ public class SeparateLobbyCommand {
                     }
                     break;
 
-                case "LCHT":
+                case LCHT:
                     Server.getInstance().getOpenGameFile(openGameFileID).sendMessageToParticipants("LCHT " + "<" + nickname + "> " + text.substring(5));
                     break;
 
-                case "PCHT":
+                case PCHT:
                     //send message to everyone logged in, in lobby, separated or playing
                     serverConnection.sendToAll("PCHT " + "<" + nickname + "> " + text.substring(5));
                     break;
 
-                case "TEAM":
+                case TEAM:
                     Server.getInstance().getOpenGameFile(openGameFileID).changeTeam(text.substring(5));
                     break;
 
-                case "STAR":
+                case STAR:
                     // client confirms to start the game
                     if (Server.getInstance().getOpenGameFile(openGameFileID).readyToStart() && Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(nickname)) {
                         Server.getInstance().getOpenGameFile(openGameFileID).start();
                     }
                     break;
 
-                case "EXIT":
+                case EXIT:
                     Server.getInstance().getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO " + nickname + " left openGame session");
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
                         Server.getInstance().removeOpenGame(openGameFileID);
@@ -101,7 +101,7 @@ public class SeparateLobbyCommand {
                     this.serverConnection.kill();
                     break;
 
-                case "QUIT":
+                case QUIT:
 
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
                         Server.getInstance().removeOpenGame(openGameFileID);
@@ -110,13 +110,13 @@ public class SeparateLobbyCommand {
                     }
                     break;
 
-                case "STAT":
+                case STAT:
                     serverConnection.sendToClient(
                             "STAT " + "runningGames " + Server.getInstance().getRunningGames().size() +
                                     " finishedGames " + Server.getInstance().getFinishGames().size());
                     break;
 
-                case "ACTI":
+                case ACTI:
                     String list = "INFO all active Players ";
                     for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
                         list += "player # " + i + "\n";
@@ -126,7 +126,7 @@ public class SeparateLobbyCommand {
                     serverConnection.sendToClient(list);
                     break;
 
-                case "LPUB":
+                case LPUB:
                     for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers())
                         serverConnection.sendToClient("LPUB " + player.getPlayerName());
                     break;
