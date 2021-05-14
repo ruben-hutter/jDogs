@@ -51,8 +51,11 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.6.2'
     compile 'org.junit.jupiter:junit-jupiter:5.6.2'
 
-    //the following dependency is used to animate stuff
+    //the following dependency is used to animate stuff with AnimateFX
     implementation 'io.github.typhon0:AnimateFX:1.2.1'
+
+    // the following dependency for jfxtras- labs is is required for mouseDragging in javafx
+    implementation 'org.jfxtras:jfxtras-labs:9.0-r1'
 
     // GUAVA
     /*

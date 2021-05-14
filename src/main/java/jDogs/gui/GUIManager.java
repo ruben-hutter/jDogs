@@ -2,12 +2,19 @@ package jDogs.gui;
 
 
 import java.io.IOException;
+import java.util.List;
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * this class handles all the relation between gui and client
@@ -16,7 +23,7 @@ import javafx.stage.Stage;
 public class GUIManager extends Application {
     private Stage primaryStage;
     private static GUIManager instance;
-    FXMLLoader lobbyLoader;
+    private FXMLLoader lobbyLoader;
     public PublicLobbyController_old lobbyController;
     FXMLLoader gameLoader;
     private Client client;
@@ -24,6 +31,9 @@ public class GUIManager extends Application {
     private boolean isPlaying;
     private boolean teamMode;
     private LoginController loginController;
+    private SeparateLobbyController separateLobbyController;
+    private FXMLLoader separateLobbyLoader;
+    private Parent root;
 
     /**
      * start method
@@ -48,7 +58,8 @@ public class GUIManager extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-        setLoginScene();
+       // setLoginScene();
+        setSeparateLobbyScene();
 
     }
 
@@ -57,11 +68,10 @@ public class GUIManager extends Application {
      */
     private void setLoginScene() {
 
-
         // activate loginWindow
 
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/loginWindow.fxml"));
-        Parent root = null;
+        root = null;
         try {
             root = loginLoader.load();
         } catch (IOException e) {
@@ -74,19 +84,10 @@ public class GUIManager extends Application {
 
         primaryStage.setScene(loginScene);
 
-
         //shut down application by closing the window(works for all scenes)
         primaryStage.setOnCloseRequest(e-> System.exit(-1));
         primaryStage.show();
-
         loginController.startIntro();
-
-
-
-
-
-
-
     }
 
     /**
@@ -122,6 +123,28 @@ public class GUIManager extends Application {
         //get all open games from server
         client.sendMessageToServer("SESS");
         setLobbyScene();
+    }
+
+    /**
+     * start separate lobby after joining open game
+     */
+    public void setSeparateLobbyScene() {
+        // activate Window
+        separateLobbyLoader = new FXMLLoader(getClass().getResource("/separateLobby.fxml"));
+
+        root = null;
+        try {
+            root = separateLobbyLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene sepLobbyScene = new Scene(root);
+
+        separateLobbyController = separateLobbyLoader.getController();
+        // lobbyScene
+        //primaryStage.getScene().setRoot(root);
+        primaryStage.setScene(sepLobbyScene);
+        primaryStage.show();
     }
 
 
