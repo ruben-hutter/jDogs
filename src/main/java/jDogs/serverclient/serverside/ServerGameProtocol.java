@@ -56,6 +56,10 @@ public enum ServerGameProtocol {
      * Command to announce a the error in a move
      */
     FAIL,
+    /**
+     * Cheat command to move a piece where ever you want.
+     */
+    MOPS,
 
     // TODO check if necessary
     LCHT,

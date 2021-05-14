@@ -129,8 +129,7 @@ public class ClientGameCommand {
                     break;
 
                 case FAIL:
-                    // TODO change with something usefull in GUI
-                    // TODO change with protocol command
+                    // TODO change with something useful in GUI
                     break;
             }
         } catch (NullPointerException e) {

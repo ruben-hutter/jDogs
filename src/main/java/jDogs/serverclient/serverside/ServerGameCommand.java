@@ -235,6 +235,10 @@ public class ServerGameCommand {
                     }
                     break;
 
+                case MOPS:
+                    // TODO implement message to send to clients and update server state with cheat move
+                    break;
+
                 case CTTP:
                     // TODO start CTTP
                     //change cards
