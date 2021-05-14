@@ -36,6 +36,7 @@ public class SeparateLobbyCommand {
     public void execute(String text) {
         logger.debug("Entered SeparateLobbyCommand with: " + text);
         SeparateLobbyProtocol command = SeparateLobbyProtocol.toCommand(text.substring(0, 4));
+        try {
             switch (Objects.requireNonNull(command)) {
 
                 case WCHT:
@@ -137,7 +138,10 @@ public class SeparateLobbyCommand {
                     System.err.println("received unknown message in lobby from " + nickname);
                     System.err.println(text);
             }
+        } catch (NullPointerException e) {
+            System.err.println("Received unknown message from client: " + text);
         }
+    }
 
     /**
      * checks if name is in participants array

@@ -47,87 +47,88 @@ public class ClientGameCommand {
      */
     public void execute(String text) {
         ClientGameProtocol command = ClientGameProtocol.toCommand(text.substring(0, 4));
-        switch(Objects.requireNonNull(command)) {
-            case TURN:
-                if (text.length() == 4) {
-                    Platform.runLater(() -> GUIManager.getInstance().
-                            gameWindowController.setYourTurn(true));
-                } else {
-                    if (text.substring(5).equals(Client.getInstance().getNickname())) {
+        try {
+            switch (Objects.requireNonNull(command)) {
+                case TURN:
+                    if (text.length() == 4) {
                         Platform.runLater(() -> GUIManager.getInstance().
                                 gameWindowController.setYourTurn(true));
                     } else {
-                        Platform.runLater(() -> GUIManager.getInstance().
-                                gameWindowController.displayInfoFromServer(text));
+                        if (text.substring(5).equals(Client.getInstance().getNickname())) {
+                            Platform.runLater(() -> GUIManager.getInstance().
+                                    gameWindowController.setYourTurn(true));
+                        } else {
+                            Platform.runLater(() -> GUIManager.getInstance().
+                                    gameWindowController.displayInfoFromServer(text));
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case ROUN:
-                clientGame.setCards(text.substring(5));
-                break;
+                case ROUN:
+                    clientGame.setCards(text.substring(5));
+                    break;
 
-            case CARD:
-                clientGame.remove(text.substring(5));
-                break;
+                case CARD:
+                    clientGame.remove(text.substring(5));
+                    break;
 
-            //TODO delete this
-            case HAND:
-                clientGame.printCards();
-                break;
+                //TODO delete this
+                case HAND:
+                    clientGame.printCards();
+                    break;
 
-            case GAME:
-                //TODO receive game details when game starts and display in Game GUI
-                System.out.println(text);
-                clientGame = new ClientGame(GuiParser.getArray(text.substring(7)));
-                clientGame.printGameState();
+                case GAME:
+                    //TODO receive game details when game starts and display in Game GUI
+                    System.out.println(text);
+                    clientGame = new ClientGame(GuiParser.getArray(text.substring(7)));
+                    clientGame.printGameState();
 
-                //move to game-scene in gui manager and give 0 or 1 for teamMode or no
-                Platform.runLater(() -> GUIManager.getInstance().startGame(text.charAt(5) - 48));
-                break;
+                    //move to game-scene in gui manager and give 0 or 1 for teamMode or no
+                    Platform.runLater(() -> GUIManager.getInstance().startGame(text.charAt(5) - 48));
+                    break;
 
-            case MOVE: // MOVE YELO-1 B20
-                System.out.println("cg command " + text);
-                String piece = text.substring(5, 9);
-                switch(piece) {
-                    case "YELO":
-                        clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.YELLOW),
-                                Integer.parseInt(text.substring(10, 11)), text.substring(12));
-                        break;
-                    case "BLUE":
-                        clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.BLUE),
-                                Integer.parseInt(text.substring(10, 11)), text.substring(12));
-                        break;
-                    case "REDD":
-                        clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.RED),
-                                Integer.parseInt(text.substring(10, 11)), text.substring(12));
-                        break;
-                    case "GREN":
-                        clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.GREEN),
-                                Integer.parseInt(text.substring(10, 11)), text.substring(12));
-                        break;
-                }
-                break;
+                case MOVE: // MOVE YELO-1 B20
+                    System.out.println("cg command " + text);
+                    String piece = text.substring(5, 9);
+                    switch (piece) {
+                        case "YELO":
+                            clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.YELLOW),
+                                    Integer.parseInt(text.substring(10, 11)), text.substring(12));
+                            break;
+                        case "BLUE":
+                            clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.BLUE),
+                                    Integer.parseInt(text.substring(10, 11)), text.substring(12));
+                            break;
+                        case "REDD":
+                            clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.RED),
+                                    Integer.parseInt(text.substring(10, 11)), text.substring(12));
+                            break;
+                        case "GREN":
+                            clientGame.changePiecePosition(clientGame.getPlayer(Alliance_4.GREEN),
+                                    Integer.parseInt(text.substring(10, 11)), text.substring(12));
+                            break;
+                    }
+                    break;
 
-            case JACK:
-                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
-                break;
+                case JACK:
+                    Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
+                    break;
 
-            // TODO delete this
-            case BORD:
-                clientGame.printGameState();
-                break;
+                // TODO delete this
+                case BORD:
+                    clientGame.printGameState();
+                    break;
 
-            case VICT:
-                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.declareVictory(text.substring(5)));
-                break;
+                case VICT:
+                    Platform.runLater(() -> GUIManager.getInstance().gameWindowController.declareVictory(text.substring(5)));
+                    break;
 
-            case STOP:
-                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
-                break;
-
-            default:
-                System.err.println("Received unknow message from server: " + text);
+                case STOP:
+                    Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
+                    break;
+            }
+        } catch (NullPointerException e) {
+            System.err.println("Received unknown message from server: " + text);
         }
     }
 }
