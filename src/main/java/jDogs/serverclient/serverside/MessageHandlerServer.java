@@ -59,6 +59,7 @@ public class MessageHandlerServer implements Runnable {
             while (running) {
                     text = receivedFromClient.take();
                     if (text.length() >= 4) {
+                        System.err.println("text: " + text + " text lengh " + text.length());
                         switch (state) {
 
                             case "playing":

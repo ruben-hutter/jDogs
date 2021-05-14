@@ -33,22 +33,23 @@ public enum SeparateLobbyProtocol {
     /**
      * Command send to this player all fellow participants of separate lobby
      */
-    LPUB;
+    LPUB,
 
+    // TODO delete this
+    LCHT,
+    TEAM;
 
     /**
-     *
-     * @param text check if a string matches the list
-     * @return if matches, else does not match
+     * Gives the protocol command for a given string command
+     * @param stringCommand the substring(0, 4) of a sent message
+     * @return an existing command or null
      */
-    public static boolean isACommand(String text) {
-        for (ServerMenuProtocol command : ServerMenuProtocol.values()) {
-            if (command.toString().equals(text.substring(0, 4))) {
-                return true;
+    public static SeparateLobbyProtocol toCommand(String stringCommand) {
+        for (SeparateLobbyProtocol command : SeparateLobbyProtocol.values()) {
+            if (command.toString().equals(stringCommand)) {
+                return command;
             }
         }
-        return false;
+        return null;
     }
-
-
 }

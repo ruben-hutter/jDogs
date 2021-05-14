@@ -1,5 +1,7 @@
 package jDogs.serverclient.clientside;
 
+import jDogs.serverclient.serverside.ServerGameProtocol;
+
 /**
  * this enum contains all words used as commands
  * received by the client and which deal with
@@ -70,17 +72,12 @@ public enum ClientMenuProtocol {
      */
     INFO;
 
-
-
-    //HELP;
-
     /**
      *
      * @param text check if a string matches the list
      * @return true if matches, else does not match
      */
     public static boolean isACommand(String text) {
-        int i = 8;
         for (ClientMenuProtocol command : ClientMenuProtocol.values()) {
             if (command.toString().equals(text.substring(0, 4))) {
                 return true;
@@ -89,6 +86,17 @@ public enum ClientMenuProtocol {
         return false;
     }
 
-
-
+    /**
+     * Gives the protocol command for a given string command
+     * @param stringCommand the substring(0, 4) of a sent message
+     * @return an existing command or null
+     */
+    public static ClientMenuProtocol toCommand(String stringCommand) {
+        for (ClientMenuProtocol command : ClientMenuProtocol.values()) {
+            if (command.toString().equals(stringCommand)) {
+                return command;
+            }
+        }
+        return null;
+    }
 }

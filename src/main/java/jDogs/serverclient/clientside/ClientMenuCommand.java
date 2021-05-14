@@ -7,6 +7,8 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Objects;
+
 /**
  * ClientMenuCommand contains the menu/lobby
  * commands which are sent from the server to
@@ -33,7 +35,6 @@ public class ClientMenuCommand {
         this.client = client;
         this.sendQueue = sendQueue;
         this.sendFromClient = sendFromClient;
-        this.sendQueue = sendQueue;
         this.keyBoardInQueue = keyBoardInQueue;
     }
 
@@ -43,104 +44,102 @@ public class ClientMenuCommand {
      */
     public void execute (String text) {
         logger.debug("Entered ClientMenuCommand with: " + text);
-        String command = text.substring(0,4);
+        ClientMenuProtocol command = ClientMenuProtocol.toCommand(text.substring(0, 4));
+        try {
+            switch (command) {
+                case USER:
+                    String name;
+                    //case 1: Server wants a nickname, it sends "USER" only
+                    if (text.length() == 4) {
+                        name = client.getNickname();
+                        sendQueue.enqueue("USER " + name);
+                    } else {
+                        //case 2: Server confirms nickname, it sends "USER " + new nick
+                        name = text.substring(5);
+                        client.setNickname(name);
+                        sendFromClient.keyBoardInBlocked = false;
 
-        switch (command) {
-            case "USER":
-                String name;
+                        Platform.runLater(() -> GUIManager.getInstance().lobbyController.
+                                displayInfomsg("INFO from server. Your new nick is " + name));
+                        System.out.println("your new nick is " + name);
+                    }
+                    break;
 
-                //case 1: Server wants a nickname, it sends "USER" only
-                if (text.length() == command.length()) {
-                    name = client.getNickname();
-                    sendQueue.enqueue("USER " + name);
-                } else {
-                    //case 2: Server confirms nickname, it sends "USER " + new nick
-                    name = text.substring(5);
-                    client.setNickname(name);
-                    sendFromClient.keyBoardInBlocked = false;
+                case PCHT:
+                    System.out.println("PCHT: " + text.substring(4));
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().sendPCHTToGui(text.substring(5)));
+                    break;
 
-                    Platform.runLater(() -> GUIManager.getInstance().lobbyController.
-                            displayInfomsg("INFO from server. Your new nick is " + name));
+                case WCHT:
+                    System.out.println("WCHT: " + text.substring(5));
 
-                    System.out.println("your new nick is " + name);
-                }
-                break;
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
+                    break;
 
-            case "PCHT":
-                System.out.println("PCHT: " + text.substring(4));
-                Platform.runLater(()->
-                        GUIManager.getInstance().sendPCHTToGui(text.substring(5)));
-                break;
+                case LPUB:
+                    //just compare to existing String/Array and replace if necessary
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().lobbyController.displayPlayer(text.substring(5)));
 
-            case "WCHT":
-                System.out.println("WCHT: " + text.substring(5));
+                    System.out.println("LPUB: " + text.substring(5));
+                    break;
 
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
+                case LCHT:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().sendLCHTToGui(text.substring(5)));
 
-                break;
-            case "LPUB":
-                //just compare to existing String/Array and replace if necessary
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPlayer(text.substring(5)));
+                    System.out.println("LCHT " + text.substring(5));
+                    break;
 
-                System.out.println("LPUB: " + text.substring(5));
-                break;
+                case DPER:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().lobbyController.removePlayer(text.substring(5)));
+                    break;
 
-            case "LCHT":
-                Platform.runLater(()->
-                        GUIManager.getInstance().sendLCHTToGui(text.substring(5)));
+                case JOIN:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().lobbyController.goToSeparateLobby(text.substring(5)));
+                    System.out.println("start separate lobby");
+                    System.out.println("JOIN: " + text.substring(5));
+                    break;
 
-                System.out.println("LCHT " + text.substring(5));
-                break;
+                case OGAM:
+                    System.out.println("OGAM: " + text.substring(5));
 
-            case "DPER":
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.removePlayer(text.substring(5)));
-                break;
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
+                    break;
 
-            case "JOIN":
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.goToSeparateLobby(text.substring(5)));
+                case DOGA:
+                    //TODO remove openGame from GUI-Lobby-Display
+                    System.out.println("DOGA: " + text.substring(5));
 
-                System.out.println("start separate lobby");
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
+                    break;
 
-                System.out.println("JOIN: " + text.substring(5));
-                break;
+                case STAT:
+                    System.out.println("all Games " + text.substring(5));
+                    break;
 
-            case "OGAM":
-                System.out.println("OGAM: " + text.substring(5));
+                case INFO:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().sendINFOtoGui(text.substring(5)));
+                    System.out.println("SRVRINFO: " + text.substring(5));
+                    break;
 
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
-                break;
+                case STAR:
+                    GUIManager.getInstance().lobbyController.startGameConfirmation();
+                    break;
 
-            case "DOGA":
-                //TODO remove openGame from GUI-Lobby-Display
-                System.out.println("DOGA: " + text.substring(5));
-
-                Platform.runLater(()->
-                        GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
-                break;
-
-            case "STAT":
-                System.out.println("all Games " + text.substring(5));
-                break;
-
-            case "INFO":
-                Platform.runLater(()->
-                        GUIManager.getInstance().sendINFOtoGui(text.substring(5)));
-                System.out.println("SRVRINFO: " + text.substring(5));
-                break;
-
-            case "STAR":
-                GUIManager.getInstance().lobbyController.startGameConfirmation();
-                break;
-
-
-            default:
-                System.out.println("received from server " + text + ". This command " + command
-                        + " is not implemented");
+                default:
+                    System.out.println("received from server " + text + ". This command " + command
+                            + " is not implemented");
+            }
+        } catch (NullPointerException e) {
+            System.err.println("Received unknown message from server: " + text);
         }
     }
 }

@@ -51,21 +51,23 @@ public enum ServerGameProtocol {
     /**
      * Command to provide information to actualize the whole board.
      */
-    ANEW;
+    ANEW,
 
+    // TODO check if necessary
+    LCHT,
+    PCHT;
 
     /**
-     *
-     * @param text check if a string matches the list
-     * @return if matches, else does not match
+     * Gives the protocol command for a given string command
+     * @param stringCommand the substring(0, 4) of a sent message
+     * @return an existing command or null
      */
-    public static boolean isACommand(String text) {
+    public static ServerGameProtocol toCommand(String stringCommand) {
         for (ServerGameProtocol command : ServerGameProtocol.values()) {
-            if (command.toString().equals(text.substring(0, 4))) {
-                return true;
+            if (command.toString().equals(stringCommand)) {
+                return command;
             }
         }
-        return false;
+        return null;
     }
-
 }
