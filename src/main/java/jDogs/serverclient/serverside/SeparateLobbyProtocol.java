@@ -46,7 +46,7 @@ public enum SeparateLobbyProtocol {
      */
     public static SeparateLobbyProtocol toCommand(String stringCommand) {
         for (SeparateLobbyProtocol command : SeparateLobbyProtocol.values()) {
-            if (command.equals(stringCommand)) {
+            if (command.toString().equals(stringCommand)) {
                 return command;
             }
         }

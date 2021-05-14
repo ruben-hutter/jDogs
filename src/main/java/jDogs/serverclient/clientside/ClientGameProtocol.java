@@ -88,7 +88,7 @@ public enum ClientGameProtocol {
      */
     public static ClientGameProtocol toCommand(String stringCommand) {
         for (ClientGameProtocol command : ClientGameProtocol.values()) {
-            if (command.equals(stringCommand)) {
+            if (command.toString().equals(stringCommand)) {
                 return command;
             }
         }

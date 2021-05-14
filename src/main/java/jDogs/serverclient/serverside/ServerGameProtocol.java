@@ -64,7 +64,7 @@ public enum ServerGameProtocol {
      */
     public static ServerGameProtocol toCommand(String stringCommand) {
         for (ServerGameProtocol command : ServerGameProtocol.values()) {
-            if (command.equals(stringCommand)) {
+            if (command.toString().equals(stringCommand)) {
                 return command;
             }
         }
