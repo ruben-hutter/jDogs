@@ -60,8 +60,7 @@ public class GUIManager extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-       // setLoginScene();
-        setSeparateLobbyScene();
+        setLoginScene();
 
     }
 
@@ -291,18 +290,12 @@ public class GUIManager extends Application {
      * @param game information about the joined game
      */
     public void goToSeparateLobby(String game) {
+        System.out.println("Game " + game);
         state = "separateLobby";
         openGameInfo = GuiParser.getOpenGame(game);
         setSeparateLobbyScene();
     }
 
-    /**
-     * get all information of the game user joined
-     * @return openGame user joined
-     */
-    public OpenGame getOpenGameInfo() {
-        return openGameInfo;
-    }
 
     /**
      * display a pendent game in lobby

@@ -287,10 +287,7 @@ public class SeparateLobbyController implements Initializable{
         labels = new Label[4];
         int helper = 1;
         teamMode = false;
-        if (GUIManager.getInstance().getOpenGameInfo().getTeamMode().charAt(0) == '1') {
-            teamMode = true;
-        }
-
+//TODO import TEAM MODE here
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();
             label.setId("" + helper);
