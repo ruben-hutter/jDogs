@@ -121,7 +121,7 @@ public class ClientGameCommand {
                 break;
 
             case "STOP":
-                Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
+                Platform.runLater(() -> GUIManager.getInstance().returnToPubLobby());
                 break;
 
             default:

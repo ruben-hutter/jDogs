@@ -126,6 +126,14 @@ public class GUIManager extends Application {
     }
 
     /**
+     * this method is called to return to publicLobby
+     */
+    public void returnToPubLobby() {
+        client.sendMessageToServer("LPUB");
+        client.sendMessageToServer("SESS");
+    }
+
+    /**
      * start separate lobby after joining open game
      */
     public void setSeparateLobbyScene() {

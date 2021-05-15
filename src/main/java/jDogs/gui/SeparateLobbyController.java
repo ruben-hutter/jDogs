@@ -3,12 +3,15 @@ import animatefx.animation.AnimationFX;
 import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
+import jDogs.serverclient.clientside.Client;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -155,10 +158,46 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void quitButtonOnAction(ActionEvent event) {
+        Client.getInstance().sendMessageToServer("QUIT");
+        GUIManager.getInstance().returnToPubLobby();
     }
 
     @FXML
     void sendButtonOnAction(ActionEvent event) {
+        String message = sendTextField.getText();
+        sendTextField.clear();
+        if (message.isBlank() || message.isEmpty()) {
+            //Do nothing
+        } else {
+            if (message.charAt(0) == '@') {
+                String parsedMsg;
+                if ((parsedMsg = GuiParser.sendWcht(message.substring(1))) == null) {
+                    new Alert(AlertType.ERROR,
+                            "wrong Wcht format entered. E.g. '@nickname message' ");
+                } else {
+                    displayWCHTmsg(message);
+                    Client.getInstance().sendMessageToServer("WCHT " + parsedMsg);
+                }
+            } else {
+                Client.getInstance().sendMessageToServer("PCHT " + message);
+            }
+        }
+    }
+
+    /**
+     * message displayed as whisper chat message
+     * @param message whisper chat message
+     */
+    public void displayWCHTmsg(String message) {
+        displayTextArea.appendText(message + "\n");
+    }
+
+    /**
+     * message displayed as public chat message
+     * @param message public chat message
+     */
+    public void displayPCHTmsg(String message) {
+        displayTextArea.appendText(message + "\n");
     }
 
 
@@ -170,7 +209,6 @@ public class SeparateLobbyController implements Initializable{
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();
             label.setId("" + helper);
-            label.setText("hell " + helper);
             label.setVisible(true);
             gridSeparateLobby.getChildren().add(label);
             labels[helper - 1] = label;
@@ -181,7 +219,6 @@ public class SeparateLobbyController implements Initializable{
                 130.0, 200.0}, { 0.0, 0.0,
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
-
 
 
         setOnStartPosition();
