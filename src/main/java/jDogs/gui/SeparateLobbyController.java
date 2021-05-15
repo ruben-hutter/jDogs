@@ -1,19 +1,14 @@
 package jDogs.gui;
+import animatefx.animation.AnimationFX;
 import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import animatefx.animation.Flash;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PathTransition;
-import javafx.animation.PathTransition.OrientationType;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -21,11 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 
@@ -41,14 +32,6 @@ public class SeparateLobbyController implements Initializable{
     @FXML
     private ImageView imageView4;
 
-    @FXML
-    private Label label1;
-    @FXML
-    private Label label2;
-    @FXML
-    private Label label3;
-    @FXML
-    private Label label4;
 
     @FXML
     private TableView<?> tableViewPlayers;
@@ -67,58 +50,111 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     private MenuBar menuBarTop;
+
+    @FXML
+    GridPane gridSeparateLobby;
+
     private int count;
-    private Label[] continuousLabels;
-    private Label[] crossLabels;
-    private Double[][] crossLines;
-    private Double[][] continuousLines;
+    private Label[] labels;
+    private Double[][] lines;
+    private ImageView[] imageViews;
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
-
+        for (Label label : labels) {
+            System.out.println(label.toString() + label.getLayoutX() + " " +  label.getLayoutY());
+        }
     }
 
     @FXML
     void changeButtonOnAction(ActionEvent event) {
+        for (Label label : labels) {
+            System.out.println(label.getText() + " " + label.getLayoutX() + " " + label.getLayoutY());
+        }
         int helper = 0;
-        if (count % 2 == 0) {
-            for (Double[] line : crossLines) {
+        if (count % 2 == 1) {
+            changeCrossLabels();
+            for (Double[] line : lines) {
                 Polyline polyline = new Polyline();
                 polyline.getPoints().addAll(line
             );
 
             PathTransition pathTransition = new PathTransition();
             pathTransition.setCycleCount(1);
-            pathTransition.setDuration(Duration.seconds(5));
+            pathTransition.setDuration(Duration.seconds(3));
             pathTransition.setAutoReverse(true);
             pathTransition.setPath(polyline);
-            pathTransition.setNode(crossLabels[helper]);
-            helper++;
+            pathTransition.setNode(labels[helper]);
             pathTransition.play();
-        }
+                System.out.println("helper " + helper + " label " + labels[helper].getText());
+            labels[helper].setLayoutX(line[2]);
+            labels[helper].setLayoutY(line[3]);
+                helper++;
+
+            }
     } else {
-        for(Double[] line : continuousLines) {
+            changeContinuousLabels();
+            for(Double[] line : lines) {
             Polyline polyline = new Polyline();
             polyline.getPoints().addAll(line
             );
-
             PathTransition pathTransition = new PathTransition();
             pathTransition.setCycleCount(1);
-            pathTransition.setDuration(Duration.seconds(10));
+            pathTransition.setDuration(Duration.seconds(3));
             pathTransition.setAutoReverse(true);
             pathTransition.setPath(polyline);
-            pathTransition.setNode(continuousLabels[helper]);
-            helper++;
+            pathTransition.setNode(labels[helper]);
+            System.out.println(labels[helper].toString() +
+                    " pos x " + labels[helper].getLayoutX() + " y " +
+                    labels[helper].getLayoutY());
             pathTransition.play();
+            labels[helper].setLayoutX(line[2]);
+            labels[helper].setLayoutY(line[3]);
+            helper++;
         }
     }
+    startFlash();
     count++;
+    }
+
+    /**
+     * flash the labels
+     */
+    private void startFlash() {
+        for (Label label : labels) {
+            new Flash(label).setCycleCount(2).setDelay(Duration.seconds(3)).play();
+        }
+    }
+
+
+    private void changeCrossLabels() {
+        Label[] newLabels = new Label[4];
+        newLabels[0] = labels[0];
+        newLabels[1] = labels[2];
+        newLabels[2] = labels[1];
+        newLabels[3] = labels[3];
+        labels = newLabels;
+    }
+
+    /**
+     * updates the list after a continuous change of teams
+     */
+    private void changeContinuousLabels() {
+        Label[] newLabels = new Label[4];
+        int helper = 0;
+        for (int i = 3; i < labels.length; i++) {
+            newLabels[helper] = labels[i];
+            helper++;
+        }
+       for (int i = 0; i < labels.length - 1; i++) {
+           newLabels[helper] = labels[i];
+           helper++;
+       }
+       labels = newLabels;
     }
 
     @FXML
     void quitButtonOnAction(ActionEvent event) {
-
-
     }
 
     @FXML
@@ -129,51 +165,48 @@ public class SeparateLobbyController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         count = 0;
-        continuousLabels = new Label[] {label1, label2, label3, label4};
-        crossLabels = new Label[] {label1, label3, label2, label4};
-        continuousLines = new Double[][] {{10.0,10.0,23.5,155.0}, {10.0, 10.0,
-                277.0, 10.0}, { 10.0, 10.0,
-                23.0, -135.0}, { 10.0, 10.0,
-                -231.0, 10.0}};
-        crossLines = new Double[][] {
-                {10.0, 10.0,
-                        278.0, 155.0,},
-                {10.0, 10.0,
-                        -231.0, -136.0,},
-                {10.0, 10.0,
-                        277.3, -136.0},
-                {10.0, 10.0,
-                        -231.0, 155.0}
-        };
-
-    /*
-    //yellow to green
-                23.5, 10.0,
-                23.5, 155.0,
-
-                 //green to blue
-                24.2, 100.0,
-                277.0, 10.0,
-
-                   //blue to red
-               10.0, 70.0,
-                23.0, -135.0,
-
-                 //red to yellow
-               10.0, 10.0,
-                -30.0, 10.0,
-                -231.0, 10.0,
-     */
-
-    }
-    private Circle[] createCircles() {
-        Circle[] circles = new Circle[4];
-        int count = 0;
-        for (ColorFXEnum color : ColorFXEnum.values()) {
-            circles[count]= new Circle(RADIUS_CIRCLE,color.getColor());
-            count++;
+        labels = new Label[4];
+        int helper = 1;
+        for (int i = 0 ; i < 4; i++) {
+            Label label = new Label();
+            label.setId("" + helper);
+            label.setText("hell " + helper);
+            label.setVisible(true);
+            gridSeparateLobby.getChildren().add(label);
+            labels[helper - 1] = label;
+            helper++;
         }
-        return circles ;
+
+        lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
+                130.0, 200.0}, { 0.0, 0.0,
+                400.0, 200.0}, { 0.0, 0.0,
+                400.0, 0.0}};
+
+
+
+        setOnStartPosition();
+    }
+
+    /**
+     * sets the labels on start position
+     */
+    private void setOnStartPosition() {
+        int helper = 0;
+        for(Double[] line : lines) {
+            Polyline polyline = new Polyline();
+            polyline.getPoints().addAll(line
+            );
+            PathTransition pathTransition = new PathTransition();
+            pathTransition.setCycleCount(1);
+            pathTransition.setDuration(Duration.seconds(3));
+            pathTransition.setAutoReverse(false);
+            pathTransition.setPath(polyline);
+            pathTransition.setNode(labels[helper]);
+            pathTransition.play();
+            labels[helper].setLayoutX(line[2]);
+            labels[helper].setLayoutY(line[3]);
+            helper++;
+        }
     }
 }
 
