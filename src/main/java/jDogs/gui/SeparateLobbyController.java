@@ -3,6 +3,7 @@ import animatefx.animation.AnimationFX;
 import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
+import animatefx.animation.SlideOutDown;
 import jDogs.serverclient.clientside.Client;
 import java.net.URL;
 import java.util.ArrayList;
@@ -266,8 +267,19 @@ public class SeparateLobbyController implements Initializable{
      * @param user
      */
     public void addPlayer(String user) {
-        namesList.add(user);
-        labels[namesList.size()].setText(user);
+        int mode = 0;
+        // avoid duplicates for any reason
+        for (String name : namesList) {
+            if(name.equals(user)) {
+                mode = -1;
+                System.out.println("attention duplicate " + user);
+                break;
+            }
+        }
+        if (mode == 0) {
+            namesList.add(user);
+            labels[namesList.size()].setText(user);
+        }
     }
 
     /**
@@ -278,7 +290,6 @@ public class SeparateLobbyController implements Initializable{
         labels[namesList.size()].setText("open");
         namesList.remove(user);
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

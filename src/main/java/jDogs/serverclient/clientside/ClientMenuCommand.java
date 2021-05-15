@@ -97,10 +97,8 @@ public class ClientMenuCommand {
                     break;
 
                 case JOIN:
-                    /*Platform.runLater(() ->
+                    Platform.runLater(() ->
                             GUIManager.getInstance().goToSeparateLobby(text.substring(5)));
-
-                     */
                     Client.getInstance().sendMessageToServer("LPUB");
                     break;
 

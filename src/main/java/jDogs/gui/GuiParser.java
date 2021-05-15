@@ -68,8 +68,6 @@ public class GuiParser {
         } else {
             teamMode = "no";
         }
-
-
         return new OpenGame(id,responsible,sum,needed,teamMode);
     }
 
