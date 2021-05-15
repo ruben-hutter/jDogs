@@ -184,18 +184,13 @@ public class Server {
      * removes the openGame from the list
      * @param openGameFile object that represents a game lobby
      */
-    public void removeGame(OpenGameFile openGameFile) {
-        System.out.println("remove game method on server entered");
-        if (openGameFile.isPendent()) {
-            sendMessageToAll("DOGA " + openGameFile.getSendReady());
-        } else {
-            //Server.getInstance().finishedGames.add(gameFile);
+    public void removeOpenGame(OpenGameFile openGameFile) {
+      sendMessageToPublic("DOGA " + openGameFile.getSendReady(), 0);
+
             for (Player player : openGameFile.getPlayers()) {
                 player.getServerConnection().getMessageHandlerServer().returnToLobby();
             }
-            System.out.println("INFO game finished");
-        }
-        System.out.println("got removed");
+
         MainGame mainGame;
         if ((mainGame = getRunningGame(openGameFile.getNameId())) != null) {
             runningGames.remove(mainGame);
@@ -210,6 +205,25 @@ public class Server {
     public void sendMessageToAll(String message) {
         for (ServerConnection activeServerConnection1 : basicConnectionList) {
             activeServerConnection1.sendToClient(message);
+        }
+    }
+
+    /**
+     * send message to public guests
+     * try-catch: just continue with the next person in list, if an error occurs
+     * @param message message
+     * @param i the index number
+     */
+    public void sendMessageToPublic(String message, int i) {
+
+        try {
+            while (i < publicLobbyConnections.size()) {
+                publicLobbyConnections.get(i).sendToClient(message);
+                i++;
+            }
+        } catch (Exception e) {
+            i++;
+            sendMessageToPublic(message, i);
         }
     }
 

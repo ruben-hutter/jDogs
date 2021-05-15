@@ -55,31 +55,31 @@ public class OpenGameFile {
      * @param combination is a string with the team size, number of names transmitted and with the
      *                    names which should be together in a team
      */
-    public void changeTeam(String combination) {
-        //e.g. format of combination: "2 4 Gregor Ruben Johanna Joe"
-        // teams of two(2)
+    public boolean changeTeam(String combination) {
+        //e.g. format of combination: "4 Gregor Ruben Johanna Joe"
         // 4 names to parse(4)
         //Gregor - Ruben vs Johanna - Joe
-        int teamSize = combination.charAt(0) - 48;
-        int sizeNames = combination.charAt(2) - 48;
+        int sizeNames = combination.charAt(0) - 48;
 
         if (sizeNames == numberParticipants) {
             String[] array = parseNames(sizeNames, combination.substring(4));
             int teamID = 0;
             int count = 0;
-            while (teamID < sizeNames / teamSize) {
-                for (int i = 0; i < teamSize; i++) {
+            while (teamID < sizeNames / total) {
+                for (int i = 0; i < total; i++) {
                     getPlayer(array[count]).setTeamID(teamID);
                     count++;
                 }
                 teamID++;
             }
             orderByTeamId();
+            return true;
         } else {
             // do nothing
             System.out.println(numberParticipants);
             System.out.println(sizeNames);
             System.out.println("numPart and size names doesnt match");
+            return false;
         }
     }
 
@@ -176,7 +176,7 @@ public class OpenGameFile {
             if (pendent) {
                 numberParticipants--;
                 sendMessageToParticipants("DPER " + nickname);
-                Server.getInstance().sendMessageToAll("OGAM " + getSendReady());
+                Server.getInstance().sendMessageToPublic("OGAM " + getSendReady(), 0);
             } else {
                 // if serverConnection of a client stops while playing the server sends all clients back to public lobby
                 sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
@@ -317,17 +317,7 @@ public class OpenGameFile {
      * the game while playing
      */
     public void cancel() {
-        Server.getInstance().removeGame(this);
-    }
-
-    /**
-     * message to every active player in lobby, separate lobby or games
-     * @param message
-     */
-    private void sendMessageToAll(String message) {
-        for (ServerConnection serverConnection1 : Server.getInstance().getBasicConnections()) {
-            serverConnection1.sendToClient(message);
-        }
+        Server.getInstance().removeOpenGame(this);
     }
 
     /**

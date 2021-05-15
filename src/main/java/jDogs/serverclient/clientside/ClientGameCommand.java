@@ -125,7 +125,7 @@ public class ClientGameCommand {
                     break;
 
                 case STOP:
-                    Platform.runLater(() -> GUIManager.getInstance().gameWindowController.returnToLobby());
+                    Platform.runLater(() -> GUIManager.getInstance().returnToPubLobby());
                     break;
 
                 case FAIL:
@@ -135,5 +135,6 @@ public class ClientGameCommand {
         } catch (NullPointerException e) {
             System.err.println("Received unknown message from server: " + text);
         }
+
     }
 }

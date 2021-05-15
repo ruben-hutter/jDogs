@@ -122,11 +122,9 @@ public class CSVWriter {
             fileInputStream.close();
         } catch (IOException e) {
             System.out.println("could not load highScoreList.csv");
-            e.printStackTrace();
         } catch (NullPointerException e) {
             System.err.println("could not find highScoreList.csv");
             System.out.println("path " + FILEPATH);
-            e.printStackTrace();
         }
     }
 
