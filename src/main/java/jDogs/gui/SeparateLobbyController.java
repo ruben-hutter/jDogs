@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -40,30 +41,37 @@ public class SeparateLobbyController implements Initializable{
     @FXML
     private ImageView imageView4;
 
+    @FXML
+    private Label label1;
+    @FXML
+    private Label label2;
+    @FXML
+    private Label label3;
+    @FXML
+    private Label label4;
 
     @FXML
     private TableView<?> tableViewPlayers;
-
     @FXML
     private Button quitButton;
-
     @FXML
     private Button changeButton;
-
     @FXML
     private Button startButton;
-
     @FXML
     private TextArea displayTextArea;
-
     @FXML
     private TextField sendTextField;
-
     @FXML
     private Button sendButton;
 
     @FXML
     private MenuBar menuBarTop;
+    private int count;
+    private Label[] continuousLabels;
+    private Label[] crossLabels;
+    private Double[][] crossLines;
+    private Double[][] continuousLines;
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
@@ -72,29 +80,39 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void changeButtonOnAction(ActionEvent event) {
+        int helper = 0;
+        if (count % 2 == 0) {
+            for (Double[] line : crossLines) {
+                Polyline polyline = new Polyline();
+                polyline.getPoints().addAll(line
+            );
 
-        //TODO set labels with names and imageViews of 4 different colored dogs
-        //TODO and then let them move if team mode is chosen and 4 players are present
-        Polyline polyline = new Polyline();
-        polyline.getPoints().addAll(new Double[] {
-                 20.0, 20.0,
-                30.0, 30.0,
-                80.0, 80.0,
-                100.0, 100.0,
-                140.0, 200.0
-                });
+            PathTransition pathTransition = new PathTransition();
+            pathTransition.setCycleCount(1);
+            pathTransition.setDuration(Duration.seconds(5));
+            pathTransition.setAutoReverse(true);
+            pathTransition.setPath(polyline);
+            pathTransition.setNode(crossLabels[helper]);
+            helper++;
+            pathTransition.play();
+        }
+    } else {
+        for(Double[] line : continuousLines) {
+            Polyline polyline = new Polyline();
+            polyline.getPoints().addAll(line
+            );
 
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setCycleCount(3);
-        pathTransition.setDuration(Duration.seconds(1));
-        pathTransition.setAutoReverse(true);
-        pathTransition.setPath(polyline);
-        pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setNode(imageView1);
-        pathTransition.play();
-
-
-
+            PathTransition pathTransition = new PathTransition();
+            pathTransition.setCycleCount(1);
+            pathTransition.setDuration(Duration.seconds(10));
+            pathTransition.setAutoReverse(true);
+            pathTransition.setPath(polyline);
+            pathTransition.setNode(continuousLabels[helper]);
+            helper++;
+            pathTransition.play();
+        }
+    }
+    count++;
     }
 
     @FXML
@@ -110,32 +128,44 @@ public class SeparateLobbyController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Polyline polyline = new Polyline();
-        polyline.getPoints().addAll(new Double[] {
-        //yellow to green
-                65.0, 80.0,
-                65.0, 213.0,
-                60.0, 213.0,
-                70.0, 213.0,
-                65.0, 213.0,
+        count = 0;
+        continuousLabels = new Label[] {label1, label2, label3, label4};
+        crossLabels = new Label[] {label1, label3, label2, label4};
+        continuousLines = new Double[][] {{10.0,10.0,23.5,155.0}, {10.0, 10.0,
+                277.0, 10.0}, { 10.0, 10.0,
+                23.0, -135.0}, { 10.0, 10.0,
+                -231.0, 10.0}};
+        crossLines = new Double[][] {
+                {10.0, 10.0,
+                        278.0, 155.0,},
+                {10.0, 10.0,
+                        -231.0, -136.0,},
+                {10.0, 10.0,
+                        277.3, -136.0},
+                {10.0, 10.0,
+                        -231.0, 155.0}
+        };
 
-        });
+    /*
+    //yellow to green
+                23.5, 10.0,
+                23.5, 155.0,
 
+                 //green to blue
+                24.2, 100.0,
+                277.0, 10.0,
 
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setCycleCount(1);
-        pathTransition.setDuration(Duration.seconds(5));
-        pathTransition.setAutoReverse(true);
-        pathTransition.setPath(polyline);
-        pathTransition.setNode(imageView1);
-        pathTransition.play();
+                   //blue to red
+               10.0, 70.0,
+                23.0, -135.0,
 
-        //TODO green to blue
-        //TODO blue to red
-        //TODO red to yellow
+                 //red to yellow
+               10.0, 10.0,
+                -30.0, 10.0,
+                -231.0, 10.0,
+     */
+
     }
-
-
     private Circle[] createCircles() {
         Circle[] circles = new Circle[4];
         int count = 0;
