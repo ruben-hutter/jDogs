@@ -96,7 +96,6 @@ public class GUIManager extends Application {
      * sets up the lobby window
      */
     public void setLobbyScene() {
-        isPlaying = false;
 
         // activate Window
         lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow_old.fxml"));
@@ -117,6 +116,7 @@ public class GUIManager extends Application {
      * @param nickname name entered in the login window
      */
     public void goToLobby(String nickname) {
+        state = "publicLobby";
         client = new Client();
         client.setNickname(nickname);
         //get public lobby guests from server
@@ -131,6 +131,7 @@ public class GUIManager extends Application {
      * this method is called to return to publicLobby
      */
     public void returnToPubLobby() {
+        state = "publicLobby";
         client.sendMessageToServer("LPUB");
         client.sendMessageToServer("SESS");
     }
@@ -171,7 +172,7 @@ public class GUIManager extends Application {
      */
     public void startGame(int intTeamMode) {
         this.teamMode = intTeamMode == 1;
-        isPlaying = true;
+        state = "playing";
         setGameScene();
     }
 
@@ -290,6 +291,7 @@ public class GUIManager extends Application {
      * @param game information about the joined game
      */
     public void goToSeparateLobby(String game) {
+        state = "separateLobby";
         openGameInfo = GuiParser.getOpenGame(game);
         setSeparateLobbyScene();
     }
