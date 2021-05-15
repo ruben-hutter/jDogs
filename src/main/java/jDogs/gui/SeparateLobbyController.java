@@ -8,7 +8,6 @@ import jDogs.serverclient.clientside.Client;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.concurrent.ArrayBlockingQueue;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -120,6 +119,8 @@ public class SeparateLobbyController implements Initializable{
     }
     startFlash();
     count++;
+
+    //TODO send new combination to server
     }
 
     /**
@@ -191,8 +192,6 @@ public class SeparateLobbyController implements Initializable{
         }
         startFlash();
     }
-
-
 
     /**
      * this method updates the labels so that they correspond to the
@@ -336,6 +335,13 @@ public class SeparateLobbyController implements Initializable{
             labels[helper].setLayoutY(line[3]);
             helper++;
         }
+    }
+
+    /**
+     * display green start symbol on start button
+     */
+    public void displayStart() {
+        //TODO add this method
     }
 }
 

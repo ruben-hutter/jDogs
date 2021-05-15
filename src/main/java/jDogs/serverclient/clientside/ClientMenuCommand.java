@@ -132,7 +132,7 @@ public class ClientMenuCommand {
                                     displayChangedTeams(text.substring(5)));
 
                 case STAR:
-                    GUIManager.getInstance().lobbyController.startGameConfirmation();
+                    GUIManager.getInstance().getSeparateLobbyController().displayStart();
                     break;
 
                 default:
