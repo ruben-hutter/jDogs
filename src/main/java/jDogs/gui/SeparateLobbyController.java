@@ -129,7 +129,9 @@ public class SeparateLobbyController implements Initializable{
         }
     }
 
-
+    /**
+     * changes labels for a cross change of teams
+     */
     private void changeCrossLabels() {
         Label[] newLabels = new Label[4];
         newLabels[0] = labels[0];
@@ -154,6 +156,13 @@ public class SeparateLobbyController implements Initializable{
            helper++;
        }
        labels = newLabels;
+    }
+
+    /**
+     * displays new team combination
+     */
+    public void displayChangedTeams() {
+
     }
 
     @FXML
@@ -198,6 +207,13 @@ public class SeparateLobbyController implements Initializable{
      */
     public void displayPCHTmsg(String message) {
         displayTextArea.appendText(message + "\n");
+    }
+
+    /**
+     * display a new player who joined open game
+     */
+    public void addPlayer() {
+
     }
 
 
