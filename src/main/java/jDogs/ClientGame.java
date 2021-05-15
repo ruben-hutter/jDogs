@@ -165,6 +165,11 @@ public class ClientGame {
                 gameWindowController.setHand(cardsArray));
     }
 
+    /**
+     * this method creates an ArrayList with the given cards
+     * @param text the cards
+     * @return the cards in an ArrayList
+     */
     //String hand = number + " ACEE ACEE TENN TWOO EIGT NINE";
     private ArrayList<String> getCardsArray(String text) {
 
@@ -202,15 +207,26 @@ public class ClientGame {
                 gameWindowController.removeCard(card));
     }
 
+    /**
+     * returns the number of players
+     * @return number of players
+     */
     public int getNumPlayers() {
         return players.length;
     }
 
-
+    /**
+     * returns the names of the players
+     * @return the name of the players
+     */
     public String[] getPlayerNames() {
         return playerNames;
     }
 
+    /**
+     * returns the number of the player
+     * @return the player nr or -1
+     */
     public int getYourPlayerNr() {
         int count = 0;
         for (String playerName : playerNames) {

@@ -93,6 +93,11 @@ public class CardUrl {
         return cardURL;
     }
 
+    /**
+     * returns the name of the card
+     * @param number number of the card
+     * @return card as String
+     */
     public static String getCardNameByNumber(int number) {
         String[] card = new String[14];
 
