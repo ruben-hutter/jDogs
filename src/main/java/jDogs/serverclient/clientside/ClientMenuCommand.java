@@ -127,8 +127,12 @@ public class ClientMenuCommand {
                 case INFO:
                     Platform.runLater(() ->
                             GUIManager.getInstance().sendINFOtoGui(text.substring(5)));
-                    System.out.println("SRVRINFO: " + text.substring(5));
                     break;
+
+                case TEAM:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().getSeparateLobbyController().
+                                    displayChangedTeams(text.substring(5)));
 
                 case STAR:
                     GUIManager.getInstance().lobbyController.startGameConfirmation();

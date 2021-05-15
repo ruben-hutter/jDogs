@@ -25,7 +25,7 @@ public class GUIManager extends Application {
     private static GUIManager instance;
     private FXMLLoader lobbyLoader;
     public PublicLobbyController_old lobbyController;
-    FXMLLoader gameLoader;
+    private FXMLLoader gameLoader;
     private Client client;
     public GameWindowController gameWindowController;
     private boolean isPlaying;
@@ -153,6 +153,14 @@ public class GUIManager extends Application {
         //primaryStage.getScene().setRoot(root);
         primaryStage.setScene(sepLobbyScene);
         primaryStage.show();
+    }
+
+    /**
+     * get separate lobby controller
+     * @return instance of separate lobby controller
+     */
+    public SeparateLobbyController getSeparateLobbyController() {
+        return separateLobbyController;
     }
 
     /**

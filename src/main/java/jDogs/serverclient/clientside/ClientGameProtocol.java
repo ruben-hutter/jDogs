@@ -63,8 +63,9 @@ public enum ClientGameProtocol {
      * Information about the error in the executed move
      */
     FAIL,
-
-    // TODO delete this
+    /**
+     * tell client to return to lobby from game
+     */
     STOP;
 
 

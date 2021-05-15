@@ -91,25 +91,25 @@ public class GuiParser {
 
     /**
      * a method to parse strings received in one long string
-     * @param activeUsers is an array sent from server to parse,
+     * @param usersString is an array sent from server to parse,
      *                   usually contains usernames
      * @return an Array with the Strings which were sent
      */
-    public static String[] getArray(String activeUsers) {
+    public static String[] getArray(String usersString) {
         // activeUsers String contains at the first place: the number of nicknames in String
-        // e.g. "3;Joe;Jonas;John"
+        // e.g. "3 Joe^Jonas John"
 
-        String[] array = new String[activeUsers.charAt(0) - 48];
+        String[] array = new String[usersString.charAt(0) - 48];
         int arrayCount = 0;
         int first = 2;
-        for (int i = 2; i < activeUsers.length(); i++) {
-            if(activeUsers.charAt(i) == ' ') {
-                array[arrayCount] = activeUsers.substring(first,i);
+        for (int i = 2; i < usersString.length(); i++) {
+            if(Character.isWhitespace(usersString.charAt(i))) {
+                array[arrayCount] = usersString.substring(first,i);
                 arrayCount++;
                 first = i + 1;
             }
         }
-        array[arrayCount - 1] = activeUsers.substring(first);
+        array[arrayCount - 1] = usersString.substring(first);
         return array;
     }
 

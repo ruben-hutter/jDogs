@@ -14,8 +14,8 @@ public enum ClientMenuProtocol {
      */
     USER,
     /**
-     * Command to leave game or pendent game
-     * ,because game terminated or pendent game was deleted by host
+     * Command to leave open game
+     * because pendent game was deleted by host
      */
     QUIT,
     /**
@@ -55,6 +55,10 @@ public enum ClientMenuProtocol {
      * e.g. "LPUB username"
      */
     LPUB,
+    /**
+     * display new team combination
+     */
+    TEAM,
     /**
      * A new OpenGame to display is sent
      */

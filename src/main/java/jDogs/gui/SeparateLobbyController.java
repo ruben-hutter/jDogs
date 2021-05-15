@@ -71,9 +71,6 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void changeButtonOnAction(ActionEvent event) {
-        for (Label label : labels) {
-            System.out.println(label.getText() + " " + label.getLayoutX() + " " + label.getLayoutY());
-        }
         int helper = 0;
         if (count % 2 == 1) {
             changeCrossLabels();
@@ -161,8 +158,59 @@ public class SeparateLobbyController implements Initializable{
     /**
      * displays new team combination
      */
-    public void displayChangedTeams() {
+    public void displayChangedTeams(String teamCombo) {
+        String[] names = GuiParser.getArray(teamCombo);
+        adaptLabelsToNames(names);
+        displayReceivedTeams();
+    }
 
+    /**
+     * displays the received team combination
+     */
+    private void displayReceivedTeams() {
+        int helper = 0;
+        for(Double[] line : lines) {
+            Polyline polyline = new Polyline();
+            polyline.getPoints().addAll(line
+            );
+            PathTransition pathTransition = new PathTransition();
+            pathTransition.setCycleCount(1);
+            pathTransition.setDuration(Duration.seconds(3));
+            pathTransition.setAutoReverse(true);
+            pathTransition.setPath(polyline);
+            pathTransition.setNode(labels[helper]);
+            pathTransition.play();
+            labels[helper].setLayoutX(line[2]);
+            labels[helper].setLayoutY(line[3]);
+            helper++;
+        }
+        startFlash();
+    }
+
+
+
+    /**
+     * this method updates the labels so that they correspond to the
+     * new team combination
+     * @param names new team combination
+     */
+    private void adaptLabelsToNames(String[] names) {
+        Label[] newLabels = new Label[names.length];
+        int helper;
+        int helper2 = 0;
+        for (String name : names) {
+            helper = 0;
+            for (Label label : labels) {
+                if (label.getText().equals(name)) {
+                    break;
+                }
+                helper++;
+            }
+            System.out.println("label " + labels[helper].getText());
+            newLabels[helper2] = labels[helper];
+            helper2++;
+        }
+        labels = newLabels;
     }
 
     @FXML
