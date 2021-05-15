@@ -62,7 +62,7 @@ public class OpenGameFile {
         int sizeNames = combination.charAt(0) - 48;
 
         if (sizeNames == numberParticipants) {
-            String[] array = parseNames(sizeNames, combination.substring(4));
+            String[] array = parseNames(sizeNames, combination.substring(2));
             int teamID = 0;
             int count = 0;
             while (teamID < sizeNames / total) {
@@ -147,6 +147,7 @@ public class OpenGameFile {
      * @param serverConnection the object that handles the connection to the server
      */
     public synchronized void addParticipant(ServerConnection serverConnection) {
+        System.out.println("ADDED  sc " + serverConnection.getNickname());
         if (numberParticipants < total) {
             players.add(new Player(serverConnection.getNickname(), serverConnection));
             numberParticipants++;
@@ -221,7 +222,8 @@ public class OpenGameFile {
             }
         }
         if (teamsIncomplete) {
-            changeTeam("2 " + numberParticipants + " " + getParticipants());
+            System.out.println("numberParticipants " + numberParticipants);
+            changeTeam(numberParticipants + " " + getParticipants());
         }
     }
 
