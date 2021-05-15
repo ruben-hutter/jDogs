@@ -7,8 +7,6 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
-
 /**
  * ClientMenuCommand contains the menu/lobby
  * commands which are sent from the server to
@@ -75,13 +73,13 @@ public class ClientMenuCommand {
                     System.out.println("WCHT: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().lobbyController.displayWCHTmsg(text.substring(5)));
+                            GUIManager.getInstance().sendWCHTtoGui(text.substring(5)));
                     break;
 
                 case LPUB:
                     //just compare to existing String/Array and replace if necessary
                     Platform.runLater(() ->
-                            GUIManager.getInstance().lobbyController.displayPlayer(text.substring(5)));
+                            GUIManager.getInstance().displayPlayer(text.substring(5)));
 
                     System.out.println("LPUB: " + text.substring(5));
                     break;
@@ -95,21 +93,20 @@ public class ClientMenuCommand {
 
                 case DPER:
                     Platform.runLater(() ->
-                            GUIManager.getInstance().lobbyController.removePlayer(text.substring(5)));
+                            GUIManager.getInstance().removeUser(text.substring(5)));
                     break;
 
                 case JOIN:
                     Platform.runLater(() ->
-                            GUIManager.getInstance().lobbyController.goToSeparateLobby(text.substring(5)));
-                    System.out.println("start separate lobby");
-                    System.out.println("JOIN: " + text.substring(5));
+                            GUIManager.getInstance().goToSeparateLobby(text.substring(5)));
+                    Client.getInstance().sendMessageToServer("LPUB");
                     break;
 
                 case OGAM:
                     System.out.println("OGAM: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().lobbyController.displayPendentGameInLobby(text.substring(5)));
+                            GUIManager.getInstance().displayPendentGameInLobby(text.substring(5)));
                     break;
 
                 case DOGA:

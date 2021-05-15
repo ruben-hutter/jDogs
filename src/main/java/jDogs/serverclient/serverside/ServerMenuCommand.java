@@ -174,21 +174,14 @@ public class ServerMenuCommand {
                     case JOIN:
                         //join a game with this command
                         try {
-                            System.out.println("JOIN " + serverConnection.getNickname());
                             String openGameId = text.substring(5);
-                            System.out.println(0);
                             Server.getInstance().getOpenGameFile(openGameId)
                                     .addParticipant(serverConnection);
-                            System.out.println(1);
                             messageHandlerServer.setJoinedOpenGame(openGameId);
-                            System.out.println(2);
                             logger.debug("User " + nickName + " has joined game " + openGameId);
-                            serverConnection.sendToClient("JOIN " + openGameId);
-                            System.out.println(3);
-                            serverConnection.sendToAll("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
+                            serverConnection.sendToClient("JOIN " + Server.getInstance().getOpenGameFile(openGameId));
+                            serverConnection.sendToPub("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
                                     .getSendReady());
-                            System.out.println(4);
-                            System.out.println("openGameFile " + " openGameID " + openGameId + " " + Server.getInstance().getOpenGameFile(openGameId).readyToStart());
                             // all required players are set, then send start request to host
                             if (Server.getInstance().getOpenGameFile(openGameId).readyToStart()) {
                                 Server.getInstance().getOpenGameFile(openGameId)

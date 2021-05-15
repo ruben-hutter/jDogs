@@ -5,7 +5,9 @@ import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.ArrayBlockingQueue;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,6 +63,8 @@ public class SeparateLobbyController implements Initializable{
     private Label[] labels;
     private Double[][] lines;
     private ImageView[] imageViews;
+    private boolean teamMode;
+    private ArrayList<String> namesList;
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
@@ -259,17 +263,34 @@ public class SeparateLobbyController implements Initializable{
 
     /**
      * display a new player who joined open game
+     * @param user
      */
-    public void addPlayer() {
+    public void addPlayer(String user) {
+        namesList.add(user);
+        labels[namesList.size()].setText(user);
+    }
 
+    /**
+     * remove a user from this open game
+     * @param user name
+     */
+    public void removePlayer(String user) {
+        labels[namesList.size()].setText("open");
+        namesList.remove(user);
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        namesList = new ArrayList<>();
         count = 0;
         labels = new Label[4];
         int helper = 1;
+        teamMode = false;
+        if (GUIManager.getInstance().getOpenGameInfo().getTeamMode().charAt(0) == '1') {
+            teamMode = true;
+        }
+
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();
             label.setId("" + helper);
@@ -283,7 +304,6 @@ public class SeparateLobbyController implements Initializable{
                 130.0, 200.0}, { 0.0, 0.0,
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
-
 
         setOnStartPosition();
     }

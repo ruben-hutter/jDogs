@@ -34,6 +34,8 @@ public class GUIManager extends Application {
     private SeparateLobbyController separateLobbyController;
     private FXMLLoader separateLobbyLoader;
     private Parent root;
+    private String state;
+    private OpenGame openGameInfo;
 
     /**
      * start method
@@ -216,10 +218,14 @@ public class GUIManager extends Application {
      * @param message from participants
      */
     public void sendLCHTToGui (String message) {
-        if (isPlaying) {
-            gameWindowController.displayLCHTmsg (message);
-        } else {
-            lobbyController.displayPCHTmsg (message);
+        switch(state) {
+            case "playing":
+                gameWindowController.displayLCHTmsg(message);
+                break;
+            case "separateLobby":
+                separateLobbyController.displayPCHTmsg(message);
+            case "publicLobby":
+                lobbyController.displayLCHTmsg(message);
         }
     }
 
@@ -233,5 +239,74 @@ public class GUIManager extends Application {
         } else {
             lobbyController.displayInfomsg(info);
         }
+    }
+
+    /**
+     * display WCHT message in gui
+     * @param message message
+     */
+    public void sendWCHTtoGui(String message) {
+        switch(state) {
+            case "separateLobby":
+                separateLobbyController.displayWCHTmsg(message);
+                break;
+            case "publicLobby":
+                lobbyController.displayWCHTmsg(message);
+                break;
+        }
+    }
+    /**
+     * remove a user from public lobby or separate lobby
+     * @param userName user name
+     */
+    public void removeUser(String userName) {
+        switch(state) {
+            case "separateLobby":
+                separateLobbyController.removePlayer(userName);
+                break;
+            case "publicLobby":
+                lobbyController.removePlayer(userName);
+                break;
+        }
+    }
+
+    /**
+     * displays a user
+     * @param user name of user
+     */
+    public void displayPlayer(String user) {
+        switch(state) {
+            case "separateLobby":
+                separateLobbyController.addPlayer(user);
+                break;
+            case "publicLobby":
+                lobbyController.displayPlayer(user);
+                break;
+        }
+    }
+
+    /**
+     * start separate lobby
+     * @param game information about the joined game
+     */
+    public void goToSeparateLobby(String game) {
+        openGameInfo = GuiParser.getOpenGame(game);
+        setSeparateLobbyScene();
+    }
+
+    /**
+     * get all information of the game user joined
+     * @return openGame user joined
+     */
+    public OpenGame getOpenGameInfo() {
+        return openGameInfo;
+    }
+
+    /**
+     * display a pendent game in lobby
+     * @param openGameString string with openGame information
+     */
+    public void displayPendentGameInLobby(String openGameString) {
+        lobbyController.displayPendentGameInLobby(openGameString);
     }
 }
