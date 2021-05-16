@@ -19,7 +19,6 @@ public class MainGame {
     private int numbDealOut;
     private ArrayList<String> deck;
     private final Random random = new Random();
-    private ArrayList<Player> players;
     private final Player[] playersArray;
     private static final Logger logger = LogManager.getLogger(MainGame.class);
     private int numberOfRounds;
@@ -37,6 +36,9 @@ public class MainGame {
         this.playersArray = playersArray;
         this.gameState = new GameState(this);
         this.nameID = nameID;
+        for (Player player : playersArray) {
+            System.out.println("player " + player.getPlayerName());
+        }
     }
 
     /**

@@ -95,7 +95,7 @@ public class GuiParser {
      */
     public static String[] getArray(String usersString) {
         // activeUsers String contains at the first place: the number of nicknames in String
-        // e.g. "3 Joe^Jonas John"
+        // e.g. "3 Joe Jonas John"
 
         String[] array = new String[usersString.charAt(0) - 48];
         int arrayCount = 0;
@@ -110,6 +110,15 @@ public class GuiParser {
         }
         array[arrayCount] = usersString.substring(first);
         return array;
+    }
+
+    public static void main(String[] args) {
+        //TODO GAME SENDS A WRONG ARRAY
+        String game = "GAME 1 4 SDDD greG2 greg greG greG";
+        String gameString ="2 Greg gregor";
+        for (String name : getArray(gameString)) {
+            System.out.println("name " + name);
+        }
     }
 
 

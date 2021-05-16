@@ -158,10 +158,11 @@ public class Server {
                 openGameFile.isTeamMode());
         // add running game
         runningGames.add(mainGame);
-        // remove open game file
-        removeOpenGame(openGameFile.getNameId());
         //add name
         allGamesNotFinishedNames.add(openGameFile.getNameId());
+        // remove open game file
+        removeOpenGame(openGameFile.getNameId());
+
         mainGame.start();
     }
 

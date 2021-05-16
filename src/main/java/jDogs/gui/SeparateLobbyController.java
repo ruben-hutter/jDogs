@@ -1,10 +1,16 @@
 package jDogs.gui;
+import animatefx.animation.BounceIn;
+import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,7 +26,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class SeparateLobbyController implements Initializable{
@@ -69,7 +78,8 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
-
+        Client.getInstance().sendMessageToServer("STAR");
+        new FadeIn(startButton).setCycleCount(3).play();
     }
 
     @FXML
@@ -141,35 +151,6 @@ public class SeparateLobbyController implements Initializable{
         for (Label label : labels) {
             new Flash(label).setCycleCount(1).setDelay(Duration.seconds(3)).play();
         }
-    }
-
-    /**
-     * changes labels for a cross change of teams
-     */
-    private void changeCrossLabels() {
-        Label[] newLabels = new Label[4];
-        newLabels[0] = labels[0];
-        newLabels[1] = labels[2];
-        newLabels[2] = labels[1];
-        newLabels[3] = labels[3];
-        labels = newLabels;
-    }
-
-    /**
-     * updates the list after a continuous change of teams
-     */
-    private void changeContinuousLabels() {
-        Label[] newLabels = new Label[4];
-        int helper = 0;
-        for (int i = 3; i < labels.length; i++) {
-            newLabels[helper] = labels[i];
-            helper++;
-        }
-       for (int i = 0; i < labels.length - 1; i++) {
-           newLabels[helper] = labels[i];
-           helper++;
-       }
-       labels = newLabels;
     }
 
     /**
@@ -337,10 +318,30 @@ public class SeparateLobbyController implements Initializable{
     }
 
     /**
-     * display green start symbol on start button
+     * display bouncing and then green start symbol on start button
      */
     public void displayStart() {
-        //TODO add this method
+        new BounceIn(startButton).setCycleCount(3).play();
+
+        final Rectangle rotatingRect = new Rectangle(5,5,10,6);
+        rotatingRect.setFill(Color.GREEN);
+
+        final Pane rectHolder = new Pane();
+        rectHolder.setMinSize(20, 16);
+        rectHolder.setPrefSize(20, 16);
+        rectHolder.setMaxSize(20, 16);
+        rectHolder.getChildren().add(rotatingRect);
+
+        final RotateTransition rotate = new RotateTransition(Duration.seconds(4), rotatingRect);
+        rotate.setByAngle(360);
+        rotate.setCycleCount(Animation.INDEFINITE);
+        rotate.setInterpolator(Interpolator.LINEAR);
+        Platform.runLater(
+                () -> {
+                    startButton.setGraphic(rectHolder);
+                });
+
+        rotate.play();
     }
 }
 

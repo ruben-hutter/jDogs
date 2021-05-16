@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
@@ -89,7 +90,8 @@ public class OpenGameFile {
             getPlayer(array[count]).setTeamID(teamID1);
             newPlayersArray.add(getPlayer(array[count]));
             System.out.println("player " + count + " name " + array[count]);
-
+            System.out.println("players.length " + players.size());
+            System.out.println("newPlARR " + newPlayersArray.size());
             players = newPlayersArray;
             System.out.println("get Participants " + getParticipants());
             sendMessageToParticipants("TEAM 4 " + getParticipants());
@@ -174,7 +176,6 @@ public class OpenGameFile {
             players.add(new Player(serverConnection.getNickname(), serverConnection));
             numberParticipants++;
 
-
             serverConnection.sendToClient("JOIN " + getSendReady());
             serverConnection.sendToClient("PLAR " + numberParticipants + " " + getParticipants());
             sendMessageToParticipants("PLYR " + serverConnection.getNickname());
@@ -183,7 +184,6 @@ public class OpenGameFile {
             }
             if (teamMode == 1 && readyToStart()) {
                 checkForTeams();
-                OrderArrayListToPlayGame();
                 // get players arraylist in definitive order
             }
         } else {
@@ -320,6 +320,7 @@ public class OpenGameFile {
      * that the game can be started now
      */
     public void sendConfirmationMessage() {
+        System.out.println("HOST is " + host);
         getPlayer(host).sendMessageToClient("STAR");
     }
 
@@ -367,9 +368,11 @@ public class OpenGameFile {
      */
     public Player[] getPlayersArray() {
         Player[] array = new Player[players.size()];
+        System.out.println("PLAYERS ARRAY size " + players.size());
         int count = 0;
         for (Player player : players) {
             array[count] = player;
+            System.out.println("array " + count + " " + array[count]);
             count++;
         }
         return array;

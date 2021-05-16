@@ -141,18 +141,16 @@ public class ClientMenuCommand {
                     Platform.runLater(() ->
                             GUIManager.getInstance().getSeparateLobbyController().
                                     displayChangedTeams(text.substring(5)));
-
-                case STAR:
-                    GUIManager.getInstance().getSeparateLobbyController().displayStart();
                     break;
 
-                default:
-                    System.out.println("received from server " + text + ". This command " + command
-                            + " is not implemented");
+                case STAR:
+                    System.out.println(Client.getInstance().getNickname() + " received: " + text);
+                    GUIManager.getInstance().getSeparateLobbyController().displayStart();
+                    break;
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
-            System.err.println("Received unknown message from server: " + text);
+            System.err.println("couldn`t process message from server: " + text);
         }
     }
 }
