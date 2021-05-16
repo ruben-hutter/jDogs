@@ -1,9 +1,5 @@
 package jDogs.gui;
-import animatefx.animation.AnimationFX;
-import animatefx.animation.BounceIn;
-import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
-import animatefx.animation.SlideOutDown;
 import jDogs.serverclient.clientside.Client;
 import java.net.URL;
 import java.util.ArrayList;
@@ -312,7 +308,7 @@ public class SeparateLobbyController implements Initializable{
      * display a new player who joined open game
      * @param user
      */
-    public void addPlayer(String user) {
+    public void addUser(String user) {
         int mode = 0;
         // avoid duplicates for any reason
         for (String name : namesList) {
@@ -325,12 +321,27 @@ public class SeparateLobbyController implements Initializable{
         if (mode == 0) {
             namesList.add(user);
             for (Label label : labels) {
-                if (!label.isVisible()) {
-                    label.setVisible(true);
+                if (label.getText().equals("open place")) {
+                    System.out.println("label text " + label.getText() + " id "  + label.getId());
                     label.setText(user);
+                    System.out.println("added user " + user);
                     break;
                 }
             }
+            adjustLabels();
+            setOnStartPosition();
+        }
+    }
+
+    private void adjustLabels() {
+        //TODO set up labels anew
+        for (int i = 0 ; i < 4; i++) {
+            Label label = new Label();
+            label.setId("" + helper);
+            label.setText("open place");
+            gridSeparateLobby.getChildren().add(label);
+            labels[helper - 1] = label;
+            helper++;
         }
     }
 
@@ -339,11 +350,10 @@ public class SeparateLobbyController implements Initializable{
      * @param user name
      */
     public void removePlayer(String user) {
-        labels[namesList.size()].setText("open");
         namesList.remove(user);
         for (Label label : labels) {
             if (label.getText().equals(user)) {
-                label.setVisible(false);
+                label.setText("open place");
             }
         }
     }
@@ -356,21 +366,11 @@ public class SeparateLobbyController implements Initializable{
         int helper = 1;
         teamMode = true;
 //TODO import TEAM MODE here
-        for (int i = 0 ; i < 4; i++) {
-            Label label = new Label();
-            label.setId("" + helper);
-            label.setVisible(false);
-            gridSeparateLobby.getChildren().add(label);
-            labels[helper - 1] = label;
-            helper++;
-        }
 
         lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
                 130.0, 200.0}, { 0.0, 0.0,
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
-
-        setOnStartPosition();
     }
 
     /**

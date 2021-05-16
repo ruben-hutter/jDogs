@@ -2,19 +2,12 @@ package jDogs.gui;
 
 
 import java.io.IOException;
-import java.util.List;
-import javafx.animation.PathTransition;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * this class handles all the relation between gui and client
@@ -277,7 +270,8 @@ public class GUIManager extends Application {
     public void displayUser(String user) {
         switch(state) {
             case "separateLobby":
-                separateLobbyController.addPlayer(user);
+                System.out.println("display user in sep lobby");
+                separateLobbyController.addUser(user);
                 break;
             case "publicLobby":
                 lobbyController.displayPlayer(user);
