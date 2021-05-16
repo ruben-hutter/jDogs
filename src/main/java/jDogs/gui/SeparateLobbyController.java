@@ -75,52 +75,67 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void changeButtonOnAction(ActionEvent event) {
-        int helper = 0;
-        if (count % 2 == 1) {
-            changeCrossLabels();
-            for (Double[] line : lines) {
-                Polyline polyline = new Polyline();
-                polyline.getPoints().addAll(line
-            );
+        if (teamMode && namesList.size() == 4) {
+            int helper = 0;
+            if (count % 2 == 1) {
+                changeCrossLabels();
+                for (Double[] line : lines) {
+                    Polyline polyline = new Polyline();
+                    polyline.getPoints().addAll(line
+                    );
 
-            PathTransition pathTransition = new PathTransition();
-            pathTransition.setCycleCount(1);
-            pathTransition.setDuration(Duration.seconds(3));
-            pathTransition.setAutoReverse(true);
-            pathTransition.setPath(polyline);
-            pathTransition.setNode(labels[helper]);
-            pathTransition.play();
-                System.out.println("helper " + helper + " label " + labels[helper].getText());
-            labels[helper].setLayoutX(line[2]);
-            labels[helper].setLayoutY(line[3]);
-                helper++;
+                    PathTransition pathTransition = new PathTransition();
+                    pathTransition.setCycleCount(1);
+                    pathTransition.setDuration(Duration.seconds(3));
+                    pathTransition.setAutoReverse(true);
+                    pathTransition.setPath(polyline);
+                    pathTransition.setNode(labels[helper]);
+                    pathTransition.play();
+                    System.out.println("helper " + helper + " label " + labels[helper].getText());
+                    labels[helper].setLayoutX(line[2]);
+                    labels[helper].setLayoutY(line[3]);
+                    helper++;
 
+                }
+            } else {
+                changeContinuousLabels();
+                for (Double[] line : lines) {
+                    Polyline polyline = new Polyline();
+                    polyline.getPoints().addAll(line
+                    );
+                    PathTransition pathTransition = new PathTransition();
+                    pathTransition.setCycleCount(1);
+                    pathTransition.setDuration(Duration.seconds(3));
+                    pathTransition.setAutoReverse(true);
+                    pathTransition.setPath(polyline);
+                    pathTransition.setNode(labels[helper]);
+                    System.out.println(labels[helper].toString() +
+                            " pos x " + labels[helper].getLayoutX() + " y " +
+                            labels[helper].getLayoutY());
+                    pathTransition.play();
+                    labels[helper].setLayoutX(line[2]);
+                    labels[helper].setLayoutY(line[3]);
+                    helper++;
+                }
             }
-    } else {
-            changeContinuousLabels();
-            for(Double[] line : lines) {
-            Polyline polyline = new Polyline();
-            polyline.getPoints().addAll(line
-            );
-            PathTransition pathTransition = new PathTransition();
-            pathTransition.setCycleCount(1);
-            pathTransition.setDuration(Duration.seconds(3));
-            pathTransition.setAutoReverse(true);
-            pathTransition.setPath(polyline);
-            pathTransition.setNode(labels[helper]);
-            System.out.println(labels[helper].toString() +
-                    " pos x " + labels[helper].getLayoutX() + " y " +
-                    labels[helper].getLayoutY());
-            pathTransition.play();
-            labels[helper].setLayoutX(line[2]);
-            labels[helper].setLayoutY(line[3]);
-            helper++;
+            startFlash();
+            count++;
+            Client.getInstance().sendMessageToServer("TEAM" + getParticipantsString());
         }
     }
-    startFlash();
-    count++;
 
-    //TODO send new combination to server
+    /**
+     * returns participants as string
+     * @return all participants in order in a String
+     */
+    private String getParticipantsString() {
+        String participants = "";
+        for (Label label : labels) {
+            if (label.isVisible()) {
+                participants += " " + label.getText();
+            }
+        }
+        return participants;
     }
 
     /**
@@ -277,7 +292,13 @@ public class SeparateLobbyController implements Initializable{
         }
         if (mode == 0) {
             namesList.add(user);
-            labels[namesList.size()].setText(user);
+            for (Label label : labels) {
+                if (!label.isVisible()) {
+                    label.setVisible(true);
+                    label.setText(user);
+                    break;
+                }
+            }
         }
     }
 
@@ -288,6 +309,11 @@ public class SeparateLobbyController implements Initializable{
     public void removePlayer(String user) {
         labels[namesList.size()].setText("open");
         namesList.remove(user);
+        for (Label label : labels) {
+            if (label.getText().equals(user)) {
+                label.setVisible(false);
+            }
+        }
     }
 
     @Override
@@ -301,7 +327,7 @@ public class SeparateLobbyController implements Initializable{
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();
             label.setId("" + helper);
-            label.setVisible(true);
+            label.setVisible(false);
             gridSeparateLobby.getChildren().add(label);
             labels[helper - 1] = label;
             helper++;
