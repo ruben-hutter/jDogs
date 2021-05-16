@@ -30,8 +30,6 @@ public class Server {
     private Map<String, ServerConnection> serverConnectionMap = new HashMap<>();
     //this list contains all ongoing games
     private final ArrayList<MainGame> runningGames = new ArrayList<>();
-    //this list contains all public lobby guest names
-    private final ArrayList<String> publicLobbyGuests = new ArrayList<>();
     //this list contains all finished games
     //this list contains all server connections active in the public lobby
     private final ArrayList<ServerConnection> publicLobbyConnections = new ArrayList<>();
@@ -116,19 +114,15 @@ public class Server {
     /**
      * this methlod is needed to send messages to clients which are connected by public lobbies or
      * by a common game
-     *
-     * @param nickname         a new nickname of a client
      * @param serverConnection is the sC of this client
      */
-    public void addNickname(String nickname, ServerConnection serverConnection) {
+    public void addNickname(ServerConnection serverConnection) {
 
         //scMap
-        serverConnectionMap.put(nickname, serverConnection);
-        // add to lobbyGuests
-        publicLobbyGuests.add(nickname);
+        serverConnectionMap.put(serverConnection.getNickname(), serverConnection);
 
         //add to nicknamelist
-        allNickNames.add(nickname);
+        allNickNames.add(serverConnection.getNickname());
     }
 
     /**
@@ -140,9 +134,6 @@ public class Server {
         //remove nickname from sConnectionNicknameMap
 
         serverConnectionMap.remove(nickname);
-
-        //remove nickname from lobbyGuests
-        publicLobbyGuests.remove(nickname);
 
         //remove nickname from nicknamelist
         allNickNames.remove(nickname);
@@ -216,7 +207,6 @@ public class Server {
      * @param i the index number
      */
     public void sendMessageToPublic(String message, int i) {
-
         try {
             while (i < publicLobbyConnections.size()) {
                 publicLobbyConnections.get(i).sendToClient(message);
@@ -253,14 +243,6 @@ public class Server {
         serverConnectionMap.remove(serverConnection.getNickname());
         publicLobbyConnections.remove(serverConnection);
         basicConnectionList.remove(serverConnection);
-    }
-
-    /**
-     * returns the list of all serverConnection objects connected to server right now
-     * @return a list with all the existing serverConnection objects
-     */
-    public ArrayList<ServerConnection> getBasicConnections() {
-        return basicConnectionList;
     }
 
     /**
@@ -500,11 +482,11 @@ public class Server {
     }
 
     /**
-     * get ArrayList of publicLobbyGuests
-     * @return arrayList with names
+     * returns the list of all public lobby connections
+     * @return arraylist with server connections
      */
-    public ArrayList<String> getPublicLobbyGuests() {
-        return publicLobbyGuests;
+    public ArrayList<ServerConnection> getPublicLobbyConnections() {
+        return publicLobbyConnections;
     }
 }
 
