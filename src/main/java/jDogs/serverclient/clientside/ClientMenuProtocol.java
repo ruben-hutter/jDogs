@@ -56,6 +56,14 @@ public enum ClientMenuProtocol {
      */
     LPUB,
     /**
+     * update of new player in separate lobby
+     */
+    PLYR,
+    /**
+     * update of deleted player in separate lobby
+     */
+    DPLR,
+    /**
      * display new team combination
      */
     TEAM,

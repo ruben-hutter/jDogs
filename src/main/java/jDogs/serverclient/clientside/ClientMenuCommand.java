@@ -79,7 +79,7 @@ public class ClientMenuCommand {
                 case LPUB:
                     //just compare to existing String/Array and replace if necessary
                     Platform.runLater(() ->
-                            GUIManager.getInstance().displayPlayer(text.substring(5)));
+                            GUIManager.getInstance().displayUser(text.substring(5)));
 
                     System.out.println("LPUB: " + text.substring(5));
                     break;
@@ -125,7 +125,14 @@ public class ClientMenuCommand {
                     Platform.runLater(() ->
                             GUIManager.getInstance().sendINFOtoGui(text.substring(5)));
                     break;
-
+                case PLYR:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().displayUser(text.substring(5)));
+                    break;
+                case DPLR:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().removeUser(text.substring(5)));
+                    break;
                 case TEAM:
                     Platform.runLater(() ->
                             GUIManager.getInstance().getSeparateLobbyController().
@@ -140,6 +147,7 @@ public class ClientMenuCommand {
                             + " is not implemented");
             }
         } catch (NullPointerException e) {
+            e.printStackTrace();
             System.err.println("Received unknown message from server: " + text);
         }
     }

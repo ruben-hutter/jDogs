@@ -4,6 +4,7 @@ import jDogs.player.Player;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.units.qual.A;
 
 
 /**
@@ -58,26 +59,42 @@ public class OpenGameFile {
     public boolean changeTeam(String combination) {
         //e.g. format of combination: "4 Gregor Ruben Johanna Joe"
         // 4 names to parse(4)
-        //Gregor - Ruben vs Johanna - Joe
+        //Gregor - Johanna vs Ruben - Joe
         int sizeNames = combination.charAt(0) - 48;
 
-        if (sizeNames == numberParticipants) {
+        if (4 == numberParticipants) {
             String[] array = parseNames(sizeNames, combination.substring(2));
-            int teamID = 0;
+            int teamID0 = 0;
+            int teamID1 = 1;
+
             int count = 0;
-            while (teamID < sizeNames / total) {
-                for (int i = 0; i < total; i++) {
-                    getPlayer(array[count]).setTeamID(teamID);
-                    count++;
-                }
-                teamID++;
-            }
-            orderByTeamId();
+            ArrayList<Player> newPlayersArray = new ArrayList<>();
+
+            getPlayer(array[count]).setTeamID(teamID0);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+            count++;
+            getPlayer(array[count]).setTeamID(teamID1);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+            count++;
+            getPlayer(array[count]).setTeamID(teamID0);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+            count++;
+            getPlayer(array[count]).setTeamID(teamID1);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+
+            players = newPlayersArray;
+            System.out.println("get Participants " + getParticipants());
+            sendMessageToParticipants("TEAM 4 " + getParticipants());
             return true;
         } else {
             // do nothing
             System.out.println(numberParticipants);
             System.out.println(sizeNames);
+            System.out.println("combo " + combination);
             System.out.println("numPart and size names doesnt match");
             return false;
         }
@@ -90,6 +107,7 @@ public class OpenGameFile {
      */
     private void orderByTeamId() {
         players.sort(Player.TeamIdComparator);
+
         System.out.println("NEW TEAM combination " + getParticipants());
     }
 
@@ -150,10 +168,11 @@ public class OpenGameFile {
         System.out.println("ADDED  sc " + serverConnection.getNickname());
         if (numberParticipants < total) {
             players.add(new Player(serverConnection.getNickname(), serverConnection));
+            serverConnection.sendToClient("JOIN " + getSendReady());
             numberParticipants++;
-            sendMessageToParticipants("LPUB " + serverConnection.getNickname());
+            sendMessageToParticipants("PLYR " + serverConnection.getNickname());
             for (int i = 0; i < numberParticipants - 1; i++) {
-                players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
+                players.get(i).sendMessageToClient("PLYR " + serverConnection.getNickname());
             }
             if (teamMode == 1 && readyToStart()) {
                 checkForTeams();
@@ -176,7 +195,7 @@ public class OpenGameFile {
         } else {
             if (pendent) {
                 numberParticipants--;
-                sendMessageToParticipants("DPER " + nickname);
+                sendMessageToParticipants("DPLR " + nickname);
                 Server.getInstance().sendMessageToPublic("OGAM " + getSendReady(), 0);
             } else {
                 // if serverConnection of a client stops while playing the server sends all clients back to public lobby

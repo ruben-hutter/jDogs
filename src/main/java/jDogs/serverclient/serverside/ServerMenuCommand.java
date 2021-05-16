@@ -179,7 +179,6 @@ public class ServerMenuCommand {
                                     .addParticipant(serverConnection);
                             messageHandlerServer.setJoinedOpenGame(openGameId);
                             logger.debug("User " + nickName + " has joined game " + openGameId);
-                            serverConnection.sendToClient("JOIN " + Server.getInstance().getOpenGameFile(openGameId));
                             serverConnection.sendToPub("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
                                     .getSendReady());
                             // all required players are set, then send start request to host

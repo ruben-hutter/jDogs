@@ -120,7 +120,8 @@ public class SeparateLobbyController implements Initializable{
             }
             startFlash();
             count++;
-            Client.getInstance().sendMessageToServer("TEAM" + getParticipantsString());
+            Client.getInstance().sendMessageToServer("TEAM 4"
+                    + "" + getParticipantsString());
         }
     }
 
@@ -214,22 +215,53 @@ public class SeparateLobbyController implements Initializable{
      * @param names new team combination
      */
     private void adaptLabelsToNames(String[] names) {
+        for (String name : names) {
+            System.out.println("name " + name);
+        }
+        addNames(names);
         Label[] newLabels = new Label[names.length];
         int helper;
         int helper2 = 0;
         for (String name : names) {
             helper = 0;
             for (Label label : labels) {
+                System.out.println("label " + labels[helper].getText());
                 if (label.getText().equals(name)) {
                     break;
                 }
                 helper++;
             }
-            System.out.println("label " + labels[helper].getText());
             newLabels[helper2] = labels[helper];
             helper2++;
         }
         labels = newLabels;
+    }
+
+    /**
+     * adds missing names if they don t exist, delete this method later
+     * @param names
+     */
+    private void addNames(String[] names) {
+        int exists;
+        for (String name : names) {
+            exists = -1;
+            for (Label label : labels) {
+                if (label.getText().equals(name)) {
+                    exists = 1;
+                    break;
+                }
+            }
+
+            if (exists == -1) {
+               for (Label label : labels) {
+                   if (!label.isVisible()) {
+                       label.setText(name);
+                       label.setVisible(true);
+                       break;
+                   }
+               }
+            }
+        }
     }
 
     @FXML
@@ -322,7 +354,7 @@ public class SeparateLobbyController implements Initializable{
         count = 0;
         labels = new Label[4];
         int helper = 1;
-        teamMode = false;
+        teamMode = true;
 //TODO import TEAM MODE here
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();

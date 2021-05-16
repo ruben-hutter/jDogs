@@ -274,7 +274,7 @@ public class GUIManager extends Application {
      * displays a user
      * @param user name of user
      */
-    public void displayPlayer(String user) {
+    public void displayUser(String user) {
         switch(state) {
             case "separateLobby":
                 separateLobbyController.addPlayer(user);

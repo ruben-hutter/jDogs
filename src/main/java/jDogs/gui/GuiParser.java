@@ -103,13 +103,15 @@ public class GuiParser {
         for (int i = 2; i < usersString.length(); i++) {
             if(Character.isWhitespace(usersString.charAt(i))) {
                 array[arrayCount] = usersString.substring(first,i);
+                System.out.println(array[arrayCount]);
                 arrayCount++;
                 first = i + 1;
             }
         }
-        array[arrayCount - 1] = usersString.substring(first);
+        array[arrayCount] = usersString.substring(first);
         return array;
     }
+
 
     /**
      * returns the number in the abbreviation enum

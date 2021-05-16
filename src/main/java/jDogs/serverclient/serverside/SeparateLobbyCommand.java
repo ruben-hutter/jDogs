@@ -87,7 +87,8 @@ public class SeparateLobbyCommand {
                     boolean value = Server.getInstance().getOpenGameFile(openGameFileID).changeTeam(text.substring(5));
                     if (!value) {
                         serverConnection.sendToClient("INFO error with team message");
-                    }                    break;
+                    }
+                    break;
 
                 case STAR:
                     // client confirms to start the game
