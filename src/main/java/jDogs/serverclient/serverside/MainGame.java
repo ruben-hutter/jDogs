@@ -36,9 +36,6 @@ public class MainGame {
         this.playersArray = playersArray;
         this.gameState = new GameState(this);
         this.nameID = nameID;
-        for (Player player : playersArray) {
-            System.out.println("player " + player.getPlayerName());
-        }
     }
 
     /**
@@ -105,10 +102,11 @@ public class MainGame {
 
         StringBuilder participants = new StringBuilder();
 
-        for (Player player : playersArray) {
-            participants.append(player.getPlayerName()).append(" ");
+        for (int i = 0; i < playersArray.length - 1; i++) {
+            participants.append(playersArray[i].getPlayerName()).append(" ");
         }
         participants.append(playersArray[playersArray.length - 1].getPlayerName());
+
         logger.debug("Participants: " + participants);
         logger.debug("Array länge playersArray: " + playersArray.length);
 
