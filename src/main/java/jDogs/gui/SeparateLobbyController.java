@@ -139,7 +139,7 @@ public class SeparateLobbyController implements Initializable{
      */
     private void startFlash() {
         for (Label label : labels) {
-            new Flash(label).setCycleCount(2).setDelay(Duration.seconds(3)).play();
+            new Flash(label).setCycleCount(1).setDelay(Duration.seconds(3)).play();
         }
     }
 

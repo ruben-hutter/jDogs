@@ -56,18 +56,23 @@ public class OpenGameFile {
      *                    names which should be together in a team
      */
     public boolean changeTeam(String combination) {
+        System.out.println("combo " + combination);
         //e.g. format of combination: "4 Gregor Ruben Johanna Joe"
         // 4 names to parse(4)
         //Gregor - Johanna vs Ruben - Joe
         int sizeNames = combination.charAt(0) - 48;
 
         if (4 == numberParticipants) {
+            System.out.println("1");
             String[] array = parseNames(sizeNames, combination.substring(2));
             int teamID0 = 0;
             int teamID1 = 1;
-
+            for (String name: array) {
+                System.out.println("name " + name);
+            }
             int count = 0;
             ArrayList<Player> newPlayersArray = new ArrayList<>();
+            System.out.println("2");
 
             getPlayer(array[count]).setTeamID(teamID0);
             newPlayersArray.add(getPlayer(array[count]));

@@ -84,6 +84,7 @@ public class SeparateLobbyCommand {
                     break;
 
                 case TEAM:
+                    System.out.println("TEAM entered");
                     boolean value = Server.getInstance().getOpenGameFile(openGameFileID).changeTeam(text.substring(5));
                     if (!value) {
                         serverConnection.sendToClient("INFO error with team message");
