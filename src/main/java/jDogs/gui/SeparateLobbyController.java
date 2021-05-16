@@ -75,6 +75,7 @@ public class SeparateLobbyController implements Initializable{
     private ImageView[] imageViews;
     private boolean teamMode;
     private ArrayList<String> namesList;
+    private RotateTransition rotate;
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
@@ -271,12 +272,11 @@ public class SeparateLobbyController implements Initializable{
      * @param user name
      */
     public void removePlayer(String user) {
-        namesList.remove(user);
-        for (Label label : labels) {
-            if (label.getText().equals(user)) {
-                System.out.println("removed " + user);
-                label.setText("no user");
-            }
+        if (namesList.remove(user)) {
+            removeLabels();
+            adjustLabels();
+            setOnStartPosition();
+            startFlash();
         }
     }
 
@@ -332,7 +332,7 @@ public class SeparateLobbyController implements Initializable{
         rectHolder.setMaxSize(20, 16);
         rectHolder.getChildren().add(rotatingRect);
 
-        final RotateTransition rotate = new RotateTransition(Duration.seconds(4), rotatingRect);
+        rotate = new RotateTransition(Duration.seconds(4), rotatingRect);
         rotate.setByAngle(360);
         rotate.setCycleCount(Animation.INDEFINITE);
         rotate.setInterpolator(Interpolator.LINEAR);
@@ -342,6 +342,13 @@ public class SeparateLobbyController implements Initializable{
                 });
 
         rotate.play();
+    }
+
+    /**
+     * cancel start of game if a user withdrew from open game
+     */
+    public void cancelStart() {
+        rotate.stop();
     }
 }
 

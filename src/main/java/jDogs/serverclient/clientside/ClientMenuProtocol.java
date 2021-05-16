@@ -47,6 +47,10 @@ public enum ClientMenuProtocol {
      */
     STAR,
     /**
+     * Information start is cancelled
+     */
+    DSTR,
+    /**
      * Information about a new or new active users in Lobby of a pendent game
      */
     JOIN,

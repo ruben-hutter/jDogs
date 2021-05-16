@@ -126,6 +126,7 @@ public class GUIManager extends Application {
         state = "publicLobby";
         client.sendMessageToServer("LPUB");
         client.sendMessageToServer("SESS");
+        setLobbyScene();
     }
 
     /**

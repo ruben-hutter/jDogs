@@ -20,7 +20,6 @@ public class OpenGameFile {
     private String host;
     private int numberParticipants;
     private final int total = 4;
-    private boolean pendent;
     private final int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
     private static final Logger logger = LogManager.getLogger(OpenGameFile.class);
@@ -38,7 +37,6 @@ public class OpenGameFile {
         this.nameId = nameId;
         this.host = host;
         this.numberParticipants = 1;
-        this.pendent = true;
         this.teamMode = teamMode;
         setUpTeamMode();
         players.add(new Player(host, serverConnection));
@@ -200,15 +198,12 @@ public class OpenGameFile {
         if (!players.remove(player)) {
             System.out.println("couldn t remove player");
         } else {
-            if (pendent) {
-                numberParticipants--;
-                sendMessageToParticipants("DPLR " + nickname);
-                Server.getInstance().sendMessageToPublic("OGAM " + getSendReady(), 0);
-            } else {
-                // if serverConnection of a client stops while playing the server sends all clients back to public lobby
-                sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
-                cancel();
+            numberParticipants--;
+            sendMessageToParticipants("DPLR " + nickname);
+            if (numberParticipants == 3) {
+                getPlayer(host).sendMessageToClient("DSTR");
             }
+            Server.getInstance().sendMessageToPublic("OGAM " + getSendReady(), 0);
         }
     }
 
@@ -336,7 +331,6 @@ public class OpenGameFile {
      * starts game
      */
     public void start() {
-        pendent = false;
         Server.getInstance().startGame(this);
     }
 
@@ -354,13 +348,6 @@ public class OpenGameFile {
      */
     public boolean isTeamMode() {
         return teamMode == 1;
-    }
-
-    /**
-     * @return true if the game is not started but an "open game file"
-     */
-    public boolean isPendent() {
-        return pendent;
     }
 
     /**

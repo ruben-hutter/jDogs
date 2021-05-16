@@ -144,9 +144,13 @@ public class ClientMenuCommand {
                     break;
 
                 case STAR:
-                    System.out.println(Client.getInstance().getNickname() + " received: " + text);
-                    GUIManager.getInstance().getSeparateLobbyController().displayStart();
+                    Platform.runLater(() ->
+                    GUIManager.getInstance().getSeparateLobbyController().displayStart());
                     break;
+
+                case DSTR:
+                    Platform.runLater(() ->
+                    GUIManager.getInstance().getSeparateLobbyController().cancelStart());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
