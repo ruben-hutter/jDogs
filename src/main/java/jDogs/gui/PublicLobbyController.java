@@ -271,5 +271,20 @@ public class PublicLobbyController implements Initializable {
 
         tableViewPlayers.setItems((ObservableList) playersInPubList);
     }
+
+    /**
+     * display info message
+     * @param message to be displayed
+     */
+    public void displayInfomsg(String message) {
+        displayTextArea.appendText(message);
+    }
+
+    /**
+     * display user in list
+     * @param user name of user
+     */
+    public void displayUser(String user) {
+    }
 }
 

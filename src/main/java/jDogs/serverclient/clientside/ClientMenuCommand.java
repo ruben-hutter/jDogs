@@ -57,7 +57,7 @@ public class ClientMenuCommand {
                         client.setNickname(name);
                         sendFromClient.keyBoardInBlocked = false;
 
-                        Platform.runLater(() -> GUIManager.getInstance().lobbyController.
+                        Platform.runLater(() -> GUIManager.getInstance().getPubLobbyController().
                                 displayInfomsg("INFO from server. Your new nick is " + name));
                         System.out.println("your new nick is " + name);
                     }
@@ -79,7 +79,7 @@ public class ClientMenuCommand {
                 case LPUB:
                     //just compare to existing String/Array and replace if necessary
                     Platform.runLater(() ->
-                            GUIManager.getInstance().getLobbyController().displayPlayer(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().displayUser(text.substring(5)));
 
                     System.out.println("LPUB: " + text.substring(5));
                     break;
@@ -93,7 +93,7 @@ public class ClientMenuCommand {
 
                 case DPER:
                     Platform.runLater(() ->
-                            GUIManager.getInstance().getLobbyController().removePlayer(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().removePlayer(text.substring(5)));
                     break;
 
                 case JOIN:
@@ -106,7 +106,7 @@ public class ClientMenuCommand {
                     System.out.println("OGAM: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().getLobbyController().displayPendentGameInLobby(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().displayPendentGameInLobby(text.substring(5)));
                     break;
 
                 case DOGA:
@@ -114,7 +114,7 @@ public class ClientMenuCommand {
                     System.out.println("DOGA: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().getLobbyController().removePendentGameInLobby(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().removePendentGameInLobby(text.substring(5)));
                     break;
 
                 case STAT:

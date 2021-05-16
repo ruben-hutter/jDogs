@@ -29,6 +29,8 @@ public class GUIManager extends Application {
     private Parent root;
     private String state;
     private OpenGame openGameInfo;
+    private FXMLLoader publiclobbyLoader;
+    private PublicLobbyController publicLobbyController;
 
     /**
      * start method
@@ -90,15 +92,15 @@ public class GUIManager extends Application {
     public void setLobbyScene() {
 
         // activate Window
-        lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow_old.fxml"));
+        publiclobbyLoader = new FXMLLoader(getClass().getResource("/publicLobby.fxml"));
 
         Parent root = null;
         try {
-            root = lobbyLoader.load();
+            root = publiclobbyLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        lobbyController = lobbyLoader.getController();
+        publicLobbyController = publiclobbyLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
     }
@@ -304,7 +306,7 @@ public class GUIManager extends Application {
      * get public lobby controller
      * @return instance of public lobby controller
      */
-    public PublicLobbyController_old getLobbyController() {
+    public PublicLobbyController getPubLobbyController() {
         return lobbyController;
     }
 }
