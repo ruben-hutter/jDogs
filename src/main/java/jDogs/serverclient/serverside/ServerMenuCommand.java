@@ -212,6 +212,7 @@ public class ServerMenuCommand {
             Server.getInstance().addOpenGame(openGameFile);
             messageHandlerServer.setJoinedOpenGame(openGameFile.getNameId());
             serverConnection.sendToClient("JOIN " + openGameFile.getSendReady());
+            serverConnection.sendToClient("PLYR " + serverConnection.getNickname());
         }
     }
 

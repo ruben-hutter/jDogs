@@ -56,6 +56,10 @@ public enum ClientMenuProtocol {
      */
     LPUB,
     /**
+     * received an String of all players in openGame
+     */
+    PLAR,
+    /**
      * update of new player in separate lobby
      */
     PLYR,

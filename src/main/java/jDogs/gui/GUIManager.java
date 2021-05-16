@@ -271,7 +271,7 @@ public class GUIManager extends Application {
         switch(state) {
             case "separateLobby":
                 System.out.println("display user in sep lobby");
-                separateLobbyController.addUser(user);
+                separateLobbyController.addPlayer(user);
                 break;
             case "publicLobby":
                 lobbyController.displayPlayer(user);
@@ -297,5 +297,13 @@ public class GUIManager extends Application {
      */
     public void displayPendentGameInLobby(String openGameString) {
         lobbyController.displayPendentGameInLobby(openGameString);
+    }
+
+    /**
+     * get public lobby controller
+     * @return instance of public lobby controller
+     */
+    public PublicLobbyController_old getLobbyController() {
+        return lobbyController;
     }
 }

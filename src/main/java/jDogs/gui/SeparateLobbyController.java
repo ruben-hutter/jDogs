@@ -5,9 +5,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.PathTransition;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -53,7 +55,10 @@ public class SeparateLobbyController implements Initializable{
     private MenuBar menuBarTop;
 
     @FXML
-    GridPane gridSeparateLobby;
+    private GridPane gridSeparateLobby;
+
+    @FXML
+   private Label labelName;
 
     private int count;
     private Label[] labels;
@@ -64,62 +69,58 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
-        for (Label label : labels) {
-            System.out.println(label.toString() + label.getLayoutX() + " " +  label.getLayoutY());
-        }
+
     }
 
     @FXML
     void changeButtonOnAction(ActionEvent event) {
         if (teamMode && namesList.size() == 4) {
+            removeLabels();
             int helper = 0;
             if (count % 2 == 1) {
-                changeCrossLabels();
-                for (Double[] line : lines) {
-                    Polyline polyline = new Polyline();
-                    polyline.getPoints().addAll(line
-                    );
-
-                    PathTransition pathTransition = new PathTransition();
-                    pathTransition.setCycleCount(1);
-                    pathTransition.setDuration(Duration.seconds(3));
-                    pathTransition.setAutoReverse(true);
-                    pathTransition.setPath(polyline);
-                    pathTransition.setNode(labels[helper]);
-                    pathTransition.play();
-                    System.out.println("helper " + helper + " label " + labels[helper].getText());
-                    labels[helper].setLayoutX(line[2]);
-                    labels[helper].setLayoutY(line[3]);
-                    helper++;
-
-                }
-            } else {
-                changeContinuousLabels();
-                for (Double[] line : lines) {
-                    Polyline polyline = new Polyline();
-                    polyline.getPoints().addAll(line
-                    );
-                    PathTransition pathTransition = new PathTransition();
-                    pathTransition.setCycleCount(1);
-                    pathTransition.setDuration(Duration.seconds(3));
-                    pathTransition.setAutoReverse(true);
-                    pathTransition.setPath(polyline);
-                    pathTransition.setNode(labels[helper]);
-                    System.out.println(labels[helper].toString() +
-                            " pos x " + labels[helper].getLayoutX() + " y " +
-                            labels[helper].getLayoutY());
-                    pathTransition.play();
-                    labels[helper].setLayoutX(line[2]);
-                    labels[helper].setLayoutY(line[3]);
-                    helper++;
-                }
+                crossChangeNames();
+                removeLabels();
+                adjustLabels();
+                setOnStartPosition();
             }
-            startFlash();
-            count++;
-            Client.getInstance().sendMessageToServer("TEAM 4"
-                    + "" + getParticipantsString());
+        } else {
+            continuousChangeNames();
+            removeLabels();
+            adjustLabels();
+            setOnStartPosition();
         }
+
+        startFlash();
+        count++;
+        Client.getInstance().sendMessageToServer("TEAM 4"
+                + getParticipantsString());
     }
+
+    /**
+     * change names list by 1 forward
+     */
+    private void continuousChangeNames() {
+        ArrayList<String> newList = new ArrayList<>();
+        for (int i = 1; i < namesList.size(); i++) {
+            newList.add(namesList.get(i));
+        }
+        newList.add(namesList.get(0));
+        namesList = newList;
+    }
+
+    /**
+     * change names by crossing
+     */
+    private void crossChangeNames() {
+        ArrayList<String> newList = new ArrayList<>();
+        newList.add(namesList.get(0));
+        newList.add(namesList.get(2));
+        newList.add(namesList.get(1));
+        newList.add(namesList.get(3));
+
+        namesList = newList;
+    }
+
 
     /**
      * returns participants as string
@@ -127,10 +128,8 @@ public class SeparateLobbyController implements Initializable{
      */
     private String getParticipantsString() {
         String participants = "";
-        for (Label label : labels) {
-            if (label.isVisible()) {
-                participants += " " + label.getText();
-            }
+        for (String name : namesList) {
+            participants += " " + name;
         }
         return participants;
     }
@@ -177,87 +176,8 @@ public class SeparateLobbyController implements Initializable{
      * displays new team combination
      */
     public void displayChangedTeams(String teamCombo) {
-        String[] names = GuiParser.getArray(teamCombo);
-        adaptLabelsToNames(names);
-        displayReceivedTeams();
-    }
-
-    /**
-     * displays the received team combination
-     */
-    private void displayReceivedTeams() {
-        int helper = 0;
-        for(Double[] line : lines) {
-            Polyline polyline = new Polyline();
-            polyline.getPoints().addAll(line
-            );
-            PathTransition pathTransition = new PathTransition();
-            pathTransition.setCycleCount(1);
-            pathTransition.setDuration(Duration.seconds(3));
-            pathTransition.setAutoReverse(true);
-            pathTransition.setPath(polyline);
-            pathTransition.setNode(labels[helper]);
-            pathTransition.play();
-            labels[helper].setLayoutX(line[2]);
-            labels[helper].setLayoutY(line[3]);
-            helper++;
-        }
+        addPlayerArray(teamCombo);
         startFlash();
-    }
-
-    /**
-     * this method updates the labels so that they correspond to the
-     * new team combination
-     * @param names new team combination
-     */
-    private void adaptLabelsToNames(String[] names) {
-        for (String name : names) {
-            System.out.println("name " + name);
-        }
-        addNames(names);
-        Label[] newLabels = new Label[names.length];
-        int helper;
-        int helper2 = 0;
-        for (String name : names) {
-            helper = 0;
-            for (Label label : labels) {
-                System.out.println("label " + labels[helper].getText());
-                if (label.getText().equals(name)) {
-                    break;
-                }
-                helper++;
-            }
-            newLabels[helper2] = labels[helper];
-            helper2++;
-        }
-        labels = newLabels;
-    }
-
-    /**
-     * adds missing names if they don t exist, delete this method later
-     * @param names
-     */
-    private void addNames(String[] names) {
-        int exists;
-        for (String name : names) {
-            exists = -1;
-            for (Label label : labels) {
-                if (label.getText().equals(name)) {
-                    exists = 1;
-                    break;
-                }
-            }
-
-            if (exists == -1) {
-               for (Label label : labels) {
-                   if (!label.isVisible()) {
-                       label.setText(name);
-                       label.setVisible(true);
-                       break;
-                   }
-               }
-            }
-        }
     }
 
     @FXML
@@ -308,37 +228,57 @@ public class SeparateLobbyController implements Initializable{
      * display a new player who joined open game
      * @param user
      */
-    public void addUser(String user) {
-        int mode = 0;
-        // avoid duplicates for any reason
+    public synchronized void addPlayer(String user) {
+        int exists = 1;
         for (String name : namesList) {
-            if(name.equals(user)) {
-                mode = -1;
-                System.out.println("attention duplicate " + user);
+            if (name.equals(user)) {
+                exists = 0;
                 break;
             }
         }
-        if (mode == 0) {
+        if (exists == 1) {
             namesList.add(user);
-            for (Label label : labels) {
-                if (label.getText().equals("open place")) {
-                    System.out.println("label text " + label.getText() + " id "  + label.getId());
-                    label.setText(user);
-                    System.out.println("added user " + user);
-                    break;
-                }
-            }
+            removeLabels();
             adjustLabels();
             setOnStartPosition();
+        } else {
+            System.out.println("duplicate " + user);
         }
     }
 
+    public void addPlayerArray(String newPlayers) {
+        ArrayList<String> newNamesList = new ArrayList<>();
+        String[] array = GuiParser.getArray(newPlayers);
+        for (String name : array) {
+            newNamesList.add(name);
+        }
+        namesList = newNamesList;
+        removeLabels();
+        adjustLabels();
+        setOnStartPosition();
+    }
+
+    private void removeLabels() {
+        ObservableList<Node> nodes = gridSeparateLobby.getChildren();
+        for (int i = 0; i < nodes.size(); i++) {
+           if (nodes.get(i) instanceof Label) {
+               Label label1 = (Label) nodes.get(i);
+               gridSeparateLobby.getChildren().remove(label1);
+           }
+       }
+    }
+
     private void adjustLabels() {
-        //TODO set up labels anew
+        int helper = 1;
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();
             label.setId("" + helper);
-            label.setText("open place");
+            if (helper - 1 < namesList.size()) {
+                label.setText(namesList.get(helper - 1));
+            } else {
+                label.setText("no user");
+            }
+            System.out.println("label " + label.getText());
             gridSeparateLobby.getChildren().add(label);
             labels[helper - 1] = label;
             helper++;
@@ -353,7 +293,8 @@ public class SeparateLobbyController implements Initializable{
         namesList.remove(user);
         for (Label label : labels) {
             if (label.getText().equals(user)) {
-                label.setText("open place");
+                System.out.println("removed " + user);
+                label.setText("no user");
             }
         }
     }
@@ -363,7 +304,7 @@ public class SeparateLobbyController implements Initializable{
         namesList = new ArrayList<>();
         count = 0;
         labels = new Label[4];
-        int helper = 1;
+        labelName.setText(Client.getInstance().getNickname());
         teamMode = true;
 //TODO import TEAM MODE here
 

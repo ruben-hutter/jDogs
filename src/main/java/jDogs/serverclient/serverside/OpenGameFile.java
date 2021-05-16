@@ -41,7 +41,6 @@ public class OpenGameFile {
         this.teamMode = teamMode;
         setUpTeamMode();
         players.add(new Player(host, serverConnection));
-        sendMessageToParticipants("OGAM " + getSendReady());
     }
 
     /**
@@ -168,8 +167,11 @@ public class OpenGameFile {
         System.out.println("ADDED  sc " + serverConnection.getNickname());
         if (numberParticipants < total) {
             players.add(new Player(serverConnection.getNickname(), serverConnection));
-            serverConnection.sendToClient("JOIN " + getSendReady());
             numberParticipants++;
+
+
+            serverConnection.sendToClient("JOIN " + getSendReady());
+            serverConnection.sendToClient("PLAR " + numberParticipants + " " + getParticipants());
             sendMessageToParticipants("PLYR " + serverConnection.getNickname());
             for (int i = 0; i < numberParticipants - 1; i++) {
                 players.get(i).sendMessageToClient("PLYR " + serverConnection.getNickname());

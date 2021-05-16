@@ -79,7 +79,7 @@ public class ClientMenuCommand {
                 case LPUB:
                     //just compare to existing String/Array and replace if necessary
                     Platform.runLater(() ->
-                            GUIManager.getInstance().displayUser(text.substring(5)));
+                            GUIManager.getInstance().getLobbyController().displayPlayer(text.substring(5)));
 
                     System.out.println("LPUB: " + text.substring(5));
                     break;
@@ -93,7 +93,7 @@ public class ClientMenuCommand {
 
                 case DPER:
                     Platform.runLater(() ->
-                            GUIManager.getInstance().removeUser(text.substring(5)));
+                            GUIManager.getInstance().getLobbyController().removePlayer(text.substring(5)));
                     break;
 
                 case JOIN:
@@ -106,7 +106,7 @@ public class ClientMenuCommand {
                     System.out.println("OGAM: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().displayPendentGameInLobby(text.substring(5)));
+                            GUIManager.getInstance().getLobbyController().displayPendentGameInLobby(text.substring(5)));
                     break;
 
                 case DOGA:
@@ -114,7 +114,7 @@ public class ClientMenuCommand {
                     System.out.println("DOGA: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
+                            GUIManager.getInstance().getLobbyController().removePendentGameInLobby(text.substring(5)));
                     break;
 
                 case STAT:
@@ -125,13 +125,17 @@ public class ClientMenuCommand {
                     Platform.runLater(() ->
                             GUIManager.getInstance().sendINFOtoGui(text.substring(5)));
                     break;
+                case PLAR:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().getSeparateLobbyController().addPlayerArray(text.substring(5)));
+                    break;
                 case PLYR:
                     Platform.runLater(() ->
-                            GUIManager.getInstance().displayUser(text.substring(5)));
+                            GUIManager.getInstance().getSeparateLobbyController().addPlayer(text.substring(5)));
                     break;
                 case DPLR:
                     Platform.runLater(() ->
-                            GUIManager.getInstance().removeUser(text.substring(5)));
+                            GUIManager.getInstance().getSeparateLobbyController().removePlayer(text.substring(5)));
                     break;
                 case TEAM:
                     Platform.runLater(() ->
