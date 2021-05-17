@@ -1,5 +1,6 @@
 package jDogs.gui;
 
+import animatefx.animation.BounceIn;
 import jDogs.serverclient.clientside.Client;
 import java.io.IOException;
 import java.net.URL;
@@ -241,7 +242,14 @@ public class PublicLobbyController implements Initializable {
         }
     }
 
-
+    /**
+     * display the nickname
+     * @param name new nickname
+     */
+    public void displayNickname(String name) {
+        labelName.setText(name);
+        new BounceIn(labelName).setCycleCount(3).play();
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
