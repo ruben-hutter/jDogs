@@ -46,7 +46,6 @@
 }
 
 #gridSeparateLobby {
-    -fx-background-color:  linear-gradient(to right, sandybrown 50%, saddlebrown 50%);
     -fx-background-radius: 8;
     -fx-effect: dropshadow(one-pass-box, #302820, 7, 0.0, 4, 0);
     -fx-padding: 5;
