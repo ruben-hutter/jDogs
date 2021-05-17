@@ -200,6 +200,7 @@ public class OpenGameFile {
         } else {
             numberParticipants--;
             sendMessageToParticipants("DPLR " + nickname);
+            // cancel start
             if (numberParticipants == 3) {
                 getPlayer(host).sendMessageToClient("DSTR");
             }

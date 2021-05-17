@@ -22,7 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -707,7 +706,7 @@ public class GameWindowController implements Initializable {
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
-            displayInfoFromClient("SEVERE ERROR couldn t find nickname in list of game names");
+            displayInfoErrors("SEVERE ERROR couldn t find nickname in list of game names");
         }
         // set color - string
         color = ColorAbbreviations.values()[playerNr].toString();
@@ -816,7 +815,7 @@ public class GameWindowController implements Initializable {
      * @param cards these cards are the hand for this round
      */
     public void setHand(String[] cards) {
-        displayInfoFromClient("INFO new cards displaying");
+        displayInfoErrors("INFO new cards displaying");
         this.cardArray = cards;
         //set cards invisible if they are not used this round
         setAllCArdImageViewsInvisible();
@@ -882,7 +881,7 @@ public class GameWindowController implements Initializable {
     public void setYourTurn(boolean value) {
         this.yourTurn = value;
         if (yourTurn) {
-            displayInfoFromServer("it is your turn");
+            displayGameInfo("it is your turn");
             Alert alert = new Alert(AlertType.INFORMATION,"It is your turn");
             alert.show();
         }
@@ -1028,7 +1027,7 @@ public class GameWindowController implements Initializable {
      * displays infos from Server
      * @param message the given message
      */
-    public void displayInfoFromServer(String message) {
+    public void displayGameInfo(String message) {
         textLogServer.appendText(message + "\n");
     }
 
@@ -1036,7 +1035,7 @@ public class GameWindowController implements Initializable {
      * displays important info from client to the gui(instead of commandline)
      * @param message from client methods
      */
-    public void displayInfoFromClient(String message) {
+    public void displayInfoErrors(String message) {
         textLogClient.appendText(message + "\n");
     }
 

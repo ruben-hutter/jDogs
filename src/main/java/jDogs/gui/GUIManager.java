@@ -234,7 +234,7 @@ public class GUIManager extends Application {
     public void sendINFOtoGui (String info) {
        switch(state) {
            case "playing":
-               gameWindowController.displayInfoFromServer(info);
+               gameWindowController.displayInfoErrors(info);
                break;
            case "separateLobby":
                separateLobbyController.displayInfomsg(info);
@@ -277,5 +277,13 @@ public class GUIManager extends Application {
      */
     public PublicLobbyController getPubLobbyController() {
         return publicLobbyController;
+    }
+
+    /**
+     * return game window controller
+     * @return
+     */
+    public GameWindowController getGameController() {
+        return gameWindowController;
     }
 }
