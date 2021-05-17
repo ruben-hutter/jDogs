@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,7 +32,8 @@ public class PublicLobbyController implements Initializable {
     ObservableList<Participant> playersInPubList;
     @FXML
     private TableView<?> tableViewPlayers;
-
+    @FXML
+    private Label labelName;
     @FXML
     private TableView<?> tableViewGames;
 
@@ -282,6 +284,9 @@ public class PublicLobbyController implements Initializable {
         player.setCellValueFactory(new PropertyValueFactory<Participant, String>("player"));
 
         tableViewPlayers.setItems((ObservableList) playersInPubList);
+
+        //add name
+        labelName.setText(Client.getInstance().getNickname());
     }
 }
 

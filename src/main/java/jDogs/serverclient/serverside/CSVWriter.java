@@ -178,30 +178,4 @@ public class CSVWriter {
     public boolean isDirectoryExisting() {
         return directoryExists;
     }
-
-    public static void main(String[] args) {
-        CSVWriter csvWriter = new CSVWriter();
-        csvWriter.readCSV();
-        SavedUser savedUser1 = new SavedUser("Kali");
-        SavedUser savedUser2 = new SavedUser("nard");
-        SavedUser savedUser3 = new SavedUser("bard");
-        SavedUser savedUser4 = new SavedUser("ward");
-        SavedUser savedUser5 = new SavedUser("sssard");
-
-        savedUser1.addVictory();
-        savedUser2.addDefeat();
-        savedUser3.addDefeat();
-        savedUser4.addDefeat();
-        savedUser5.addVictory();
-
-        csvWriter.addUser(savedUser1);
-        csvWriter.addUser(savedUser2);
-        csvWriter.addUser(savedUser3);
-        csvWriter.addUser(savedUser4);
-        csvWriter.addUser(savedUser5);
-
-        csvWriter.writeCSV();
-
-
-    }
 }
