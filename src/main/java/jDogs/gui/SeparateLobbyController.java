@@ -101,7 +101,6 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void changeButtonOnAction(ActionEvent event) {
-         blink();
         if (teamMode && namesList.size() == 4) {
             removeLabels();
             int helper = 0;
@@ -364,8 +363,10 @@ public class SeparateLobbyController implements Initializable{
         rotate.stop();
     }
 
+    /**
+     * let the dog blink
+     */
     public void blink() {
-
         t.play();
     }
 
