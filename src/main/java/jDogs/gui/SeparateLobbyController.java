@@ -3,6 +3,7 @@ import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -24,7 +25,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -353,6 +357,7 @@ public class SeparateLobbyController implements Initializable{
         labels = new Label[4];
         labelName.setText(Client.getInstance().getNickname());
         teamMode = true;
+
 //TODO import TEAM MODE here
 
         lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,

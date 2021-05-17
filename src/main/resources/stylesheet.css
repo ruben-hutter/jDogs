@@ -30,7 +30,7 @@
     -fx-text-fill: #D68C54;
     -fx-padding: 5;
     -fx-background-color: #302820;
-    -fx-effect:  dropshadow(one-pass-box, #302820, 7, 0.0, 4, 0);
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
     -fx-background-radius: 8;
 }
 
@@ -39,7 +39,7 @@
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-background-radius: 8px, 8px, 8px, 8px;
     -fx-padding: 5; /* 4 8 4 8 */
-    -fx-effect:  dropshadow(one-pass-box, #5C5043, 7, 0.0, 4, 0);
+    -fx-effect:  dropshadow(one-pass-box, #5C5043, 0, 0.0, -3, 1);
     -fx-text-fill: #DEB595;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
@@ -47,7 +47,10 @@
 
 #gridSeparateLobby {
     -fx-background-radius: 8;
-    -fx-effect: dropshadow(one-pass-box, #302820, 7, 0.0, 4, 0);
+    -fx-background-image: url(/ivan-gromov-Y3vPEuNlf7w-unsplash.jpg);
+    -fx-background-repeat: no - repeat;
+    -fx-background-size: stretch;
+    -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
     -fx-padding: 5;
 }
 
