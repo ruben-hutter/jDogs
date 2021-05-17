@@ -356,10 +356,7 @@ public class SeparateLobbyController implements Initializable{
         count = 0;
         labels = new Label[4];
         labelName.setText(Client.getInstance().getNickname());
-        teamMode = true;
-
-//TODO import TEAM MODE here
-
+        teamMode = GUIManager.getInstance().isTeamMode();
         lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
                 130.0, 200.0}, { 0.0, 0.0,
                 400.0, 200.0}, { 0.0, 0.0,
