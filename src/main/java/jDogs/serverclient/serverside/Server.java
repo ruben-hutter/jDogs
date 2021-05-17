@@ -440,17 +440,12 @@ public class Server {
             }
             //else one winner
         } else {
-            System.out.println("Not-team-mode entered");
-            System.out.println("winner " + winner);
             // check highScoreList
             int count = -1;
             for (Player player : mainGame.getPlayersArray()) {
-                System.out.println("player name " + player.getPlayerName());
                 for (SavedUser savedUser : csvWriter.getUsersHighScore()) {
-                    System.out.println(" saved user " + savedUser.getCSVString());
                     if (savedUser.getName().equals(player.getPlayerName())) {
                         if (player.getPlayerName().equals(winner)) {
-                            System.out.println("ADDED winner");
                             savedUser.addVictory();
                         } else {
                             savedUser.addDefeat();
@@ -462,9 +457,7 @@ public class Server {
                 // if username is not in highScoreList: add it here
                 if (count == -1) {
                     SavedUser savedUser = new SavedUser(player.getPlayerName());
-                    System.out.println("saved user 2 " + savedUser.getName());
                     if (player.getPlayerName().equals(winner)) {
-                        System.out.println("ADDED winner as new user");
                         savedUser.addVictory();
                     } else {
                         savedUser.addDefeat();

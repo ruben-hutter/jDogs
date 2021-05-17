@@ -95,12 +95,4 @@ public class SavedUser implements Comparable {
     public void setVictories(int victories) {
         this.victories = victories;
     }
-
-    /**
-     * set the points when read SavedUser-Objects from csv
-     * @param points the number of points of this user
-     */
-    public void setPoints(int points) {
-        this.points = points;
-    }
 }

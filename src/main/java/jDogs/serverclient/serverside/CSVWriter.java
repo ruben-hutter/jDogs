@@ -155,19 +155,7 @@ public class CSVWriter {
             }
             count++;
         }
-
-        count++;
-        int playedGameSeparator = count;
-        int victories = -1;
-        while (count < line.length()) {
-            if (line.charAt(count) == ',') {
-                victories = Integer.parseInt(line.substring(playedGameSeparator, count));
-                break;
-            }
-            count++;
-        }
-        count++;
-        int victorySeparator = count;
+        int victories = Integer.parseInt(line.substring(count + 1));
 
         SavedUser savedUser = new SavedUser(name);
         savedUser.setPlayedGames(playedGames);
@@ -189,5 +177,31 @@ public class CSVWriter {
      */
     public boolean isDirectoryExisting() {
         return directoryExists;
+    }
+
+    public static void main(String[] args) {
+        CSVWriter csvWriter = new CSVWriter();
+        csvWriter.readCSV();
+        SavedUser savedUser1 = new SavedUser("Kali");
+        SavedUser savedUser2 = new SavedUser("nard");
+        SavedUser savedUser3 = new SavedUser("bard");
+        SavedUser savedUser4 = new SavedUser("ward");
+        SavedUser savedUser5 = new SavedUser("sssard");
+
+        savedUser1.addVictory();
+        savedUser2.addDefeat();
+        savedUser3.addDefeat();
+        savedUser4.addDefeat();
+        savedUser5.addVictory();
+
+        csvWriter.addUser(savedUser1);
+        csvWriter.addUser(savedUser2);
+        csvWriter.addUser(savedUser3);
+        csvWriter.addUser(savedUser4);
+        csvWriter.addUser(savedUser5);
+
+        csvWriter.writeCSV();
+
+
     }
 }
