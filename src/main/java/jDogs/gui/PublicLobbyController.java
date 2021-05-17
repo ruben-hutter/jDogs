@@ -199,7 +199,10 @@ public class PublicLobbyController implements Initializable {
                 break;
             }
         }
-        openGamesList.remove(row);
+        if (row > -1) {openGamesList.remove(row);}
+        else {
+            System.out.println("couldn t remove " + text);
+        }
     }
 
     /**

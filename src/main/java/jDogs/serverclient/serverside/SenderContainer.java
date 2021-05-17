@@ -86,9 +86,8 @@ public class SenderContainer {
         try {
             dout.writeUTF(message);
             dout.flush();
-        } catch (IOException e) {
+        } catch (Exception e) {
             // error handling due to strange behaving threads
-            e.printStackTrace();
             System.out.println("SenderContainer error: send String to Client error...." + serverConnection.getNickname());
             System.out.println("sendClientThreadState: " + sendClientThread.getState());
             System.out.println("sendAllThreadState: " + sendAllThread.getState());

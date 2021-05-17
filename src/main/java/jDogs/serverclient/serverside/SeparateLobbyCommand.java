@@ -105,6 +105,7 @@ public class SeparateLobbyCommand {
                     break;
 
                 case QUIT:
+                    serverConnection.getMessageHandlerServer().returnToLobby();
 
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
                         Server.getInstance().removeOpenGame(openGameFileID);
@@ -140,8 +141,9 @@ public class SeparateLobbyCommand {
                     System.err.println("received unknown message in lobby from " + nickname);
                     System.err.println(text);
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             System.err.println("error while processing message: " + text);
+            e.printStackTrace();
         }
     }
 
