@@ -7,7 +7,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -27,11 +26,7 @@
                <children>
                   <AnchorPane prefHeight="387.0" prefWidth="183.0">
                      <children>
-                        <TableView fx:id="tableViewPlayers" layoutY="15.0" prefHeight="334.0" prefWidth="168.0" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="15.0">
-                          <columns>
-                            <TableColumn prefWidth="236.80000457763674" text="C1" />
-                          </columns>
-                        </TableView>
+                        <TableView fx:id="tableViewPlayers" layoutY="15.0" prefHeight="334.0" prefWidth="168.0" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="15.0" />
                      </children>
                   </AnchorPane>
                   <ImageView fitHeight="244.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
@@ -57,12 +52,7 @@
                         <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                      </padding>
                      <children>
-                        <TableView fx:id="tableViewGames" layoutX="54.0" layoutY="30.0" prefHeight="218.0" prefWidth="355.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
+                        <TableView fx:id="tableViewGames" layoutX="54.0" layoutY="30.0" prefHeight="218.0" prefWidth="355.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0" />
                      </children>
                   </AnchorPane>
               </content>

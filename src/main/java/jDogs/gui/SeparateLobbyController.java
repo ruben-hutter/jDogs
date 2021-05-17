@@ -206,6 +206,15 @@ public class SeparateLobbyController implements Initializable{
         displayTextArea.appendText(message + "\n");
     }
 
+
+    /**
+     * display an info message
+     * @param info message
+     */
+    public void displayInfomsg(String info) {
+        displayTextArea.appendText(info + "\n");
+    }
+
     /**
      * display a new player who joined open game
      * @param user
@@ -240,6 +249,19 @@ public class SeparateLobbyController implements Initializable{
         setOnStartPosition();
     }
 
+    /**
+     * remove a user from this open game
+     * @param user name
+     */
+    public void removePlayer(String user) {
+        if (namesList.remove(user)) {
+            removeLabels();
+            adjustLabels();
+            setOnStartPosition();
+            startFlash();
+        }
+    }
+
     private void removeLabels() {
         ObservableList<Node> nodes = gridSeparateLobby.getChildren();
         for (int i = 0; i < nodes.size(); i++) {
@@ -265,34 +287,6 @@ public class SeparateLobbyController implements Initializable{
             labels[helper - 1] = label;
             helper++;
         }
-    }
-
-    /**
-     * remove a user from this open game
-     * @param user name
-     */
-    public void removePlayer(String user) {
-        if (namesList.remove(user)) {
-            removeLabels();
-            adjustLabels();
-            setOnStartPosition();
-            startFlash();
-        }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        namesList = new ArrayList<>();
-        count = 0;
-        labels = new Label[4];
-        labelName.setText(Client.getInstance().getNickname());
-        teamMode = true;
-//TODO import TEAM MODE here
-
-        lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
-                130.0, 200.0}, { 0.0, 0.0,
-                400.0, 200.0}, { 0.0, 0.0,
-                400.0, 0.0}};
     }
 
     /**
@@ -349,6 +343,22 @@ public class SeparateLobbyController implements Initializable{
      */
     public void cancelStart() {
         rotate.stop();
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        namesList = new ArrayList<>();
+        count = 0;
+        labels = new Label[4];
+        labelName.setText(Client.getInstance().getNickname());
+        teamMode = true;
+//TODO import TEAM MODE here
+
+        lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
+                130.0, 200.0}, { 0.0, 0.0,
+                400.0, 200.0}, { 0.0, 0.0,
+                400.0, 0.0}};
     }
 }
 
