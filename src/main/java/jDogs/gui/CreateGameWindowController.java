@@ -5,12 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * a popupWindow to create an open game
  */
 public class CreateGameWindowController {
-
     @FXML
     private TextField gameNameField;
 
@@ -29,8 +29,7 @@ public class CreateGameWindowController {
      */
     @FXML
     void cancelButtonOnAction(ActionEvent event) {
-        GUIManager.getInstance().lobbyController.closeGameDialog();
-
+        GUIManager.getInstance().getPubLobbyController().closeGameDialog();
     }
 
     /**
@@ -47,6 +46,6 @@ public class CreateGameWindowController {
             teamMode = "0";
         }
         System.out.println("teamMode " + teamMode);
-        GUIManager.getInstance().lobbyController.sendNewGame(gameNameField.getText(),teamMode);
+        GUIManager.getInstance().getPubLobbyController().sendNewGame(gameNameField.getText(),teamMode);
     }
 }

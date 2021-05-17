@@ -142,7 +142,7 @@ public class PublicLobbyController implements Initializable {
      * @param message whisper chat message
      */
     public void displayWCHTmsg(String message) {
-        displayTextArea.appendText(message + "\n");
+        displayTextArea.appendText("\b" + message + "\b" + "\n");
     }
 
     /**
@@ -150,6 +150,14 @@ public class PublicLobbyController implements Initializable {
      * @param message from server for public chat
      */
     public void displayPCHTmsg(String message) {
+        displayTextArea.appendText(message + "\n");
+    }
+
+    /**
+     * display info message
+     * @param message to be displayed
+     */
+    public void displayInfomsg(String message) {
         displayTextArea.appendText(message + "\n");
     }
 
@@ -191,29 +199,33 @@ public class PublicLobbyController implements Initializable {
                 break;
             }
         }
-        openGamesList.remove(row);
+        if (row > -1) {openGamesList.remove(row);}
+        else {
+            System.out.println("couldn t remove " + text);
+        }
     }
 
     /**
      * display a player's name
      * @param name name of player
      */
-    public void addPlayer(String name) {
+    public void addUser(String name) {
+        System.out.println("entered add user");
         for (int i = 0; i < playersInPubList.size(); i++) {
             if (playersInPubList.get(i).getPlayer().equals(name)) {
                 return;
             }
         }
+        System.out.println("ADD " + name);
         playersInPubList.add(new Participant(name));
     }
     /**
      * removes a player from the playersInLobby list
      * @param name displayed name
      */
-    public void removePlayer(String name) {
+    public void removeUser(String name) {
         try {
             Participant participant = new Participant(name);
-
             int row = -1;
             for (int i = 0; i < playersInPubList.size(); i++) {
                 if (playersInPubList.get(i).getPlayer().equals(participant.getPlayer())) {

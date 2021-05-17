@@ -72,6 +72,8 @@ public class GameState {
     public void createPlayers() {
         int counter = 0;
         for (Alliance_4 alliance4 : Alliance_4.values()) {
+            System.out.println("alliance size " + Alliance_4.values().length);
+            System.out.println("mainGame playersArray " + mainGame.getPlayersArray().length);
             mainGame.getPlayersArray()[counter].setUpPlayerOnServer(alliance4);
             cards.put(mainGame.getPlayersArray()[counter].getPlayerName(), new ArrayList<>());
             counter++;

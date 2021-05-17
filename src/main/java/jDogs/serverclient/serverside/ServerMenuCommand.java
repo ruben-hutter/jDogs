@@ -90,8 +90,8 @@ public class ServerMenuCommand {
                                 Server.getInstance().addToLobby(serverConnection);
                                 loggedIn = true;
                             }
-                            Server.getInstance().addNickname(nickName, serverConnection);
                             serverConnection.updateNickname(nickName);
+                            Server.getInstance().addNickname(serverConnection);
                         }
                         break;
 
@@ -179,7 +179,6 @@ public class ServerMenuCommand {
                                     .addParticipant(serverConnection);
                             messageHandlerServer.setJoinedOpenGame(openGameId);
                             logger.debug("User " + nickName + " has joined game " + openGameId);
-                            serverConnection.sendToClient("JOIN " + Server.getInstance().getOpenGameFile(openGameId));
                             serverConnection.sendToPub("OGAM " + Server.getInstance().getOpenGameFile(openGameId)
                                     .getSendReady());
                             // all required players are set, then send start request to host
@@ -212,6 +211,8 @@ public class ServerMenuCommand {
         } else {
             Server.getInstance().addOpenGame(openGameFile);
             messageHandlerServer.setJoinedOpenGame(openGameFile.getNameId());
+            serverConnection.sendToClient("JOIN " + openGameFile.getSendReady());
+            serverConnection.sendToClient("PLYR " + serverConnection.getNickname());
         }
     }
 
@@ -241,8 +242,10 @@ public class ServerMenuCommand {
      * sends all public lobby guests to this client
      */
     public void sendListOfPublicGuests() {
-        for (int i = 0; i < Server.getInstance().getPublicLobbyGuests().size(); i++) {
-            serverConnection.sendToClient("LPUB " + Server.getInstance().getPublicLobbyGuests().get(i));
+        for (ServerConnection serverConnection1 : Server.getInstance().getPublicLobbyConnections()) {
+            if (!serverConnection1.getNickname().equals(serverConnection.getNickname())) {
+                serverConnection.sendToClient("LPUB " + serverConnection1.getNickname());
+            }
         }
     }
 }

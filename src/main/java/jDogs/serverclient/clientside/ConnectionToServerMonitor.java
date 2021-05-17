@@ -36,7 +36,7 @@ public class ConnectionToServerMonitor implements Runnable {
                     + "shutdown connection to server");
 
             Platform.runLater(() -> GUIManager.getInstance().
-                    gameWindowController.displayInfoFromClient("no ping message from server for over 10sec. "
+                    gameWindowController.displayInfoErrors("no ping message from server for over 10sec. "
                     + "shutdown now"));
 
             client.kill();

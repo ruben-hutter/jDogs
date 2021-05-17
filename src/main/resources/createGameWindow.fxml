@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
 
 <AnchorPane stylesheets="@popUpStyleSheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.CreateGameWindowController">
    <children>
-      <DialogPane prefHeight="316.0" prefWidth="570.0">
-         <graphic>
-            <Pane prefHeight="300.0" prefWidth="570.0">
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <GridPane prefHeight="192.0" prefWidth="570.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                  <VBox>
                      <children>
-                        <TextField fx:id="gameNameField" prefHeight="95.0" prefWidth="286.0" promptText="needed" GridPane.columnIndex="1" />
-                        <Label alignment="CENTER" prefHeight="25.0" prefWidth="286.0" text="Name of Game" />
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="286.0" text="Team Mode" GridPane.rowIndex="1" />
-                        <CheckBox fx:id="checkBox" mnemonicParsing="false" text="CheckBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <GridPane prefHeight="192.0" prefWidth="570.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <TextField fx:id="gameNameField" prefHeight="95.0" prefWidth="286.0" promptText="needed" GridPane.columnIndex="1" />
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="286.0" text="Name of Game" />
+                              <Label alignment="CENTER" prefHeight="30.0" prefWidth="286.0" text="Team Mode" GridPane.rowIndex="1" />
+                              <CheckBox fx:id="checkBox" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Pane prefHeight="29.0" prefWidth="333.0" />
+                              <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                                <buttons>
+                                    <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonOnAction" text="cancel" />
+                                    <Button fx:id="createButton" mnemonicParsing="false" onAction="#createButtonOnAction" text="create" />
+                                </buttons>
+                              </ButtonBar>
+                           </children>
+                        </HBox>
                      </children>
-                  </GridPane>
-                  <Button fx:id="createButton" layoutX="462.0" layoutY="246.0" mnemonicParsing="false" onAction="#createButtonOnAction" text="create" />
-                  <Button fx:id="cancelButton" layoutX="378.0" layoutY="246.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" text="cancel" />
+                  </VBox>
                </children>
-            </Pane>
-         </graphic>
-      </DialogPane>
+            </AnchorPane>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

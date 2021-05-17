@@ -19,7 +19,6 @@ public class MainGame {
     private int numbDealOut;
     private ArrayList<String> deck;
     private final Random random = new Random();
-    private ArrayList<Player> players;
     private final Player[] playersArray;
     private static final Logger logger = LogManager.getLogger(MainGame.class);
     private int numberOfRounds;
@@ -103,10 +102,11 @@ public class MainGame {
 
         StringBuilder participants = new StringBuilder();
 
-        for (Player player : playersArray) {
-            participants.append(player.getPlayerName()).append(" ");
+        for (int i = 0; i < playersArray.length - 1; i++) {
+            participants.append(playersArray[i].getPlayerName()).append(" ");
         }
         participants.append(playersArray[playersArray.length - 1].getPlayerName());
+
         logger.debug("Participants: " + participants);
         logger.debug("Array länge playersArray: " + playersArray.length);
 

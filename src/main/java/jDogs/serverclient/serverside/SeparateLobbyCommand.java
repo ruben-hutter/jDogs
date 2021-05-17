@@ -87,11 +87,11 @@ public class SeparateLobbyCommand {
                     boolean value = Server.getInstance().getOpenGameFile(openGameFileID).changeTeam(text.substring(5));
                     if (!value) {
                         serverConnection.sendToClient("INFO error with team message");
-                    }                    break;
+                    }
+                    break;
 
                 case STAR:
-                    // client confirms to start the game
-                    if (Server.getInstance().getOpenGameFile(openGameFileID).readyToStart() && Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(nickname)) {
+                    if (Server.getInstance().getOpenGameFile(openGameFileID).readyToStart() && Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
                         Server.getInstance().getOpenGameFile(openGameFileID).start();
                     }
                     break;
@@ -105,6 +105,7 @@ public class SeparateLobbyCommand {
                     break;
 
                 case QUIT:
+                    serverConnection.getMessageHandlerServer().returnToLobby();
 
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
                         Server.getInstance().removeOpenGame(openGameFileID);
@@ -140,8 +141,9 @@ public class SeparateLobbyCommand {
                     System.err.println("received unknown message in lobby from " + nickname);
                     System.err.println(text);
             }
-        } catch (NullPointerException e) {
-            System.err.println("Received unknown message from client: " + text);
+        } catch (Exception e) {
+            System.err.println("error while processing message: " + text);
+            e.printStackTrace();
         }
     }
 

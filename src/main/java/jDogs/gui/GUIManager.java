@@ -2,19 +2,12 @@ package jDogs.gui;
 
 
 import java.io.IOException;
-import java.util.List;
-import javafx.animation.PathTransition;
 import javafx.application.Application;
 import jDogs.serverclient.clientside.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * this class handles all the relation between gui and client
@@ -36,6 +29,8 @@ public class GUIManager extends Application {
     private Parent root;
     private String state;
     private OpenGame openGameInfo;
+    private FXMLLoader publiclobbyLoader;
+    private PublicLobbyController publicLobbyController;
 
     /**
      * start method
@@ -97,15 +92,15 @@ public class GUIManager extends Application {
     public void setLobbyScene() {
 
         // activate Window
-        lobbyLoader = new FXMLLoader(getClass().getResource("/lobbyWindow_old.fxml"));
+        publiclobbyLoader = new FXMLLoader(getClass().getResource("/publicLobby.fxml"));
 
         Parent root = null;
         try {
-            root = lobbyLoader.load();
+            root = publiclobbyLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        lobbyController = lobbyLoader.getController();
+        publicLobbyController = publiclobbyLoader.getController();
         // lobbyScene
         primaryStage.getScene().setRoot(root);
     }
@@ -133,6 +128,7 @@ public class GUIManager extends Application {
         state = "publicLobby";
         client.sendMessageToServer("LPUB");
         client.sendMessageToServer("SESS");
+        setLobbyScene();
     }
 
     /**
@@ -209,7 +205,7 @@ public class GUIManager extends Application {
         if (isPlaying) {
             gameWindowController.displayPCHTmsg (message);
         } else {
-            lobbyController.displayPCHTmsg (message);
+            publicLobbyController.displayPCHTmsg (message);
         }
     }
 
@@ -224,8 +220,10 @@ public class GUIManager extends Application {
                 break;
             case "separateLobby":
                 separateLobbyController.displayPCHTmsg(message);
+                break;
             case "publicLobby":
-                lobbyController.displayLCHTmsg(message);
+                publicLobbyController.displayPCHTmsg(message);
+                break;
         }
     }
 
@@ -234,11 +232,17 @@ public class GUIManager extends Application {
      * @param info INFO from server
      */
     public void sendINFOtoGui (String info) {
-        if (isPlaying) {
-            gameWindowController.displayInfoFromServer(info);
-        } else {
-            lobbyController.displayInfomsg(info);
-        }
+       switch(state) {
+           case "playing":
+               gameWindowController.displayInfoErrors(info);
+               break;
+           case "separateLobby":
+               separateLobbyController.displayInfomsg(info);
+               break;
+           case "publicLobby":
+               publicLobbyController.displayInfomsg(info);
+               break;
+       }
     }
 
     /**
@@ -251,36 +255,7 @@ public class GUIManager extends Application {
                 separateLobbyController.displayWCHTmsg(message);
                 break;
             case "publicLobby":
-                lobbyController.displayWCHTmsg(message);
-                break;
-        }
-    }
-    /**
-     * remove a user from public lobby or separate lobby
-     * @param userName user name
-     */
-    public void removeUser(String userName) {
-        switch(state) {
-            case "separateLobby":
-                separateLobbyController.removePlayer(userName);
-                break;
-            case "publicLobby":
-                lobbyController.removePlayer(userName);
-                break;
-        }
-    }
-
-    /**
-     * displays a user
-     * @param user name of user
-     */
-    public void displayPlayer(String user) {
-        switch(state) {
-            case "separateLobby":
-                separateLobbyController.addPlayer(user);
-                break;
-            case "publicLobby":
-                lobbyController.displayPlayer(user);
+                publicLobbyController.displayWCHTmsg(message);
                 break;
         }
     }
@@ -296,12 +271,19 @@ public class GUIManager extends Application {
         setSeparateLobbyScene();
     }
 
+    /**
+     * get public lobby controller
+     * @return instance of public lobby controller
+     */
+    public PublicLobbyController getPubLobbyController() {
+        return publicLobbyController;
+    }
 
     /**
-     * display a pendent game in lobby
-     * @param openGameString string with openGame information
+     * return game window controller
+     * @return
      */
-    public void displayPendentGameInLobby(String openGameString) {
-        lobbyController.displayPendentGameInLobby(openGameString);
+    public GameWindowController getGameController() {
+        return gameWindowController;
     }
 }

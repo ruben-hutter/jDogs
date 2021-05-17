@@ -1,9 +1,11 @@
 package jDogs.serverclient.serverside;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.units.qual.A;
 
 
 /**
@@ -18,7 +20,6 @@ public class OpenGameFile {
     private String host;
     private int numberParticipants;
     private final int total = 4;
-    private boolean pendent;
     private final int teamMode;
     private ArrayList<Player> players = new ArrayList<>();
     private static final Logger logger = LogManager.getLogger(OpenGameFile.class);
@@ -36,11 +37,9 @@ public class OpenGameFile {
         this.nameId = nameId;
         this.host = host;
         this.numberParticipants = 1;
-        this.pendent = true;
         this.teamMode = teamMode;
         setUpTeamMode();
         players.add(new Player(host, serverConnection));
-        sendMessageToParticipants("OGAM " + getSendReady());
     }
 
     /**
@@ -56,28 +55,50 @@ public class OpenGameFile {
      *                    names which should be together in a team
      */
     public boolean changeTeam(String combination) {
+        System.out.println("combo " + combination);
         //e.g. format of combination: "4 Gregor Ruben Johanna Joe"
         // 4 names to parse(4)
-        //Gregor - Ruben vs Johanna - Joe
+        //Gregor - Johanna vs Ruben - Joe
         int sizeNames = combination.charAt(0) - 48;
 
-        if (sizeNames == numberParticipants) {
+        if (4 == numberParticipants) {
+            System.out.println("1");
             String[] array = parseNames(sizeNames, combination.substring(2));
-            int teamID = 0;
-            int count = 0;
-            while (teamID < sizeNames / total) {
-                for (int i = 0; i < total; i++) {
-                    getPlayer(array[count]).setTeamID(teamID);
-                    count++;
-                }
-                teamID++;
+            int teamID0 = 0;
+            int teamID1 = 1;
+            for (String name: array) {
+                System.out.println("name " + name);
             }
-            orderByTeamId();
+            int count = 0;
+            ArrayList<Player> newPlayersArray = new ArrayList<>();
+            System.out.println("2");
+
+            getPlayer(array[count]).setTeamID(teamID0);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+            count++;
+            getPlayer(array[count]).setTeamID(teamID1);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+            count++;
+            getPlayer(array[count]).setTeamID(teamID0);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+            count++;
+            getPlayer(array[count]).setTeamID(teamID1);
+            newPlayersArray.add(getPlayer(array[count]));
+            System.out.println("player " + count + " name " + array[count]);
+            System.out.println("players.length " + players.size());
+            System.out.println("newPlARR " + newPlayersArray.size());
+            players = newPlayersArray;
+            System.out.println("get Participants " + getParticipants());
+            sendMessageToParticipants("TEAM 4 " + getParticipants());
             return true;
         } else {
             // do nothing
             System.out.println(numberParticipants);
             System.out.println(sizeNames);
+            System.out.println("combo " + combination);
             System.out.println("numPart and size names doesnt match");
             return false;
         }
@@ -90,6 +111,7 @@ public class OpenGameFile {
      */
     private void orderByTeamId() {
         players.sort(Player.TeamIdComparator);
+
         System.out.println("NEW TEAM combination " + getParticipants());
     }
 
@@ -151,13 +173,15 @@ public class OpenGameFile {
         if (numberParticipants < total) {
             players.add(new Player(serverConnection.getNickname(), serverConnection));
             numberParticipants++;
-            sendMessageToParticipants("LPUB " + serverConnection.getNickname());
+
+            serverConnection.sendToClient("JOIN " + getSendReady());
+            serverConnection.sendToClient("PLAR " + numberParticipants + " " + getParticipants());
+            sendMessageToParticipants("PLYR " + serverConnection.getNickname());
             for (int i = 0; i < numberParticipants - 1; i++) {
-                players.get(i).sendMessageToClient("LPUB " + serverConnection.getNickname());
+                players.get(i).sendMessageToClient("PLYR " + serverConnection.getNickname());
             }
             if (teamMode == 1 && readyToStart()) {
                 checkForTeams();
-                OrderArrayListToPlayGame();
                 // get players arraylist in definitive order
             }
         } else {
@@ -174,15 +198,13 @@ public class OpenGameFile {
         if (!players.remove(player)) {
             System.out.println("couldn t remove player");
         } else {
-            if (pendent) {
-                numberParticipants--;
-                sendMessageToParticipants("DPER " + nickname);
-                Server.getInstance().sendMessageToPublic("OGAM " + getSendReady(), 0);
-            } else {
-                // if serverConnection of a client stops while playing the server sends all clients back to public lobby
-                sendMessageToParticipants("INFO " + " connection to " + nickname + " is shutdown");
-                cancel();
+            numberParticipants--;
+            sendMessageToParticipants("DPLR " + nickname);
+            // cancel start
+            if (numberParticipants == 3) {
+                getPlayer(host).sendMessageToClient("DSTR");
             }
+            Server.getInstance().sendMessageToPublic("OGAM " + getSendReady(), 0);
         }
     }
 
@@ -294,6 +316,7 @@ public class OpenGameFile {
      * that the game can be started now
      */
     public void sendConfirmationMessage() {
+        System.out.println("HOST is " + host);
         getPlayer(host).sendMessageToClient("STAR");
     }
 
@@ -309,7 +332,6 @@ public class OpenGameFile {
      * starts game
      */
     public void start() {
-        pendent = false;
         Server.getInstance().startGame(this);
     }
 
@@ -330,20 +352,15 @@ public class OpenGameFile {
     }
 
     /**
-     * @return true if the game is not started but an "open game file"
-     */
-    public boolean isPendent() {
-        return pendent;
-    }
-
-    /**
      * @return Array of the player objects
      */
     public Player[] getPlayersArray() {
         Player[] array = new Player[players.size()];
+        System.out.println("PLAYERS ARRAY size " + players.size());
         int count = 0;
         for (Player player : players) {
             array[count] = player;
+            System.out.println("array " + count + " " + array[count]);
             count++;
         }
         return array;

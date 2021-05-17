@@ -57,8 +57,7 @@ public class ClientMenuCommand {
                         client.setNickname(name);
                         sendFromClient.keyBoardInBlocked = false;
 
-                        Platform.runLater(() -> GUIManager.getInstance().lobbyController.
-                                displayInfomsg("INFO from server. Your new nick is " + name));
+                        Platform.runLater(() -> GUIManager.getInstance().sendINFOtoGui("INFO from server. Your new nick is " + name));
                         System.out.println("your new nick is " + name);
                     }
                     break;
@@ -79,7 +78,7 @@ public class ClientMenuCommand {
                 case LPUB:
                     //just compare to existing String/Array and replace if necessary
                     Platform.runLater(() ->
-                            GUIManager.getInstance().displayPlayer(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().addUser(text.substring(5)));
 
                     System.out.println("LPUB: " + text.substring(5));
                     break;
@@ -93,14 +92,12 @@ public class ClientMenuCommand {
 
                 case DPER:
                     Platform.runLater(() ->
-                            GUIManager.getInstance().removeUser(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().removeUser(text.substring(5)));
                     break;
 
                 case JOIN:
-                    /*Platform.runLater(() ->
+                    Platform.runLater(() ->
                             GUIManager.getInstance().goToSeparateLobby(text.substring(5)));
-
-                     */
                     Client.getInstance().sendMessageToServer("LPUB");
                     break;
 
@@ -108,7 +105,7 @@ public class ClientMenuCommand {
                     System.out.println("OGAM: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().displayPendentGameInLobby(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().addOpenGame(text.substring(5)));
                     break;
 
                 case DOGA:
@@ -116,7 +113,7 @@ public class ClientMenuCommand {
                     System.out.println("DOGA: " + text.substring(5));
 
                     Platform.runLater(() ->
-                            GUIManager.getInstance().lobbyController.removePendentGameInLobby(text.substring(5)));
+                            GUIManager.getInstance().getPubLobbyController().removeOpenGame(text.substring(5)));
                     break;
 
                 case STAT:
@@ -127,22 +124,36 @@ public class ClientMenuCommand {
                     Platform.runLater(() ->
                             GUIManager.getInstance().sendINFOtoGui(text.substring(5)));
                     break;
-
+                case PLAR:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().getSeparateLobbyController().addPlayerArray(text.substring(5)));
+                    break;
+                case PLYR:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().getSeparateLobbyController().addPlayer(text.substring(5)));
+                    break;
+                case DPLR:
+                    Platform.runLater(() ->
+                            GUIManager.getInstance().getSeparateLobbyController().removePlayer(text.substring(5)));
+                    break;
                 case TEAM:
                     Platform.runLater(() ->
                             GUIManager.getInstance().getSeparateLobbyController().
                                     displayChangedTeams(text.substring(5)));
-
-                case STAR:
-                    GUIManager.getInstance().lobbyController.startGameConfirmation();
                     break;
 
-                default:
-                    System.out.println("received from server " + text + ". This command " + command
-                            + " is not implemented");
+                case STAR:
+                    Platform.runLater(() ->
+                    GUIManager.getInstance().getSeparateLobbyController().displayStart());
+                    break;
+
+                case DSTR:
+                    Platform.runLater(() ->
+                    GUIManager.getInstance().getSeparateLobbyController().cancelStart());
             }
         } catch (NullPointerException e) {
-            System.err.println("Received unknown message from server: " + text);
+            e.printStackTrace();
+            System.err.println("couldn`t process message from server: " + text);
         }
     }
 }

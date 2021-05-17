@@ -37,6 +37,9 @@ public enum SeparateLobbyProtocol {
 
     // TODO delete this
     LCHT,
+    /**
+     * receive a new team combination from a client
+     */
     TEAM;
 
     /**

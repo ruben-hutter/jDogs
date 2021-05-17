@@ -60,7 +60,7 @@ public class ClientGameCommand {
                                     gameWindowController.setYourTurn(true));
                         } else {
                             Platform.runLater(() -> GUIManager.getInstance().
-                                    gameWindowController.displayInfoFromServer(text));
+                                    gameWindowController.displayGameInfo(text));
                         }
                     }
                     break;
@@ -79,11 +79,8 @@ public class ClientGameCommand {
                     break;
 
                 case GAME:
-                    //TODO receive game details when game starts and display in Game GUI
-                    System.out.println(text);
                     clientGame = new ClientGame(GuiParser.getArray(text.substring(7)));
                     clientGame.printGameState();
-
                     //move to game-scene in gui manager and give 0 or 1 for teamMode or no
                     Platform.runLater(() -> GUIManager.getInstance().startGame(text.charAt(5) - 48));
                     break;
@@ -129,7 +126,7 @@ public class ClientGameCommand {
                     break;
 
                 case FAIL:
-                    // TODO change with something useful in GUI
+                    Platform.runLater(() -> GUIManager.getInstance().getGameController().displayGameInfo(text.substring(5)));
                     break;
             }
         } catch (NullPointerException e) {

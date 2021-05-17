@@ -68,8 +68,6 @@ public class GuiParser {
         } else {
             teamMode = "no";
         }
-
-
         return new OpenGame(id,responsible,sum,needed,teamMode);
     }
 
@@ -97,7 +95,7 @@ public class GuiParser {
      */
     public static String[] getArray(String usersString) {
         // activeUsers String contains at the first place: the number of nicknames in String
-        // e.g. "3 Joe^Jonas John"
+        // e.g. "3 Joe Jonas John"
 
         String[] array = new String[usersString.charAt(0) - 48];
         int arrayCount = 0;
@@ -105,13 +103,24 @@ public class GuiParser {
         for (int i = 2; i < usersString.length(); i++) {
             if(Character.isWhitespace(usersString.charAt(i))) {
                 array[arrayCount] = usersString.substring(first,i);
+                System.out.println(array[arrayCount]);
                 arrayCount++;
                 first = i + 1;
             }
         }
-        array[arrayCount - 1] = usersString.substring(first);
+        array[arrayCount] = usersString.substring(first);
         return array;
     }
+
+    public static void main(String[] args) {
+        //TODO GAME SENDS A WRONG ARRAY it has 5 names but should have 4
+        String game = "GAME 1 4 SDDD greG2 greg greG greG";
+        String gameString ="2 Greg gregor";
+        for (String name : getArray(gameString)) {
+            System.out.println("name " + name);
+        }
+    }
+
 
     /**
      * returns the number in the abbreviation enum

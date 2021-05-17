@@ -47,6 +47,10 @@ public enum ClientMenuProtocol {
      */
     STAR,
     /**
+     * Information start is cancelled
+     */
+    DSTR,
+    /**
      * Information about a new or new active users in Lobby of a pendent game
      */
     JOIN,
@@ -55,6 +59,18 @@ public enum ClientMenuProtocol {
      * e.g. "LPUB username"
      */
     LPUB,
+    /**
+     * received an String of all players in openGame
+     */
+    PLAR,
+    /**
+     * update of new player in separate lobby
+     */
+    PLYR,
+    /**
+     * update of deleted player in separate lobby
+     */
+    DPLR,
     /**
      * display new team combination
      */
