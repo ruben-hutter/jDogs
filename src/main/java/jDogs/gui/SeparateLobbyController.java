@@ -3,10 +3,14 @@ import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
+import jDogs.serverclient.clientside.ConnectionToServerMonitor;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -87,6 +91,7 @@ public class SeparateLobbyController implements Initializable{
     private boolean teamMode;
     private ArrayList<String> namesList;
     private RotateTransition rotate;
+    private Timeline t;
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
@@ -359,15 +364,30 @@ public class SeparateLobbyController implements Initializable{
         rotate.stop();
     }
 
-    private void blink() {
-        //mops
+    public void blink() {
 
-        Image image1 = new Image(getClass().getResource("/blink1.png").toExternalForm(), 100, 100, true, false);
-        Image image2 = new Image(getClass().getResource("/blink2.png").toExternalForm(), 100, 100, true, false);
-        Image image3 = new Image(getClass().getResource("/blink3.png").toExternalForm(), 100, 100, true, false);
-        Image image4 = new Image(getClass().getResource("/blink4.png").toExternalForm(), 100, 100, true, false);
-        Image image5 = new Image(getClass().getResource("/blink5.png").toExternalForm(), 100, 100, true, false);
-        Image image6 = new Image(getClass().getResource("/blink6.png").toExternalForm(), 100, 100, true, false);
+        t.play();
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        namesList = new ArrayList<>();
+        count = 0;
+        labels = new Label[4];
+        labelName.setText(Client.getInstance().getNickname());
+        teamMode = GUIManager.getInstance().isTeamMode();
+        lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
+                130.0, 200.0}, { 0.0, 0.0,
+                400.0, 200.0}, { 0.0, 0.0,
+                400.0, 0.0}};
+
+        Image image1 = new Image(getClass().getResource("/newBlink1.png").toExternalForm());
+        Image image2 = new Image(getClass().getResource("/newBlink2.png").toExternalForm());
+        Image image3 = new Image(getClass().getResource("/newBlink3.png").toExternalForm());
+        Image image4 = new Image(getClass().getResource("/newBlink4.png").toExternalForm());
+        Image image5 = new Image(getClass().getResource("/newBlink5.png").toExternalForm());
+        Image image6 = new Image(getClass().getResource("/newBlink6.png").toExternalForm());
 
         ImageView imageView1 = new ImageView(image1);
         ImageView imageView2 = new ImageView(image2);
@@ -377,11 +397,11 @@ public class SeparateLobbyController implements Initializable{
         ImageView imageView6 = new ImageView(image6);
 
         Group groupMops = new Group();
+        //anchorPane.getChildren().add(groupMops);
         anchorPane.getChildren().add(groupMops);
-
         groupMops.getChildren().addAll(imageView1);
-        Timeline t = new Timeline();
-        t.setCycleCount(Timeline.INDEFINITE);
+        t = new Timeline();
+        t.setCycleCount(2);
 
         t.getKeyFrames().add(new KeyFrame(
                 Duration.millis(200),
@@ -418,21 +438,43 @@ public class SeparateLobbyController implements Initializable{
                 }
         ));
 
-        t.play();
-    }
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(700),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView5);
+                }
+        ));
 
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(800),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView4);
+                }
+        ));
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        namesList = new ArrayList<>();
-        count = 0;
-        labels = new Label[4];
-        labelName.setText(Client.getInstance().getNickname());
-        teamMode = GUIManager.getInstance().isTeamMode();
-        lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
-                130.0, 200.0}, { 0.0, 0.0,
-                400.0, 200.0}, { 0.0, 0.0,
-                400.0, 0.0}};
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(900),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView3);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1000),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView2);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1100),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView1);
+                }
+        ));
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(new Blinker(), 3000, 5000, TimeUnit.MILLISECONDS);
     }
 }
 
