@@ -27,12 +27,7 @@
          <children>
             <VBox layoutY="-2.0" prefHeight="643.0" prefWidth="181.0">
                <children>
-                  <AnchorPane prefHeight="387.0" prefWidth="278.0" />
-                  <ImageView fitHeight="244.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Zeichnung_Mops6.png" />
-                     </image>
-                  </ImageView>
+                  <AnchorPane fx:id="anchorPane" prefHeight="644.0" prefWidth="182.0" />
                </children>
             </VBox>
          </children>
@@ -142,7 +137,7 @@
       </VBox>
    </center>
    <top>
-      <Pane prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="52.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
             <MenuBar fx:id="menuBarTop" prefHeight="48.0" prefWidth="229.0">
               <menus>

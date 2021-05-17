@@ -9,14 +9,18 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -27,6 +31,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
@@ -34,6 +39,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SeparateLobbyController implements Initializable{
@@ -63,7 +69,8 @@ public class SeparateLobbyController implements Initializable{
     private TextField sendTextField;
     @FXML
     private Button sendButton;
-
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private MenuBar menuBarTop;
 
@@ -89,6 +96,7 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void changeButtonOnAction(ActionEvent event) {
+         blink();
         if (teamMode && namesList.size() == 4) {
             removeLabels();
             int helper = 0;
@@ -97,18 +105,18 @@ public class SeparateLobbyController implements Initializable{
                 removeLabels();
                 adjustLabels();
                 setOnStartPosition();
+            } else {
+                continuousChangeNames();
+                removeLabels();
+                adjustLabels();
+                setOnStartPosition();
             }
-        } else {
-            continuousChangeNames();
-            removeLabels();
-            adjustLabels();
-            setOnStartPosition();
-        }
 
-        startFlash();
-        count++;
-        Client.getInstance().sendMessageToServer("TEAM 4"
-                + getParticipantsString());
+            startFlash();
+            count++;
+            Client.getInstance().sendMessageToServer("TEAM 4"
+                    + getParticipantsString());
+        }
     }
 
     /**
@@ -315,6 +323,8 @@ public class SeparateLobbyController implements Initializable{
         }
     }
 
+
+
     /**
      * display bouncing and then green start symbol on start button
      */
@@ -347,6 +357,68 @@ public class SeparateLobbyController implements Initializable{
      */
     public void cancelStart() {
         rotate.stop();
+    }
+
+    private void blink() {
+        //mops
+
+        Image image1 = new Image(getClass().getResource("/blink1.png").toExternalForm(), 100, 100, true, false);
+        Image image2 = new Image(getClass().getResource("/blink2.png").toExternalForm(), 100, 100, true, false);
+        Image image3 = new Image(getClass().getResource("/blink3.png").toExternalForm(), 100, 100, true, false);
+        Image image4 = new Image(getClass().getResource("/blink4.png").toExternalForm(), 100, 100, true, false);
+        Image image5 = new Image(getClass().getResource("/blink5.png").toExternalForm(), 100, 100, true, false);
+        Image image6 = new Image(getClass().getResource("/blink6.png").toExternalForm(), 100, 100, true, false);
+
+        ImageView imageView1 = new ImageView(image1);
+        ImageView imageView2 = new ImageView(image2);
+        ImageView imageView3 = new ImageView(image3);
+        ImageView imageView4 = new ImageView(image4);
+        ImageView imageView5 = new ImageView(image5);
+        ImageView imageView6 = new ImageView(image6);
+
+        Group groupMops = new Group();
+        anchorPane.getChildren().add(groupMops);
+
+        groupMops.getChildren().addAll(imageView1);
+        Timeline t = new Timeline();
+        t.setCycleCount(Timeline.INDEFINITE);
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(200),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView2);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(300),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView3);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(400),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView4);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(500),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView5);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(600),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView6);
+                }
+        ));
+
+        t.play();
     }
 
 
