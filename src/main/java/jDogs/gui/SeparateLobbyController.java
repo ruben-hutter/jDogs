@@ -383,6 +383,17 @@ public class SeparateLobbyController implements Initializable{
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
 
+        // imageView - teams
+
+        if (teamMode) {
+            imageView1.setImage(new Image(getClass().getResource("/Zeichnung_Mops_blau.png").toExternalForm()));
+            imageView2.setImage(new Image(getClass().getResource("/Zeichnung_Mops_rot.png").toExternalForm()));
+        }
+
+
+
+        // blinking pug
+
         Image image1 = new Image(getClass().getResource("/newBlink1.png").toExternalForm());
         Image image2 = new Image(getClass().getResource("/newBlink2.png").toExternalForm());
         Image image3 = new Image(getClass().getResource("/newBlink3.png").toExternalForm());

@@ -20,23 +20,62 @@
     -fx-font-: 15px, "Broadway";
     -fx-text-alignment: center;
     -fx-text-fill: #694824;
-    -fx-background-color: #DCB181;
+    -fx-background-color: #c2a35e;
     -fx-background-radius: 8;
     -fx-padding: 5;
     -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
 }
 .text-area .content{
-    -fx-background-color: #E5CDB4;
+    -fx-background-color: #dfe0df;
 }
 
 #sendTextField{
     -fx-font-: 15px, "Broadway";
     -fx-text-alignment: center;
     -fx-text-fill: #694824;
-    -fx-background-color: brown;
+    -fx-background-color: #dfe0df;
     -fx-background-radius: 8;
     -fx-padding: 5;
     -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+}
+
+.table-view{
+    -fx-font-: 15px, "Broadway";
+    -fx-text-alignment: center;
+    -fx-text-fill: #694824;
+    -fx-background-color: #402e32;
+    -fx-background-radius: 8;
+    -fx-padding: 5;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+}
+
+.table-view .filler {
+    -fx-background-color: #c0564b;
+}
+
+.scroll-pane{
+    -fx-font-: 15px, "Broadway";
+    -fx-text-alignment: center;
+    -fx-text-fill: #694824;
+    -fx-background-color: linear-gradient(to right top, #0c0c0d, #291c29, #512733, #72382b, #7e5618);
+    -fx-padding: 5;
+    -fx-background-radius: 8;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+}
+
+.menu-bar{
+    -fx-text-fill: #694824;
+    -fx-background-color:  #c48700;
+    -fx-padding: 5;
+    -fx-background-radius: 8;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+
+}
+
+#pane{
+    -fx-background-color: linear-gradient(to right top, #c48700, #b87a05, #ac6e08, #9f620b, #92570c, #89520e, #7f4d0f, #764810, #6e4713, #664615, #5e4418, #57421b);;
+    -fx-border-color: #44320F;
+    -fx-background-radius: 8;
 }
 
 .button{
@@ -70,6 +109,7 @@
 
 #gridPane {
     -fx-background-image: url(/spielbrett4.png);
+    -fx-background-radius: 8;
     -fx-background-repeat: no-repeat;
     -fx-background-size: stretch;
 }

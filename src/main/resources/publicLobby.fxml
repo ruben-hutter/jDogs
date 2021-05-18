@@ -23,16 +23,25 @@
    <left>
       <Pane prefHeight="648.0" prefWidth="242.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox layoutY="-2.0" prefHeight="643.0" prefWidth="244.0">
+            <VBox layoutY="-2.0" prefHeight="643.0" prefWidth="211.0">
                <children>
-                  <AnchorPane prefHeight="387.0" prefWidth="183.0">
+                  <Pane prefHeight="618.0" prefWidth="245.0">
                      <children>
-                        <TableView fx:id="tableViewPlayers" layoutY="15.0" prefHeight="334.0" prefWidth="168.0" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="15.0" />
+                        <Pane fx:id="pane" prefHeight="395.0" prefWidth="223.0">
+                           <children>
+                              <TableView fx:id="tableViewPlayers1" layoutX="21.0" layoutY="35.0" prefHeight="346.0" prefWidth="173.0">
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+                                 </padding>
+                              </TableView>
+                           </children>
+                        </Pane>
                      </children>
-                  </AnchorPane>
+                  </Pane>
+                  <Pane prefHeight="200.0" prefWidth="200.0" />
                   <ImageView fitHeight="244.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Zeichnung_Mops6.png" />
+                        <Image url="imageViewMops" />
                      </image>
                   </ImageView>
                </children>
@@ -48,7 +57,7 @@
          <children>
             <ScrollPane prefHeight="259.0" prefWidth="200.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="396.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="444.0" style="-fx-background-color: linear-gradient(to right top, #0c0c0d, #291c29, #512733, #72382b, #7e5618); -fx-border-color: #44320F; fx-background-radius: 8;">
                      <padding>
                         <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                      </padding>
@@ -69,7 +78,7 @@
                   <Pane prefHeight="52.0" prefWidth="61.0" />
                   <VBox prefHeight="52.0" prefWidth="342.0">
                      <children>
-                        <ButtonBar prefHeight="40.0" prefWidth="330.0">
+                        <ButtonBar prefHeight="51.0" prefWidth="339.0">
                           <buttons>
                               <Button fx:id="joinButton" mnemonicParsing="false" onAction="#joinButtonOnAction" text="Join" />
                               <Button fx:id="createButton" mnemonicParsing="false" onAction="#createButtonOnAction" text="Create" />
@@ -83,11 +92,14 @@
                <children>
                   <VBox prefHeight="298.0" prefWidth="813.0" spacing="1.0">
                      <children>
-                        <TextArea fx:id="displayTextArea" prefHeight="198.0" prefWidth="350.0">
+                        <Pane fx:id="pane" prefHeight="192.0" prefWidth="481.0">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
-                        </TextArea>
+                           <children>
+                              <TextArea fx:id="displayTextArea" layoutX="3.0" prefHeight="198.0" prefWidth="459.0" />
+                           </children>
+                        </Pane>
                         <HBox>
                            <VBox.margin>
                               <Insets bottom="2.0" left="20.0" right="20.0" top="2.0" />
