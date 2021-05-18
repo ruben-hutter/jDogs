@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="788.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox alignment="TOP_CENTER" layoutX="400.0" layoutY="250.0" prefHeight="700.0" prefWidth="900.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Label alignment="CENTER" prefHeight="50.0" prefWidth="430.0" text="Label" />
-            <ImageView fitHeight="650.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@spielanleitung/Brändi-Dog-Kurzanleitung.jpg" />
-               </image>
-            </ImageView>
-         </children>
-      </VBox>
-   </children>
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Label alignment="CENTER" prefHeight="50.0" prefWidth="600.0" text="Kurzanleitung" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <center>
+      <ImageView fitHeight="624.0" fitWidth="495.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@spielanleitung/Brändi-Dog-Kurzanleitung.png" />
+         </image>
+      </ImageView>
+   </center>
+   <right>
+      <ImageView fitHeight="216.0" fitWidth="211.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="BOTTOM_RIGHT">
+         <image>
+            <Image url="@Zeichnung_Mops6.png" />
+         </image>
+      </ImageView>
+   </right>
+   <left>
+      <Pane maxWidth="211.0" minWidth="211.0" prefWidth="211.0" BorderPane.alignment="CENTER" />
+   </left>
+</BorderPane>

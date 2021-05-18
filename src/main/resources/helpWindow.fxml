@@ -7,58 +7,58 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ScrollPane layoutY="158.0" prefHeight="542.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="150.0">
+      <Label alignment="CENTER" layoutX="150.0" layoutY="35.0" prefHeight="50.0" prefWidth="600.0" text="Spielanleitung" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="20.0" />
+      <ScrollPane layoutY="158.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="100.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="600.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="625.0">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="TOP_CENTER" layoutY="-1.0" prefHeight="7099.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/2C.png" />
+                              <Image url="@../../../../../../../../UNI/Programmierprojekt%20-%20CS108/Gruppe-13/src/main/resources/spielanleitung/DE/1.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/3C.png" />
+                              <Image url="@spielanleitung/DE/2.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/4C.png" />
+                              <Image url="@spielanleitung/DE/3.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/5C.png" />
+                              <Image url="@spielanleitung/DE/4.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/6C.png" />
+                              <Image url="@spielanleitung/DE/5.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/7C.png" />
+                              <Image url="@spielanleitung/DE/6.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/8C.png" />
+                              <Image url="@spielanleitung/DE/7.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/9C.png" />
+                              <Image url="@spielanleitung/DE/8.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@cards/10C.png" />
+                              <Image url="@spielanleitung/DE/9.png" />
                            </image>
                         </ImageView>
                      </children>
@@ -67,6 +67,5 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <Label alignment="CENTER" layoutX="150.0" layoutY="35.0" prefHeight="90.0" prefWidth="600.0" text="Spielanleitung" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="35.0" />
    </children>
 </AnchorPane>
