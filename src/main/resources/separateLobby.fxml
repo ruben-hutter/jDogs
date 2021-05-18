@@ -23,16 +23,11 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.SeparateLobbyController">
    <left>
-      <Pane prefHeight="643.0" prefWidth="233.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="618.0" prefWidth="169.0" BorderPane.alignment="CENTER">
          <children>
             <VBox layoutY="-2.0" prefHeight="643.0" prefWidth="181.0">
                <children>
-                  <AnchorPane prefHeight="387.0" prefWidth="176.0" />
-                  <ImageView fitHeight="244.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Zeichnung_Mops6.png" />
-                     </image>
-                  </ImageView>
+                  <AnchorPane fx:id="anchorPane" prefHeight="644.0" prefWidth="182.0" />
                </children>
             </VBox>
          </children>
@@ -48,7 +43,7 @@
                <center>
                   <StackPane BorderPane.alignment="CENTER">
                      <children>
-                        <GridPane fx:id="gridSeparateLobby" prefHeight="221.0" prefWidth="507.0">
+                        <GridPane fx:id="gridSeparateLobby" prefHeight="290.0" prefWidth="502.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -58,10 +53,13 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <ImageView fx:id="imageView1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="imageView1" fitHeight="150.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@Zeichnung_Mops_gelb.png" />
                                  </image>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
                               </ImageView>
                               <ImageView fx:id="imageView2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                                  <image>
@@ -79,6 +77,9 @@
                                  </image>
                               </ImageView>
                            </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
                         </GridPane>
                      </children>
                   </StackPane>
@@ -136,9 +137,9 @@
       </VBox>
    </center>
    <top>
-      <Pane prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="52.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar fx:id="menuBarTop">
+            <MenuBar fx:id="menuBarTop" prefHeight="48.0" prefWidth="229.0">
               <menus>
                 <Menu mnemonicParsing="false" text="Exit">
                   <items>
@@ -156,6 +157,9 @@
                   </items>
                 </Menu>
               </menus>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
             </MenuBar>
          </children>
       </Pane>

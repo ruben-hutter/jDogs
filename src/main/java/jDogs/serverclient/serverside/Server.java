@@ -1,5 +1,6 @@
 package jDogs.serverclient.serverside;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import jDogs.player.Player;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -472,6 +473,7 @@ public class Server {
 
         // delete main game
         deleteMainGame(mainGame);
+        System.out.println("END");
     }
     /**
      * get highScoreList with all savedUsers

@@ -56,11 +56,10 @@ public class GuiParser {
             System.out.println("couldn t parse message " + message + ". has wrong format..");
             return null;
         }
-
         String id = message.substring(0,idSeparator);
         String responsible = message.substring(idSeparator + 1, responsibleSeparator);
         String sum = message.substring(responsibleSeparator + 1, sumSeparator);
-        String needed = message.substring(sumSeparator + 1, totalSeparator);
+        String total = message.substring(sumSeparator + 1, totalSeparator);
         String teamMode = message.substring(totalSeparator + 1);
 
         if (teamMode.equals("1")) {
@@ -68,7 +67,7 @@ public class GuiParser {
         } else {
             teamMode = "no";
         }
-        return new OpenGame(id,responsible,sum,needed,teamMode);
+        return new OpenGame(id,responsible,sum,total,teamMode);
     }
 
     /**

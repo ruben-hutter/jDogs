@@ -269,9 +269,9 @@ public class GUIManager extends Application {
      * @param game information about the joined game
      */
     public void goToSeparateLobby(String game) {
-        System.out.println("Game " + game);
         state = "separateLobby";
         openGameInfo = GuiParser.getOpenGame(game);
+        teamMode = openGameInfo.getTeamMode() == "yes";
         setSeparateLobbyScene();
     }
 

@@ -155,19 +155,7 @@ public class CSVWriter {
             }
             count++;
         }
-
-        count++;
-        int playedGameSeparator = count;
-        int victories = -1;
-        while (count < line.length()) {
-            if (line.charAt(count) == ',') {
-                victories = Integer.parseInt(line.substring(playedGameSeparator, count));
-                break;
-            }
-            count++;
-        }
-        count++;
-        int victorySeparator = count;
+        int victories = Integer.parseInt(line.substring(count + 1));
 
         SavedUser savedUser = new SavedUser(name);
         savedUser.setPlayedGames(playedGames);

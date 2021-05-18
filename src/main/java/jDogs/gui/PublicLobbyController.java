@@ -1,28 +1,39 @@
 package jDogs.gui;
 
+import animatefx.animation.BounceIn;
 import jDogs.serverclient.clientside.Client;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class PublicLobbyController implements Initializable {
     @FXML
@@ -31,10 +42,12 @@ public class PublicLobbyController implements Initializable {
     ObservableList<Participant> playersInPubList;
     @FXML
     private TableView<?> tableViewPlayers;
-
+    @FXML
+    private Label labelName;
     @FXML
     private TableView<?> tableViewGames;
-
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private Button joinButton;
 
@@ -55,6 +68,7 @@ public class PublicLobbyController implements Initializable {
     private OpenGame selectedGame;
     private String selectedGameID;
     private Stage gameDialog;
+    private Timeline t;
 
     /**
      * sets up a new open game
@@ -239,6 +253,21 @@ public class PublicLobbyController implements Initializable {
         }
     }
 
+    /**
+     * display the nickname
+     * @param name new nickname
+     */
+    public void displayNickname(String name) {
+        labelName.setText(name);
+        new BounceIn(labelName).setCycleCount(3).play();
+    }
+
+    /**
+     * make this blink
+     */
+    public void blink() {
+        t.play();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -282,6 +311,107 @@ public class PublicLobbyController implements Initializable {
         player.setCellValueFactory(new PropertyValueFactory<Participant, String>("player"));
 
         tableViewPlayers.setItems((ObservableList) playersInPubList);
+
+        //add name
+        labelName.setText(Client.getInstance().getNickname());
+
+
+
+        // blinking pug
+
+        Image image1 = new Image(getClass().getResource("/newBlink1.png").toExternalForm(),1000,1000,false,false);
+        Image image2 = new Image(getClass().getResource("/newBlink2.png").toExternalForm(),1000,1000,false,false);
+        Image image3 = new Image(getClass().getResource("/newBlink3.png").toExternalForm(),1000,1000,false,false);
+        Image image4 = new Image(getClass().getResource("/newBlink4.png").toExternalForm(),1000,1000,false,false);
+        Image image5 = new Image(getClass().getResource("/newBlink5.png").toExternalForm(),1000,1000,false,false);
+        Image image6 = new Image(getClass().getResource("/newBlink6.png").toExternalForm(),1000,1000,false,false);
+
+        ImageView imageView1 = new ImageView(image1);
+        ImageView imageView2 = new ImageView(image2);
+        ImageView imageView3 = new ImageView(image3);
+        ImageView imageView4 = new ImageView(image4);
+        ImageView imageView5 = new ImageView(image5);
+        ImageView imageView6 = new ImageView(image6);
+
+        Group groupMops = new Group();
+        //anchorPane.getChildren().add(groupMops);
+        anchorPane.getChildren().add(groupMops);
+        groupMops.getChildren().addAll(imageView1);
+        t = new Timeline();
+        t.setCycleCount(2);
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(200),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView2);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(300),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView3);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(400),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView4);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(500),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView5);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(600),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView6);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(700),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView5);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(800),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView4);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(900),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView3);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1000),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView2);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1100),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView1);
+                }
+        ));
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(new Blinker("public"), 3000, 5000, TimeUnit.MILLISECONDS);
     }
 }
 

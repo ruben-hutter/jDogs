@@ -3,19 +3,28 @@ import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
+import jDogs.serverclient.clientside.ConnectionToServerMonitor;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -24,12 +33,17 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SeparateLobbyController implements Initializable{
@@ -59,7 +73,8 @@ public class SeparateLobbyController implements Initializable{
     private TextField sendTextField;
     @FXML
     private Button sendButton;
-
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private MenuBar menuBarTop;
 
@@ -76,6 +91,7 @@ public class SeparateLobbyController implements Initializable{
     private boolean teamMode;
     private ArrayList<String> namesList;
     private RotateTransition rotate;
+    private Timeline t;
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
@@ -93,18 +109,18 @@ public class SeparateLobbyController implements Initializable{
                 removeLabels();
                 adjustLabels();
                 setOnStartPosition();
+            } else {
+                continuousChangeNames();
+                removeLabels();
+                adjustLabels();
+                setOnStartPosition();
             }
-        } else {
-            continuousChangeNames();
-            removeLabels();
-            adjustLabels();
-            setOnStartPosition();
-        }
 
-        startFlash();
-        count++;
-        Client.getInstance().sendMessageToServer("TEAM 4"
-                + getParticipantsString());
+            startFlash();
+            count++;
+            Client.getInstance().sendMessageToServer("TEAM 4"
+                    + getParticipantsString());
+        }
     }
 
     /**
@@ -311,6 +327,8 @@ public class SeparateLobbyController implements Initializable{
         }
     }
 
+
+
     /**
      * display bouncing and then green start symbol on start button
      */
@@ -345,6 +363,13 @@ public class SeparateLobbyController implements Initializable{
         rotate.stop();
     }
 
+    /**
+     * let the dog blink
+     */
+    public void blink() {
+        t.play();
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -352,13 +377,116 @@ public class SeparateLobbyController implements Initializable{
         count = 0;
         labels = new Label[4];
         labelName.setText(Client.getInstance().getNickname());
-        teamMode = true;
-//TODO import TEAM MODE here
-
+        teamMode = GUIManager.getInstance().isTeamMode();
         lines = new Double[][] {{0.0,0.0,130.0,0.0}, {0.0, 0.0,
                 130.0, 200.0}, { 0.0, 0.0,
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
+
+        // imageView - teams
+
+        if (teamMode) {
+            imageView1.setImage(new Image(getClass().getResource("/Zeichnung_Mops_blau.png").toExternalForm()));
+            imageView2.setImage(new Image(getClass().getResource("/Zeichnung_Mops_rot.png").toExternalForm()));
+        }
+
+
+
+        // blinking pug
+
+        Image image1 = new Image(getClass().getResource("/newBlink1.png").toExternalForm());
+        Image image2 = new Image(getClass().getResource("/newBlink2.png").toExternalForm());
+        Image image3 = new Image(getClass().getResource("/newBlink3.png").toExternalForm());
+        Image image4 = new Image(getClass().getResource("/newBlink4.png").toExternalForm());
+        Image image5 = new Image(getClass().getResource("/newBlink5.png").toExternalForm());
+        Image image6 = new Image(getClass().getResource("/newBlink6.png").toExternalForm());
+
+        ImageView imageView1 = new ImageView(image1);
+        ImageView imageView2 = new ImageView(image2);
+        ImageView imageView3 = new ImageView(image3);
+        ImageView imageView4 = new ImageView(image4);
+        ImageView imageView5 = new ImageView(image5);
+        ImageView imageView6 = new ImageView(image6);
+
+        Group groupMops = new Group();
+        //anchorPane.getChildren().add(groupMops);
+        anchorPane.getChildren().add(groupMops);
+        groupMops.getChildren().addAll(imageView1);
+        t = new Timeline();
+        t.setCycleCount(2);
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(200),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView2);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(300),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView3);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(400),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView4);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(500),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView5);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(600),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView6);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(700),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView5);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(800),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView4);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(900),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView3);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1000),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView2);
+                }
+        ));
+
+        t.getKeyFrames().add(new KeyFrame(
+                Duration.millis(1100),
+                (ActionEvent event) -> {
+                    groupMops.getChildren().setAll(imageView1);
+                }
+        ));
+
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(new Blinker("separate"), 3000, 5000, TimeUnit.MILLISECONDS);
     }
 }
 

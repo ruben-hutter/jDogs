@@ -57,7 +57,7 @@ public class ClientMenuCommand {
                         client.setNickname(name);
                         sendFromClient.keyBoardInBlocked = false;
 
-                        Platform.runLater(() -> GUIManager.getInstance().sendINFOtoGui("INFO from server. Your new nick is " + name));
+                        Platform.runLater(() -> GUIManager.getInstance().getPubLobbyController().displayNickname(name));
                         System.out.println("your new nick is " + name);
                     }
                     break;
@@ -96,6 +96,7 @@ public class ClientMenuCommand {
                     break;
 
                 case JOIN:
+                    System.out.println("JOIN " + text);
                     Platform.runLater(() ->
                             GUIManager.getInstance().goToSeparateLobby(text.substring(5)));
                     Client.getInstance().sendMessageToServer("LPUB");
