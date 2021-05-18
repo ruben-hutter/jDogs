@@ -486,7 +486,7 @@ public class SeparateLobbyController implements Initializable{
         ));
 
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new Blinker(), 3000, 5000, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new Blinker("separate"), 3000, 5000, TimeUnit.MILLISECONDS);
     }
 }
 

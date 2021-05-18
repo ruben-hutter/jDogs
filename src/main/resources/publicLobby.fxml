@@ -11,8 +11,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -27,37 +25,36 @@
                <children>
                   <Pane prefHeight="618.0" prefWidth="245.0">
                      <children>
-                        <Pane fx:id="pane" prefHeight="395.0" prefWidth="223.0">
+                        <Pane fx:id="pane" prefHeight="636.0" prefWidth="219.0">
                            <children>
-                              <TableView fx:id="tableViewPlayers1" layoutX="21.0" layoutY="35.0" prefHeight="346.0" prefWidth="173.0">
-                                 <padding>
-                                    <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
-                                 </padding>
-                              </TableView>
+                              <Pane fx:id="pane" layoutX="3.0" prefHeight="393.0" prefWidth="205.0">
+                                 <children>
+                                    <TableView fx:id="tableViewPlayers" layoutX="16.0" layoutY="33.0" prefHeight="346.0" prefWidth="173.0">
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+                                       </padding>
+                                    </TableView>
+                                 </children>
+                              </Pane>
+                              <AnchorPane fx:id="anchorPane" layoutX="10.0" layoutY="428.0" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </Pane>
                      </children>
                   </Pane>
-                  <Pane prefHeight="200.0" prefWidth="200.0" />
-                  <ImageView fitHeight="244.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="imageViewMops" />
-                     </image>
-                  </ImageView>
                </children>
             </VBox>
          </children>
       </Pane>
    </left>
    <right>
-      <Pane prefHeight="508.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
+      <Pane prefHeight="643.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
    </right>
    <center>
-      <VBox prefHeight="567.0" prefWidth="594.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="567.0" prefWidth="507.0" BorderPane.alignment="CENTER">
          <children>
             <ScrollPane prefHeight="259.0" prefWidth="200.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="444.0" style="-fx-background-color: linear-gradient(to right top, #0c0c0d, #291c29, #512733, #72382b, #7e5618); -fx-border-color: #44320F; fx-background-radius: 8;">
+                <AnchorPane fx:id="anchorPanePub" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="444.0">
                      <padding>
                         <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                      </padding>
@@ -88,31 +85,39 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox prefHeight="298.0" prefWidth="594.0">
+            <HBox prefHeight="334.0" prefWidth="507.0">
                <children>
-                  <VBox prefHeight="298.0" prefWidth="813.0" spacing="1.0">
+                  <VBox prefHeight="329.0" prefWidth="507.0" spacing="1.0">
                      <children>
-                        <Pane fx:id="pane" prefHeight="192.0" prefWidth="481.0">
+                        <Pane fx:id="pane" prefHeight="228.0" prefWidth="462.0">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
                            <children>
-                              <TextArea fx:id="displayTextArea" layoutX="3.0" prefHeight="198.0" prefWidth="459.0" />
+                              <TextArea fx:id="displayTextArea" layoutX="3.0" prefHeight="215.0" prefWidth="459.0" />
                            </children>
                         </Pane>
-                        <HBox>
+                        <HBox fx:id="imageViewMops">
                            <VBox.margin>
                               <Insets bottom="2.0" left="20.0" right="20.0" top="2.0" />
                            </VBox.margin>
                            <children>
-                              <TextField fx:id="sendTextField" prefHeight="102.0" prefWidth="278.0">
-                                 <padding>
-                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                 </padding>
-                              </TextField>
-                              <Pane prefHeight="96.0" prefWidth="114.0">
+                              <Pane fx:id="pane" prefHeight="70.0" prefWidth="359.0">
                                  <children>
-                                    <Button fx:id="sendButton" layoutX="31.0" layoutY="35.0" mnemonicParsing="false" onAction="#sendButtonOnAction" text="Send" />
+                                    <TextField fx:id="sendTextField" layoutX="6.0" layoutY="2.0" prefHeight="102.0" prefWidth="324.0">
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </TextField>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="113.0" prefWidth="154.0">
+                                 <children>
+                                    <Pane fx:id="pane" layoutX="33.0" layoutY="38.0" prefHeight="39.0" prefWidth="59.0">
+                                       <children>
+                                          <Button fx:id="sendButton" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="26.0" prefWidth="52.0" text="Send" />
+                                       </children>
+                                    </Pane>
                                  </children>
                               </Pane>
                            </children>

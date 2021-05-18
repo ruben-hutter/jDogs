@@ -49,6 +49,15 @@
     -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
 }
 
+
+.table-row-cell {
+    -fx-font-: 20px, "Broadway";
+    -fx-text-alignment: center;
+    -fx-text-fill: #81490D;
+    -fx-background-color: #A87E52;
+    -fx-background-radius: 8;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);}
+
 .table-view .filler {
     -fx-background-color: #c0564b;
 }
@@ -96,6 +105,15 @@
     -fx-text-fill: #DEB595;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
+}
+
+#anchorPanePub{
+    -fx-background-radius: 8;
+    -fx-background-image: url(/ivan-gromov-Y3vPEuNlf7w-unsplash.jpg);
+    -fx-background-repeat: no - repeat;
+    -fx-background-size: stretch;
+    -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
+    -fx-padding: 5;
 }
 
 #gridSeparateLobby {
