@@ -235,7 +235,7 @@ public class SeparateLobbyController implements Initializable{
      * display a new player who joined open game
      * @param user
      */
-    public synchronized void addPlayer(String user) {
+    public void addPlayer(String user) {
         int exists = 1;
         for (String name : namesList) {
             if (name.equals(user)) {
