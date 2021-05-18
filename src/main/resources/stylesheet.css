@@ -131,3 +131,8 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: stretch;
 }
+
+#field {
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
+    -fx-padding: 5;}
