@@ -64,6 +64,27 @@ public class AdaptToGui {
             trackCounter++;
         }
 
+
+        //0 - 16
+
+        for (int i = 0; i < 4; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint + i, lowestPoint);
+            trackCounter++;
+        }
+
+        int helper = 1;
+        for (int i = 4; i < 9; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint + i, lowestPoint + helper);
+            helper++;
+            trackCounter++;
+        }
+
+       /* for (int i = 9; i < 13; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(, lowestPoint + helper)
+        }
+
+        */
+
         //right side (20/18, 20/17,...20/1)
 
         for (int i = 0; i < 16; i++) {
