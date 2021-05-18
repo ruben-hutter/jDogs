@@ -94,7 +94,7 @@
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
                            <children>
-                              <TextArea fx:id="displayTextArea" layoutX="3.0" prefHeight="215.0" prefWidth="459.0" />
+                              <TextArea fx:id="displayTextArea" editable="false" layoutX="3.0" prefHeight="215.0" prefWidth="459.0" />
                            </children>
                         </Pane>
                         <HBox fx:id="imageViewMops">
@@ -149,7 +149,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="quickGuide" mnemonicParsing="false" onAction="#openQuickGuide" text="Quick Guide" />
+                        <MenuItem fx:id="instructions" mnemonicParsing="false" onAction="#openInstructions" text="Instructions" />
                   </items>
                 </Menu>
               </menus>

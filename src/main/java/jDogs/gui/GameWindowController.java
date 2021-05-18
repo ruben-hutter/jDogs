@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -113,6 +114,12 @@ public class GameWindowController implements Initializable {
     private MenuItem exitMenuItem;
 
     @FXML
+    private MenuItem quickGuide;
+
+    @FXML // fx:id="instructions"
+    private MenuItem instructions; // Value injected by FXMLLoader
+
+    @FXML
     private Pane leftBoardSide;
 
     @FXML
@@ -176,6 +183,36 @@ public class GameWindowController implements Initializable {
     void exitMenuOnAction(ActionEvent event) {
         Client.getInstance().sendMessageToServer("EXIT");
         Client.getInstance().kill();
+    }
+
+    /**
+     * Opens a window with a quick guide
+     * @param actionEvent menu selection
+     */
+    @FXML
+    void openQuickGuide(ActionEvent actionEvent) {
+        try {
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/quickGuide.fxml"));
+            Parent root1 = helpLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void openInstructions(ActionEvent event) {
+        try {
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/helpWindow.fxml"));
+            Parent root1 = helpLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

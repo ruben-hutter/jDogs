@@ -17,16 +17,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,10 +30,18 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class PublicLobbyController implements Initializable {
+
     @FXML
     ObservableList<OpenGame> openGamesList;
     @FXML
     ObservableList<Participant> playersInPubList;
+
+    @FXML
+    private MenuItem quickGuide;
+
+    @FXML // fx:id="instructions"
+    private MenuItem instructions; // Value injected by FXMLLoader
+
     @FXML
     private TableView<?> tableViewPlayers;
     @FXML
@@ -69,6 +71,40 @@ public class PublicLobbyController implements Initializable {
     private String selectedGameID;
     private Stage gameDialog;
     private Timeline t;
+
+    /**
+     * Opens a window with a quick guide
+     * @param actionEvent menu selection
+     */
+    @FXML
+    void openQuickGuide(ActionEvent actionEvent) {
+        try {
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/quickGuide.fxml"));
+            Parent root1 = helpLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens a window with the game instructions
+     * @param event menu selection
+     */
+    @FXML
+    void openInstructions(ActionEvent event) {
+        try {
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/helpWindow.fxml"));
+            Parent root1 = helpLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * sets up a new open game
