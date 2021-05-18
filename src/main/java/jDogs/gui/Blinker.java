@@ -5,6 +5,11 @@ package jDogs.gui;
  */
 public class Blinker implements Runnable {
     int mode;
+
+    /**
+     * constructor of blinker
+     * @param controller public or separate
+     */
    public Blinker(String controller) {
        if (controller.equals("public")) {
            mode = 0;

@@ -253,6 +253,10 @@ public class SeparateLobbyController implements Initializable{
         }
     }
 
+    /**
+     * adds a whole array of players
+     * @param newPlayers multiple players in string
+     */
     public void addPlayerArray(String newPlayers) {
         ArrayList<String> newNamesList = new ArrayList<>();
         String[] array = GuiParser.getArray(newPlayers);
@@ -278,18 +282,24 @@ public class SeparateLobbyController implements Initializable{
         }
     }
 
+    /**
+     * remove all labels
+     */
     private void removeLabels() {
         ObservableList<Node> nodes = gridSeparateLobby.getChildren();
-        for (int i = 0; i < nodes.size(); i++) {
-           if (nodes.get(i) instanceof Label) {
-               Label label1 = (Label) nodes.get(i);
-               gridSeparateLobby.getChildren().remove(label1);
-           }
-       }
+        int lengthLabel = labels.length;
+        for (int i = 0; i < lengthLabel; i++) {
+            nodes.remove(labels[i]);
+        }
+        labels = null;
     }
 
+    /**
+     * set up new labels
+     */
     private void adjustLabels() {
         int helper = 1;
+        labels = new Label[4];
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();
             label.setId("" + helper);
