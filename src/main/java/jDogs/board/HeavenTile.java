@@ -9,6 +9,11 @@ public class HeavenTile extends Tile {
 
     Alliance_4 alliance4;
 
+    /**
+     * Creates a heaven tile
+     * @param tileCoordinate int between 0-3
+     * @param alliance4 alliance
+     */
     HeavenTile(int tileCoordinate, Alliance_4 alliance4) {
         super(tileCoordinate);
         this.alliance4 = alliance4;

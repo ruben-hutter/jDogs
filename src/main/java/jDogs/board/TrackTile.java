@@ -5,6 +5,10 @@ package jDogs.board;
  */
 public class TrackTile extends Tile {
 
+    /**
+     * Creates a track tile
+     * @param tileCoordinate
+     */
     TrackTile(int tileCoordinate) {
         super(tileCoordinate);
     }
