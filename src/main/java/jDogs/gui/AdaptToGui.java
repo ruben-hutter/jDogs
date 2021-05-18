@@ -112,16 +112,62 @@ public class AdaptToGui {
 
         //right side (20/18, 20/17,...20/1) from blue to red
 
-        for (int i = 0; i < 16; i++) {
+        // 20/18 - 20/15
 
+        for (int i = 0; i < 4; i++) {
             fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint, lowestPoint - i);
             trackCounter++;
-
         }
 
-        // upper side (18/2, 17/2...3/2)
+        // 19/14 - 15/10
+        helper = 1;
+        for (int i = 4; i < 9; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint - helper, lowestPoint - i);
+            trackCounter++;
+            helper++;
+        }
 
-        for (int i = 0; i < 16; i++) {
+        // 16/10 - 19/6
+        helper = 4;
+        for (int i = 9; i < 13; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint - helper, lowestPoint - i);
+            trackCounter++;
+            helper--;
+        }
+
+        // 20/5 - 20/3
+        for (int i = 13; i < 16; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint, lowestPoint - i);
+            trackCounter++;
+        }
+
+
+        // upper side (18/2, 17/2...3/2) red to yellow
+
+        // 20/2 - 17/2
+
+        for (int i = 0; i < 4; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint - i, highestPoint);
+            trackCounter++;
+        }
+        // 16/3 - 12/7
+        helper = 1;
+        for (int i = 4; i < 9; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint - i, highestPoint + helper);
+            trackCounter++;
+            helper++;
+        }
+
+        // 11/6 - 8/3
+        helper = 4;
+        for (int i = 9; i < 13; i++) {
+            fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint - i, highestPoint + helper);
+            trackCounter++;
+            helper--;
+        }
+
+        // 7/2 - 5/2
+        for (int i = 13; i < 16; i++) {
             fieldsOnTrack[trackCounter] = new FieldOnBoard(rightestPoint - i, highestPoint);
             trackCounter++;
         }
@@ -129,43 +175,8 @@ public class AdaptToGui {
 
     public static void main(String[] args) {
 
-        FieldOnBoard[] fieldsOnTrack = new FieldOnBoard[16];
-        int trackCounter = 0;
-        int leftestPoint = 4;
-        int highestPoint = 2;
-
-        // 4/2 - 4/5
-
-        for (int i = 0; i < 4; i++) {
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint, highestPoint + i);
-            trackCounter++;
-        }
-        // 5/6 - 9/10
-        int helper = 1;
-        for (int i = 4; i < 9; i++) {
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint + helper, highestPoint + i);
-            trackCounter++;
-            helper++;
-        }
-
-        // 8/11 - 5/14
-        helper = 4;
-        for (int i = 9; i < 13; i++) {
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint + helper, highestPoint + i);
-            trackCounter++;
-            helper--;
-        }
-
-        // 4/15 - 4/17
-        for (int i = 13; i < 16; i++) {
-            fieldsOnTrack[trackCounter] = new FieldOnBoard(leftestPoint, highestPoint + i);
-            trackCounter++;
-        }
-
-
-        for (FieldOnBoard fieldOnBoard : fieldsOnTrack) {
-            System.out.println(fieldOnBoard.getX() + " " + fieldOnBoard.getY());
-        }
+       AdaptToGui adaptToGui = new AdaptToGui();
+        System.out.println(adaptToGui.getTrack(00).getX() + " " + adaptToGui.getTrack(63).getY());
     }
 
     /**
