@@ -475,3 +475,15 @@ Wir besprachen, was es noch zu tun gibt:
 
 **Nächstes Treffen:** Dienstag, 18.05.21, 15:30 Uhr
 
+--- 
+
+18.05.2021, 15:30 Uhr, Johanna
+
+### Protokoll#27 - Protokoll
+
+Die GUI sieht nun ziemlich anders aus. Gregor hat das Design der Lobby, Separate Lobby und des Spielbretts angepasst. Ruben hat neue Spielkarten gefunden, die er noch integrieren will. Zudem kümmert er sich noch um das Problem, dass die Spielanleitung nicht angezeigt werden kann, wenn man auf den Hilfe-Button klickt. Es besteht ein Problem, wenn sich ein User einen kurzen Namen gibt. Dann steht in der Separate Lobby hinter dem Usernamen noch "no user". 
+Falls wir noch Zeit haben, wollen wir noch die Funktion implementieren, nur eine Karte statt alle abzuwerfen, wenn man nicht spielen kann. 
+In der Übungsstunde wollen wir Tim fragen, wie das Architecture-Dokument genau aussehen soll. 
+Bis zum nächsten Treffen am Donnerstag wollen wir das Spiel soweit fertig stellen und testen. 
+
+**Nächstes Treffen:** Mittwoch, 19.05.21, 10:15 Uhr, Übungsstunde
