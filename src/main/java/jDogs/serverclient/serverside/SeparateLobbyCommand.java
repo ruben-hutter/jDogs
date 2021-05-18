@@ -121,13 +121,13 @@ public class SeparateLobbyCommand {
                     break;
 
                 case ACTI:
-                    String list = "INFO all active Players ";
+                    StringBuilder list = new StringBuilder("INFO all active Players ");
                     for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
-                        list += "player # " + i + "\n";
-                        list += Server.getInstance().allNickNames.get(i) + " ";
-                        list += "\n";
+                        list.append("player # ").append(i).append("\n");
+                        list.append(Server.getInstance().allNickNames.get(i)).append(" ");
+                        list.append("\n");
                     }
-                    serverConnection.sendToClient(list);
+                    serverConnection.sendToClient(list.toString());
                     break;
 
                 case LPUB:
@@ -153,12 +153,14 @@ public class SeparateLobbyCommand {
      * @return boolean
      */
     private boolean isParticipant(String destiny) {
+        boolean result = false;
         for (String name : Server.getInstance().getOpenGameFile(openGameFileID).getParticipantsArray()) {
             if (name.equals(destiny)) {
-                return true;
+                result = true;
+                break;
             }
         }
-        return false;
+        return result;
     }
 
 

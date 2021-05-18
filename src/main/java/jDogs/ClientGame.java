@@ -112,18 +112,23 @@ public class ClientGame {
                         get(player.getAlliance())[pieceID - 1]);
                 break;
             case "B":
+                if (newPos < 0 || 63 < newPos) {
+                    return;
+                }
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindowController.makeTrackMove(playerNumber, pieceID - 1,newPos));
+                        gameWindowController.makeTrackMove(playerNumber, pieceID - 1, newPos));
 
-                player.changePositionClient(pieceID, board.allTrackTiles[Integer
-                        .parseInt(newPosition.substring(1))]);
+                player.changePositionClient(pieceID, board.allTrackTiles[newPos]);
                 break;
             case "C":
+                if (newPos < 0 || 3 < newPos) {
+                    return;
+                }
                 Platform.runLater(() -> GUIManager.getInstance().
-                        gameWindowController.makeHeavenMove(playerNumber, pieceID - 1,newPos));
+                        gameWindowController.makeHeavenMove(playerNumber, pieceID - 1, newPos));
 
                 player.changePositionClient(pieceID, board.allHeavenTiles.
-                        get(player.getAlliance())[Integer.parseInt(newPosition.substring(1))]);
+                        get(player.getAlliance())[newPos]);
                 break;
         }
     }

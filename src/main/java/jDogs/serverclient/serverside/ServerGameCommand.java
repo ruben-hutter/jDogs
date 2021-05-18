@@ -296,26 +296,30 @@ public class ServerGameCommand {
      * @param text given command / move
      */
     private void cheatSet(String text) {
-        Player player = mainGame.getPlayerForAlliance(text.substring(5, 9), mainGame);
-        int pieceID = Integer.parseInt(text.substring(10, 11));
-        String newPosition1 = text.substring(12, 13);
-        int newPosition2 = Integer.parseInt(text.substring(13));
-        Piece piece = player.getPiece(pieceID);
-        // update gameState
-        player.changePositionServer(pieceID, newPosition1, newPosition2);
-        // updates piecesOnTrack in gameState
-        mainGame.getGameState().updatePiecesOnTrack(piece, newPosition1);
-        // send move
-        mainGame.sendMessageToParticipants("MOVE " + text.substring(5));
-        // send new board state
-        mainGame.sendMessageToParticipants("BORD");
-        // check for winner
-        if (mainGame.getGameState().checkForVictory()) {
-            String winners = mainGame.getGameState().getWinners();
-            if (winners != null) {
-                mainGame.sendMessageToParticipants("VICT " + winners);
-                Server.getInstance().storeGame(mainGame.getGameId(), winners);
+        try {
+            Player player = mainGame.getPlayerForAlliance(text.substring(5, 9), mainGame);
+            int pieceID = Integer.parseInt(text.substring(10, 11));
+            String newPosition1 = text.substring(12, 13);
+            int newPosition2 = Integer.parseInt(text.substring(13));
+            Piece piece = player.getPiece(pieceID);
+            // update gameState
+            player.changePositionServer(pieceID, newPosition1, newPosition2);
+            // updates piecesOnTrack in gameState
+            mainGame.getGameState().updatePiecesOnTrack(piece, newPosition1);
+            // send move
+            mainGame.sendMessageToParticipants("MOVE " + text.substring(5));
+            // send new board state
+            mainGame.sendMessageToParticipants("BORD");
+            // check for winner
+            if (mainGame.getGameState().checkForVictory()) {
+                String winners = mainGame.getGameState().getWinners();
+                if (winners != null) {
+                    mainGame.sendMessageToParticipants("VICT " + winners);
+                    Server.getInstance().storeGame(mainGame.getGameId(), winners);
+                }
             }
+        } catch (Exception e) {
+            System.err.println("Received unknown message from client: " + text);
         }
     }
 }

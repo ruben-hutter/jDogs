@@ -197,6 +197,10 @@ public class GUIManager extends Application {
         primaryStage.getScene().setRoot(root);
     }
 
+    private void setHelpScene() {
+        // TODO load the helpWindow.fxml
+    }
+
     /**
      * display PCHT message in gui
      * @param message from client

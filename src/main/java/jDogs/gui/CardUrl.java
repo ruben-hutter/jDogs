@@ -1,9 +1,5 @@
 package jDogs.gui;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Paths;
-
 public class CardUrl {
     public static String getURL(String card) {
         String url = null;
