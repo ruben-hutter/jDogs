@@ -28,7 +28,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -222,6 +225,7 @@ public class GameWindowController implements Initializable {
     @FXML
     void reToLoMenuOnAction(ActionEvent event) {
         Client.getInstance().sendMessageToServer("QUIT");
+        GUIManager.getInstance().returnToPubLobby();
     }
 
     /**
@@ -230,7 +234,7 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     void statisticMenuOnAction(ActionEvent event) {
-
+//TODO show stats
     }
 
     /**
@@ -473,9 +477,16 @@ public class GameWindowController implements Initializable {
             clickedGridFields[gridCount] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
                     GridPane.getRowIndex(clickedNode));
             gridCount++;
+            FieldOnBoard fieldOnBoard = new FieldOnBoard(GridPane.getColumnIndex(clickedNode), GridPane.getRowIndex(clickedNode));
+            System.out.println("Clicked Grid not full tot: " + totalSum + " gridCount: "
+                     + gridCount + " field: x " + fieldOnBoard.getX() + " y " + fieldOnBoard.getY());
         } else {
-            clickedGridFields[gridCount] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
+            clickedGridFields[gridCount - 1] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
                     GridPane.getRowIndex(clickedNode));
+            FieldOnBoard fieldOnBoard = new FieldOnBoard(GridPane.getColumnIndex(clickedNode), GridPane.getRowIndex(clickedNode));
+
+            System.out.println("Clicked Grid full tot: " + totalSum + " gridCount: " + gridCount +
+                    " field: x " + fieldOnBoard.getX() + " y " + fieldOnBoard.getY());
         }
     }
 
@@ -841,10 +852,25 @@ public class GameWindowController implements Initializable {
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorFXEnum.getColor());
                 circle.setId("" + (count));
+                circle.setEffect(getDropshadow());
                 gridPane.add(circle, homeArray[count].getX(), homeArray[count].getY());
                 count++;
             }
         }
+    }
+
+    /**
+     * returns a dropshadow used for circles
+     * @return dropshadow instance
+     */
+    private DropShadow getDropshadow() {
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(-4);
+        dropShadow.setOffsetY(0);
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+        return dropShadow;
     }
 
     /**
@@ -1078,29 +1104,21 @@ public class GameWindowController implements Initializable {
     }
 
     /**
-     * display messages from public lobby (if this is necessary
-     * otherwise we delete it)
-     * @param message from public client
-     */
-    public void displayPCHTmsg(String message) {
-    }
-
-    /**
      * display a message from another participant of the game
      * @param message from participant
      */
-    public void displayLCHTmsg(String message) {
+    public void displayPCHTmsg(String message) {
         messageReceiveTextArea.appendText(message + "\n");
     }
 
     /**
-     * by clicking enter a LCHT-message is sent to server
+     * by clicking enter a PCHT-message is sent to server
      * @param event enter on keyboard
      */
     @FXML
     void onEnterPressed(KeyEvent event) {
         if(event.getCode() == KeyCode.ENTER) {
-            Client.getInstance().sendMessageToServer("LCHT " + sendMessageTextField.getText());
+            Client.getInstance().sendMessageToServer("PCHT " + sendMessageTextField.getText());
             sendMessageTextField.clear();
         }
     }

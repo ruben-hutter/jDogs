@@ -240,6 +240,7 @@ public class Server {
      * @param serverConnection handles connection to server
      */
     public synchronized void removeServerConnection(ServerConnection serverConnection) {
+        sendMessageToPublic("DPER " + serverConnection.getNickname(), 0);
         allNickNames.remove(serverConnection.getNickname());
         serverConnectionMap.remove(serverConnection.getNickname());
         publicLobbyConnections.remove(serverConnection);

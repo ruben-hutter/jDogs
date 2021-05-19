@@ -17,7 +17,6 @@ public class GUIManager extends Application {
     private Stage primaryStage;
     private static GUIManager instance;
     private FXMLLoader lobbyLoader;
-    public PublicLobbyController_old lobbyController;
     private FXMLLoader gameLoader;
     private Client client;
     public GameWindowController gameWindowController;
@@ -220,7 +219,7 @@ public class GUIManager extends Application {
     public void sendLCHTToGui (String message) {
         switch(state) {
             case "playing":
-                gameWindowController.displayLCHTmsg(message);
+                gameWindowController.displayPCHTmsg(message);
                 break;
             case "separateLobby":
                 separateLobbyController.displayPCHTmsg(message);

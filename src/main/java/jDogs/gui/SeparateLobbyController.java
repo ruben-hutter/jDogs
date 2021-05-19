@@ -3,8 +3,7 @@ import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
-import jDogs.serverclient.clientside.ConnectionToServerMonitor;
-import java.net.URISyntaxException;
+import java.awt.PaintContext;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -24,7 +23,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -33,30 +31,34 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.Paint;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SeparateLobbyController implements Initializable{
 
     private static final int RADIUS_CIRCLE = 10;
     @FXML
-    private ImageView imageView1;
+    private Circle circle1;
     @FXML
-    private ImageView imageView2;
+    private Circle circle2;
     @FXML
-    private ImageView imageView3;
+    private Circle circle3;
     @FXML
-    private ImageView imageView4;
+    private Circle circle4;
 
 
     @FXML
@@ -235,7 +237,7 @@ public class SeparateLobbyController implements Initializable{
      * display a new player who joined open game
      * @param user
      */
-    public synchronized void addPlayer(String user) {
+    public void addPlayer(String user) {
         int exists = 1;
         for (String name : namesList) {
             if (name.equals(user)) {
@@ -253,6 +255,10 @@ public class SeparateLobbyController implements Initializable{
         }
     }
 
+    /**
+     * adds a whole array of players
+     * @param newPlayers multiple players in string
+     */
     public void addPlayerArray(String newPlayers) {
         ArrayList<String> newNamesList = new ArrayList<>();
         String[] array = GuiParser.getArray(newPlayers);
@@ -278,18 +284,24 @@ public class SeparateLobbyController implements Initializable{
         }
     }
 
+    /**
+     * remove all labels
+     */
     private void removeLabels() {
         ObservableList<Node> nodes = gridSeparateLobby.getChildren();
-        for (int i = 0; i < nodes.size(); i++) {
-           if (nodes.get(i) instanceof Label) {
-               Label label1 = (Label) nodes.get(i);
-               gridSeparateLobby.getChildren().remove(label1);
-           }
-       }
+        int lengthLabel = labels.length;
+        for (int i = 0; i < lengthLabel; i++) {
+            nodes.remove(labels[i]);
+        }
+        labels = null;
     }
 
+    /**
+     * set up new labels
+     */
     private void adjustLabels() {
         int helper = 1;
+        labels = new Label[4];
         for (int i = 0 ; i < 4; i++) {
             Label label = new Label();
             label.setId("" + helper);
@@ -298,7 +310,6 @@ public class SeparateLobbyController implements Initializable{
             } else {
                 label.setText("no user");
             }
-            System.out.println("label " + label.getText());
             gridSeparateLobby.getChildren().add(label);
             labels[helper - 1] = label;
             helper++;
@@ -383,11 +394,60 @@ public class SeparateLobbyController implements Initializable{
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
 
-        // imageView - teams
+        //circles
+
+        //drop shadow
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(-4);
+        dropShadow.setOffsetY(0);
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
 
         if (teamMode) {
-            imageView1.setImage(new Image(getClass().getResource("/Zeichnung_Mops_blau.png").toExternalForm()));
-            imageView2.setImage(new Image(getClass().getResource("/Zeichnung_Mops_rot.png").toExternalForm()));
+            RadialGradient rgTeam1 = new RadialGradient(0, .2, -20, -10, circle1.getRadius(),
+                    false, CycleMethod.NO_CYCLE,
+                    new Stop(0,Color.web("#559869")),
+                    new Stop(1, Color.web("#f06017")));
+
+
+            RadialGradient rgTeam2 = new RadialGradient(0, .1, -10, -10, circle1.getRadius(),
+                    false, CycleMethod.NO_CYCLE,
+                    new Stop(0,Color.web("#d2b710")),
+                    new Stop(1, Color.web("#10a1d2")));
+
+            circle1.setFill(rgTeam2);
+            circle1.setStroke(Color.YELLOWGREEN);
+            circle1.setStrokeWidth(2);
+            circle1.setEffect(dropShadow);
+
+            circle2.setFill(rgTeam1);
+            circle2.setStroke(Color.GREEN);
+            circle2.setEffect(dropShadow);
+            circle2.setStrokeWidth(2);
+
+            circle3.setFill(rgTeam2);
+            circle3.setStroke(Color.YELLOWGREEN);
+            circle3.setEffect(dropShadow);
+            circle3.setStrokeWidth(2);
+
+            circle4.setFill(rgTeam1);
+            circle4.setStroke(Color.GREEN);
+            circle4.setEffect(dropShadow);
+            circle4.setStrokeWidth(2);
+        } else {
+            circle1.setFill(Color.web("#D2B710"));
+            circle1.setEffect(dropShadow);
+
+            circle2.setFill(Color.web("#559869"));
+            circle2.setEffect(dropShadow);
+
+            circle3.setFill(Color.web("#10A1D2"));
+            circle3.setEffect(dropShadow);
+
+            circle4.setFill(Color.web("#F06017"));
+            circle4.setEffect(dropShadow);
+
         }
 
 

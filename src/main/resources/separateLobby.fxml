@@ -9,8 +9,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -20,6 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.SeparateLobbyController">
    <left>
@@ -52,34 +51,15 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
-                           <children>
-                              <ImageView fx:id="imageView1" fitHeight="150.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Zeichnung_Mops_gelb.png" />
-                                 </image>
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </ImageView>
-                              <ImageView fx:id="imageView2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                                 <image>
-                                    <Image url="@Zeichnung_Mops_gruen.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="imageView4" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                                 <image>
-                                    <Image url="@Zeichnung_Mops_rot.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="imageView3" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <image>
-                                    <Image url="@Zeichnung_Mops_blau.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
                            <padding>
                               <Insets left="5.0" />
                            </padding>
+                           <children>
+                              <Circle fx:id="circle1" fill="DODGERBLUE" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fx:id="circle2" fill="DODGERBLUE" layoutX="55.0" layoutY="83.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="1" />
+                              <Circle fx:id="circle4" fill="DODGERBLUE" layoutX="55.0" layoutY="83.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" />
+                              <Circle fx:id="circle3" fill="DODGERBLUE" layoutX="55.0" layoutY="83.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
                         </GridPane>
                      </children>
                   </StackPane>
