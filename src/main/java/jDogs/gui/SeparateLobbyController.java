@@ -3,8 +3,7 @@ import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
-import jDogs.serverclient.clientside.ConnectionToServerMonitor;
-import java.net.URISyntaxException;
+import java.awt.PaintContext;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -24,7 +23,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -36,27 +34,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SeparateLobbyController implements Initializable{
 
     private static final int RADIUS_CIRCLE = 10;
     @FXML
-    private ImageView imageView1;
+    private Rectangle rectangle1;
     @FXML
-    private ImageView imageView2;
+    private Rectangle rectangle2;
     @FXML
-    private ImageView imageView3;
+    private Rectangle rectangle3;
     @FXML
-    private ImageView imageView4;
+    private Rectangle rectangle4;
 
 
     @FXML
@@ -308,7 +304,6 @@ public class SeparateLobbyController implements Initializable{
             } else {
                 label.setText("no user");
             }
-            System.out.println("label " + label.getText());
             gridSeparateLobby.getChildren().add(label);
             labels[helper - 1] = label;
             helper++;
@@ -395,10 +390,9 @@ public class SeparateLobbyController implements Initializable{
 
         // imageView - teams
 
-        if (teamMode) {
-            imageView1.setImage(new Image(getClass().getResource("/Zeichnung_Mops_blau.png").toExternalForm()));
-            imageView2.setImage(new Image(getClass().getResource("/Zeichnung_Mops_rot.png").toExternalForm()));
-        }
+
+            rectangle1.setFill(Color.BLUE);
+
 
 
 
