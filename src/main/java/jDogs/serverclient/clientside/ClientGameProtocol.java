@@ -21,9 +21,8 @@ public enum ClientGameProtocol {
      */
     MOVE,
     /**
-     *Information about a jack move which cannot be displayed as a simple move
+     * Information about a jack move which cannot be displayed as a simple move
      * used Parameters are: color-pieceID1, color-pieceID2
-     *
      */
     JACK,
     /**

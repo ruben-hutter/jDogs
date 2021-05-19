@@ -104,7 +104,7 @@
                            <children>
                               <Pane fx:id="pane" prefHeight="70.0" prefWidth="359.0">
                                  <children>
-                                    <TextField fx:id="sendTextField" layoutX="6.0" layoutY="2.0" prefHeight="102.0" prefWidth="324.0">
+                                    <TextField fx:id="sendTextField" layoutX="6.0" layoutY="2.0" prefHeight="102.0" prefWidth="324.0" promptText="Type a message">
                                        <padding>
                                           <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                        </padding>
