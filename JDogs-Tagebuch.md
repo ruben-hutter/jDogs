@@ -487,3 +487,24 @@ In der Übungsstunde wollen wir Tim fragen, wie das Architecture-Dokument genau 
 Bis zum nächsten Treffen am Donnerstag wollen wir das Spiel soweit fertig stellen und testen. 
 
 **Nächstes Treffen:** Mittwoch, 19.05.21, 10:15 Uhr, Übungsstunde
+
+--- 
+
+19.05.2021, 10:15 Uhr, Johanna
+
+### Protokoll#28 - Protokoll
+
+- Architecture-Dokument: ca. 2 A4-Seiten. Es soll erklärt werden, wie Server und Client miteinander kommunizieren, wie die Spiellogik funktioniert und wie es mit der GUI zusammenhängt. Zur Veranschaulichung sollten einige Diagramme eingefügt werden. 
+Wir überlegten, was wir noch machen müssen und welche Bonuspunkte wir anstreben, falls die Zeit reicht: 
+- GUI: Gewisse Buttons sind noch nicht aktiv, es passiert nichts, wenn man sie anklickt. 
+- Chat: Die Infonachricht, dass man in diesem Feld eine Nachricht schreiben kann, soll automatisch verschwinden, sobald man in das Feld klickt.
+- Chat: Die Nachrichten sollten mittels Enter-Taste versendet werden können. 
+- Chat: In das Feld, in dem die Chat-Nachrichten dargestellt werden, sollte man nicht reinschreiben können. 
+- Webseite: Ruben möchte eventuell eine Webseite erstellen und das Spiel zum Download anbieten.
+- Protokolldokument: Das Dokument muss aktualisiert werden, sobald alle Befehle vorhanden sind. Es werden noch neue Befehle für das Eliminieren einer einzigen Karte hinzukommen. 
+- Manual: Die Spielanleitung muss aktualisiert werden, sobald die GUI fertig ist, damit die aktuellen Bilder integriert werden können. 
+
+Bis zum nächsten Treffen sollte die GUI und die Spiellogik vollständig fertig sein, sodass wir Videos und Screenshots machen und das Spiel noch ausgiebig testen können. Zudem soll der QM-Report fertig gestellt sein. 
+
+**Nächstes Treffen:** Freitag, 21.05.21, 10:00 Uhr
+
