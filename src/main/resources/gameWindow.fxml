@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="700.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.GameWindowController">
    <top>
@@ -39,7 +40,7 @@
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="388.0" prefWidth="83.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="488.0" prefWidth="88.0" BorderPane.alignment="CENTER">
          <children>
             <Pane fx:id="leftBoardSide" prefHeight="388.0" prefWidth="78.0" style="-fx-background-color: #6495ed;" VBox.vgrow="ALWAYS">
                <padding>
@@ -49,8 +50,8 @@
                   <Insets right="2.0" />
                </VBox.margin>
                <children>
-                  <Label fx:id="labelPlayer0" layoutX="21.0" layoutY="28.0" text="Label" />
-                  <Label fx:id="labelPlayer1" layoutX="21.0" layoutY="324.0" text="Label" />
+                  <Label fx:id="labelPlayer0" layoutX="15.0" layoutY="30.0" text="Label" />
+                  <Label fx:id="labelPlayer1" layoutX="15.0" layoutY="324.0" text="Label" />
                </children></Pane>
          </children>
       </VBox>
@@ -58,7 +59,7 @@
    <right>
       <VBox prefHeight="388.0" prefWidth="168.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="rightBoardSide" prefHeight="394.0" prefWidth="98.0" style="-fx-background-color: #6495ed;">
+            <Pane fx:id="rightBoardSide" prefHeight="521.0" prefWidth="166.0" style="-fx-background-color: #6495ed;">
                <VBox.margin>
                   <Insets left="2.0" />
                </VBox.margin>
@@ -78,9 +79,9 @@
       </VBox>
    </right>
    <center>
-      <VBox fx:id="vBoxGridWrapper" prefHeight="382.0" prefWidth="648.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="vBoxGridWrapper" prefHeight="467.0" prefWidth="744.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane fx:id="gridPane" onMouseClicked="#onMouseClickGrid" prefHeight="374.0" prefWidth="648.0">
+            <GridPane fx:id="gridPane" onMouseClicked="#onMouseClickGrid" prefHeight="474.0" prefWidth="744.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -237,20 +238,18 @@
    <bottom>
       <HBox fx:id="playerDisplay" prefHeight="265.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane prefHeight="266.0" prefWidth="160.0" style="-fx-background-color: #e9967a;">
+            <Pane fx:id="pane" prefHeight="266.0" prefWidth="196.0">
                <children>
-                  <Label fx:id="nameLabel1" layoutX="15.0" layoutY="42.0" prefHeight="51.0" prefWidth="88.0" />
-                  <Label fx:id="nameLabel2" layoutX="15.0" layoutY="68.0" prefHeight="51.0" prefWidth="88.0" />
                   <ScrollPane layoutX="8.0" layoutY="116.0">
                      <content>
-                        <TextArea fx:id="textLogClient" prefHeight="142.0" prefWidth="104.0" text="&#10;" />
+                        <TextArea fx:id="textLogClient" prefHeight="142.0" prefWidth="150.0" text="&#10;" />
                      </content>
                   </ScrollPane>
-                  <Button fx:id="refreshButton" layoutX="25.0" layoutY="14.0" mnemonicParsing="false" onAction="#refreshButtonOnAction" text="Refresh" />
+                  <Text fx:id="text1" layoutX="10.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                </children></Pane>
             <Pane prefHeight="276.0" prefWidth="830.0">
                <children>
-                  <HBox fx:id="hboxCardHolder" layoutY="4.0" prefHeight="254.0" prefWidth="692.0" style="-fx-background-color: #eee8aa;">
+                  <HBox fx:id="hboxCardHolder" layoutY="4.0" prefHeight="254.0" prefWidth="821.0" style="-fx-background-color: #eee8aa;">
                      <children>
                         <GridPane prefHeight="254.0" prefWidth="387.0">
                           <columnConstraints>
@@ -301,13 +300,14 @@
                               </Pane>
                               <Pane prefHeight="86.0" prefWidth="94.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                  <children>
-                                    <Button fx:id="makeMoveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="36.0" mnemonicParsing="false" onAction="#makeMoveButtonOnAction" text="MakeMove" />
-                                    <Button fx:id="roundOffButton" layoutY="87.0" mnemonicParsing="false" onAction="#roundOffButtonOnAction" style="-fx-background-color: #ff0000;" text="Round off" />
+                                    <Button fx:id="makeMoveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="14.0" mnemonicParsing="false" onAction="#makeMoveButtonOnAction" text="MakeMove" />
+                                    <Button fx:id="roundOffButton" layoutX="4.0" layoutY="95.0" mnemonicParsing="false" onAction="#roundOffButtonOnAction" style="-fx-background-color: #ff0000;" text="Round off" />
+                                    <Button fx:id="refreshButton" layoutX="8.0" layoutY="50.0" mnemonicParsing="false" onAction="#refreshButtonOnAction" text="Refresh" />
                                  </children>
                               </Pane>
                            </children>
                         </GridPane>
-                        <Pane prefHeight="254.0" prefWidth="18.0" style="-fx-background-color: #333333;" />
+                        <Pane fx:id="pane" prefHeight="254.0" prefWidth="18.0" />
                      </children>
                   </HBox>
                </children>
@@ -316,8 +316,8 @@
                <children>
                   <VBox layoutX="-377.0" layoutY="14.0" prefHeight="251.0" prefWidth="380.0">
                      <children>
-                        <TextArea fx:id="messageReceiveTextArea" prefHeight="190.0" prefWidth="402.0" style="-fx-background-color: #dcdcdc;" text="text text text&#10;" />
-                        <TextField fx:id="sendMessageTextField" onKeyPressed="#onEnterPressed" prefHeight="78.0" prefWidth="402.0" promptText="send with key" style="-fx-background-color: #ff69b4;" text="send send with key pressed" />
+                        <TextArea fx:id="messageReceiveTextArea" prefHeight="190.0" prefWidth="402.0" style="-fx-background-color: #dcdcdc;" />
+                        <TextField fx:id="sendMessageTextField" onKeyPressed="#onEnterPressed" prefHeight="78.0" prefWidth="402.0" promptText="send with key" style="-fx-background-color: #ff69b4;" />
                      </children>
                   </VBox>
                </children>
