@@ -185,6 +185,7 @@ public class GameWindowController implements Initializable {
     @FXML
     void reToLoMenuOnAction(ActionEvent event) {
         Client.getInstance().sendMessageToServer("QUIT");
+        GUIManager.getInstance().returnToPubLobby();
     }
 
     /**
@@ -193,7 +194,7 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     void statisticMenuOnAction(ActionEvent event) {
-
+//TODO show stats
     }
 
     /**
@@ -436,9 +437,16 @@ public class GameWindowController implements Initializable {
             clickedGridFields[gridCount] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
                     GridPane.getRowIndex(clickedNode));
             gridCount++;
+            FieldOnBoard fieldOnBoard = new FieldOnBoard(GridPane.getColumnIndex(clickedNode), GridPane.getRowIndex(clickedNode));
+            System.out.println("Clicked Grid not full tot: " + totalSum + " gridCount: "
+                     + gridCount + " field: x " + fieldOnBoard.getX() + " y " + fieldOnBoard.getY());
         } else {
-            clickedGridFields[gridCount] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
+            clickedGridFields[gridCount - 1] = new FieldOnBoard(GridPane.getColumnIndex(clickedNode),
                     GridPane.getRowIndex(clickedNode));
+            FieldOnBoard fieldOnBoard = new FieldOnBoard(GridPane.getColumnIndex(clickedNode), GridPane.getRowIndex(clickedNode));
+
+            System.out.println("Clicked Grid full tot: " + totalSum + " gridCount: " + gridCount +
+                    " field: x " + fieldOnBoard.getX() + " y " + fieldOnBoard.getY());
         }
     }
 
