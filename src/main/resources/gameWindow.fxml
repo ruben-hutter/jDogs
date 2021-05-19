@@ -245,7 +245,7 @@
                         <TextArea fx:id="textLogClient" prefHeight="142.0" prefWidth="150.0" text="&#10;" />
                      </content>
                   </ScrollPane>
-                  <Text fx:id="text1" layoutX="10.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="text1" layoutX="10.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="118.00311279296875" />
                </children></Pane>
             <Pane prefHeight="276.0" prefWidth="830.0">
                <children>
