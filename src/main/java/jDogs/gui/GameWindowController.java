@@ -31,7 +31,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -50,6 +49,8 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -756,8 +757,29 @@ public class GameWindowController implements Initializable {
         // set text with name
 
         text1.setText(Client.getInstance().getNickname());
-        text1.setFill(Color.web(TextColors.getTeamColor()[playerNr]));
-        text1.setEffect(new DropShadow(BlurType.GAUSSIAN,Color.web(DropShadowColors.getTeamColor(), 5, 12, 10, 10));
+        text1.setFont(Font.font(null, FontWeight.BOLD, 40));
+
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setRadius(5);
+        dropShadow.setWidth(5);
+        dropShadow.setHeight(5);
+        dropShadow.setSpread(12);
+        dropShadow.setOffsetX(2);
+        dropShadow.setOffsetY(2);
+
+        if (GUIManager.getInstance().isTeamMode()) {
+            dropShadow.setColor(Color.web(TextColors.getTeamShadowColor()[playerNr]));
+            text1.setFill(TextColors.getTextGradients()[playerNr % 2]);
+            text1.setEffect(dropShadow);
+        } else {
+            dropShadow.setColor(Color.web(TextColors.getSingleShadowColor()[playerNr]));
+            text1.setFill(Color.web(TextColors.getSingleTextColor()[playerNr]));
+            text1.setEffect(dropShadow);
+        }
+        text1.setEffect(dropShadow);
+
+        // set player labels
         setPlayerLabels();
 
         // prepare click grids and circles
