@@ -18,7 +18,6 @@ public class CardUrl {
                 String[] aces = {"/playing_cards/Ac.png", "/playing_cards/Ad.png", "/playing_cards/Ah.png", "/playing_cards/As.png"};
                 randNum = random.nextInt(aces.length);
                 url = aces[randNum];
-                //url = "/cards/AC.png";
                 break;
 
             case "TWOO":

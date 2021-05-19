@@ -866,7 +866,8 @@ public class GameWindowController implements Initializable {
             String url = CardUrl.getURL(card);
             Image image = null;
             try {
-                image = new Image(getClass().getResource(url).toURI().toString());
+                image = new Image(getClass().getResource(url).toURI().toString(), 179, 250,
+                        false, false);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
