@@ -50,6 +50,7 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -162,12 +163,8 @@ public class GameWindowController implements Initializable {
     private ImageView imageViewCard5;
     @FXML
     private ImageView imageViewCard7;
-
     @FXML
-    private Label nameLabel1;
-
-    @FXML
-    private Label nameLabel2;
+    private Text text1;
 
     private int gridCount;
     private int totalSum;
@@ -756,12 +753,11 @@ public class GameWindowController implements Initializable {
         if (playerNr < 0) {
             displayInfoErrors("SEVERE ERROR couldn t find nickname in list of game names");
         }
-        // set color - string
-        color = ColorAbbreviations.values()[playerNr].toString();
+        // set text with name
 
-        // set labels on the board
-        nameLabel2.setText(color.toString());
-        nameLabel1.setText(Client.getInstance().getNickname());
+        text1.setText(Client.getInstance().getNickname());
+        text1.setFill(Color.web(TextColors.getTeamColor()[playerNr]));
+        text1.setEffect(new DropShadow(BlurType.GAUSSIAN,Color.web(DropShadowColors.getTeamColor(), 5, 12, 10, 10));
         setPlayerLabels();
 
         // prepare click grids and circles
