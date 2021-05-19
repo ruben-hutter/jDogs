@@ -31,13 +31,19 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.Paint;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -46,13 +52,13 @@ public class SeparateLobbyController implements Initializable{
 
     private static final int RADIUS_CIRCLE = 10;
     @FXML
-    private Rectangle rectangle1;
+    private Circle circle1;
     @FXML
-    private Rectangle rectangle2;
+    private Circle circle2;
     @FXML
-    private Rectangle rectangle3;
+    private Circle circle3;
     @FXML
-    private Rectangle rectangle4;
+    private Circle circle4;
 
 
     @FXML
@@ -388,11 +394,61 @@ public class SeparateLobbyController implements Initializable{
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
 
-        // imageView - teams
+        //circles
+
+        //drop shadow
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(-4);
+        dropShadow.setOffsetY(0);
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+
+        if (teamMode) {
+            RadialGradient rgTeam1 = new RadialGradient(0, .2, -20, -10, circle1.getRadius(),
+                    false, CycleMethod.NO_CYCLE,
+                    new Stop(0,Color.web("#559869")),
+                    new Stop(1, Color.web("#f06017")));
 
 
-            rectangle1.setFill(Color.BLUE);
+            RadialGradient rgTeam2 = new RadialGradient(0, .1, -10, -10, circle1.getRadius(),
+                    false, CycleMethod.NO_CYCLE,
+                    new Stop(0,Color.web("#d2b710")),
+                    new Stop(1, Color.web("#10a1d2")));
 
+            circle1.setFill(rgTeam2);
+            circle1.setStroke(Color.YELLOWGREEN);
+            circle1.setStrokeWidth(2);
+            circle1.setEffect(dropShadow);
+
+            circle2.setFill(rgTeam1);
+            circle2.setStroke(Color.GREEN);
+            circle2.setEffect(dropShadow);
+            circle2.setStrokeWidth(2);
+
+            circle3.setFill(rgTeam2);
+            circle3.setStroke(Color.YELLOWGREEN);
+            circle3.setEffect(dropShadow);
+            circle3.setStrokeWidth(2);
+
+            circle4.setFill(rgTeam1);
+            circle4.setStroke(Color.GREEN);
+            circle4.setEffect(dropShadow);
+            circle4.setStrokeWidth(2);
+        } else {
+            circle1.setFill(Color.web("#D2B710"));
+            circle1.setEffect(dropShadow);
+
+            circle2.setFill(Color.web("#559869"));
+            circle2.setEffect(dropShadow);
+
+            circle3.setFill(Color.web("#10A1D2"));
+            circle3.setEffect(dropShadow);
+
+            circle4.setFill(Color.web("#F06017"));
+            circle4.setEffect(dropShadow);
+
+        }
 
 
 

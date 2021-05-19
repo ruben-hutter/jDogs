@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Sphere?>
+<?import javafx.scene.shape.Circle?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jDogs.gui.SeparateLobbyController">
    <left>
@@ -55,10 +55,10 @@
                               <Insets left="5.0" />
                            </padding>
                            <children>
-                              <Sphere radius="50" />
-                              <Sphere layoutX="65.0" layoutY="83.0" radius="50" GridPane.rowIndex="1" />
-                              <Sphere layoutX="65.0" layoutY="219.0" radius="50" GridPane.columnIndex="1" />
-                              <Sphere layoutX="65.0" layoutY="83.0" radius="50" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Circle fx:id="circle1" fill="DODGERBLUE" radius="40.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fx:id="circle2" fill="DODGERBLUE" layoutX="55.0" layoutY="83.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="1" />
+                              <Circle fx:id="circle4" fill="DODGERBLUE" layoutX="55.0" layoutY="83.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" />
+                              <Circle fx:id="circle3" fill="DODGERBLUE" layoutX="55.0" layoutY="83.0" radius="40.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
