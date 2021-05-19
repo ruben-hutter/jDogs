@@ -1,6 +1,6 @@
 .root {
-    -fx-pref-height: 700;
-    -fx-pref-width: 900;
+    -fx-pref-height: 800;
+    -fx-pref-width: 1000;
     -fx-font-family: "Broadway";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(to right top, #d1a06b, #d4a66b, #d5ad6b, #d7b46b, #d7bb6c, #d9c071, #dbc476, #ddc97b, #e2cd85, #e7d18f, #ecd59a, #f0d9a4);
@@ -127,7 +127,7 @@
 }
 
 #gridPane {
-    -fx-background-image: url(/spielbrett4.png);
+    -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
     -fx-background-radius: 8;
     -fx-background-repeat: no-repeat;
     -fx-background-size: stretch;

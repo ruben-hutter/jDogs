@@ -54,8 +54,17 @@ public class GUIManager extends Application {
         instance = this;
 
         this.primaryStage = primaryStage;
-        setLoginScene();
 
+        //disable full screen
+        primaryStage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue)
+                primaryStage.setMaximized(false);
+        });
+
+        //shut down application by closing the window(works for all scenes)
+        primaryStage.setOnCloseRequest(e-> System.exit(-1));
+
+        setLoginScene();
     }
 
     /**
@@ -79,8 +88,6 @@ public class GUIManager extends Application {
 
         primaryStage.setScene(loginScene);
 
-        //shut down application by closing the window(works for all scenes)
-        primaryStage.setOnCloseRequest(e-> System.exit(-1));
         primaryStage.show();
         loginController.startIntro();
     }
