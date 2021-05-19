@@ -34,9 +34,6 @@ public enum SeparateLobbyProtocol {
      * Command send to this player all fellow participants of separate lobby
      */
     LPUB,
-
-    // TODO delete this
-    LCHT,
     /**
      * receive a new team combination from a client
      */

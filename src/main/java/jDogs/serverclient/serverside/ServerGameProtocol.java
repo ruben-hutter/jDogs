@@ -60,9 +60,9 @@ public enum ServerGameProtocol {
      * Cheat command to move a piece where ever you want.
      */
     MOPS,
-
-    // TODO check if necessary
-    LCHT,
+    /**
+     * send a message to participants of game
+     */
     PCHT;
 
     /**

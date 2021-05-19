@@ -245,16 +245,9 @@ public class ServerGameCommand {
                     //change cards
                     break;
 
-                case LCHT:
-                    //sendToAll.enqueue("PCHT " + "<" + nickname + ">" + text.substring(4));
-                    System.out.println("LCHT: " + text.substring(5));
-                    mainGame.sendMessageToParticipants(
-                            "LCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
-                    break;
-
-                //send message to everyone logged in, in lobby, separated or playing
                 case PCHT:
-                    serverConnection.sendToAll("PCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
+                    mainGame.sendMessageToParticipants(
+                            "PCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
                     break;
             }
         } catch (NullPointerException e) {

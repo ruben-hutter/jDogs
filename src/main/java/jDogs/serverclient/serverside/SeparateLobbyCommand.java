@@ -74,10 +74,6 @@ public class SeparateLobbyCommand {
                     }
                     break;
 
-                case LCHT:
-                    Server.getInstance().getOpenGameFile(openGameFileID).sendMessageToParticipants("LCHT " + "<" + nickname + "> " + text.substring(5));
-                    break;
-
                 case PCHT:
                     //send message to everyone logged in, in lobby, separated or playing
                     serverConnection.sendToAll("PCHT " + "<" + nickname + "> " + text.substring(5));

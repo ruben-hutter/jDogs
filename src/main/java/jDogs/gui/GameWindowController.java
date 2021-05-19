@@ -1047,30 +1047,23 @@ public class GameWindowController implements Initializable {
         textLogClient.appendText(message + "\n");
     }
 
-    /**
-     * display messages from public lobby (if this is necessary
-     * otherwise we delete it)
-     * @param message from public client
-     */
-    public void displayPCHTmsg(String message) {
-    }
 
     /**
      * display a message from another participant of the game
      * @param message from participant
      */
-    public void displayLCHTmsg(String message) {
+    public void displayPCHTmsg(String message) {
         messageReceiveTextArea.appendText(message + "\n");
     }
 
     /**
-     * by clicking enter a LCHT-message is sent to server
+     * by clicking enter a PCHT-message is sent to server
      * @param event enter on keyboard
      */
     @FXML
     void onEnterPressed(KeyEvent event) {
         if(event.getCode() == KeyCode.ENTER) {
-            Client.getInstance().sendMessageToServer("LCHT " + sendMessageTextField.getText());
+            Client.getInstance().sendMessageToServer("PCHT " + sendMessageTextField.getText());
             sendMessageTextField.clear();
         }
     }

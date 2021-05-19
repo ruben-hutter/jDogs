@@ -220,7 +220,7 @@ public class GUIManager extends Application {
     public void sendLCHTToGui (String message) {
         switch(state) {
             case "playing":
-                gameWindowController.displayLCHTmsg(message);
+                gameWindowController.displayPCHTmsg(message);
                 break;
             case "separateLobby":
                 separateLobbyController.displayPCHTmsg(message);
