@@ -27,7 +27,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -812,10 +815,25 @@ public class GameWindowController implements Initializable {
             for (int i = 0; i < Board.NUM_HOME_TILES; i++) {
                 Circle circle = new Circle(RADIUS_CIRCLE, colorFXEnum.getColor());
                 circle.setId("" + (count));
+                circle.setEffect(getDropshadow());
                 gridPane.add(circle, homeArray[count].getX(), homeArray[count].getY());
                 count++;
             }
         }
+    }
+
+    /**
+     * returns a dropshadow used for circles
+     * @return dropshadow instance
+     */
+    private DropShadow getDropshadow() {
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(-4);
+        dropShadow.setOffsetY(0);
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+        return dropShadow;
     }
 
     /**
@@ -1046,7 +1064,6 @@ public class GameWindowController implements Initializable {
     public void displayInfoErrors(String message) {
         textLogClient.appendText(message + "\n");
     }
-
 
     /**
      * display a message from another participant of the game

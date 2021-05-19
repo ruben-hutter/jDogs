@@ -17,7 +17,6 @@ public class GUIManager extends Application {
     private Stage primaryStage;
     private static GUIManager instance;
     private FXMLLoader lobbyLoader;
-    public PublicLobbyController_old lobbyController;
     private FXMLLoader gameLoader;
     private Client client;
     public GameWindowController gameWindowController;
