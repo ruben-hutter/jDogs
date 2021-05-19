@@ -316,8 +316,8 @@
                <children>
                   <VBox layoutX="-399.0" layoutY="14.0" prefHeight="251.0" prefWidth="402.0">
                      <children>
-                        <TextArea fx:id="messageReceiveTextArea" prefHeight="190.0" prefWidth="402.0" style="-fx-background-color: #dcdcdc;" text="text text text&#10;" />
-                        <TextField fx:id="sendMessageTextField" onKeyPressed="#onEnterPressed" prefHeight="78.0" prefWidth="402.0" promptText="send with key" style="-fx-background-color: #ff69b4;" text="send send with key pressed" />
+                        <TextArea fx:id="messageReceiveTextArea" editable="false" prefHeight="190.0" prefWidth="402.0" style="-fx-background-color: #dcdcdc;" />
+                        <TextField fx:id="sendMessageTextField" onKeyPressed="#onEnterPressed" prefHeight="78.0" prefWidth="402.0" promptText="Type a message" style="-fx-background-color: #ff69b4;" />
                      </children>
                   </VBox>
                </children>

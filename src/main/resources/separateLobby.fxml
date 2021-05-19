@@ -104,7 +104,7 @@
                <children>
                   <VBox prefHeight="298.0" prefWidth="813.0" spacing="1.0">
                      <children>
-                        <TextArea fx:id="displayTextArea" prefHeight="198.0" prefWidth="350.0">
+                        <TextArea fx:id="displayTextArea" editable="false" prefHeight="198.0" prefWidth="350.0">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
@@ -114,7 +114,7 @@
                               <Insets bottom="2.0" left="20.0" right="20.0" top="2.0" />
                            </VBox.margin>
                            <children>
-                              <TextField fx:id="sendTextField" prefHeight="102.0" prefWidth="278.0">
+                              <TextField fx:id="sendTextField" prefHeight="102.0" prefWidth="278.0" promptText="Type a message">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
