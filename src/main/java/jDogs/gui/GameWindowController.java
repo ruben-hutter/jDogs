@@ -756,14 +756,14 @@ public class GameWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-/*
+
         // create object to translate track numbers to gui positions
         adaptToGui = new AdaptToGui();
 
         // initialise boolean values
         jokerClicked = false;
         yourTurn = false;
-
+/*
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -771,8 +771,10 @@ public class GameWindowController implements Initializable {
         }
         // set text with name
 
-        text1.setText(Client.getInstance().getNickname());
+       text1.setText(Client.getInstance().getNickname());
 
+ */
+        text1.setText("Gregor");
 
         text1.setFont(Font.font(null, FontWeight.BOLD, 20));
 
@@ -797,6 +799,8 @@ public class GameWindowController implements Initializable {
         text1.setEffect(dropShadow);
         text1.setStroke(Color.BLACK);
         // set player labels
+
+        /*
         setPlayerLabels();
 
         // prepare click grids and circles
@@ -813,9 +817,7 @@ public class GameWindowController implements Initializable {
         // set up an array with imageViews for cards
         setAllCardImageViews();
 
- */
-
-
+         */
     }
 
     /**
