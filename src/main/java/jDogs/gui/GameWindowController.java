@@ -763,7 +763,7 @@ public class GameWindowController implements Initializable {
         // initialise boolean values
         jokerClicked = false;
         yourTurn = false;
-/*
+
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -771,14 +771,8 @@ public class GameWindowController implements Initializable {
         }
         // set text with name
 
-       text1.setText(Client.getInstance().getNickname());
-
- */
-
-text1.setText("grego");
-playerNr = 0;
+        text1.setText(Client.getInstance().getNickname());
         text1.setFont(Font.font(null, FontWeight.BOLD, 20));
-
         DropShadow dropShadow = new DropShadow();
         dropShadow.setBlurType(BlurType.GAUSSIAN);
         dropShadow.setRadius(3);
@@ -801,7 +795,6 @@ playerNr = 0;
         text1.setStroke(Color.BLACK);
         // set player labels
 
-        /*
         setPlayerLabels();
 
         // prepare click grids and circles
@@ -817,8 +810,6 @@ playerNr = 0;
 
         // set up an array with imageViews for cards
         setAllCardImageViews();
-
-         */
     }
 
     /**

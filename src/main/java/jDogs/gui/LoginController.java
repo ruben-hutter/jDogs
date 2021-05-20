@@ -72,9 +72,7 @@ public class LoginController implements Initializable {
         if (nickname.isEmpty() || nickname.isBlank() || nickname.length() < 3) {
             //open AlertWindow here
         } else {
-            System.out.println(nickname);
-           // GUIManager.getInstance().goToLobby(nickname);
-            GUIManager.getInstance().startGame(0);
+            GUIManager.getInstance().goToLobby(nickname);
         }
     }
 
