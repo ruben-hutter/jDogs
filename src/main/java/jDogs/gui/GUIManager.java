@@ -63,7 +63,6 @@ public class GUIManager extends Application {
 
         //shut down application by closing the window(works for all scenes)
         primaryStage.setOnCloseRequest(e-> System.exit(-1));
-
         setLoginScene();
     }
 

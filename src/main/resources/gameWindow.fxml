@@ -42,7 +42,7 @@
    <left>
       <VBox prefHeight="488.0" prefWidth="88.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="leftBoardSide" prefHeight="388.0" prefWidth="78.0" style="-fx-background-color: #6495ed;" VBox.vgrow="ALWAYS">
+            <Pane fx:id="pane" prefHeight="388.0" prefWidth="78.0" style="-fx-background-color: #6495ed;" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets right="4.0" />
                </padding>
@@ -59,7 +59,7 @@
    <right>
       <VBox prefHeight="388.0" prefWidth="168.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="rightBoardSide" prefHeight="521.0" prefWidth="166.0" style="-fx-background-color: #6495ed;">
+            <Pane fx:id="pane" prefHeight="521.0" prefWidth="166.0" style="-fx-background-color: #6495ed;">
                <VBox.margin>
                   <Insets left="2.0" />
                </VBox.margin>

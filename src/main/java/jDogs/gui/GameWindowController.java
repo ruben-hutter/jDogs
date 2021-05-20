@@ -748,7 +748,7 @@ public class GameWindowController implements Initializable {
         // initialise boolean values
         jokerClicked = false;
         yourTurn = false;
-
+/*
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -757,19 +757,21 @@ public class GameWindowController implements Initializable {
         // set text with name
 
         text1.setText(Client.getInstance().getNickname());
-        text1.setFont(Font.font(null, FontWeight.BOLD, 40));
+
+
+        text1.setFont(Font.font(null, FontWeight.BOLD, 20));
 
         DropShadow dropShadow = new DropShadow();
         dropShadow.setBlurType(BlurType.GAUSSIAN);
-        dropShadow.setRadius(5);
-        dropShadow.setWidth(5);
-        dropShadow.setHeight(5);
+        dropShadow.setRadius(3);
+        dropShadow.setWidth(3);
+        dropShadow.setHeight(3);
         dropShadow.setSpread(12);
         dropShadow.setOffsetX(2);
         dropShadow.setOffsetY(2);
 
         if (GUIManager.getInstance().isTeamMode()) {
-            dropShadow.setColor(Color.web(TextColors.getTeamShadowColor()[playerNr]));
+            dropShadow.setColor(Color.web(TextColors.getTeamShadowColor()[playerNr % 2]));
             text1.setFill(TextColors.getTextGradients()[playerNr % 2]);
             text1.setEffect(dropShadow);
         } else {
@@ -778,9 +780,9 @@ public class GameWindowController implements Initializable {
             text1.setEffect(dropShadow);
         }
         text1.setEffect(dropShadow);
-
+        text1.setStroke(Color.BLACK);
         // set player labels
-        setPlayerLabels();
+       // setPlayerLabels();
 
         // prepare click grids and circles
         fadingGrids = new FadeTransition[7];
@@ -795,6 +797,8 @@ public class GameWindowController implements Initializable {
 
         // set up an array with imageViews for cards
         setAllCardImageViews();
+
+ */
     }
 
     /**

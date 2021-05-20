@@ -129,8 +129,9 @@
 #gridPane {
     -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
     -fx-background-radius: 8;
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: stretch;
+    -fx-background-image: url(/Zeichnung_Mops6.png);
+    -fx-background-repeat: repeat, repeat, repeat;
+    -fx-background-size: 10 10;
 }
 
 #field {
