@@ -43,17 +43,24 @@
    <left>
       <VBox prefHeight="488.0" prefWidth="88.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="pane" prefHeight="388.0" prefWidth="78.0" VBox.vgrow="ALWAYS">
-               <padding>
-                  <Insets right="4.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets right="2.0" />
-               </VBox.margin>
+            <AnchorPane prefHeight="330.0" prefWidth="88.0">
                <children>
-                  <Label fx:id="labelPlayer0" layoutX="15.0" layoutY="30.0" text="Label" />
-                  <Label fx:id="labelPlayer1" layoutX="15.0" layoutY="324.0" text="Label" />
-               </children></Pane>
+                  <Pane fx:id="pane" prefHeight="297.6" prefWidth="88.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label fx:id="labelPlayer0" layoutX="17.0" layoutY="22.0" text="Label" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="333.0" prefWidth="88.0">
+               <children>
+                  <Pane fx:id="pane" prefHeight="31.2" prefWidth="88.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label fx:id="labelPlayer1" layoutX="16.0" layoutY="203.0" text="Label" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
          </children>
       </VBox>
    </left>
@@ -79,7 +86,7 @@
             </AnchorPane>
             <AnchorPane fx:id="pane" prefHeight="100.0" prefWidth="168.0">
                <children>
-                  <Label fx:id="labelPlayer2" layoutX="56.0" layoutY="18.0" text="Label" />
+                  <Label fx:id="labelPlayer2" layoutX="56.0" layoutY="18.0" text="Label" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" />
                </children>
             </AnchorPane>
          </children>
