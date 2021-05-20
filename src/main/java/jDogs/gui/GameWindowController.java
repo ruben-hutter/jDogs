@@ -31,7 +31,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -50,6 +49,9 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -162,12 +164,8 @@ public class GameWindowController implements Initializable {
     private ImageView imageViewCard5;
     @FXML
     private ImageView imageViewCard7;
-
     @FXML
-    private Label nameLabel1;
-
-    @FXML
-    private Label nameLabel2;
+    private Text text1;
 
     private int gridCount;
     private int totalSum;
@@ -646,6 +644,22 @@ public class GameWindowController implements Initializable {
             setAllCardsDarkened();
         }
     }
+
+    /**
+     * delete this card instead of taking the whole round off
+     * @param event
+     */
+    @FXML
+    void skipButtonOnAction(ActionEvent event) {
+        if (yourTurn) {
+            if (cardClicked != null) {
+                Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " SKIP");
+                removeCard((cardClicked));
+                yourTurn = false;
+                deleteClickedData();
+            }
+        }
+    }
     /**
      * sets all cards darkened, if
      * user takes round off
@@ -740,7 +754,6 @@ public class GameWindowController implements Initializable {
         fadeTransitionCard.play();
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -756,12 +769,32 @@ public class GameWindowController implements Initializable {
         if (playerNr < 0) {
             displayInfoErrors("SEVERE ERROR couldn t find nickname in list of game names");
         }
-        // set color - string
-        color = ColorAbbreviations.values()[playerNr].toString();
+        // set text with name
 
-        // set labels on the board
-        nameLabel2.setText(color.toString());
-        nameLabel1.setText(Client.getInstance().getNickname());
+        text1.setText(Client.getInstance().getNickname());
+        text1.setFont(Font.font(null, FontWeight.BOLD, 20));
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setBlurType(BlurType.GAUSSIAN);
+        dropShadow.setRadius(3);
+        dropShadow.setWidth(3);
+        dropShadow.setHeight(3);
+        dropShadow.setSpread(12);
+        dropShadow.setOffsetX(2);
+        dropShadow.setOffsetY(2);
+
+        if (GUIManager.getInstance().isTeamMode()) {
+            dropShadow.setColor(Color.web(TextColors.getTeamShadowColor()[playerNr]));
+            text1.setFill(Color.web(TextColors.getTextFill()[playerNr]));
+            text1.setEffect(dropShadow);
+        } else {
+            dropShadow.setColor(Color.web(TextColors.getSingleShadowColor()[playerNr]));
+            text1.setFill(Color.web(TextColors.getTextFill()[playerNr]));
+            text1.setEffect(dropShadow);
+        }
+        text1.setEffect(dropShadow);
+        text1.setStroke(Color.BLACK);
+        // set player labels
+
         setPlayerLabels();
 
         // prepare click grids and circles

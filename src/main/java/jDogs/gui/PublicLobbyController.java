@@ -351,8 +351,6 @@ public class PublicLobbyController implements Initializable {
         //add name
         labelName.setText(Client.getInstance().getNickname());
 
-
-
         // blinking pug
 
         Image image1 = new Image(getClass().getResource("/newBlink1.png").toExternalForm(),1000,1000,false,false);
