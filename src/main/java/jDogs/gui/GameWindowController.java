@@ -644,6 +644,22 @@ public class GameWindowController implements Initializable {
             setAllCardsDarkened();
         }
     }
+
+    /**
+     * delete this card instead of taking the whole round off
+     * @param event
+     */
+    @FXML
+    void skipButtonOnAction(ActionEvent event) {
+        if (yourTurn) {
+            if (cardClicked != null) {
+                Client.getInstance().sendMessageToServer("MOVE " + cardClicked + " SKIP");
+                removeCard((cardClicked));
+                yourTurn = false;
+                deleteClickedData();
+            }
+        }
+    }
     /**
      * sets all cards darkened, if
      * user takes round off
@@ -738,17 +754,16 @@ public class GameWindowController implements Initializable {
         fadeTransitionCard.play();
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+/*
         // create object to translate track numbers to gui positions
         adaptToGui = new AdaptToGui();
 
         // initialise boolean values
         jokerClicked = false;
         yourTurn = false;
-/*
+
         // get playerNumber of this client
         playerNr = ClientGame.getInstance().getYourPlayerNr();
         if (playerNr < 0) {
@@ -782,7 +797,7 @@ public class GameWindowController implements Initializable {
         text1.setEffect(dropShadow);
         text1.setStroke(Color.BLACK);
         // set player labels
-       // setPlayerLabels();
+        setPlayerLabels();
 
         // prepare click grids and circles
         fadingGrids = new FadeTransition[7];
@@ -799,6 +814,8 @@ public class GameWindowController implements Initializable {
         setAllCardImageViews();
 
  */
+
+
     }
 
     /**
