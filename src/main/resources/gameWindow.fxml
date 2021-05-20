@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -92,14 +91,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ScrollPane AnchorPane.leftAnchor="10.0">
-                     <content>
-                        <TextArea fx:id="textLogServer" prefHeight="354.0" prefWidth="142.0" />
-                     </content>
-                     <opaqueInsets>
-                        <Insets left="10.0" />
-                     </opaqueInsets>
-                  </ScrollPane>
+                  <TextArea fx:id="textLogServer" editable="false" layoutX="10.0" prefHeight="354.0" prefWidth="142.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="100.0" prefWidth="168.0">
@@ -141,14 +133,7 @@
                         <Insets left="2.0" right="2.0" />
                      </VBox.margin>
                   </Pane>
-                  <ScrollPane>
-                     <content>
-                        <TextArea fx:id="textLogClient" prefHeight="142.0" prefWidth="150.0" text="&#10;" />
-                     </content>
-                     <VBox.margin>
-                        <Insets left="2.0" right="2.0" />
-                     </VBox.margin>
-                  </ScrollPane>
+                  <TextArea fx:id="textLogClient" editable="false" prefHeight="142.0" prefWidth="150.0" text="&#10;" />
                </children>
             </VBox>
             <AnchorPane prefHeight="266.0" prefWidth="446.0">
