@@ -1,15 +1,15 @@
 package jDogs.gui;
 
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Paint;
-import javafx.scene.paint.Stop;
-
+/**
+ * this class represents colors used to color the text which displays the player name in gui
+ */
 public class TextColors {
 
-    public static String[] getSingleTextColor() {
-
+    /**
+     * get all colors for text
+     * @return yellow, green, blue, red
+     */
+    public static String[] getTextFill() {
         String[] colors = new String[4];
         colors[0] = "D2B710";
         colors[1] = "559869";
@@ -19,36 +19,28 @@ public class TextColors {
         return colors;
     }
 
-    public static Paint[] getTextGradients() {
-        Paint[] gradients = new Paint[2];
-        gradients[0] = new LinearGradient(0.2, .5, 0.2, 0.4,
-                true, CycleMethod.REPEAT,
-                new Stop(0, Color.web("#d2b710")),
-                new Stop(1, Color.web("#10a1d2")));
-
-         gradients[1] = new LinearGradient(0.2, 0.5, 0.2, 0.4, true,
-                 CycleMethod.REPEAT,
-                new Stop(0,Color.web("#559869")),
-                new Stop(1, Color.web("#f06017")));
-        return gradients;
-    }
-
-    //TODO add colors
+    /**
+     * get the team shadow for dropShadow
+     * @return shadow for yellow, green, blue, red
+     */
     public static String[] getTeamShadowColor() {
-         String[] colors = new String[2];
-         colors[0] = "#456781";
-         colors[1] = "#10b1d3";
-
-         return colors;
+         String[] colors = new String[4];
+        colors[0] = "10A1D2";
+        colors[1] = "F06017";
+        colors[2] = "D2B710";
+        colors[3] = "559869";
+        return colors;
     }
-    //TODO add colors
+    /**
+     * get the single shadow for dropShadow
+     * @return shadow for yellow, green, blue, red
+     */
     public static String[] getSingleShadowColor() {
         String[] colors = new String[4];
-        colors[0] = "";
-        colors[1] = "";
-        colors[2] = "";
-        colors[3] = "";
-        colors[4] = "";
+        colors[0] = "D6CEA0";
+        colors[1] = "A3C2AC";
+        colors[2] = "#70C0DB";
+        colors[3] = "#E3A789";
 
         return colors;
     }

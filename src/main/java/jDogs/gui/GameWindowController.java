@@ -774,8 +774,9 @@ public class GameWindowController implements Initializable {
        text1.setText(Client.getInstance().getNickname());
 
  */
-        text1.setText("Gregor");
 
+text1.setText("grego");
+playerNr = 0;
         text1.setFont(Font.font(null, FontWeight.BOLD, 20));
 
         DropShadow dropShadow = new DropShadow();
@@ -788,12 +789,12 @@ public class GameWindowController implements Initializable {
         dropShadow.setOffsetY(2);
 
         if (GUIManager.getInstance().isTeamMode()) {
-            dropShadow.setColor(Color.web(TextColors.getTeamShadowColor()[playerNr % 2]));
-            text1.setFill(TextColors.getTextGradients()[playerNr % 2]);
+            dropShadow.setColor(Color.web(TextColors.getTeamShadowColor()[playerNr]));
+            text1.setFill(Color.web(TextColors.getTextFill()[playerNr]));
             text1.setEffect(dropShadow);
         } else {
             dropShadow.setColor(Color.web(TextColors.getSingleShadowColor()[playerNr]));
-            text1.setFill(Color.web(TextColors.getSingleTextColor()[playerNr]));
+            text1.setFill(Color.web(TextColors.getTextFill()[playerNr]));
             text1.setEffect(dropShadow);
         }
         text1.setEffect(dropShadow);

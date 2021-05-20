@@ -84,7 +84,7 @@
          <children>
             <AnchorPane prefHeight="94.0" prefWidth="168.0">
                <children>
-                  <Label fx:id="labelPlayer3" layoutX="56.0" layoutY="15.0" text="Label" />
+                  <Label fx:id="labelPlayer3" layoutX="56.0" layoutY="15.0" text="Label" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="56.0" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -104,7 +104,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="100.0" prefWidth="168.0">
                <children>
-                  <Label fx:id="labelPlayer2" layoutX="56.0" layoutY="18.0" text="Label" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" />
+                  <Label fx:id="labelPlayer2" layoutX="56.0" layoutY="18.0" text="Label" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="56.0" />
                </children>
             </AnchorPane>
          </children>
@@ -117,9 +117,9 @@
                <children>
                   <AnchorPane fx:id="pane" prefHeight="92.0" prefWidth="178.0">
                      <children>
-                        <AnchorPane fx:id="pane" layoutX="25.0" layoutY="14.0" prefHeight="32.0" prefWidth="118.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                        <AnchorPane fx:id="textPlaquet" layoutX="25.0" layoutY="14.0" prefHeight="32.0" prefWidth="118.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                            <children>
-                              <Text fx:id="text1" layoutX="21.0" layoutY="22.951171875" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="118.00311279296875" AnchorPane.bottomAnchor="10.412109375" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="4.196887207031239" AnchorPane.topAnchor="12.0" />
+                              <Text fx:id="text1" layoutX="21.0" layoutY="22.951171875" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="118.00311279296875" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="4.196887207031239" AnchorPane.topAnchor="5.0" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -132,7 +132,7 @@
                   </AnchorPane>
                   <Pane fx:id="pane" prefHeight="104.0" prefWidth="185.0">
                      <children>
-                        <Button fx:id="refreshButton" layoutX="53.0" layoutY="24.0" mnemonicParsing="false" onAction="#refreshButtonOnAction" text="Refresh" />
+                        <Button fx:id="refreshButton" layoutX="14.0" layoutY="23.0" mnemonicParsing="false" onAction="#refreshButtonOnAction" text="Refresh" />
                      </children>
                      <padding>
                         <Insets left="2.0" right="2.0" />

@@ -74,7 +74,7 @@ public class LoginController implements Initializable {
         } else {
             System.out.println(nickname);
            // GUIManager.getInstance().goToLobby(nickname);
-            GUIManager.getInstance().startGame(1);
+            GUIManager.getInstance().startGame(0);
         }
     }
 

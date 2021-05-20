@@ -113,7 +113,7 @@
                               </Pane>
                               <Pane prefHeight="113.0" prefWidth="154.0">
                                  <children>
-                                    <Pane fx:id="pane" layoutX="33.0" layoutY="38.0" prefHeight="39.0" prefWidth="59.0">
+                                    <Pane fx:id="pane" layoutX="35.0" layoutY="14.0" prefHeight="39.0" prefWidth="59.0">
                                        <children>
                                           <Button fx:id="sendButton" layoutX="4.0" layoutY="5.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="26.0" prefWidth="52.0" text="Send" />
                                        </children>
