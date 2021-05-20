@@ -144,7 +144,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Settings">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Go to settings" />
+                    <MenuItem mnemonicParsing="false" onAction="#optionsOnClick" text="options" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

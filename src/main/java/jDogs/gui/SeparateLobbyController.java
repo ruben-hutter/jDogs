@@ -108,36 +108,67 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void optionsOnClick(ActionEvent event) {
-
         Client.getInstance().sendMessageToServer("SCOR");
-
-        Stage optionsStage = new Stage();
-        FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/options.fxml"));
-        Parent root = null;
         try {
-            root = optionsLoader.load();
+            Stage optionsStage = new Stage();
+            FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/options.fxml"));
+            Parent root = optionsLoader.load();
+            Scene optionScene = new Scene(root);
+            optionsController = optionsLoader.getController();
+            optionsStage.setScene(optionScene);
+            optionsStage.show();
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+    }
+    /**
+     * Opens a window with a quick guide
+     * @param event menu selection
+     */
+    @FXML
+    void quickGuideOnClick(ActionEvent event) {
+        try {
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/quickGuide.fxml"));
+            Parent root1 = helpLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // loginScene
-        Scene optionScene = new Scene(root);
-        optionsController = optionsLoader.getController();
-        optionsStage.setScene(optionScene);
-        optionsStage.show();
     }
 
+    /**
+     * Opens a window with the game instructions
+     * @param event menu selection
+     */
     @FXML
-    void helpMenuOnClick(ActionEvent event) {
-        System.out.println("help cllicked");
+    void openInstructions(ActionEvent event) {
+        try {
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/helpWindow.fxml"));
+            Parent root1 = helpLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-
+    /**
+     * start Game
+     * @param event on click
+     */
     @FXML
     void startButtonOnAction(ActionEvent event) {
         Client.getInstance().sendMessageToServer("STAR");
         new FadeIn(startButton).setCycleCount(3).play();
     }
 
+    /**
+     * change teams
+     * @param event on click
+     */
     @FXML
     void changeButtonOnAction(ActionEvent event) {
         if (teamMode && namesList.size() == 4) {
@@ -154,7 +185,6 @@ public class SeparateLobbyController implements Initializable{
                 adjustLabels();
                 setOnStartPosition();
             }
-
             startFlash();
             count++;
             Client.getInstance().sendMessageToServer("TEAM 4"

@@ -70,9 +70,7 @@ public class GUIManager extends Application {
      * sets up the login window
      */
     private void setLoginScene() {
-
         // activate loginWindow
-
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/loginWindow.fxml"));
         root = null;
         try {

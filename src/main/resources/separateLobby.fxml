@@ -133,7 +133,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#helpMenuOnClick" text="open help" />
+                        <MenuItem mnemonicParsing="false" onAction="#quickGuideOnClick" text="quick guide" />
+                        <MenuItem mnemonicParsing="false" onAction="#openInstructions" text="instructions" />
                      </items>
                 </Menu>
               </menus>

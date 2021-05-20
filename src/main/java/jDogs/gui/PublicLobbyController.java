@@ -74,6 +74,28 @@ public class PublicLobbyController implements Initializable {
     private OptionsController optionsController;
 
     /**
+     * open options
+     * @param event on click
+     */
+    @FXML
+    void optionsOnClick(ActionEvent event) {
+        Client.getInstance().sendMessageToServer("SCOR");
+
+        Stage optionsStage = new Stage();
+        FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/options.fxml"));
+        Parent root = null;
+        try {
+            root = optionsLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene optionScene = new Scene(root);
+        optionsController = optionsLoader.getController();
+        optionsStage.setScene(optionScene);
+        optionsStage.show();
+    }
+
+    /**
      * Opens a window with a quick guide
      * @param actionEvent menu selection
      */
