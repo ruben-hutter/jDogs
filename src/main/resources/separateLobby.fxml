@@ -123,18 +123,18 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Exit">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="Exit now" />
+                        <MenuItem mnemonicParsing="false" onAction="#exitMenuItemOnAction" text="exit now" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Settings">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Go to settings" />
-                  </items>
+                <Menu mnemonicParsing="false" text="Options">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#optionsOnClick" text="open options" />
+                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#helpMenuOnClick" text="open help" />
+                     </items>
                 </Menu>
               </menus>
                <padding>

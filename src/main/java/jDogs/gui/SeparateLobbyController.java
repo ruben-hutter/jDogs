@@ -46,6 +46,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SeparateLobbyController implements Initializable{
@@ -94,6 +95,27 @@ public class SeparateLobbyController implements Initializable{
     private ArrayList<String> namesList;
     private RotateTransition rotate;
     private Timeline t;
+
+    @FXML
+    void exitMenuItemOnAction(ActionEvent event) {
+        Client.getInstance().kill();
+    }
+
+    @FXML
+    void optionsOnClick(ActionEvent event) {
+        Stage optionsStage = new Stage();
+        Scene scene = new Scene();
+
+        //add highscore
+
+        //allow name change(not in separate lobby)
+    }
+
+    @FXML
+    void helpMenuOnClick(ActionEvent event) {
+        System.out.println("help cllicked");
+    }
+
 
     @FXML
     void startButtonOnAction(ActionEvent event) {
