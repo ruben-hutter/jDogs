@@ -295,4 +295,12 @@ public class GUIManager extends Application {
     public GameWindowController getGameController() {
         return gameWindowController;
     }
+
+    /**
+     * get the actual state
+     * @return publicLobby, separateLobby, playing
+     */
+    public String getState() {
+        return state;
+    }
 }
