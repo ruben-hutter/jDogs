@@ -2,6 +2,7 @@ package jDogs.serverclient.clientside;
 
 
 import jDogs.gui.GUIManager;
+import jDogs.gui.GuiParser;
 import jDogs.serverclient.helpers.Queuejd;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
@@ -151,6 +152,16 @@ public class ClientMenuCommand {
                 case DSTR:
                     Platform.runLater(() ->
                     GUIManager.getInstance().getSeparateLobbyController().cancelStart());
+                    break;
+
+                case SCOR:
+                    try{
+                        GUIManager.getInstance().getOptionsController();
+                    } catch (Exception e) {
+                        //Do nothing
+                    }
+                    break;
+
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

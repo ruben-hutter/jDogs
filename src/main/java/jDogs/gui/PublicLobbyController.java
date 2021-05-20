@@ -71,6 +71,7 @@ public class PublicLobbyController implements Initializable {
     private String selectedGameID;
     private Stage gameDialog;
     private Timeline t;
+    private OptionsController optionsController;
 
     /**
      * Opens a window with a quick guide
@@ -296,6 +297,10 @@ public class PublicLobbyController implements Initializable {
     public void displayNickname(String name) {
         labelName.setText(name);
         new BounceIn(labelName).setCycleCount(3).play();
+        getOptionsController().setNickname(name);
+    }
+
+    public OptionsController getOptionsController() {
     }
 
     /**

@@ -4,6 +4,7 @@ import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
 import java.awt.PaintContext;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -20,9 +21,12 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -95,6 +99,7 @@ public class SeparateLobbyController implements Initializable{
     private ArrayList<String> namesList;
     private RotateTransition rotate;
     private Timeline t;
+    private OptionsController optionsController;
 
     @FXML
     void exitMenuItemOnAction(ActionEvent event) {
@@ -103,12 +108,22 @@ public class SeparateLobbyController implements Initializable{
 
     @FXML
     void optionsOnClick(ActionEvent event) {
+
+        Client.getInstance().sendMessageToServer("SCOR");
+
         Stage optionsStage = new Stage();
-        Scene scene = new Scene();
-
-        //add highscore
-
-        //allow name change(not in separate lobby)
+        FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/options.fxml"));
+        Parent root = null;
+        try {
+            root = optionsLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // loginScene
+        Scene optionScene = new Scene(root);
+        optionsController = optionsLoader.getController();
+        optionsStage.setScene(optionScene);
+        optionsStage.show();
     }
 
     @FXML
@@ -569,6 +584,11 @@ public class SeparateLobbyController implements Initializable{
 
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(new Blinker("separate"), 3000, 5000, TimeUnit.MILLISECONDS);
+    }
+
+    public OptionsController getOptionsController() {
+
+
     }
 }
 

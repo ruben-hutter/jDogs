@@ -303,4 +303,27 @@ public class GUIManager extends Application {
     public String getState() {
         return state;
     }
+
+    /**
+     * return OptionsController
+     */
+    public OptionsController getOptionsController() {
+        OptionsController optionsController = null;
+
+        try {
+            switch (state) {
+                case "separateLobby":
+                   optionsController = getSeparateLobbyController().getOptionsController();
+                   break;
+
+                case "publicLobby":
+                    optionsController = getPubLobbyController().getOptionsController();
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("no optionsController is used");
+        }
+
+        return optionsController;
+    }
 }

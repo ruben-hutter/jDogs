@@ -90,7 +90,11 @@ public enum ClientMenuProtocol {
     /**
      * Common Information from Server
      */
-    INFO;
+    INFO,
+    /**
+     * highScoreList to display
+     */
+    SCOR;
 
     /**
      *
