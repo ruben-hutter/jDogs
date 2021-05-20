@@ -480,7 +480,7 @@ public class Server {
      * get highScoreList with all savedUsers
      * @return arrayList
      */
-    public ArrayList<SavedUser> getFinishGames() {
+    public ArrayList<SavedUser> getHighScoreList() {
         return csvWriter.getUsersHighScore();
     }
 

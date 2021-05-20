@@ -37,7 +37,11 @@ public enum SeparateLobbyProtocol {
     /**
      * receive a new team combination from a client
      */
-    TEAM;
+    TEAM,
+    /**
+     * send highScoreList to user
+     */
+    SCOR;
 
     /**
      * Gives the protocol command for a given string command

@@ -1,7 +1,6 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
-import jDogs.serverclient.helpers.Queuejd;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -113,7 +112,7 @@ public class SeparateLobbyCommand {
                 case STAT:
                     serverConnection.sendToClient(
                             "STAT " + "runningGames " + Server.getInstance().getRunningGames().size() +
-                                    " finishedGames " + Server.getInstance().getFinishGames().size());
+                                    " finishedGames " + Server.getInstance().getHighScoreList().size());
                     break;
 
                 case ACTI:
@@ -129,6 +128,15 @@ public class SeparateLobbyCommand {
                 case LPUB:
                     for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers())
                         serverConnection.sendToClient("LPUB " + player.getPlayerName());
+                    break;
+
+                case SCOR:
+                    String score = "";
+                    for (SavedUser savedUser : Server.getInstance().getHighScoreList()) {
+                        score += " " + savedUser.getCSVString();
+                    }
+
+                    serverConnection.sendToClient("SCOR" + score);
                     break;
 
                 default:

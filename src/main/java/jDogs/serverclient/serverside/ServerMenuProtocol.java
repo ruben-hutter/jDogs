@@ -45,7 +45,11 @@ public enum ServerMenuProtocol {
     /**
      * Send Client all active Users in Public Lobby
      */
-    LPUB;
+    LPUB,
+    /**
+     * send highScoreList to user
+     */
+    SCOR;
 
     /**
      * Gives the protocol command for a given string command

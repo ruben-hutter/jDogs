@@ -112,7 +112,7 @@ public class ServerMenuCommand {
                         break;
 
                     case STAT:
-                        for (SavedUser savedUser : Server.getInstance().getFinishGames()) {
+                        for (SavedUser savedUser : Server.getInstance().getHighScoreList()) {
                             serverConnection.sendToClient("STAT " + savedUser.getCSVString());
                         }
                         break;
@@ -192,6 +192,16 @@ public class ServerMenuCommand {
                             serverConnection.sendToClient("INFO wrong format,you cannot join");
                         }
                         break;
+
+                    case SCOR:
+                        String score = "";
+                        for (SavedUser savedUser : Server.getInstance().getHighScoreList()) {
+                            score += " " + savedUser.getCSVString();
+                        }
+
+                        serverConnection.sendToClient("SCOR" + score);
+                        break;
+
                 }
             }
         } catch (NullPointerException e) {
