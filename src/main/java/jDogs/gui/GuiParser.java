@@ -137,4 +137,33 @@ public class GuiParser {
         }
         return -1;
     }
+
+    /**
+     * parse a string to savedUserGui
+     * @param user savedUserGui-String
+     * @return instance of SavedUserGui
+     */
+    public static SavedUserGui getSavedUserGui(String user) {
+        int separatorName = -1;
+        for (int i = 0; i < user.length(); i++) {
+            if (user.charAt(i) == ',') {
+                separatorName = i;
+                break;
+            }
+        }
+
+        String name = user.substring(0, separatorName);
+
+        int separatorGames = -1;
+        for (int i = separatorName + 1; i < user.length(); i++) {
+            if (user.charAt(i) == ',') {
+                separatorGames = i;
+                break;
+            }
+        }
+        String playedGames = user.substring(separatorName + 1, separatorGames);
+        String victories = user.substring(separatorGames + 1);
+
+        return new SavedUserGui(name, playedGames, victories);
+    }
 }

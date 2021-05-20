@@ -431,7 +431,7 @@ public class SeparateLobbyController implements Initializable{
                 400.0, 200.0}, { 0.0, 0.0,
                 400.0, 0.0}};
 
-        //circles
+        optionsController = null;
 
         //drop shadow
         DropShadow dropShadow = new DropShadow();
@@ -484,10 +484,7 @@ public class SeparateLobbyController implements Initializable{
 
             circle4.setFill(Color.web("#F06017"));
             circle4.setEffect(dropShadow);
-
         }
-
-
 
         // blinking pug
 
@@ -587,8 +584,7 @@ public class SeparateLobbyController implements Initializable{
     }
 
     public OptionsController getOptionsController() {
-
-
+        return optionsController;
     }
 }
 

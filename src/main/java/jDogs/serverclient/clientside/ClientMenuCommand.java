@@ -156,7 +156,7 @@ public class ClientMenuCommand {
 
                 case SCOR:
                     try{
-                        GUIManager.getInstance().getOptionsController();
+                        GUIManager.getInstance().getOptionsController().updateHighScoreList(text.substring(5));
                     } catch (Exception e) {
                         //Do nothing
                     }

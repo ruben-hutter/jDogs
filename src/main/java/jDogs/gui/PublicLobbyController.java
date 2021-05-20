@@ -39,8 +39,8 @@ public class PublicLobbyController implements Initializable {
     @FXML
     private MenuItem quickGuide;
 
-    @FXML // fx:id="instructions"
-    private MenuItem instructions; // Value injected by FXMLLoader
+    @FXML
+    private MenuItem instructions;
 
     @FXML
     private TableView<?> tableViewPlayers;
@@ -158,8 +158,6 @@ public class PublicLobbyController implements Initializable {
         if (selectedGameID != null) {
             new Alert(AlertType.INFORMATION, "you joined " + selectedGameID).showAndWait();
             Client.getInstance().sendMessageToServer("JOIN " + selectedGameID);
-            //TODO send back from server a confirmation that the user joined
-            // if this message arrives, open new scene SeparateLobby
         }
     }
 
@@ -297,10 +295,13 @@ public class PublicLobbyController implements Initializable {
     public void displayNickname(String name) {
         labelName.setText(name);
         new BounceIn(labelName).setCycleCount(3).play();
-        getOptionsController().setNickname(name);
+        if (getOptionsController() != null) {
+            getOptionsController().updateNickname(name);
+        }
     }
 
     public OptionsController getOptionsController() {
+        return optionsController;
     }
 
     /**
@@ -312,6 +313,7 @@ public class PublicLobbyController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        optionsController = null;
 
         TableColumn name = new TableColumn("id");
         TableColumn responsible = new TableColumn("responsible");
