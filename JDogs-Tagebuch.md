@@ -508,3 +508,21 @@ Bis zum nächsten Treffen sollte die GUI und die Spiellogik vollständig fertig 
 
 **Nächstes Treffen:** Freitag, 21.05.21, 10:00 Uhr
 
+
+--- 
+
+21.05.2021, 10:00 Uhr, Johanna
+
+### Protokoll#29 - Protokoll
+
+Ruben hat einen CI-Server erstellt. Wir haben das Spiel gespielt und festgestellt, dass folgende Dinge noch zu erledigen sind:
+- Chat: Die Nachrichten sollten mittels Enter-Taste versendet werden können. 
+- Chat: In das Feld, in dem die Chat-Nachrichten dargestellt werden, sollte man nicht reinschreiben können. 
+- Change Team: Wenn man auf diesen Button klickt, verschwinden die Namen. 
+- Karten: Die Karten werden noch nicht alle gleich gross dargestellt, sie sehen ein wenig verschoben aus.
+- Bild laden/Darstellung: Bei Ruben wurde das Hintergrundbild des Spielbretts nicht geladen. 
+- SKIP: Der Button SKIP ist mit dem falschen Kommando verbunden. 
+- Statistics: Der Button "Statistic" sollte im Spielmodus nicht aufrufbar sein. 
+- MOPS: Das Cheat-Kommando sollte eingegrenzt werden, sodass man nur in den Himmel gehen kann, statt auf eine beliebige Position. 
+
+**Nächstes Treffen:** Freitag, 23.05.21, 15:00 Uhr
