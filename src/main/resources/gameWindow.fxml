@@ -43,13 +43,13 @@
       </MenuBar>
    </top>
    <left>
-      <VBox prefHeight="488.0" prefWidth="88.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="486.0" prefWidth="102.0" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="330.0" prefWidth="88.0">
                <children>
                   <Pane prefHeight="297.6" prefWidth="88.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="labelPlayer0" layoutX="17.0" layoutY="22.0" text="Label" />
+                        <Label fx:id="labelPlayer0" layoutX="6.0" layoutY="20.0" text="Label" />
                      </children>
                   </Pane>
                </children>
@@ -64,7 +64,7 @@
                <children>
                   <Pane layoutY="1.0" prefHeight="31.2" prefWidth="88.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
                      <children>
-                        <Label fx:id="labelPlayer1" layoutX="16.0" layoutY="203.0" text="Label" />
+                        <Label fx:id="labelPlayer1" layoutX="7.0" layoutY="198.0" text="Label" />
                      </children>
                   </Pane>
                </children>

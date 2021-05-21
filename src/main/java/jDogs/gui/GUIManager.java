@@ -209,27 +209,15 @@ public class GUIManager extends Application {
      * @param message from client
      */
     public void sendPCHTToGui (String message) {
-        if (isPlaying) {
-            gameWindowController.displayPCHTmsg (message);
-        } else {
-            publicLobbyController.displayPCHTmsg (message);
-        }
-    }
-
-    /**
-     * display LCHT message in gui
-     * @param message from participants
-     */
-    public void sendLCHTToGui (String message) {
         switch(state) {
             case "playing":
                 gameWindowController.displayPCHTmsg(message);
                 break;
-            case "separateLobby":
-                separateLobbyController.displayPCHTmsg(message);
-                break;
             case "publicLobby":
                 publicLobbyController.displayPCHTmsg(message);
+                break;
+            case "separateLobby":
+                separateLobbyController.displayPCHTmsg(message);
                 break;
         }
     }

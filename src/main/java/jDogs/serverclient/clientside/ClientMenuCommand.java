@@ -84,13 +84,6 @@ public class ClientMenuCommand {
                     System.out.println("LPUB: " + text.substring(5));
                     break;
 
-                case LCHT:
-                    Platform.runLater(() ->
-                            GUIManager.getInstance().sendLCHTToGui(text.substring(5)));
-
-                    System.out.println("LCHT " + text.substring(5));
-                    break;
-
                 case DPER:
                     Platform.runLater(() ->
                             GUIManager.getInstance().getPubLobbyController().removeUser(text.substring(5)));
