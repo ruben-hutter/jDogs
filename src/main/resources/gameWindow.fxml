@@ -188,8 +188,8 @@
                         <Pane prefHeight="86.0" prefWidth="94.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <children>
                               <Button fx:id="makeMoveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="14.0" mnemonicParsing="false" onAction="#makeMoveButtonOnAction" text="MakeMove" />
-                              <Button fx:id="skipButton" layoutX="4.0" layoutY="87.0" mnemonicParsing="false" onAction="#skipButtonOnAction" style="-fx-background-color: #ff0000; -fx-text-fill: #F2B486;" text="Round off" />
-                              <Button fx:id="roundOffButton1" layoutX="4.0" layoutY="51.0" mnemonicParsing="false" onAction="#roundOffButtonOnAction" style="-fx-background-color: #ff0000; -fx-text-fill: #F2B486;" text="SKIP" />
+                              <Button layoutX="4.0" layoutY="87.0" mnemonicParsing="false" onAction="#roundOffButtonOnAction" style="-fx-background-color: #ff0000; -fx-text-fill: #F2B486;" text="Round off" />
+                              <Button layoutX="4.0" layoutY="51.0" mnemonicParsing="false" onAction="#skipButtonOnAction" style="-fx-background-color: #ff0000; -fx-text-fill: #F2B486;" text="SKIP" />
                            </children>
                         </Pane>
                      </children>
