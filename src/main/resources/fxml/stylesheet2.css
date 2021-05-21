@@ -1,0 +1,89 @@
+.root {
+    -fx-pref-height: 700;
+    -fx-pref-width: 600;
+    -fx-font-weight: bold;
+    -fx-background-color:  linear-gradient(to right top, #c0564b, #a94d4b, #914549, #783e44, #60373e, #58353c, #51343a, #493237, #50353b, #57383f, #5f3b44, #663e48);;
+
+}
+
+#textPlaquet{
+    -fx-border-color: #c0564b;
+    -fx-background-color: #402e32;
+    -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
+    -fx-background-radius: 8;
+}
+
+#textFieldName{
+    -fx-border-color: #402e32;
+    -fx-background-color: #c0564b;
+    -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
+    -fx-background-radius: 8;
+}
+.label{
+    -fx-font: 15px "Broadway";
+    -fx-spacing: 9;
+    -fx-alignment: center;
+    -fx-text-fill: #302820;
+    -fx-background-radius: 8;
+    -fx-text-alignment: CENTER;
+    -fx-padding: 5;
+    -fx-background-color: #C6831C;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+}
+
+#pane{
+
+    -fx-background-color: linear-gradient(to right top, #d1a06b, #d4a66b, #d5ad6b, #d7b46b, #d7bb6c, #d9c071, #dbc476, #ddc97b, #e2cd85, #e7d18f, #ecd59a, #f0d9a4);
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+    -fx-padding: 5;
+    -fx-background-radius: 8;
+}
+
+#underPane{
+    -fx-background-color : #402e32;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+    -fx-padding: 5;
+    -fx-background-radius: 8;
+}
+
+.button{
+    -fx-font: 15px "Broadway";
+    -fx-text-fill: #D68C54;
+    -fx-padding: 5;
+    -fx-background-color: #302820;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 7, 0.0, 4, 0);
+    -fx-background-radius: 8;
+}
+
+.button:hover{
+    -fx-background-color: #5C5043;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 8px, 8px, 8px, 8px;
+    -fx-padding: 5; /* 4 8 4 8 */
+    -fx-effect:  dropshadow(one-pass-box, #5C5043, 7, 0.0, 4, 0);
+    -fx-text-fill: #DEB595;
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+}
+
+.table-view{
+    -fx-font-: 15px, "Broadway";
+    -fx-text-alignment: center;
+    -fx-text-fill: #694824;
+    -fx-background-color: #402e32;
+    -fx-background-radius: 8;
+    -fx-padding: 5;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);
+}
+
+.table-row-cell {
+    -fx-font-: 20px, "Broadway";
+    -fx-text-alignment: center;
+    -fx-text-fill: #81490D;
+    -fx-background-color: #A87E52;
+    -fx-background-radius: 8;
+    -fx-effect:  dropshadow(one-pass-box, #302820, 0, 0.0, -3, 1);}
+
+.table-view .filler {
+    -fx-background-color: #c0564b;
+}

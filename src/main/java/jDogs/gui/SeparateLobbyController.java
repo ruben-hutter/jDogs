@@ -3,7 +3,6 @@ import animatefx.animation.BounceIn;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import jDogs.serverclient.clientside.Client;
-import java.awt.PaintContext;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,7 +43,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.Paint;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
@@ -119,7 +117,7 @@ public class SeparateLobbyController implements Initializable{
         Client.getInstance().sendMessageToServer("SCOR");
         try {
             Stage optionsStage = new Stage();
-            FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/options.fxml"));
+            FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/fxml/options.fxml"));
             Parent root = optionsLoader.load();
             Scene optionScene = new Scene(root);
             optionsController = optionsLoader.getController();
@@ -136,7 +134,7 @@ public class SeparateLobbyController implements Initializable{
     @FXML
     void quickGuideOnClick(ActionEvent event) {
         try {
-            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/quickGuide.fxml"));
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/fxml/quickGuide.fxml"));
             Parent root1 = helpLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
@@ -153,7 +151,7 @@ public class SeparateLobbyController implements Initializable{
     @FXML
     void openInstructions(ActionEvent event) {
         try {
-            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/helpWindow.fxml"));
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/fxml/helpWindow.fxml"));
             Parent root1 = helpLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));

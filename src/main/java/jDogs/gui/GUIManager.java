@@ -71,7 +71,7 @@ public class GUIManager extends Application {
      */
     private void setLoginScene() {
         // activate loginWindow
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/loginWindow.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/fxml/loginWindow.fxml"));
         root = null;
         try {
             root = loginLoader.load();
@@ -95,7 +95,7 @@ public class GUIManager extends Application {
     public void setLobbyScene() {
 
         // activate Window
-        publiclobbyLoader = new FXMLLoader(getClass().getResource("/publicLobby.fxml"));
+        publiclobbyLoader = new FXMLLoader(getClass().getResource("/fxml/publicLobby.fxml"));
 
         Parent root = null;
         try {
@@ -139,7 +139,7 @@ public class GUIManager extends Application {
      */
     public void setSeparateLobbyScene() {
         // activate Window
-        separateLobbyLoader = new FXMLLoader(getClass().getResource("/separateLobby.fxml"));
+        separateLobbyLoader = new FXMLLoader(getClass().getResource("/fxml/separateLobby.fxml"));
 
         root = null;
         try {
@@ -187,7 +187,7 @@ public class GUIManager extends Application {
      */
     private void setGameScene() {
 
-        gameLoader = new FXMLLoader(getClass().getResource("/gameWindow.fxml"));
+        gameLoader = new FXMLLoader(getClass().getResource("/fxml/gameWindow.fxml"));
         // get path
         Parent root = null;
         try {

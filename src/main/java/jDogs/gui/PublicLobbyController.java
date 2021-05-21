@@ -82,7 +82,7 @@ public class PublicLobbyController implements Initializable {
         Client.getInstance().sendMessageToServer("SCOR");
 
         Stage optionsStage = new Stage();
-        FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/options.fxml"));
+        FXMLLoader optionsLoader = new FXMLLoader(getClass().getResource("/fxml/options.fxml"));
         Parent root = null;
         try {
             root = optionsLoader.load();
@@ -102,7 +102,7 @@ public class PublicLobbyController implements Initializable {
     @FXML
     void openQuickGuide(ActionEvent actionEvent) {
         try {
-            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/quickGuide.fxml"));
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/fxml/quickGuide.fxml"));
             Parent root1 = helpLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
@@ -119,7 +119,7 @@ public class PublicLobbyController implements Initializable {
     @FXML
     void openInstructions(ActionEvent event) {
         try {
-            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/helpWindow.fxml"));
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/fxml/helpWindow.fxml"));
             Parent root1 = helpLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
@@ -137,7 +137,8 @@ public class PublicLobbyController implements Initializable {
      */
     @FXML
     void createButtonOnAction(ActionEvent event) {
-        FXMLLoader dialogPaneGameLoader = new FXMLLoader(getClass().getResource("/createGameWindow.fxml"));
+        FXMLLoader dialogPaneGameLoader = new FXMLLoader(getClass().getResource(
+                "/fxml/createGameWindow.fxml"));
 
         CreateGameWindowController createGameWindowController = dialogPaneGameLoader.getController();
         AnchorPane anchorPane = null;
