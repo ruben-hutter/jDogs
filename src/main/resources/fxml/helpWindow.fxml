@@ -7,12 +7,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@stylesheet3.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" layoutX="150.0" layoutY="35.0" prefHeight="50.0" prefWidth="600.0" text="Spielanleitung" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="20.0" />
-      <ScrollPane layoutY="158.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="100.0">
+      <AnchorPane fx:id="pane" layoutX="147.0" layoutY="9.0" prefHeight="84.0" prefWidth="660.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="9.0">
+         <children>
+            <Label alignment="CENTER" layoutX="40.0" layoutY="17.0" prefHeight="58.0" prefWidth="590.0" text="Spielanleitung" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="12.0" />
+         </children>
+      </AnchorPane>
+      <ScrollPane fx:id="pane" layoutY="158.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="125.0" AnchorPane.topAnchor="100.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="625.0">
+          <AnchorPane fx:id="underPane" minHeight="0.0" minWidth="0.0" prefWidth="625.0">
                <children>
                   <VBox alignment="TOP_CENTER" layoutY="-1.0" prefWidth="600.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -23,42 +27,42 @@
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/2.png" />
+                              <Image url="@../spielanleitung/DE/2.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/3.png" />
+                              <Image url="@../spielanleitung/DE/3.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/4.png" />
+                              <Image url="@../spielanleitung/DE/4.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/5.png" />
+                              <Image url="@../spielanleitung/DE/5.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/6.png" />
+                              <Image url="@../spielanleitung/DE/6.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/7.png" />
+                              <Image url="@../spielanleitung/DE/7.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/8.png" />
+                              <Image url="@../spielanleitung/DE/8.png" />
                            </image>
                         </ImageView>
                         <ImageView fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@spielanleitung/DE/9.png" />
+                              <Image url="@../spielanleitung/DE/9.png" />
                            </image>
                         </ImageView>
                      </children>

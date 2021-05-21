@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet2.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <AnchorPane prefHeight="79.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <children>
+            <AnchorPane fx:id="pane" layoutX="18.0" layoutY="37.0" prefHeight="78.0" prefWidth="565.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="5.0">
+               <children>
+                  <Label layoutX="37.0" layoutY="16.0" prefHeight="38.0" prefWidth="490.0" text="QuickGuide" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="37.0" AnchorPane.topAnchor="5.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <ImageView fitHeight="656.0" fitWidth="473.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../spielanleitung/Brändi-Dog-Kurzanleitung.png" />
+         </image>
+      </ImageView>
+   </center>
+   <right>
+      <ImageView fitHeight="216.0" fitWidth="211.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="BOTTOM_RIGHT">
+         <image>
+            <Image url="@../Zeichnung_Mops6.png" />
+         </image>
+      </ImageView>
+   </right>
+   <left>
+      <Pane maxWidth="211.0" minWidth="211.0" prefWidth="211.0" BorderPane.alignment="CENTER" />
+   </left>
+</BorderPane>

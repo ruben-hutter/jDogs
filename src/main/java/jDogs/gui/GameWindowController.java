@@ -193,7 +193,7 @@ public class GameWindowController implements Initializable {
     @FXML
     void openQuickGuide(ActionEvent actionEvent) {
         try {
-            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/quickGuide.fxml"));
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/fxml/quickGuide.fxml"));
             Parent root1 = helpLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
@@ -206,7 +206,7 @@ public class GameWindowController implements Initializable {
     @FXML
     void openInstructions(ActionEvent event) {
         try {
-            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/helpWindow.fxml"));
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/fxml/helpWindow.fxml"));
             Parent root1 = helpLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
@@ -368,7 +368,8 @@ public class GameWindowController implements Initializable {
                     MalformedURLException e) {
                 e.printStackTrace();
             }
-            FXMLLoader allCardsDialog = new FXMLLoader(getClass().getResource("/allCardsDialog.fxml"));
+            FXMLLoader allCardsDialog = new FXMLLoader(getClass().getResource(
+                    "/fxml/allCardsDialog.fxml"));
 
             allCardsDialogController = allCardsDialog.getController();
             borderPaneDialog = null;

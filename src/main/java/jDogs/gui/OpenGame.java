@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
  */
 
 public class OpenGame {
-    //name must be unique!
     private final SimpleStringProperty name;
     private final SimpleStringProperty responsible;
     private SimpleStringProperty enlist;
