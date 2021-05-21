@@ -1,8 +1,6 @@
 package jDogs.player;
 
-import jDogs.Alliance_4;
-import jDogs.ClientGame;
-import jDogs.board.Board;
+import jDogs.serverclient.helpers.Alliance_4;
 import jDogs.board.Tile;
 import org.jetbrains.annotations.NotNull;
 

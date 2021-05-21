@@ -1,4 +1,4 @@
-package jDogs;
+package jDogs.serverclient.helpers;
 
 /**
  * Saves the Piece Alliances (color)

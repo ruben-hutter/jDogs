@@ -452,6 +452,7 @@ public class MainGame {
     /**
      * Gets a player for a given alliance
      * @param alliance player's alliance as string
+     * @param mainGame instance of MainGame
      * @return the player or null
      */
     public Player getPlayerForAlliance(String alliance, MainGame mainGame) {

@@ -1,6 +1,6 @@
 package jDogs.board;
 
-import jDogs.Alliance_4;
+import jDogs.serverclient.helpers.Alliance_4;
 import java.util.HashMap;
 import java.util.Map;
 

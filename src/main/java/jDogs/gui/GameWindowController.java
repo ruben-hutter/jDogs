@@ -1,6 +1,6 @@
 package jDogs.gui;
 
-import jDogs.ClientGame;
+import jDogs.serverclient.clientside.ClientGame;
 import jDogs.board.Board;
 import jDogs.serverclient.clientside.Client;
 import java.io.IOException;

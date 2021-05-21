@@ -1,9 +1,9 @@
-package jDogs;
+package jDogs.serverclient.clientside;
 
+import jDogs.serverclient.helpers.Alliance_4;
 import jDogs.board.Board;
 import jDogs.gui.GUIManager;
 import jDogs.player.Player;
-import jDogs.serverclient.clientside.Client;
 import java.util.ArrayList;
 import javafx.application.Platform;
 

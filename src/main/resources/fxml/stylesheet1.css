@@ -123,7 +123,7 @@
 
 #gridSeparateLobby {
     -fx-background-radius: 8;
-    -fx-background-image: url(/ivan-gromov-Y3vPEuNlf7w-unsplash.jpg);
+    -fx-background-image: url(/images/ivan-gromov-Y3vPEuNlf7w-unsplash.jpg);
     -fx-background-repeat: no - repeat;
     -fx-background-size: stretch;
     -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
@@ -133,7 +133,7 @@
 #gridPane {
     -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
     -fx-background-radius: 8;
-    -fx-background-image: url(/Zeichnung_Mops6.png);
+    -fx-background-image: url(/images/Zeichnung_Mops6.png);
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
     -fx-padding: 5;
@@ -155,7 +155,7 @@
 
 #anchorPanePub {
     -fx-background-radius: 8;
-    -fx-background-image: url(/ivan-gromov-Y3vPEuNlf7w-unsplash.jpg);
+    -fx-background-image: url(/images/ivan-gromov-Y3vPEuNlf7w-unsplash.jpg);
     -fx-background-repeat: no - repeat;
     -fx-background-size: stretch;
     -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);

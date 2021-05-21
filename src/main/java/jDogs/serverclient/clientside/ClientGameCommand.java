@@ -1,7 +1,6 @@
 package jDogs.serverclient.clientside;
 
-import jDogs.Alliance_4;
-import jDogs.ClientGame;
+import jDogs.serverclient.helpers.Alliance_4;
 import jDogs.gui.GUIManager;
 import jDogs.gui.GuiParser;
 import jDogs.serverclient.helpers.Queuejd;

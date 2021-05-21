@@ -1,6 +1,6 @@
 package jDogs.serverclient.serverside;
 
-import jDogs.Alliance_4;
+import jDogs.serverclient.helpers.Alliance_4;
 import jDogs.player.Piece;
 import jDogs.player.Player;
 import org.apache.logging.log4j.LogManager;

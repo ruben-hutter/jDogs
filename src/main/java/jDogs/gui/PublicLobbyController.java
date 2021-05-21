@@ -383,12 +383,12 @@ public class PublicLobbyController implements Initializable {
 
         // blinking pug
 
-        Image image1 = new Image(getClass().getResource("/newBlink1.png").toExternalForm(),1000,1000,false,false);
-        Image image2 = new Image(getClass().getResource("/newBlink2.png").toExternalForm(),1000,1000,false,false);
-        Image image3 = new Image(getClass().getResource("/newBlink3.png").toExternalForm(),1000,1000,false,false);
-        Image image4 = new Image(getClass().getResource("/newBlink4.png").toExternalForm(),1000,1000,false,false);
-        Image image5 = new Image(getClass().getResource("/newBlink5.png").toExternalForm(),1000,1000,false,false);
-        Image image6 = new Image(getClass().getResource("/newBlink6.png").toExternalForm(),1000,1000,false,false);
+        Image image1 = new Image(getClass().getResource("/images/newBlink1.png").toExternalForm(),1000,1000,false,false);
+        Image image2 = new Image(getClass().getResource("/images/newBlink2.png").toExternalForm(),1000,1000,false,false);
+        Image image3 = new Image(getClass().getResource("/images/newBlink3.png").toExternalForm(),1000,1000,false,false);
+        Image image4 = new Image(getClass().getResource("/images/newBlink4.png").toExternalForm(),1000,1000,false,false);
+        Image image5 = new Image(getClass().getResource("/images/newBlink5.png").toExternalForm(),1000,1000,false,false);
+        Image image6 = new Image(getClass().getResource("/images/newBlink6.png").toExternalForm(),1000,1000,false,false);
 
         ImageView imageView1 = new ImageView(image1);
         ImageView imageView2 = new ImageView(image2);

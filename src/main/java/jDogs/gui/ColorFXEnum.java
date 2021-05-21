@@ -1,6 +1,6 @@
 package jDogs.gui;
 
-import jDogs.Alliance_4;
+import jDogs.serverclient.helpers.Alliance_4;
 import javafx.scene.paint.Color;
 
 /**

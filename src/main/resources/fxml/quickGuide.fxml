@@ -33,7 +33,7 @@
    <right>
       <ImageView fitHeight="216.0" fitWidth="211.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="BOTTOM_RIGHT">
          <image>
-            <Image url="@../Zeichnung_Mops6.png" />
+            <Image url="@../images/Zeichnung_Mops6.png" />
          </image>
       </ImageView>
    </right>

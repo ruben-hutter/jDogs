@@ -53,6 +53,7 @@ public class OpenGameFile {
     /**
      * @param combination is a string with the team size, number of names transmitted and with the
      *                    names which should be together in a team
+     * @return boolean true if change team successful
      */
     public boolean changeTeam(String combination) {
         System.out.println("combo " + combination);

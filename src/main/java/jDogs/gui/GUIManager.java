@@ -276,7 +276,7 @@ public class GUIManager extends Application {
 
     /**
      * return game window controller
-     * @return
+     * @return instance of GameWindowController
      */
     public GameWindowController getGameController() {
         return gameWindowController;
@@ -291,7 +291,8 @@ public class GUIManager extends Application {
     }
 
     /**
-     * return OptionsController
+     * get OptionsController
+     * @return instance of OptionsController
      */
     public OptionsController getOptionsController() {
         OptionsController optionsController = null;
