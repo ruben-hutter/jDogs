@@ -269,7 +269,6 @@ public class Server {
                 .sendMessageToParticipants("INFO deleted this open game now");
 
         // send message to public
-        // TODO for DOGA send only nameID not all data
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
 
         // remove file
@@ -278,7 +277,6 @@ public class Server {
                 allOpenGames.remove(i);
             }
         }
-
         // remove name
         allGamesNotFinishedNames.remove(openGameFileID);
     }
@@ -357,6 +355,7 @@ public class Server {
         if (getOpenGameFile(gameID).getHost().equals(nickname)) {
             for (Player player : getOpenGameFile(gameID).getPlayers()) {
                 if (!player.getPlayerName().equals(nickname)) {
+                    player.sendMessageToClient("STOP");
                     player.getServerConnection().getMessageHandlerServer().returnToLobby();
                 }
             }

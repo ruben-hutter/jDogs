@@ -78,15 +78,25 @@ public class ClientMenuCommand {
 
                 case LPUB:
                     //just compare to existing String/Array and replace if necessary
-                    Platform.runLater(() ->
-                            GUIManager.getInstance().getPubLobbyController().addUser(text.substring(5)));
+                    Client.getInstance().addToPubList(text.substring(5));
+                    try {
+                        Platform.runLater(() ->
+                                GUIManager.getInstance().getPubLobbyController().addUser(text.substring(5)));
+                    } catch (Exception e) {
 
+                    }
                     System.out.println("LPUB: " + text.substring(5));
                     break;
 
                 case DPER:
-                    Platform.runLater(() ->
-                            GUIManager.getInstance().getPubLobbyController().removeUser(text.substring(5)));
+                    Client.getInstance().removeFromPubList(text.substring(5));
+
+                    try {
+                        Platform.runLater(() ->
+                                GUIManager.getInstance().getPubLobbyController().removeUser(text.substring(5)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
 
                 case JOIN:
