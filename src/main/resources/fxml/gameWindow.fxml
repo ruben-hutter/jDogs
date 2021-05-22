@@ -49,7 +49,7 @@
                <children>
                   <Pane prefHeight="297.6" prefWidth="88.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="labelPlayer0" layoutX="6.0" layoutY="20.0" text="Label" />
+                        <Label fx:id="labelPlayer0" layoutX="14.0" layoutY="14.0" text="Label" />
                      </children>
                   </Pane>
                </children>
@@ -83,7 +83,7 @@
          <children>
             <AnchorPane prefHeight="94.0" prefWidth="168.0">
                <children>
-                  <Label fx:id="labelPlayer3" layoutX="56.0" layoutY="15.0" text="Label" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="56.0" />
+                  <Label fx:id="labelPlayer3" layoutX="18.0" layoutY="17.0" prefHeight="29.0" prefWidth="77.0" text="Label" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="75.0" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -96,7 +96,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="100.0" prefWidth="168.0">
                <children>
-                  <Label fx:id="labelPlayer2" layoutX="56.0" layoutY="18.0" text="Label" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="56.0" />
+                  <Label fx:id="labelPlayer2" layoutX="14.0" layoutY="20.0" text="Label" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="87.0" />
                </children>
             </AnchorPane>
          </children>
