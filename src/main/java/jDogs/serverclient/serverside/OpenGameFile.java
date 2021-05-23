@@ -1,12 +1,9 @@
 package jDogs.serverclient.serverside;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import jDogs.player.Player;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.units.qual.A;
-
 
 /**
  * an object of this class is instantiated when a client

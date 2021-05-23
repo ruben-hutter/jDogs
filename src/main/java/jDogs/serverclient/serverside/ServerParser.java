@@ -82,12 +82,9 @@ public class ServerParser {
         for (String gameName : Server.getInstance().getAllGamesNotFinishedNames()) {
             if (gameName.equals(name)) {
                 int num = 1;
-                while (true) {
+                do {
                     num++;
-                    if (!gameName.equals(name + num)) {
-                        break;
-                    }
-                }
+                } while (gameName.equals(name + num));
                 return name + num;
             }
         }

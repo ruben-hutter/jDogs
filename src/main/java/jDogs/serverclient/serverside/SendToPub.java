@@ -33,10 +33,10 @@ public class SendToPub implements Runnable {
                 }
             }
         } catch (Throwable t) {
-        System.out.println(this.toString() + " throwed throwable");
+        System.out.println(this + " throwed throwable");
         t.printStackTrace();
         }
-        System.out.println(this.toString() + " stopps now");
+        System.out.println(this + " stopps now");
     }
 
     /**

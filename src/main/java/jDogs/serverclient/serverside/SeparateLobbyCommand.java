@@ -86,7 +86,8 @@ public class SeparateLobbyCommand {
                     break;
 
                 case STAR:
-                    if (Server.getInstance().getOpenGameFile(openGameFileID).readyToStart() && Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
+                    if (Server.getInstance().getOpenGameFile(openGameFileID).readyToStart()
+                            && Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
                         Server.getInstance().getOpenGameFile(openGameFileID).start();
                     }
                     break;
