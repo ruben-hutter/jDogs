@@ -1,6 +1,7 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
+import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -92,9 +93,14 @@ public class SeparateLobbyCommand {
                     break;
 
                 case EXIT:
-                    Server.getInstance().getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO " + nickname + " left openGame session");
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
+                        ArrayList<Player> players = Server.getInstance().getOpenGameFile(openGameFileID).getPlayers();
                         Server.getInstance().removeOpenGame(openGameFileID);
+                        for (Player player : players) {
+                            player.sendMessageToClient("INFO deleted this open game now");
+                            player.sendMessageToClient("STOP");
+                            player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                        }
                     }
                     this.serverConnection.kill();
                     break;
@@ -103,12 +109,13 @@ public class SeparateLobbyCommand {
                     serverConnection.getMessageHandlerServer().returnToLobby();
 
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
-                        for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers()) {
+                        ArrayList<Player> players = Server.getInstance().getOpenGameFile(openGameFileID).getPlayers();
+                        Server.getInstance().removeOpenGame(openGameFileID);
+                        for (Player player : players) {
                             player.sendMessageToClient("INFO deleted this open game now");
                             player.sendMessageToClient("STOP");
                             player.getServerConnection().getMessageHandlerServer().returnToLobby();
                         }
-                        Server.getInstance().removeOpenGame(openGameFileID);
                     } else {
                         Server.getInstance().getOpenGameFile(openGameFileID).removeParticipant(serverConnection.getNickname());
                     }

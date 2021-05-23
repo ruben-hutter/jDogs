@@ -257,6 +257,7 @@ public class Server {
         // remove file
         for (int i = 0; i < allOpenGames.size(); i++) {
             if (allOpenGames.get(i).getNameId().equals(openGameFileID)) {
+                System.err.println("Removed " + allOpenGames.get(i).getNameId());
                 allOpenGames.remove(i);
             }
         }
