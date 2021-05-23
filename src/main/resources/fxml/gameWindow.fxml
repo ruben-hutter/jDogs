@@ -82,7 +82,7 @@
          <children>
             <AnchorPane prefHeight="94.0" prefWidth="168.0">
                <children>
-                  <Label fx:id="labelPlayer3" layoutX="18.0" layoutY="17.0" prefHeight="29.0" prefWidth="77.0" text="Label" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="75.0" />
+                  <Label fx:id="labelPlayer3" layoutX="22.0" layoutY="17.0" prefHeight="30.0" prefWidth="109.0" text="Label" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="39.0" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -95,7 +95,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="100.0" prefWidth="168.0">
                <children>
-                  <Label fx:id="labelPlayer2" layoutX="14.0" layoutY="20.0" text="Label" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="87.0" />
+                  <Label fx:id="labelPlayer2" layoutX="14.0" layoutY="20.0" prefHeight="30.0" prefWidth="110.0" text="Label" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="44.0" />
                </children>
             </AnchorPane>
          </children>

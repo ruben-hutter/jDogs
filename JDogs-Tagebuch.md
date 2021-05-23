@@ -526,3 +526,21 @@ Ruben hat einen CI-Server erstellt. Wir haben das Spiel gespielt und festgestell
 - MOPS: Das Cheat-Kommando sollte eingegrenzt werden, sodass man nur in den Himmel gehen kann, statt auf eine beliebige Position. 
 
 **Nächstes Treffen:** Freitag, 23.05.21, 15:00 Uhr
+
+
+--- 
+
+23.05.2021, 15:00 Uhr, Johanna
+
+### Protokoll#30 - Protokoll
+Das heutige Treffen war für abschliessende Tests vorgesehen. Wir gingen gemeinsam die Protokolle durch und entfernten unbenutzte Befehle. Während des Spiels fanden wir noch einige Fehler, die wir sogleich korrigierten:
+- SKIP: Bei SKIP wurden zwei Karten abgezogen, falls man zwei gleiche Karten auf der Hand hatte. 
+- Host verlässt OpenGame: Wenn der Host die SeparateLobby verlässt, sollten eigentlich alle Mitspieler wieder in die PublicLobby gelangen. Dies war nicht der Fall, die anderen Spieler blieben in der SeparateLobby. Nach einer Fehlerbehebung wurden die Mitspieler in die PublicLobby geschickt, aber die Spielernamen wurden nicht mehr in der Liste angezeigt. 
+- Gelöschtes Spiel verschwindet nicht: Ein weiteres Problem war, dass ein nicht mehr existentes Spiel immer noch in der Liste der offenen Spiele angezeigt wurde. 
+- Start: Nach einer weiteren Fehlerbehebung konnte das Spiel plötzlich nicht mehr gestartet werden. Doch auch dieses Problem konnten wir lösen. 
+- HighScoreList: Ruben stellte fest, dass die CSV-Datei nicht in seinem Dropbox-Ordner erstellt werden kann. 
+
+Wir gingen die Achievements für Meilenstein 5 noch einmal durch und kontrollierten, dass wir alles haben. Danach sprachen wir noch kurz über die Präsentation und überlegten uns einen Ablaufplan für die Demo und eine Zeiteinteilung für die Präsentation. 
+
+**Nächstes Treffen:** Dienstag, 25.05.21, 15:30 Uhr, Präsentation vorbereiten
+
