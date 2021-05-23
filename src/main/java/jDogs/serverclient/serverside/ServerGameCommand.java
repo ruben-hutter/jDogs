@@ -53,6 +53,7 @@ public class ServerGameCommand {
                 case QUIT:
                     this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                             + " left game session");
+                    this.mainGame.sendMessageToParticipants("STOP");
                     this.mainGame.delete();
                     break;
 
@@ -60,6 +61,7 @@ public class ServerGameCommand {
                     //stop serverConnection
                     this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                             + " left game session");
+                    this.mainGame.sendMessageToParticipants("STOP");
                     this.mainGame.delete();
                     this.serverConnection.kill();
                     break;
