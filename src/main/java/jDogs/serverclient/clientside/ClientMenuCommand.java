@@ -114,7 +114,6 @@ public class ClientMenuCommand {
                     break;
 
                 case DOGA:
-                    //TODO remove openGame from GUI-Lobby-Display
                     System.out.println("DOGA: " + text.substring(5));
 
                     Platform.runLater(() ->

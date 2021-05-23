@@ -110,17 +110,6 @@ public class GuiParser {
         array[arrayCount] = usersString.substring(first);
         return array;
     }
-
-    public static void main(String[] args) {
-        //TODO GAME SENDS A WRONG ARRAY it has 5 names but should have 4
-        String game = "GAME 1 4 SDDD greG2 greg greG greG";
-        String gameString ="2 Greg gregor";
-        for (String name : getArray(gameString)) {
-            System.out.println("name " + name);
-        }
-    }
-
-
     /**
      * returns the number in the abbreviation enum
      * @param colorAbb YELO, GREN, BLUE, REDD
