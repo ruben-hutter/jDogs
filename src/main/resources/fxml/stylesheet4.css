@@ -37,6 +37,7 @@
 #gameNameField{
   -fx-effect:  dropshadow(one-pass-box, #302820, 7, 0.0, 4, 0);
   -fx-background-color: #402e32;
+  -fx-text-fill: #C6831C;
 }
 
 .label{
