@@ -16,7 +16,7 @@ public enum ServerGameProtocol {
      */
     QUIT,
     /**
-     * Command to choose the game mode: Number of players, composition of the team, design of the board.
+     * Command to choose the game mode: Number of players, composition of the team
      */
     PLAY,
     /**
