@@ -25,7 +25,6 @@
         <menus>
           <Menu mnemonicParsing="false" text="Menu">
             <items>
-              <MenuItem fx:id="statMenuItem" mnemonicParsing="false" onAction="#statisticMenuOnAction" text="Statistics" />
                   <MenuItem fx:id="retToLoMenuItem" mnemonicParsing="false" onAction="#reToLoMenuOnAction" text="ReturnToLobby" />
                   <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" onAction="#exitMenuOnAction" text="Exit" />
             </items>
