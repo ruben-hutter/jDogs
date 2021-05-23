@@ -336,15 +336,6 @@ public class OpenGameFile {
         Server.getInstance().startGame(this);
     }
 
-
-    /**
-     * deletes this game, because it ended or because it is deleted by the host or a player did quit
-     * the game while playing
-     */
-    public void cancel() {
-        Server.getInstance().removeOpenGame(this);
-    }
-
     /**
      * @return true if int teamMode is 1
      */

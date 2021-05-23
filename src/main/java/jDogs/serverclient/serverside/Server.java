@@ -174,24 +174,6 @@ public class Server {
     }
 
     /**
-     * removes the openGame from the list
-     * @param openGameFile object that represents a game lobby
-     */
-    public void removeOpenGame(OpenGameFile openGameFile) {
-      sendMessageToPublic("DOGA " + openGameFile.getSendReady(), 0);
-
-            for (Player player : openGameFile.getPlayers()) {
-                player.getServerConnection().getMessageHandlerServer().returnToLobby();
-            }
-
-        MainGame mainGame;
-        if ((mainGame = getRunningGame(openGameFile.getNameId())) != null) {
-            runningGames.remove(mainGame);
-        }
-    }
-
-
-    /**
      * sends message to clients wherever they are
      * @param message message to send
      */
@@ -268,8 +250,17 @@ public class Server {
         getOpenGameFile(openGameFileID)
                 .sendMessageToParticipants("INFO deleted this open game now");
         getOpenGameFile(openGameFileID).sendMessageToParticipants("STOP");
+
+        for (Player player : getOpenGameFile(openGameFileID).getPlayers()) {
+            player.getServerConnection().getMessageHandlerServer().returnToLobby();
+        }
+
         // send message to public
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
+
+        MainGame mainGame;
+        if ((mainGame = getRunningGame(getOpenGameFile(openGameFileID).getNameId())) != null) {
+            runningGames.remove(mainGame);
 
         // remove file
         for (int i = 0; i < allOpenGames.size(); i++) {
@@ -279,6 +270,7 @@ public class Server {
         }
         // remove name
         allGamesNotFinishedNames.remove(openGameFileID);
+        }
     }
 
     /**

@@ -141,11 +141,11 @@ public class MessageHandlerServer implements Runnable {
      * from game or from separate lobby
      */
     public synchronized void returnToLobby() {
+        state = "publicLobby";
         serverConnection.setGameID(null);
         Server.getInstance().addToLobby(serverConnection);
         serverConnection.sendToPub("LPUB " + serverConnection.getNickname());
         serverMenuCommand.sendListOfPublicGuests();
-        state = "publicLobby";
     }
 
     /**
