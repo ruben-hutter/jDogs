@@ -11,10 +11,6 @@ public enum ServerMenuProtocol {
      */
     USER,
     /**
-     * Command to show a list of active users.
-     */
-    ACTI,
-    /**
      * Command to send all the open games which can be joined to this client.
      */
     SESS,
@@ -26,10 +22,6 @@ public enum ServerMenuProtocol {
      * Command to send a private message to a player.
      */
     WCHT,
-    /**
-     * Command to request the game statistics.
-     */
-    STAT,
     /**
      * Command to delete ServerConnection of this client
      */

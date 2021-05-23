@@ -121,10 +121,6 @@ public class ClientMenuCommand {
                             GUIManager.getInstance().getPubLobbyController().removeOpenGame(text.substring(5)));
                     break;
 
-                case STAT:
-                    System.out.println("all Games " + text.substring(5));
-                    break;
-
                 case INFO:
                     Platform.runLater(() ->
                             GUIManager.getInstance().sendINFOtoGui(text.substring(5)));

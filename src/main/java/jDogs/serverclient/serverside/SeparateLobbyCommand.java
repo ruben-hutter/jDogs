@@ -109,21 +109,6 @@ public class SeparateLobbyCommand {
                     }
                     break;
 
-                case STAT:
-                    serverConnection.sendToClient(
-                            "STAT " + "runningGames " + Server.getInstance().getRunningGames().size() +
-                                    " finishedGames " + Server.getInstance().getHighScoreList().size());
-                    break;
-
-                case ACTI:
-                    StringBuilder list = new StringBuilder("INFO all active Players ");
-                    for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
-                        list.append("player # ").append(i).append("\n");
-                        list.append(Server.getInstance().allNickNames.get(i)).append(" ");
-                        list.append("\n");
-                    }
-                    serverConnection.sendToClient(list.toString());
-                    break;
 
                 case LPUB:
                     for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers())

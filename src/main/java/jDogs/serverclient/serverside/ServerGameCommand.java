@@ -250,11 +250,6 @@ public class ServerGameCommand {
                     cheatSet(text);
                     break;
 
-                case CTTP:
-                    // TODO start CTTP
-                    //change cards
-                    break;
-
                 case PCHT:
                     mainGame.sendMessageToParticipants(
                             "PCHT " + "<" + serverConnection.getNickname() + "> " + text.substring(5));
