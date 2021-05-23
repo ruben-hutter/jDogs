@@ -107,7 +107,6 @@ public class SeparateLobbyCommand {
 
                 case QUIT:
                     serverConnection.getMessageHandlerServer().returnToLobby();
-
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
                         ArrayList<Player> players = Server.getInstance().getOpenGameFile(openGameFileID).getPlayers();
                         Server.getInstance().removeOpenGame(openGameFileID);

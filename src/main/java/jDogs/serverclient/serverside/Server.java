@@ -118,7 +118,6 @@ public class Server {
      * @param serverConnection is the sC of this client
      */
     public void addNickname(ServerConnection serverConnection) {
-
         //scMap
         serverConnectionMap.put(serverConnection.getNickname(), serverConnection);
 
@@ -131,11 +130,8 @@ public class Server {
      * @param nickname the player's name
      */
     public void removeNickname(String nickname) {
-
         //remove nickname from sConnectionNicknameMap
-
         serverConnectionMap.remove(nickname);
-
         //remove nickname from nicknamelist
         allNickNames.remove(nickname);
     }
@@ -154,7 +150,6 @@ public class Server {
         allGamesNotFinishedNames.add(openGameFile.getNameId());
         // remove open game file
         removeOpenGame(openGameFile.getNameId());
-
         mainGame.start();
     }
 
@@ -246,24 +241,23 @@ public class Server {
      * @param openGameFileID name of the game lobby given by host
      */
     public synchronized void removeOpenGame(String openGameFileID) {
-
+        System.out.println("entered remove openGame");
         // send message to public
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
 
         MainGame mainGame;
         if ((mainGame = getRunningGame(getOpenGameFile(openGameFileID).getNameId())) != null) {
             runningGames.remove(mainGame);
+        }
 
         // remove file
         for (int i = 0; i < allOpenGames.size(); i++) {
             if (allOpenGames.get(i).getNameId().equals(openGameFileID)) {
-                System.err.println("Removed " + allOpenGames.get(i).getNameId());
                 allOpenGames.remove(i);
             }
         }
         // remove name
         allGamesNotFinishedNames.remove(openGameFileID);
-        }
     }
 
     /**
