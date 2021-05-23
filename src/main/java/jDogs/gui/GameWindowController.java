@@ -110,9 +110,6 @@ public class GameWindowController implements Initializable {
     private MenuBar menuBar;
 
     @FXML
-    private MenuItem statMenuItem;
-
-    @FXML
     private MenuItem retToLoMenuItem;
 
     @FXML
@@ -224,15 +221,6 @@ public class GameWindowController implements Initializable {
     void reToLoMenuOnAction(ActionEvent event) {
         Client.getInstance().sendMessageToServer("QUIT");
         GUIManager.getInstance().returnToPubLobby();
-    }
-
-    /**
-     * see stats of the game
-     * @param event on click
-     */
-    @FXML
-    void statisticMenuOnAction(ActionEvent event) {
-//TODO show stats
     }
 
     /**
