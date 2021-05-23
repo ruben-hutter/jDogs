@@ -241,14 +241,15 @@ public class Server {
      * @param openGameFileID name of the game lobby given by host
      */
     public synchronized void removeOpenGame(String openGameFileID) {
-        System.out.println("entered remove openGame");
         // send message to public
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
-
+/*
         MainGame mainGame;
         if ((mainGame = getRunningGame(getOpenGameFile(openGameFileID).getNameId())) != null) {
             runningGames.remove(mainGame);
         }
+
+ */
 
         // remove file
         for (int i = 0; i < allOpenGames.size(); i++) {
@@ -301,7 +302,7 @@ public class Server {
     /**
      * get the main game running by name
      * @param mainGameID a string
-     * @return mainGame container
+     * @return mainGame container or null
      */
     public MainGame getRunningGame(String mainGameID) {
         for (MainGame mainGame : runningGames) {
