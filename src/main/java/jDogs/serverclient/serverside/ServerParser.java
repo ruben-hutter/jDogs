@@ -61,7 +61,6 @@ public class ServerParser {
      * @param host the one who opened this opengame
      * @return true, if host is already in a game involved
      */
-    //TODO delete method
     private boolean checkHost(String host) {
         for (OpenGameFile openGameFile : Server.getInstance().getOpenGameList()) {
             if (openGameFile.getHost().equals(host)) {

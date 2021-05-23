@@ -14,23 +14,6 @@ public enum ClientMenuProtocol {
      */
     USER,
     /**
-     * Command to leave open game
-     * because pendent game was deleted by host
-     */
-    QUIT,
-    /**
-     * Command to show a list of all active users.
-     */
-    ACTI,
-    /**
-     * Command to start a new game.
-     */
-    PLAY,
-    /**
-     * Information requesting the game statistics.
-     */
-    STAT,
-    /**
      * Information that client receives a public chat message to all players.
      */
     PCHT,
@@ -38,10 +21,6 @@ public enum ClientMenuProtocol {
      * Information that client received a private message from a player.
      */
     WCHT,
-    /**
-     * Information that client received a message from a separate lobby he joins.
-     */
-    LCHT,
     /**
      * Information for host to start a new game.
      */

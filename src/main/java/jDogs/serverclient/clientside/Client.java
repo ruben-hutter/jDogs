@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +33,7 @@ public class Client {
     private String serveraddress;
     private String username;
     private int portnumber;
+    private ArrayList<String> pubUserList = new ArrayList<>();
 
     /**
      * Constructor of a client
@@ -157,5 +160,29 @@ public class Client {
      */
     public String getNickname() {
         return nickname;
+    }
+
+    /**
+     * add a user to public lobby list
+     * @param user name
+     */
+    public void removeFromPubList(String user) {
+        pubUserList.remove(user);
+    }
+
+    /**
+     * remove a user from public lobby list
+     * @param user name
+     */
+    public void addToPubList(String user) {
+        pubUserList.add(user);
+    }
+
+    /**
+     * get PubUserList
+     * @return list with user in public lobby
+     */
+    public ArrayList<String> getPubUserList() {
+        return pubUserList;
     }
 }

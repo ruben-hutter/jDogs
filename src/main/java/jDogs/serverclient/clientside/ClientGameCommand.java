@@ -72,7 +72,6 @@ public class ClientGameCommand {
                     clientGame.remove(text.substring(5));
                     break;
 
-                //TODO delete this
                 case HAND:
                     clientGame.printCards();
                     break;
@@ -111,7 +110,6 @@ public class ClientGameCommand {
                     Platform.runLater(() -> GUIManager.getInstance().gameWindowController.makeJackMove(text.substring(5)));
                     break;
 
-                // TODO delete this
                 case BORD:
                     clientGame.printGameState();
                     break;

@@ -3,10 +3,6 @@ package jDogs.serverclient.serverside;
 public enum SeparateLobbyProtocol {
 
     /**
-     * Command to show a list of active users.
-     */
-    ACTI,
-    /**
      * Command to send a public chat message to all players
      */
     PCHT,
@@ -14,10 +10,6 @@ public enum SeparateLobbyProtocol {
      * Command to send a private message to a player.
      */
     WCHT,
-    /**
-     * Command to request the game statistics.
-     */
-    STAT,
     /**
      * Command to return to stop joining game and return to lobby
      */

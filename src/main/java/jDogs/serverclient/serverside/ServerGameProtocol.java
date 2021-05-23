@@ -16,46 +16,10 @@ public enum ServerGameProtocol {
      */
     QUIT,
     /**
-     * Command to choose the game mode: Number of players, composition of the team
-     */
-    PLAY,
-    /**
      * Command to make a move.
      * Parameters are: cardvalue, piece-ID, goalposition.
      */
     MOVE,
-    /**
-     * Command to give a card to a player.
-     */
-    CTTP,
-    /**
-     * Command to deal cards to the players and tell them the number of the following round.
-     */
-    CARD,
-    /**
-     * Command to tell that a marble is sent home.
-     */
-    HOME,
-    /**
-     * Command to announce victory.
-     */
-    VICT,
-    /**
-     * Command to inform which player can now play.
-     */
-    TURN,
-    /**
-     * Stop Game and return to Lobby
-     */
-    STOP,
-    /**
-     * Command to provide information to actualize the whole board.
-     */
-    ANEW,
-    /**
-     * Command to announce a the error in a move
-     */
-    FAIL,
     /**
      * Cheat command to move a piece where ever you want.
      */

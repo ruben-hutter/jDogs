@@ -12,10 +12,6 @@ public enum ClientGameProtocol {
      */
     GAME,
     /**
-     * Command to leave the current game and return to the lobby.
-     */
-    EXIT,
-    /**
      * Information about other player who made a move.
      * Parameters are: piece-ID, destination.
      */
@@ -38,10 +34,6 @@ public enum ClientGameProtocol {
      */
     HAND,
     /**
-     * Command to give a card to this player.
-     */
-    CTTP,
-    /**
      * without name: Command to tell this player can play now.
      * with name: Information which player`s turn it is
      */
@@ -50,10 +42,6 @@ public enum ClientGameProtocol {
      * Client receives the hand of cards of the upcoming round
      */
     ROUN,
-    /**
-     * Information to actualize the whole board.
-     */
-    ANEW,
     /**
      * Information about a winner or winning team
      */

@@ -1,6 +1,7 @@
 package jDogs.serverclient.serverside;
 
 import jDogs.player.Player;
+import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -93,38 +94,33 @@ public class SeparateLobbyCommand {
                     break;
 
                 case EXIT:
-                    Server.getInstance().getOpenGameFile(openGameFileID).sendMessageToParticipants("INFO " + nickname + " left openGame session");
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
+                        ArrayList<Player> players = Server.getInstance().getOpenGameFile(openGameFileID).getPlayers();
                         Server.getInstance().removeOpenGame(openGameFileID);
+                        for (Player player : players) {
+                            player.sendMessageToClient("INFO deleted this open game now");
+                            player.sendMessageToClient("STOP");
+                            player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                        }
                     }
                     this.serverConnection.kill();
                     break;
 
                 case QUIT:
                     serverConnection.getMessageHandlerServer().returnToLobby();
-
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
+                        ArrayList<Player> players = Server.getInstance().getOpenGameFile(openGameFileID).getPlayers();
                         Server.getInstance().removeOpenGame(openGameFileID);
+                        for (Player player : players) {
+                            player.sendMessageToClient("INFO deleted this open game now");
+                            player.sendMessageToClient("STOP");
+                            player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                        }
                     } else {
                         Server.getInstance().getOpenGameFile(openGameFileID).removeParticipant(serverConnection.getNickname());
                     }
                     break;
 
-                case STAT:
-                    serverConnection.sendToClient(
-                            "STAT " + "runningGames " + Server.getInstance().getRunningGames().size() +
-                                    " finishedGames " + Server.getInstance().getHighScoreList().size());
-                    break;
-
-                case ACTI:
-                    StringBuilder list = new StringBuilder("INFO all active Players ");
-                    for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
-                        list.append("player # ").append(i).append("\n");
-                        list.append(Server.getInstance().allNickNames.get(i)).append(" ");
-                        list.append("\n");
-                    }
-                    serverConnection.sendToClient(list.toString());
-                    break;
 
                 case LPUB:
                     for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers())

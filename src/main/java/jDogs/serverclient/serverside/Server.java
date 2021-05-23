@@ -118,7 +118,6 @@ public class Server {
      * @param serverConnection is the sC of this client
      */
     public void addNickname(ServerConnection serverConnection) {
-
         //scMap
         serverConnectionMap.put(serverConnection.getNickname(), serverConnection);
 
@@ -131,11 +130,8 @@ public class Server {
      * @param nickname the player's name
      */
     public void removeNickname(String nickname) {
-
         //remove nickname from sConnectionNicknameMap
-
         serverConnectionMap.remove(nickname);
-
         //remove nickname from nicknamelist
         allNickNames.remove(nickname);
     }
@@ -154,7 +150,6 @@ public class Server {
         allGamesNotFinishedNames.add(openGameFile.getNameId());
         // remove open game file
         removeOpenGame(openGameFile.getNameId());
-
         mainGame.start();
     }
 
@@ -172,24 +167,6 @@ public class Server {
         }
         return null;
     }
-
-    /**
-     * removes the openGame from the list
-     * @param openGameFile object that represents a game lobby
-     */
-    public void removeOpenGame(OpenGameFile openGameFile) {
-      sendMessageToPublic("DOGA " + openGameFile.getSendReady(), 0);
-
-            for (Player player : openGameFile.getPlayers()) {
-                player.getServerConnection().getMessageHandlerServer().returnToLobby();
-            }
-
-        MainGame mainGame;
-        if ((mainGame = getRunningGame(openGameFile.getNameId())) != null) {
-            runningGames.remove(mainGame);
-        }
-    }
-
 
     /**
      * sends message to clients wherever they are
@@ -264,13 +241,15 @@ public class Server {
      * @param openGameFileID name of the game lobby given by host
      */
     public synchronized void removeOpenGame(String openGameFileID) {
-        // send INFO message
-        getOpenGameFile(openGameFileID)
-                .sendMessageToParticipants("INFO deleted this open game now");
-
         // send message to public
-        // TODO for DOGA send only nameID not all data
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
+/*
+        MainGame mainGame;
+        if ((mainGame = getRunningGame(getOpenGameFile(openGameFileID).getNameId())) != null) {
+            runningGames.remove(mainGame);
+        }
+
+ */
 
         // remove file
         for (int i = 0; i < allOpenGames.size(); i++) {
@@ -278,7 +257,6 @@ public class Server {
                 allOpenGames.remove(i);
             }
         }
-
         // remove name
         allGamesNotFinishedNames.remove(openGameFileID);
     }
@@ -324,7 +302,7 @@ public class Server {
     /**
      * get the main game running by name
      * @param mainGameID a string
-     * @return mainGame container
+     * @return mainGame container or null
      */
     public MainGame getRunningGame(String mainGameID) {
         for (MainGame mainGame : runningGames) {
@@ -357,6 +335,7 @@ public class Server {
         if (getOpenGameFile(gameID).getHost().equals(nickname)) {
             for (Player player : getOpenGameFile(gameID).getPlayers()) {
                 if (!player.getPlayerName().equals(nickname)) {
+                    player.sendMessageToClient("STOP");
                     player.getServerConnection().getMessageHandlerServer().returnToLobby();
                 }
             }

@@ -95,26 +95,11 @@ public class ServerMenuCommand {
                         }
                         break;
 
-                    case ACTI:
-                        String list = "INFO all active Players ";
-                        for (int i = 0; i < Server.getInstance().allNickNames.size(); i++) {
-                            list += "player # " + i + "\n";
-                            list += Server.getInstance().allNickNames.get(i) + " ";
-                            list += "\n";
-                        }
-                        serverConnection.sendToClient(list);
-                        break;
 
                     case EXIT:
                         serverConnection.sendToClient("INFO logout now");
                         logger.debug(serverConnection.getNickname() + " logged out");
                         serverConnection.kill();
-                        break;
-
-                    case STAT:
-                        for (SavedUser savedUser : Server.getInstance().getHighScoreList()) {
-                            serverConnection.sendToClient("STAT " + savedUser.getCSVString());
-                        }
                         break;
 
                     case WCHT:

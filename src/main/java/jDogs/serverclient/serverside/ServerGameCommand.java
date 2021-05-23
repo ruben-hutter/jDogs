@@ -53,6 +53,7 @@ public class ServerGameCommand {
                 case QUIT:
                     this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                             + " left game session");
+                    this.mainGame.sendMessageToParticipants("STOP");
                     this.mainGame.delete();
                     break;
 
@@ -60,6 +61,7 @@ public class ServerGameCommand {
                     //stop serverConnection
                     this.mainGame.sendMessageToParticipants("INFO " + serverConnection.getNickname()
                             + " left game session");
+                    this.mainGame.sendMessageToParticipants("STOP");
                     this.mainGame.delete();
                     this.serverConnection.kill();
                     break;
@@ -80,7 +82,6 @@ public class ServerGameCommand {
                         // SKIP
                         if (text.startsWith("SKIP", 10) && text.length() == 14) {
                             if (rulesCheck.checkCard(text, serverConnection.getNickname()) != null) {
-                                serverConnection.sendToClient("CARD " + text.substring(5, 9));
                                 serverConnection.sendToClient("FAIL excluded for this hand");
                                 mainGame.turnComplete(serverConnection.getNickname());
                             }
@@ -248,11 +249,6 @@ public class ServerGameCommand {
 
                 case MOPS:
                     cheatSet(text);
-                    break;
-
-                case CTTP:
-                    // TODO start CTTP
-                    //change cards
                     break;
 
                 case PCHT:
