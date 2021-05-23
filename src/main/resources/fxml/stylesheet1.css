@@ -123,7 +123,7 @@
 
 #gridSeparateLobby {
     -fx-background-radius: 8;
-    -fx-background-image: url(/images/ivan-gromov-Y3vPEuNlf7w-unsplash.jpg);
+    -fx-background-image: url(/images/ivan-gromov-Y3vPEuNlf7w-unsplash.png);
     -fx-background-repeat: no - repeat;
     -fx-background-size: stretch;
     -fx-effect: dropshadow(one-pass-box, #302820, 0, 0, -3, 1);
