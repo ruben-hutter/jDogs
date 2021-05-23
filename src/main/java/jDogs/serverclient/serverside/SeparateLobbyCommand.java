@@ -103,6 +103,11 @@ public class SeparateLobbyCommand {
                     serverConnection.getMessageHandlerServer().returnToLobby();
 
                     if (Server.getInstance().getOpenGameFile(openGameFileID).getHost().equals(serverConnection.getNickname())) {
+                        for (Player player : Server.getInstance().getOpenGameFile(openGameFileID).getPlayers()) {
+                            player.sendMessageToClient("INFO deleted this open game now");
+                            player.sendMessageToClient("STOP");
+                            player.getServerConnection().getMessageHandlerServer().returnToLobby();
+                        }
                         Server.getInstance().removeOpenGame(openGameFileID);
                     } else {
                         Server.getInstance().getOpenGameFile(openGameFileID).removeParticipant(serverConnection.getNickname());

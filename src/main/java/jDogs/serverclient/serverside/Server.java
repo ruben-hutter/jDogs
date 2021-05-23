@@ -246,14 +246,6 @@ public class Server {
      * @param openGameFileID name of the game lobby given by host
      */
     public synchronized void removeOpenGame(String openGameFileID) {
-        // send INFO message
-        getOpenGameFile(openGameFileID)
-                .sendMessageToParticipants("INFO deleted this open game now");
-        getOpenGameFile(openGameFileID).sendMessageToParticipants("STOP");
-
-        for (Player player : getOpenGameFile(openGameFileID).getPlayers()) {
-            player.getServerConnection().getMessageHandlerServer().returnToLobby();
-        }
 
         // send message to public
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
