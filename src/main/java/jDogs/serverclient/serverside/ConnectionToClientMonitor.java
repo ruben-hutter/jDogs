@@ -1,6 +1,5 @@
 package jDogs.serverclient.serverside;
 
-
 import jDogs.serverclient.helpers.Monitorcs;
 
 /**
@@ -29,7 +28,7 @@ public class ConnectionToClientMonitor implements Runnable {
             //sendToClient.enqueue("ping");
             serverConnection.sendToClient("ping");
         } else {
-            System.out.println(this.toString() + " no ping message from client for over 10sec."
+            System.out.println(this + " no ping message from client for over 10sec."
                     + "shutdown connection to server");
             serverConnection.kill();
         }

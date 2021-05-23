@@ -1,7 +1,5 @@
 package jDogs.serverclient.serverside;
 
-
-import jDogs.serverclient.helpers.Queuejd;
 import java.util.concurrent.BlockingQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

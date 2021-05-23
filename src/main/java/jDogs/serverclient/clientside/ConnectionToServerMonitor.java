@@ -1,6 +1,5 @@
 package jDogs.serverclient.clientside;
 
-
 import jDogs.gui.GUIManager;
 import jDogs.serverclient.helpers.Monitorcs;
 import jDogs.serverclient.helpers.Queuejd;
@@ -32,7 +31,7 @@ public class ConnectionToServerMonitor implements Runnable {
         if (monitorCS.connectionCheck()) {
             sendToServer.enqueue("pong");
         } else {
-            System.out.println(this.toString() + " no ping message from server for over 10sec."
+            System.out.println(this + " no ping message from server for over 10sec."
                     + "shutdown connection to server");
 
             Platform.runLater(() -> GUIManager.getInstance().
