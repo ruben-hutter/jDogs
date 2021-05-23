@@ -139,7 +139,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Exit">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="Exit now" />
+                        <MenuItem mnemonicParsing="false" onAction="#exitOnAction" text="Exit now" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Settings">

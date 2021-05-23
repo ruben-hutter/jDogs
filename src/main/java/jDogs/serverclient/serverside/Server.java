@@ -267,7 +267,7 @@ public class Server {
         // send INFO message
         getOpenGameFile(openGameFileID)
                 .sendMessageToParticipants("INFO deleted this open game now");
-
+        getOpenGameFile(openGameFileID).sendMessageToParticipants("STOP");
         // send message to public
         sendMessageToAll("DOGA " + getOpenGameFile(openGameFileID).getSendReady());
 

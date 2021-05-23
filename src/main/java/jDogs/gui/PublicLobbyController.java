@@ -74,6 +74,15 @@ public class PublicLobbyController implements Initializable {
     private OptionsController optionsController;
 
     /**
+     * exit JDogs
+     * @param event on click
+     */
+    @FXML
+    private void exitOnAction(ActionEvent event) {
+        System.exit(-1);
+    }
+
+    /**
      * open options
      * @param event on click
      */
