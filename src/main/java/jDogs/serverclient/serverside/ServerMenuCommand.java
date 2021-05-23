@@ -179,9 +179,9 @@ public class ServerMenuCommand {
                         break;
 
                     case SCOR:
-                        String score = "";
+                        StringBuilder score = new StringBuilder();
                         for (SavedUser savedUser : Server.getInstance().getHighScoreList()) {
-                            score += " " + savedUser.getCSVString();
+                            score.append(" ").append(savedUser.getCSVString());
                         }
 
                         serverConnection.sendToClient("SCOR" + score);
