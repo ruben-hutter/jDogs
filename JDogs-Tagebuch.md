@@ -544,3 +544,12 @@ Wir gingen die Achievements für Meilenstein 5 noch einmal durch und kontrollier
 
 **Nächstes Treffen:** Dienstag, 25.05.21, 15:30 Uhr, Präsentation vorbereiten
 
+
+--- 
+
+25.05.2021, 15:30 Uhr, Johanna
+
+### Protokoll#31 - Protokoll
+Heute besprachen wir die Präsentation. Wir erstellen eine Rohfassung der Folien. Wir überlegten, ob wir unser Video noch zu einem Trailer ausbauen möchten, entschieden uns dann aber dagegen. Zudem diskutierten wir erneut den Ablauf der Demonstration: Ruben startet den Server und 1 Client, Johanna 2 Clients und Gregor 1 Client. Gregor teilt dann seinen Bildschirm. Gerne möchten wir vor der Präsentation das Spiel im Uni-Netz ausprobieren, da wir bisher ausschliesslich über Hamachi gespielt haben. 
+
+**Nächstes Treffen:** Mittwoch, 26.05.21, 10:15 Uhr, Übungsstunde
