@@ -553,3 +553,13 @@ Wir gingen die Achievements für Meilenstein 5 noch einmal durch und kontrollier
 Heute besprachen wir die Präsentation. Wir erstellen eine Rohfassung der Folien. Wir überlegten, ob wir unser Video noch zu einem Trailer ausbauen möchten, entschieden uns dann aber dagegen. Zudem diskutierten wir erneut den Ablauf der Demonstration: Ruben startet den Server und 1 Client, Johanna 2 Clients und Gregor 1 Client. Gregor teilt dann seinen Bildschirm. Gerne möchten wir vor der Präsentation das Spiel im Uni-Netz ausprobieren, da wir bisher ausschliesslich über Hamachi gespielt haben. 
 
 **Nächstes Treffen:** Mittwoch, 26.05.21, 10:15 Uhr, Übungsstunde
+
+
+--- 
+
+26.05.2021, 10:15 Uhr, Johanna
+
+### Protokoll#32 - Protokoll
+Nach dem Vorzeigen in der Übungsstunde gingen wir den Ablauf der Demonstration für die morgige Präsentation durch. Da es bei unserem Spiel relativ lange dauert, einen Zug zu machen und wir nicht viel Zeit zur Verfügung haben, muss die Demonstration gut überlegt sein. Wir haben uns einen genauen Plan zurecht gelegt, sodass wir einige spannende Spielzüge zeigen können. 
+
+**Letztes Treffen:** Donnerstag, 27.05.21, 09:45 Uhr, Generalprobe
